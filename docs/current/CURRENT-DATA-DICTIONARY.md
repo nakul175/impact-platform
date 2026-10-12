@@ -6875,3 +6875,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0060_ai_anonymised_outcome_evidence.sql | a5f6b23f7e0612490127991b875961a840138c0b4be148097ddcc10f01e63df2 |
+
+## Migration0061 — personal saved-view kind (local0.68 coding candidate)
+
+`0061_saved_view_kind.sql` SHA256 `28010472675e50438056c340e2599d634a6fad1ec8a8ed24be778e2a6e993a33`. Schema61 adds only the `SavedView` registry kind and restrictive worker policies. Saved views use the existing forced tenant RLS, immutable generic revisions and owner attribution. Each payload pins an exact approved indicator-definition revision plus a bounded search term. Runtime visibility additionally restricts listing and reads to the current owner; a retired, changed or forbidden definition requires an explicit reviewed rebind rather than silent query mutation. Workers receive no saved-view registry or revision visibility. All0001–0060 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0061_saved_view_kind.sql | 28010472675e50438056c340e2599d634a6fad1ec8a8ed24be778e2a6e993a33 |

@@ -36,6 +36,8 @@ class WorkCenter:
                 "AND personal.recipient_id=%s)",
                 [ctx.principal_id],
             )
+        if route == "saved-views":
+            return "r.owner_id=%s", [ctx.principal_id]
         if route == "assignments" and not any(
             g["capability"] == "assignments.draft.create"
             and g["scope_type"] == "TENANT"
@@ -53,6 +55,10 @@ class WorkCenter:
         return "TRUE", []
 
     def decorate(self, c, ctx, row, result=None):
+        if row["object_type"] == "SavedView":
+            if str(row["owner_id"]) != str(ctx.principal_id):
+                unavailable()
+            return result or envelope(row)
         if row["object_type"] not in {"WorkItem", "Notification"}:
             return result or envelope(row)
         self.ensure_visible(ctx, row)

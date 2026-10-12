@@ -73,6 +73,7 @@ READ_ROUTES = {
     "decisions",
     "work-items",
     "notifications",
+    "saved-views",
     "workflow-templates",
     "lineage-manifests",
     *READS,
@@ -115,6 +116,7 @@ WRITE_ROUTES = {
     "evidence",
     "collection-rounds",
     "assignments",
+    "saved-views",
 }
 REQUEST_ROUTES = {"disclosure-requests": "Disclosure"}
 READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route in ENTITIES} | {
@@ -125,6 +127,7 @@ READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route
     **PERIOD_READS,
     # v0.27: a registry kind of 0002 without a projection, like CollectionPlan.
     "collection-rounds": "CollectionRound",
+    "saved-views": "SavedView",
 }
 ACTIONS = {
     "observations": {"submit"},
@@ -388,9 +391,7 @@ class Service:
                 "contributions",
             }
             if not required_manifest <= set(data):
-                raise DomainError(
-                    "INCOMPATIBLE_MEASURE", reason="REPRODUCTION_MANIFEST_UNSUPPORTED"
-                )
+                raise DomainError("INCOMPATIBLE_MEASURE", reason="REPRODUCTION_MANIFEST_UNSUPPORTED")
             indicator = revision(
                 c, ctx, data["indicator_revision"], "IndicatorInstance", "indicator-instances.read"
             )
@@ -625,6 +626,27 @@ class Service:
             ]:
                 if data.get(field):
                     load(c, ctx, data[field], ref_kind, cap)
+        if kind == "SavedView":
+            definition = load(
+                c,
+                ctx,
+                data["definition_id"],
+                "IndicatorDefinition",
+                "indicator-definitions.read",
+            )
+            bound = revision(
+                c,
+                ctx,
+                data["definition_revision"],
+                "IndicatorDefinition",
+                "indicator-definitions.read",
+            )
+            if (
+                str(bound["object_id"]) != data["definition_id"]
+                or definition["lifecycle_state"] != "Approved"
+                or str(definition["head_revision"]) != data["definition_revision"]
+            ):
+                raise DomainError("INVALID_STATE", 409, reason="SAVED_VIEW_REBIND_REQUIRED")
         if kind == "IndicatorInstance" and data.get("programme_id"):
             programme = load(c, ctx, data["programme_id"], "Programme", "programmes.read")
             if programme["lifecycle_state"] not in {"Draft", "Active"}:

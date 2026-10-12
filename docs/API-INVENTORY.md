@@ -310,6 +310,10 @@
 | POST | `/v1/tenants/{tenant_id}/role-templates` | `roles.manage` |
 | POST | `/v1/tenants/{tenant_id}/role-templates/{object_id}/actions/retire` | `roles.manage` |
 | POST | `/v1/tenants/{tenant_id}/role-templates/{object_id}/actions/revise` | `roles.manage` |
+| GET | `/v1/tenants/{tenant_id}/saved-views` | `work-items.read` |
+| POST | `/v1/tenants/{tenant_id}/saved-views` | `work-items.read` |
+| GET | `/v1/tenants/{tenant_id}/saved-views/{object_id}` | `work-items.read` |
+| PATCH | `/v1/tenants/{tenant_id}/saved-views/{object_id}` | `work-items.read` |
 | GET | `/v1/tenants/{tenant_id}/snapshots` | `snapshots.read` |
 | GET | `/v1/tenants/{tenant_id}/snapshots/{object_id}` | `snapshots.read` |
 | GET | `/v1/tenants/{tenant_id}/submissions` | `submissions.read` |

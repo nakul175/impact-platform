@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 type Result = {
   status: "COMPLETE_SELF_REPORTED_DRAFT";
@@ -20,6 +20,15 @@ type Result = {
   disclaimer: string;
 };
 type ExportFormat = "PDF" | "DOCX";
+type VersionReceipt = {
+  object_id: string;
+  revision_id: string;
+  business_state: "Draft" | "Approved" | "Locked";
+  baseline_revision: string | null;
+  approved_at: string | null;
+  approved_by: string | null;
+};
+type VersionRecord = VersionReceipt & { value_case: Result };
 const blank = {
   baseline: "",
   trial: "",
@@ -58,6 +67,18 @@ export function AIValueCase(props: {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [exporting, setExporting] = useState<ExportFormat | null>(null);
+  const [version, setVersion] = useState<VersionReceipt | null>(null);
+  const [versionId, setVersionId] = useState("");
+  const [loadingVersion, setLoadingVersion] = useState(false);
+  const [savedInput, setSavedInput] = useState<string | null>(null);
+  const [savingVersion, setSavingVersion] = useState(false);
+  const [pendingVersionAction, setPendingVersionAction] = useState(false);
+  const pendingVersion = useRef<{
+    action: "create" | "approve" | "lock" | "revise";
+    path: string;
+    body: string;
+    inputSnapshot: string | null;
+  } | null>(null);
   const ready =
     opportunity &&
     baselineLabel.trim() &&
@@ -196,6 +217,77 @@ export function AIValueCase(props: {
       setExporting(null);
     }
   }
+  const displayedInput = calculatedInput
+    ? JSON.stringify(calculatedInput)
+    : null;
+  const savedVersionDisplayed =
+    displayedInput === null || displayedInput === savedInput;
+  async function loadVersion() {
+    if (!versionId.trim() || pendingVersion.current) return;
+    setLoadingVersion(true);
+    setError("");
+    try {
+      const loaded = (await props.request(
+        `${props.base}/ai-enablement/value-cases/${versionId.trim()}`,
+      )) as VersionRecord;
+      setVersion(loaded);
+      setResult(loaded.value_case);
+      setCalculatedInput(null);
+      setSavedInput(null);
+    } catch (value) {
+      setError(props.explain(value));
+    } finally {
+      setLoadingVersion(false);
+    }
+  }
+  async function saveVersion(action: "create" | "approve" | "lock" | "revise") {
+    if ((action === "create" || action === "revise") && !calculatedInput)
+      return;
+    if (action !== "create" && !version) return;
+    setSavingVersion(true);
+    setError("");
+    try {
+      if (pendingVersion.current?.action !== action) {
+        if (pendingVersion.current) {
+          throw new Error(
+            "Retry the pending value-case action before starting another one.",
+          );
+        }
+        const path =
+          action === "create"
+            ? `${props.base}/ai-enablement/value-cases`
+            : `${props.base}/ai-enablement/value-cases/${version!.object_id}/actions/${action}`;
+        const body: Record<string, unknown> = {
+          operation_id: crypto.randomUUID(),
+        };
+        if (action !== "create") body.expected_revision = version!.revision_id;
+        if (action === "create" || action === "revise")
+          body.value_case = calculatedInput;
+        pendingVersion.current = {
+          action,
+          path,
+          body: JSON.stringify(body),
+          inputSnapshot:
+            action === "create" || action === "revise" ? displayedInput : null,
+        };
+        setPendingVersionAction(true);
+      }
+      const pending = pendingVersion.current!;
+      const saved = (await props.request(pending.path, {
+        method: "POST",
+        body: pending.body,
+      })) as VersionReceipt;
+      setVersion(saved);
+      if (action === "create" || action === "revise")
+        setSavedInput(pending.inputSnapshot);
+      pendingVersion.current = null;
+      setPendingVersionAction(false);
+    } catch (value) {
+      setError(props.explain(value));
+    } finally {
+      setSavingVersion(false);
+    }
+  }
   return (
     <section aria-labelledby="value-case-title">
       <h4 id="value-case-title">Build a 1–3 year value case</h4>
@@ -280,6 +372,25 @@ export function AIValueCase(props: {
         </button>
       </fieldset>
       {error && <p role="alert">{error}</p>}
+      <fieldset
+        disabled={loadingVersion || savingVersion || pendingVersionAction}
+      >
+        <legend>Open a saved value case</legend>
+        <label>
+          Value-case ID
+          <input
+            value={versionId}
+            onChange={(event) => setVersionId(event.target.value)}
+          />
+        </label>
+        <button
+          type="button"
+          disabled={!versionId.trim()}
+          onClick={loadVersion}
+        >
+          {loadingVersion ? "Opening…" : "Open saved value case"}
+        </button>
+      </fieldset>
       {result && (
         <div role="status">
           <h5>
@@ -332,6 +443,74 @@ export function AIValueCase(props: {
             <dd>{result.sector_benefits.reach_change}</dd>
           </dl>
           <p className="muted">{result.disclaimer}</p>
+          <h6>Approved baseline</h6>
+          {!version && (
+            <button
+              type="button"
+              disabled={!calculatedInput || savingVersion}
+              onClick={() => saveVersion("create")}
+            >
+              {savingVersion ? "Saving…" : "Save value-case draft"}
+            </button>
+          )}
+          {version?.business_state === "Draft" && (
+            <>
+              <p>
+                A different authorised natural person must approve this saved
+                draft.
+              </p>
+              <button
+                type="button"
+                disabled={savingVersion || !savedVersionDisplayed}
+                onClick={() => saveVersion("approve")}
+              >
+                {savingVersion ? "Approving…" : "Approve saved draft"}
+              </button>
+            </>
+          )}
+          {version?.business_state === "Approved" && (
+            <>
+              <p>
+                Approved {version.approved_at} by {version.approved_by}.
+              </p>
+              <button
+                type="button"
+                disabled={savingVersion || !savedVersionDisplayed}
+                onClick={() => saveVersion("lock")}
+              >
+                {savingVersion ? "Locking…" : "Lock approved baseline"}
+              </button>
+            </>
+          )}
+          {version && !savedVersionDisplayed && (
+            <p role="alert">
+              The displayed calculation differs from the saved revision. Save a
+              new revision before approval or locking.
+            </p>
+          )}
+          {version?.business_state === "Locked" && (
+            <>
+              <p>
+                Locked {version.approved_at} by {version.approved_by}. Baseline
+                revision {version.baseline_revision}.
+              </p>
+              <button
+                type="button"
+                disabled={!calculatedInput || savingVersion}
+                onClick={() => saveVersion("revise")}
+              >
+                {savingVersion
+                  ? "Creating version…"
+                  : "Create new version from these inputs"}
+              </button>
+            </>
+          )}
+          {version?.business_state === "Draft" && version.baseline_revision && (
+            <p>
+              New draft revision {version.revision_id}; locked baseline{" "}
+              {version.baseline_revision} remains unchanged.
+            </p>
+          )}
           <h6>Board or funder export</h6>
           <p>
             The export recalculates this business case and lists every submitted

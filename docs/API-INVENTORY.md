@@ -85,6 +85,12 @@
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/task-templates` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/value-case` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/value-case/export` | `ai.enablement.export` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/value-cases` | `ai.value-case.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}` | `ai.value-case.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/approve` | `ai.value-case.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/lock` | `ai.value-case.manage` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/revise` | `ai.value-case.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/revisions/{revision_id}` | `ai.value-case.read` |
 | GET | `/v1/tenants/{tenant_id}/assignments` | `assignments.read` |
 | POST | `/v1/tenants/{tenant_id}/assignments` | `assignments.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/assignments/{object_id}` | `assignments.read` |

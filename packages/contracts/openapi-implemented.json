@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.46.0",
+    "version": "1.47.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -33431,6 +33431,772 @@
                 "schema": {
                   "$ref": "#/components/schemas/Error"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/value-cases": {
+      "post": {
+        "operationId": "create_ai_value_case_version",
+        "summary": "create ai value case version",
+        "x-capability": "ai.value-case.manage",
+        "x-contract-version": "1.47.0",
+        "x-audit-required": true,
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Versioned self-reported value case; locked revision remains immutable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIValueCaseVersionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIValueCaseVersionCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}": {
+      "get": {
+        "operationId": "get_ai_value_case_version",
+        "summary": "get ai value case version",
+        "x-capability": "ai.value-case.read",
+        "x-contract-version": "1.47.0",
+        "x-audit-required": false,
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Versioned self-reported value case; locked revision remains immutable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIValueCaseVersion"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/revisions/{revision_id}": {
+      "get": {
+        "operationId": "get_ai_value_case_revision",
+        "summary": "get ai value case revision",
+        "x-capability": "ai.value-case.read",
+        "x-contract-version": "1.47.0",
+        "x-audit-required": false,
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Versioned self-reported value case; locked revision remains immutable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIValueCaseVersion"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/approve": {
+      "post": {
+        "operationId": "approve_ai_value_case",
+        "summary": "approve ai value case",
+        "x-capability": "ai.value-case.manage",
+        "x-contract-version": "1.47.0",
+        "x-audit-required": true,
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Versioned self-reported value case; locked revision remains immutable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIValueCaseVersionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIValueCaseVersionLock"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/lock": {
+      "post": {
+        "operationId": "lock_ai_value_case_baseline",
+        "summary": "lock ai value case baseline",
+        "x-capability": "ai.value-case.manage",
+        "x-contract-version": "1.47.0",
+        "x-audit-required": true,
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Versioned self-reported value case; locked revision remains immutable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIValueCaseVersionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIValueCaseVersionLock"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/revise": {
+      "post": {
+        "operationId": "revise_ai_value_case",
+        "summary": "revise ai value case",
+        "x-capability": "ai.value-case.manage",
+        "x-contract-version": "1.47.0",
+        "x-audit-required": true,
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Versioned self-reported value case; locked revision remains immutable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIValueCaseVersionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIValueCaseVersionRevise"
               }
             }
           }
@@ -67626,6 +68392,198 @@
         "required": [
           "manifest",
           "content_base64"
+        ]
+      },
+      "AIValueCaseVersionCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "value_case": {
+            "$ref": "#/components/schemas/AIValueCaseRequest"
+          }
+        },
+        "required": [
+          "operation_id",
+          "value_case"
+        ]
+      },
+      "AIValueCaseVersionLock": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision"
+        ]
+      },
+      "AIValueCaseVersionRevise": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "value_case": {
+            "$ref": "#/components/schemas/AIValueCaseRequest"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "value_case"
+        ]
+      },
+      "AIValueCaseVersion": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "enum": [
+              "Draft",
+              "Approved",
+              "Locked"
+            ]
+          },
+          "baseline_revision": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "approved_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "approved_by": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "value_case": {
+            "$ref": "#/components/schemas/AIValueCase"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "baseline_revision",
+          "approved_at",
+          "approved_by",
+          "value_case"
+        ]
+      },
+      "AIValueCaseVersionReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "enum": [
+              "Draft",
+              "Approved",
+              "Locked"
+            ]
+          },
+          "baseline_revision": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "approved_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "approved_by": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "baseline_revision",
+          "approved_at",
+          "approved_by",
+          "operation_id",
+          "correlation_id",
+          "saved_at"
         ]
       },
       "AIArchivedCatalogV1": {

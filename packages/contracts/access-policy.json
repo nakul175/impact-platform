@@ -1,5 +1,5 @@
 {
-  "version": "1.46.0",
+  "version": "1.47.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6716,6 +6716,78 @@
       "purpose_required": false,
       "fresh_assurance_seconds": 300,
       "audit": false
+    },
+    {
+      "operation_id": "create_ai_value_case_version",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases",
+      "capability": "ai.value-case.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_value_case_version",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}",
+      "capability": "ai.value-case.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_value_case_revision",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/revisions/{revision_id}",
+      "capability": "ai.value-case.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "approve_ai_value_case",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/approve",
+      "capability": "ai.value-case.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "lock_ai_value_case_baseline",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/lock",
+      "capability": "ai.value-case.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "revise_ai_value_case",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/revise",
+      "capability": "ai.value-case.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
     },
     {
       "operation_id": "get_ai_adoption_guidance",

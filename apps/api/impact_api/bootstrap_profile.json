@@ -17,6 +17,8 @@
       "ai.policy.manage",
       "ai.problem-baseline.manage",
       "ai.problem-baseline.read",
+      "ai.value-case.manage",
+      "ai.value-case.read",
       "connections.read",
       "grant.approve",
       "grant.request",

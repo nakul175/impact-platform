@@ -45,6 +45,7 @@ from .ai_diagnosis_contributions import AIDiagnosisContributions
 from .ai_diagnosis_reviews import AIDiagnosisReviews
 from .ai_solution_fit_scores import AISolutionFitScores
 from .ai_problem_baselines import AIProblemBaselines
+from .ai_value_case_versions import AIValueCaseVersions
 from .ai_opportunity_mapping import AIOpportunityMapping
 from .ai_plan_exports import AIPlanExports
 from .ai_impact_references import AIImpactReferences
@@ -122,6 +123,7 @@ def create_app():
     ai_diagnosis_reviews = AIDiagnosisReviews(service, ai_diagnoses)
     ai_solution_fit_scores = AISolutionFitScores(service)
     ai_problem_baselines = AIProblemBaselines(service, ai_diagnoses)
+    ai_value_cases = AIValueCaseVersions(service)
     ai_opportunity_mapping = AIOpportunityMapping(ai_diagnoses)
     ai_ranking = AIRanking(service, mappings=ai_opportunity_mapping)
     ai_plan_exports = AIPlanExports(service)
@@ -1051,6 +1053,51 @@ def create_app():
         return await run_in_threadpool(
             ai_enablement.value_case_export, auth.resolve(request), uuid(tenant), body
         )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-cases", status_code=201)
+    async def ai_value_case_version_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIValueCaseVersionCreate", body)
+        return await run_in_threadpool(
+            ai_value_cases.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/value-cases/{obj}")
+    def ai_value_case_version_get(request: Request, tenant: str, obj: str):
+        return ai_value_cases.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/value-cases/{obj}/revisions/{revision_id}")
+    def ai_value_case_revision_get(request: Request, tenant: str, obj: str, revision_id: str):
+        return ai_value_cases.get(auth.resolve(request), uuid(tenant), uuid(obj), uuid(revision_id))
+
+    async def value_case_version_action(request: Request, tenant: str, obj: str, action: str, schema: str):
+        body = await strict_body(request)
+        validate(schema, body)
+        return await run_in_threadpool(
+            ai_value_cases.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+            uuid(obj),
+            action,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-cases/{obj}/actions/approve")
+    async def ai_value_case_approve(request: Request, tenant: str, obj: str):
+        return await value_case_version_action(request, tenant, obj, "approve", "AIValueCaseVersionLock")
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-cases/{obj}/actions/lock")
+    async def ai_value_case_baseline_lock(request: Request, tenant: str, obj: str):
+        return await value_case_version_action(request, tenant, obj, "lock", "AIValueCaseVersionLock")
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-cases/{obj}/actions/revise")
+    async def ai_value_case_revise(request: Request, tenant: str, obj: str):
+        return await value_case_version_action(request, tenant, obj, "revise", "AIValueCaseVersionRevise")
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/pilot-evaluation")
     async def ai_pilot_evaluation(request: Request, tenant: str):

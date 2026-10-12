@@ -67,6 +67,7 @@ from .fine_grained_access import FineGrainedAccess
 from .effective_access import EffectiveAccess
 from .permission_safe_derivatives import PermissionSafeDerivatives
 from .external_shares import ExternalShares
+from .access_change_propagation import AccessChangePropagation
 from .ai_trials import AITrials
 from .partner_revenue import PartnerRevenue
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
@@ -163,6 +164,7 @@ def create_app():
     effective_access = EffectiveAccess(service)
     permission_safe_derivatives = PermissionSafeDerivatives(service)
     external_shares = ExternalShares(service, permission_safe_derivatives)
+    access_change_propagation = AccessChangePropagation(service, permission_safe_derivatives)
     ai_trials = AITrials(service, ai_value_cases)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
@@ -1952,6 +1954,22 @@ def create_app():
     async def revoke_external_share(tenant: str, share_id: str, request: Request):
         return await run_in_threadpool(
             external_shares.revoke, auth.resolve(request), uuid(tenant), str(uuid(share_id))
+        )
+
+    @app.post("/v1/tenants/{tenant}/derivatives/{derivative_id}/revisions/{revision_id}/presentation-leases")
+    async def issue_presentation_lease(tenant: str, derivative_id: str, revision_id: str, request: Request):
+        return await run_in_threadpool(
+            access_change_propagation.issue,
+            auth.resolve(request),
+            uuid(tenant),
+            str(uuid(derivative_id)),
+            str(uuid(revision_id)),
+        )
+
+    @app.get("/v1/tenants/{tenant}/presentation-leases/{lease_id}")
+    async def validate_presentation_lease(tenant: str, lease_id: str, request: Request):
+        return await run_in_threadpool(
+            access_change_propagation.validate, auth.resolve(request), uuid(tenant), str(uuid(lease_id))
         )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/trials")

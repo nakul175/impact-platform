@@ -160,6 +160,9 @@
 | GET | `/v1/tenants/{tenant_id}/connections/{object_id}` | `connections.read` |
 | GET | `/v1/tenants/{tenant_id}/decisions` | `decisions.read` |
 | GET | `/v1/tenants/{tenant_id}/decisions/{object_id}` | `decisions.read` |
+| POST | `/v1/tenants/{tenant_id}/derivatives/{derivative_id}/revisions` | `reports.write` |
+| GET | `/v1/tenants/{tenant_id}/derivatives/{derivative_id}/revisions/{revision_id}` | `reports.read` |
+| POST | `/v1/tenants/{tenant_id}/derivatives/{derivative_id}/revisions/{revision_id}/presentation-leases` | `reports.read` |
 | GET | `/v1/tenants/{tenant_id}/dimension-crosswalks` | `calculated-results.read` |
 | POST | `/v1/tenants/{tenant_id}/dimension-crosswalks` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/dimension-crosswalks/{object_id}` | `calculated-results.read` |
@@ -176,6 +179,9 @@
 | PATCH | `/v1/tenants/{tenant_id}/evidence/{object_id}` | `evidence.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/evidence/{object_id}/actions/attach` | `evidence.attach` |
 | GET | `/v1/tenants/{tenant_id}/evidence/{object_id}/content` | `evidence.download` |
+| POST | `/v1/tenants/{tenant_id}/external-shares` | `reports.share` |
+| GET | `/v1/tenants/{tenant_id}/external-shares/{share_id}` | `reports.read` |
+| POST | `/v1/tenants/{tenant_id}/external-shares/{share_id}/revocation` | `reports.share` |
 | GET | `/v1/tenants/{tenant_id}/forms` | `forms.read` |
 | POST | `/v1/tenants/{tenant_id}/forms` | `forms.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/forms/{object_id}` | `forms.read` |
@@ -285,6 +291,7 @@
 | PATCH | `/v1/tenants/{tenant_id}/portfolio-allocation-views/{object_id}` | `calculated-results.read` |
 | POST | `/v1/tenants/{tenant_id}/portfolio-allocation-views/{object_id}/actions/submit` | `calculated-results.read` |
 | POST | `/v1/tenants/{tenant_id}/portfolio-allocation-views/{object_id}/preview` | `calculated-results.read` |
+| GET | `/v1/tenants/{tenant_id}/presentation-leases/{lease_id}` | `reports.read` |
 | GET | `/v1/tenants/{tenant_id}/privacy-cases` | `privacy-cases.read` |
 | POST | `/v1/tenants/{tenant_id}/privacy-cases` | `privacy-cases.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/privacy-cases/{object_id}` | `privacy-cases.read` |

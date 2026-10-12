@@ -46,6 +46,7 @@ from impact_api.fine_grained_access_contracts import IMPLEMENTED as FINE_GRAINED
 from impact_api.effective_access_contracts import IMPLEMENTED as EFFECTIVE_ACCESS_ROUTES  # noqa: E402
 from impact_api.permission_safe_derivative_contracts import IMPLEMENTED as PERMISSION_SAFE_DERIVATIVE_ROUTES  # noqa: E402
 from impact_api.external_share_contracts import IMPLEMENTED as EXTERNAL_SHARE_ROUTES  # noqa: E402
+from impact_api.access_change_contracts import IMPLEMENTED as ACCESS_CHANGE_ROUTES  # noqa: E402
 from impact_api.ai_trial_contracts import IMPLEMENTED as AI_TRIAL_ROUTES  # noqa: E402
 from impact_api.ai_opportunity_mapping_contracts import (  # noqa: E402
     IMPLEMENTED as AI_OPPORTUNITY_MAPPING_ROUTES,
@@ -136,6 +137,7 @@ allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in EFFECTIVE_ACCESS_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in PERMISSION_SAFE_DERIVATIVE_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in EXTERNAL_SHARE_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in ACCESS_CHANGE_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_TRIAL_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in RETENTION_ROUTES)
 allowed.add(("post", "/v1/tenants/{tenant_id}/disclosure-requests"))

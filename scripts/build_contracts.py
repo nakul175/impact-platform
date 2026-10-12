@@ -24,6 +24,7 @@ from impact_api.fine_grained_access_contracts import augment as augment_fine_gra
 from impact_api.effective_access_contracts import augment as augment_effective_access  # noqa: E402
 from impact_api.permission_safe_derivative_contracts import augment as augment_permission_safe_derivatives  # noqa: E402
 from impact_api.external_share_contracts import augment as augment_external_shares  # noqa: E402
+from impact_api.access_change_contracts import augment as augment_access_changes  # noqa: E402
 from impact_api.ai_trial_contracts import augment as augment_ai_trials  # noqa: E402
 from impact_api.changes_contracts import augment as augment_changes  # noqa: E402
 from impact_api.period_contracts import augment as augment_periods  # noqa: E402
@@ -199,6 +200,7 @@ augment_fine_grained_access(spec, policy)
 augment_effective_access(spec, policy)
 augment_permission_safe_derivatives(spec, policy)
 augment_external_shares(spec, policy)
+augment_access_changes(spec, policy)
 augment_ai_trials(spec, policy)
 augment_changes(spec, policy)
 augment_periods(spec, policy)

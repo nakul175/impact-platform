@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.78.0",
+    "version": "1.79.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -39880,6 +39880,84 @@
         "responses": {
           "200": {
             "description": "Revoked"
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/derivatives/{derivative_id}/revisions/{revision_id}/presentation-leases": {
+      "post": {
+        "operationId": "issue_presentation_lease",
+        "summary": "Issue a current-policy online presentation lease for at most sixty seconds",
+        "x-capability": "reports.read",
+        "x-contract-version": "1.79.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "derivative_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Policy-epoch-bound lease"
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/presentation-leases/{lease_id}": {
+      "get": {
+        "operationId": "validate_presentation_lease",
+        "summary": "Revalidate a presentation lease against current authority",
+        "x-capability": "reports.read",
+        "x-contract-version": "1.79.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "lease_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lease remains current"
+          },
+          "404": {
+            "description": "Expired, policy-stale or inaccessible without content preview"
           }
         }
       }

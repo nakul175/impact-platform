@@ -310,6 +310,24 @@
       ],
       "summary": "Coding-only follow-up records qualifying calculation failures after rollback using the original frozen input manifest and attempt time, refuses changed-payload reuse, avoids superseding a successful same-operation receipt, and marks a prior result stale. A separate audited read rechecks every frozen dependency, exports bounded arithmetic inputs and recomputes the stored result through the official decimal engine.",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-0.57-03",
+      "change_id": "FR-CAL-001-reproduction-consistency",
+      "paths": [
+        "apps/api/impact_api/service.py"
+      ],
+      "areas": [
+        "tenant-locked reproduction snapshot",
+        "current pinned collection-plan authority"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28"
+      ],
+      "summary": "Follow-up correction serializes the reproduction bundle with tenant writes and rechecks current authority for an optional frozen collection-plan revision before exposing arithmetic inputs.",
+      "confirmed_by": null
     }
   ],
   "evidence": [

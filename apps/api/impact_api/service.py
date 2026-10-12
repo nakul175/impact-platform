@@ -361,6 +361,8 @@ class Service:
 
     def reproduce_calculation(self, identity, tenant, obj, correlation):
         with self.db.transaction(tenant) as c:
+            # Freeze current heads and authority while the multi-object reproduction bundle is assembled.
+            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
             ctx = context(c, identity, tenant)
             authorize(c, ctx, "get_calculated_result_reproduction", obj, hidden=True)
             result = load(c, ctx, obj, "CalculatedResult", "calculated-results.read")
@@ -381,6 +383,14 @@ class Service:
                 c, ctx, data["definition_revision"], "IndicatorDefinition", "indicator-definitions.read"
             )
             load(c, ctx, data["period_id"], "Period", "periods.read")
+            if data.get("plan_revision"):
+                revision(
+                    c,
+                    ctx,
+                    data["plan_revision"],
+                    "CollectionPlan",
+                    "collection-plans.read",
+                )
             dispositions = {item["source_revision"]: item for item in data["contributions"]}
             exported = []
             included = []

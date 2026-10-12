@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.71.0",
+    "version": "1.72.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -47583,7 +47583,7 @@
         "operationId": "list_ai_adoption_plans",
         "summary": "list ai adoption plans",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -47709,7 +47709,7 @@
         "operationId": "create_ai_adoption_plan",
         "summary": "create ai adoption plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -47830,7 +47830,7 @@
         "operationId": "get_ai_adoption_plan",
         "summary": "get ai adoption plan",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -47948,7 +47948,7 @@
         "operationId": "update_ai_adoption_plan",
         "summary": "update ai adoption plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -48078,7 +48078,7 @@
         "operationId": "generate_ai_deployment_plan",
         "summary": "generate ai deployment plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -48198,7 +48198,7 @@
         "operationId": "update_ai_deployment_milestone",
         "summary": "update ai deployment milestone",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -48330,7 +48330,7 @@
         "operationId": "complete_ai_deployment_plan",
         "summary": "complete ai deployment plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -48450,7 +48450,7 @@
         "operationId": "attest_ai_solution_deployment",
         "summary": "attest actual solution deployment",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -48570,7 +48570,7 @@
         "operationId": "get_ai_role_training",
         "summary": "get learner role training",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -48690,7 +48690,7 @@
         "operationId": "complete_ai_role_training_module",
         "summary": "record learner module completion",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -48820,7 +48820,7 @@
         "operationId": "list_ai_champion_appointments",
         "summary": "list visible internal champion appointments",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -48928,7 +48928,7 @@
         "operationId": "appoint_ai_internal_champion",
         "summary": "appoint an internal champion with support",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -49048,7 +49048,7 @@
         "operationId": "get_ai_champion_guide",
         "summary": "open the appointed champion guide",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.52.0",
+        "x-contract-version": "1.72.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -90105,12 +90105,21 @@
             "items": {
               "$ref": "#/components/schemas/AIDeploymentMilestone"
             }
+          },
+          "workflow_touchpoints": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/AIWorkflowTouchpoint"
+            }
           }
         },
         "required": [
           "template_version",
           "state",
-          "milestones"
+          "milestones",
+          "workflow_touchpoints"
         ]
       },
       "AITrainingDeploymentAttestation": {
@@ -90537,6 +90546,51 @@
           "correlation_id"
         ]
       },
+      "AIWorkflowTouchpoint": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "touchpoint_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "workflow_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "source_system": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "source_record_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "solution_use": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "capture_mode": {
+            "const": "READ_EXISTING"
+          },
+          "duplicate_entry_required": {
+            "const": false
+          }
+        },
+        "required": [
+          "touchpoint_id",
+          "workflow_name",
+          "source_system",
+          "source_record_key",
+          "solution_use",
+          "capture_mode",
+          "duplicate_entry_required"
+        ]
+      },
       "AIDeploymentGenerate": {
         "type": "object",
         "additionalProperties": false,
@@ -90571,12 +90625,21 @@
               "PILOT",
               "ROLLOUT"
             ]
+          },
+          "workflow_touchpoints": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/AIWorkflowTouchpoint"
+            }
           }
         },
         "required": [
           "operation_id",
           "expected_revision",
-          "owners"
+          "owners",
+          "workflow_touchpoints"
         ]
       },
       "AIDeploymentProgress": {

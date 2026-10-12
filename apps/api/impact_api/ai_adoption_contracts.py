@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_enablement_contracts import ROLES
 from .measurement_contracts import closed
 
-VERSION = "1.52.0"
+VERSION = "1.72.0"
 IMPLEMENTED = [
     ("get", "ai-enablement/plans"),
     ("post", "ai-enablement/plans"),
@@ -85,8 +85,14 @@ def augment(spec, policy):
                 "maxItems": 3,
                 "items": {"$ref": "#/components/schemas/AIDeploymentMilestone"},
             },
+            "workflow_touchpoints": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "items": {"$ref": "#/components/schemas/AIWorkflowTouchpoint"},
+            },
         },
-        ["template_version", "state", "milestones"],
+        ["template_version", "state", "milestones", "workflow_touchpoints"],
     )
     schemas["AITrainingDeploymentAttestation"] = closed(
         {
@@ -264,6 +270,26 @@ def augment(spec, policy):
         "operation_id": {"type": "string", "format": "uuid"},
         "expected_revision": {"type": "string", "format": "uuid"},
     }
+    schemas["AIWorkflowTouchpoint"] = closed(
+        {
+            "touchpoint_id": {"type": "string", "pattern": "^[a-z][a-z0-9_-]{0,63}$"},
+            "workflow_name": {"type": "string", "minLength": 1, "maxLength": 200},
+            "source_system": {"type": "string", "minLength": 1, "maxLength": 200},
+            "source_record_key": {"type": "string", "minLength": 1, "maxLength": 200},
+            "solution_use": {"type": "string", "minLength": 1, "maxLength": 500},
+            "capture_mode": {"const": "READ_EXISTING"},
+            "duplicate_entry_required": {"const": False},
+        },
+        [
+            "touchpoint_id",
+            "workflow_name",
+            "source_system",
+            "source_record_key",
+            "solution_use",
+            "capture_mode",
+            "duplicate_entry_required",
+        ],
+    )
     schemas["AIDeploymentGenerate"] = closed(
         {
             **base_command,
@@ -271,8 +297,14 @@ def augment(spec, policy):
                 {code: {"type": "string", "format": "uuid"} for code in ["PREPARE", "PILOT", "ROLLOUT"]},
                 ["PREPARE", "PILOT", "ROLLOUT"],
             ),
+            "workflow_touchpoints": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "items": {"$ref": "#/components/schemas/AIWorkflowTouchpoint"},
+            },
         },
-        [*base_command, "owners"],
+        [*base_command, "owners", "workflow_touchpoints"],
     )
     schemas["AIDeploymentProgress"] = closed(
         {

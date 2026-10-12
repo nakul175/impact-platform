@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
+import re
 from uuid import UUID
 
 from psycopg.types.json import Jsonb
@@ -128,7 +129,12 @@ def validate_plan(data):
 
 
 def validate_deployment(value):
-    if not isinstance(value, dict) or set(value) != {"template_version", "state", "milestones"}:
+    if not isinstance(value, dict) or set(value) != {
+        "template_version",
+        "state",
+        "milestones",
+        "workflow_touchpoints",
+    }:
         _invalid("DEPLOYMENT_PLAN_INVALID")
     if value["template_version"] != DEPLOYMENT_TEMPLATE_VERSION or value["state"] not in {
         "ACTIVE",
@@ -157,6 +163,38 @@ def validate_deployment(value):
         if item["progress"] not in MILESTONE_PROGRESS:
             _invalid("DEPLOYMENT_PLAN_INVALID")
         _text(item["progress_note"], 1000)
+    validate_workflow_touchpoints(value["workflow_touchpoints"])
+
+
+def validate_workflow_touchpoints(value):
+    if not isinstance(value, list) or not 1 <= len(value) <= 20:
+        _invalid("WORKFLOW_TOUCHPOINTS_REQUIRED")
+    seen = set()
+    fields = {
+        "touchpoint_id",
+        "workflow_name",
+        "source_system",
+        "source_record_key",
+        "solution_use",
+        "capture_mode",
+        "duplicate_entry_required",
+    }
+    for item in value:
+        if not isinstance(item, dict) or set(item) != fields:
+            _invalid("WORKFLOW_TOUCHPOINT_INVALID")
+        key = item["touchpoint_id"]
+        if not isinstance(key, str) or not re.fullmatch(r"[a-z][a-z0-9_-]{0,63}", key) or key in seen:
+            _invalid("WORKFLOW_TOUCHPOINT_INVALID")
+        seen.add(key)
+        for field, maximum in (
+            ("workflow_name", 200),
+            ("source_system", 200),
+            ("source_record_key", 200),
+            ("solution_use", 500),
+        ):
+            _text(item[field], maximum, required=True)
+        if item["capture_mode"] != "READ_EXISTING" or item["duplicate_entry_required"] is not False:
+            _invalid("DUPLICATE_DATA_ENTRY_FORBIDDEN")
 
 
 def _deployment_basis(payload):
@@ -489,7 +527,7 @@ class AIAdoptionPlans:
         _uuid(object_id)
         expected = {"operation_id", "expected_revision"}
         if action == "generate":
-            expected.add("owners")
+            expected |= {"owners", "workflow_touchpoints"}
         elif action == "progress":
             expected |= {"progress", "progress_note"}
         if not isinstance(body, dict) or set(body) != expected:
@@ -534,6 +572,7 @@ class AIAdoptionPlans:
                 if "deployment" in payload:
                     raise DomainError("STATE_TRANSITION_DENIED", 409, reason="DEPLOYMENT_ALREADY_GENERATED")
                 owners = body["owners"]
+                validate_workflow_touchpoints(body["workflow_touchpoints"])
                 codes = [item[0] for item in DEPLOYMENT_MILESTONES]
                 if not isinstance(owners, dict) or set(owners) != set(codes):
                     _invalid("DEPLOYMENT_OWNERS_REQUIRED")
@@ -567,6 +606,7 @@ class AIAdoptionPlans:
                         }
                         for code, title, acceptance in DEPLOYMENT_MILESTONES
                     ],
+                    "workflow_touchpoints": deepcopy(body["workflow_touchpoints"]),
                 }
             else:
                 deployment = payload.get("deployment")
@@ -596,6 +636,7 @@ class AIAdoptionPlans:
                         raise DomainError("STATE_TRANSITION_DENIED", 409, reason="ACCOUNTABILITY_REQUIRED")
                     if any(item["progress"] != "ACCEPTED" for item in deployment["milestones"]):
                         raise DomainError("STATE_TRANSITION_DENIED", 409, reason="MILESTONES_NOT_ACCEPTED")
+                    validate_workflow_touchpoints(deployment["workflow_touchpoints"])
                     deployment["state"] = "COMPLETE"
             validate_deployment(payload["deployment"])
             state = "Completed" if action == "complete" else "Draft"

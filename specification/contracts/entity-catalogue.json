@@ -945,5 +945,22 @@
     "contract_version": "1.71.0",
     "draft_schema": "AITrialResultCreate",
     "output_schema": "AITrialResult"
+  },
+  {
+    "entity": "AIWorkflowTouchpoint",
+    "route": "ai-enablement/plans/{object_id}/deployment/actions/generate",
+    "owner": "C09",
+    "fsd_id": "US-DP-02",
+    "fields": "touchpoint_id:code workflow_name:text source_system:text source_record_key:text solution_use:text capture_mode:code duplicate_entry_required:boolean",
+    "source_required_fields": "Named existing workflow, source system and record key plus described solution use",
+    "invariant": "At least one unique touchpoint; capture mode is READ_EXISTING and duplicate entry is always false.",
+    "server_owned": [
+      "capture_mode",
+      "duplicate_entry_required"
+    ],
+    "patch_allowed": false,
+    "contract_version": "1.72.0",
+    "draft_schema": "AIDeploymentGenerate",
+    "output_schema": "AIDeploymentPlan"
   }
 ]

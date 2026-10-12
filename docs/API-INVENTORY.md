@@ -345,6 +345,7 @@
 | POST | `/v1/tenants/{tenant_id}/saved-views` | `work-items.read` |
 | GET | `/v1/tenants/{tenant_id}/saved-views/{object_id}` | `work-items.read` |
 | PATCH | `/v1/tenants/{tenant_id}/saved-views/{object_id}` | `work-items.read` |
+| GET | `/v1/tenants/{tenant_id}/service-packages` | `subscriptions.read` |
 | GET | `/v1/tenants/{tenant_id}/snapshots` | `snapshots.read` |
 | GET | `/v1/tenants/{tenant_id}/snapshots/{object_id}` | `snapshots.read` |
 | GET | `/v1/tenants/{tenant_id}/sponsored-access` | `subscriptions.read` |
@@ -356,6 +357,7 @@
 | PATCH | `/v1/tenants/{tenant_id}/submissions/{object_id}` | `submissions.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/submissions/{object_id}/actions/correct` | `submission.correct` |
 | POST | `/v1/tenants/{tenant_id}/submissions/{object_id}/actions/submit` | `submission.submit` |
+| POST | `/v1/tenants/{tenant_id}/subscriptions/{subscription_id}/service-packages` | `subscription.admin` |
 | GET | `/v1/tenants/{tenant_id}/targets` | `targets.read` |
 | POST | `/v1/tenants/{tenant_id}/targets` | `targets.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/targets/{object_id}` | `targets.read` |

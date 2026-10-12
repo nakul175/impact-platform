@@ -1,5 +1,5 @@
 {
-  "version": "1.66.0",
+  "version": "1.67.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5410,6 +5410,33 @@
       "fresh_assurance_seconds": null,
       "audit": false,
       "state_guard": "Every effective entitlement has explicit direct/sponsor sources; one entitlement has at most one charge source."
+    },
+    {
+      "operation_id": "list_service_packages",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/service-packages",
+      "capability": "subscriptions.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Only code-owned packages with nonblank scope and positive fixed price; purchase line uses the active subscription's single open invoice."
+    },
+    {
+      "operation_id": "purchase_service_package",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/subscriptions/{subscription_id}/service-packages",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Only code-owned packages with nonblank scope and positive fixed price; purchase line uses the active subscription's single open invoice."
     },
     {
       "operation_id": "list_measurement_changes",

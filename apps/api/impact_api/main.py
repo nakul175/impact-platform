@@ -59,6 +59,7 @@ from .ai_impact_references import AIImpactReferences
 from .human_advice import HumanAdviceCases
 from .sponsored_access import SponsoredAccess
 from .entitlement_view import EntitlementView
+from .service_packages import ServicePackages
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
 from .ai_advisory_provider import OpenAIAdvisory
 from .contracts import validate
@@ -145,6 +146,7 @@ def create_app():
     human_advice = HumanAdviceCases(service)
     sponsored_access = SponsoredAccess(service)
     entitlement_view = EntitlementView(service)
+    service_packages = ServicePackages(service)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
     ai_outcome_evidence = AIOutcomeEvidence(service, lifecycle)
@@ -1750,6 +1752,22 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/effective-entitlements")
     def effective_entitlement_list(request: Request, tenant: str):
         return entitlement_view.read(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/service-packages")
+    def service_package_list(request: Request, tenant: str):
+        return service_packages.listing(auth.resolve(request), uuid(tenant))
+
+    @app.post("/v1/tenants/{tenant}/subscriptions/{subscription}/service-packages")
+    async def service_package_purchase(request: Request, tenant: str, subscription: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service_packages.purchase,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(subscription),
+            body,
+            request.state.correlation,
+        )
 
     @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
     def report_exports(request: Request, tenant: str, obj: str):

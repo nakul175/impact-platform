@@ -816,5 +816,28 @@
     "contract_version": "1.66.0",
     "draft_schema": null,
     "output_schema": "EffectiveEntitlementList"
+  },
+  {
+    "entity": "ServicePackagePurchase",
+    "route": "service-packages",
+    "owner": "C14",
+    "fsd_id": "US-CM-06",
+    "fields": "package_code:code title:text scope:text price:decimal currency:code invoice_id:uuid subscription_id:uuid",
+    "source_required_fields": "Code-owned package scope and fixed price; active subscription",
+    "invariant": "Every offered package has scope and positive fixed price; purchase always adds one line to the active subscription open invoice.",
+    "server_owned": [
+      "title",
+      "scope",
+      "price",
+      "currency",
+      "invoice_id",
+      "item_id",
+      "quantity",
+      "separate_invoice_created"
+    ],
+    "patch_allowed": false,
+    "contract_version": "1.67.0",
+    "draft_schema": "ServicePackagePurchase",
+    "output_schema": "ServicePackagePurchaseResult"
   }
 ]

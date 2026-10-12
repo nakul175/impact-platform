@@ -6931,3 +6931,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0067_sponsored_cohorts.sql | 9a2d7b072bed94336a2240183e69487aad0cf052b285d239e6c75813f2032014 |
+
+## Migration0068 — service package invoice lines (local0.76 coding candidate)
+
+`0068_service_package_invoices.sql` SHA256 `726e5282cb343a8967574b7e917fdf5d2816b6ef01319de1d0207418a795f6b9`. Schema68 adds one tenant-fenced open commercial invoice per subscription and immutable fixed-fee service-package lines. Every line pins server-owned package scope, positive price, currency, purchaser and time. Application roles receive select/insert only; no update or delete grant exists. All0001–0067 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0068_service_package_invoices.sql | 726e5282cb343a8967574b7e917fdf5d2816b6ef01319de1d0207418a795f6b9 |

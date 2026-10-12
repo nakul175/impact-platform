@@ -60,6 +60,7 @@ from .human_advice import HumanAdviceCases
 from .sponsored_access import SponsoredAccess
 from .entitlement_view import EntitlementView
 from .service_packages import ServicePackages
+from .partner_revenue import PartnerRevenue
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
 from .ai_advisory_provider import OpenAIAdvisory
 from .contracts import validate
@@ -149,6 +150,7 @@ def create_app():
     service_packages = ServicePackages(service)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
+    partner_revenue = PartnerRevenue(lifecycle)
     ai_outcome_evidence = AIOutcomeEvidence(service, lifecycle)
     bootstrap_access = AccessBootstrap(lifecycle)
     authority_renewal = AuthorityRenewal(lifecycle)
@@ -436,6 +438,23 @@ def create_app():
         body = await strict_body(request)
         return await run_in_threadpool(
             operators.account, auth.resolve(request), action, body, uuid(account_id)
+        )
+
+    @app.post("/v1/platform/partner-revenue-entries", status_code=201)
+    async def partner_revenue_entry_create(request: Request):
+        body = await strict_body(request)
+        return await run_in_threadpool(partner_revenue.entry, auth.resolve(request), body)
+
+    @app.post("/v1/platform/partner-statements", status_code=201)
+    async def partner_statement_generate(request: Request):
+        body = await strict_body(request)
+        return await run_in_threadpool(partner_revenue.statement, auth.resolve(request), body)
+
+    @app.post("/v1/platform/partner-statements/{statement_id}/actions/settle")
+    async def partner_statement_settle(request: Request, statement_id: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            partner_revenue.settle, auth.resolve(request), uuid(statement_id), body
         )
 
     @app.post("/v1/platform/tenants")

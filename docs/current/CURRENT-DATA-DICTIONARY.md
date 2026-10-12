@@ -6939,3 +6939,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0068_service_package_invoices.sql | 726e5282cb343a8967574b7e917fdf5d2816b6ef01319de1d0207418a795f6b9 |
+
+## Migration0069 — partner revenue statements (local0.77 coding candidate)
+
+`0069_partner_revenue_statements.sql` SHA256 `7ff97d70e50301d8950080a8a45d73c8a830524dae41e42eed8ae9b4274e12b2`. Schema69 adds platform-only invoice-linked partner revenue entries and one monthly statement per partner. A narrowly granted security-definer function returns an exact tenant invoice line total to the platform role for reconciliation; tenant roles receive no access. Statement settlement fields remain server-owned. All0001–0068 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0069_partner_revenue_statements.sql | 7ff97d70e50301d8950080a8a45d73c8a830524dae41e42eed8ae9b4274e12b2 |

@@ -839,5 +839,26 @@
     "contract_version": "1.67.0",
     "draft_schema": "ServicePackagePurchase",
     "output_schema": "ServicePackagePurchaseResult"
+  },
+  {
+    "entity": "PartnerMonthlyStatement",
+    "route": "platform/partner-statements",
+    "owner": "C14",
+    "fsd_id": "US-CM-07",
+    "fields": "partner_id:uuid month:date currency:code amount:decimal entry_ids:array reconciled:boolean settled_at:time",
+    "source_required_fields": "Partner, exact tenant invoice links, revenue amount, currency and month",
+    "invariant": "One monthly statement per partner; every amount rechecks its exact invoice and unreconciled statements cannot settle.",
+    "server_owned": [
+      "statement_id",
+      "reconciled",
+      "generated_by",
+      "generated_at",
+      "settled_by",
+      "settled_at"
+    ],
+    "patch_allowed": false,
+    "contract_version": "1.12.0",
+    "draft_schema": "PartnerStatementGenerate",
+    "output_schema": "PartnerMonthlyStatement"
   }
 ]

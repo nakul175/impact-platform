@@ -146,6 +146,13 @@ class AIEnablement:
             self._authority(c, identity, tenant, "compare_ai_procurement_costs")
             return compare_costs(body)
 
+    def value_case(self, identity, tenant, body):
+        from .ai_value_case import calculate_value_case
+
+        with self.service.db.transaction(tenant) as c:
+            self._authority(c, identity, tenant, "calculate_ai_value_case")
+            return calculate_value_case(body)
+
     def pilot_evaluation(self, identity, tenant, body):
         from .ai_pilot_outcomes import evaluate_pilot_outcomes
 

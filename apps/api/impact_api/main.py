@@ -1038,6 +1038,12 @@ def create_app():
             ai_enablement.cost_comparison, auth.resolve(request), uuid(tenant), body
         )
 
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-case")
+    async def ai_value_case(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIValueCaseRequest", body)
+        return await run_in_threadpool(ai_enablement.value_case, auth.resolve(request), uuid(tenant), body)
+
     @app.post("/v1/tenants/{tenant}/ai-enablement/pilot-evaluation")
     async def ai_pilot_evaluation(request: Request, tenant: str):
         body = await strict_body(request)

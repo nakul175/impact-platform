@@ -25,6 +25,7 @@ from impact_api.ai_problem_baseline_contracts import (  # noqa: E402
 from impact_api.ai_opportunity_mapping_contracts import (  # noqa: E402
     IMPLEMENTED as AI_OPPORTUNITY_MAPPING_ROUTES,
 )
+from impact_api.ai_value_case_contracts import IMPLEMENTED as AI_VALUE_CASE_ROUTES  # noqa: E402
 from impact_api.ai_content_contracts import IMPLEMENTED as AI_CONTENT_ROUTES  # noqa: E402
 from impact_api.ai_impact_reference_contracts import IMPLEMENTED as AI_IMPACT_ROUTES  # noqa: E402
 from impact_api.human_advice_contracts import IMPLEMENTED as HUMAN_ADVICE_ROUTES  # noqa: E402
@@ -113,6 +114,7 @@ allowed.update(
     (method, "/v1/tenants/{tenant_id}/" + route)
     for method, route in AI_OPPORTUNITY_MAPPING_ROUTES
 )
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_VALUE_CASE_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_CONTENT_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_IMPACT_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in HUMAN_ADVICE_ROUTES)

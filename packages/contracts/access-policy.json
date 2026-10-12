@@ -1,5 +1,5 @@
 {
-  "version": "1.43.0",
+  "version": "1.44.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6683,6 +6683,21 @@
       "capability": "ai.enablement.read",
       "role_templates": [
         "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "calculate_ai_value_case",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-case",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "FINANCE"
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,

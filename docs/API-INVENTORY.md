@@ -83,6 +83,7 @@
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/solution-shortlist` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/solutions` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/task-templates` | `ai.enablement.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/value-case` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/assignments` | `assignments.read` |
 | POST | `/v1/tenants/{tenant_id}/assignments` | `assignments.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/assignments/{object_id}` | `assignments.read` |

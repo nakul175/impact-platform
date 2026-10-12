@@ -34,6 +34,7 @@ from impact_api.ai_solution_fit_score_contracts import augment as augment_ai_sol
 from impact_api.ai_vetting_contracts import augment as augment_ai_vetting  # noqa: E402
 from impact_api.ai_problem_baseline_contracts import augment as augment_ai_problem_baseline  # noqa: E402
 from impact_api.ai_opportunity_mapping_contracts import augment as augment_ai_opportunity_mapping  # noqa: E402
+from impact_api.ai_value_case_contracts import augment as augment_ai_value_case  # noqa: E402
 from impact_api.ai_content_contracts import augment as augment_ai_content  # noqa: E402
 from impact_api.ai_impact_reference_contracts import augment as augment_ai_impact  # noqa: E402
 from impact_api.human_advice_contracts import augment as augment_human_advice  # noqa: E402
@@ -179,6 +180,7 @@ augment_ai_solution_fit_scores(spec, policy)
 augment_ai_vetting(spec, policy)
 augment_ai_problem_baseline(spec, policy)
 augment_ai_opportunity_mapping(spec, policy)
+augment_ai_value_case(spec, policy)
 augment_ai_content(spec, policy)
 augment_ai_impact(spec, policy)
 augment_human_advice(spec, policy)

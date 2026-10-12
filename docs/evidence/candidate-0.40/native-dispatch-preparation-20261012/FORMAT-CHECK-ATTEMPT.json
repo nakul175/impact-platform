@@ -1,0 +1,7 @@
+{
+  "initial_format_check": "FAIL_missing_blank_line",
+  "Ruff_lint": "PASS",
+  "corrected_with_formatter": true,
+  "run5_before_format": "separately pinned",
+  "run6_final_format": "running_no_pass_claim_yet"
+}

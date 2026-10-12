@@ -384,8 +384,35 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
     worker B takes over the rows whose lease ran out. Before the per-row lease renewal every row was
     sent twice; now each row is sent exactly once, by whichever worker holds it at send time."""
     drain(live)
+    tenant = live.fixture["tenant_a"]
+    unrelated = [invitation(live)[1] for _ in range(2)]
+
+    # run_once dispatches before it schedules reminders. Dispatch-only preparation
+    # empties those real due deliveries without creating another reminder pass.
+    # It never deletes rows or moves retry/lease timestamps to manufacture eligibility.
+    def eligible_events():
+        with live.db() as c:
+            return {
+                str(row["event_id"])
+                for row in c.execute(
+                    "SELECT event_id FROM impact.outbox_delivery WHERE tenant_id=%s "
+                    "AND channel IS NOT NULL AND held_at IS NULL AND "
+                    "((state='PENDING' AND next_attempt_at<=statement_timestamp()) OR "
+                    "(state='LEASED' AND lease_expires_at<=statement_timestamp()))",
+                    (tenant,),
+                ).fetchall()
+            }
+
+    preparation = Worker(settings(live), worker_id="native-batch-drain-" + uuid4().hex[:8])
+    for _ in range(10):
+        if not eligible_events():
+            break
+        preparation.dispatch(tenant, empty_summary())
+    assert not eligible_events(), "Bounded dispatch preparation left eligible deliveries"
+    assert all(deliveries(live, r["object_id"])[0]["state"] == "SENT" for r in unrelated)
     receipts = [invitation(live)[1] for _ in range(6)]
     events = {str(deliveries(live, r["object_id"])[0]["event_id"]) for r in receipts}
+    assert eligible_events() == events, "The six-row claim must contain exactly this scenario's events"
     name = "native-batch-a-" + uuid4().hex[:6]
     ready, release = live.local / (name + "-ready"), live.local / (name + "-release")
     gate = live.local / (name + "-gate.json")
@@ -432,6 +459,9 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
         json.dumps(
             {
                 "scenario": "Actual native lease expiry during a test-only between-message pause",
+                "dispatch_only_preparation": True,
+                "unrelated_synthetic_deliveries_dispatched_before_targets": len(unrelated),
+                "exact_six_eligible_target_events_before_claim": True,
                 "ready_requires_committed_send": True,
                 "slow_lease_seconds": 30,
                 "before_fast_states": [row["state"] for row in rows],

@@ -962,5 +962,21 @@
     "contract_version": "1.72.0",
     "draft_schema": "AIDeploymentGenerate",
     "output_schema": "AIDeploymentPlan"
+  },
+  {
+    "entity": "PermittedResourceAccessBatch",
+    "route": "access-checks/resources",
+    "owner": "C03",
+    "fsd_id": "FR-ACC-001",
+    "fields": "selectors:array permitted:array",
+    "source_required_fields": "One to100 closed tenant resource selectors naming object UUID, expected type and required capability",
+    "invariant": "Every selector is independently resolved against current tenant/type/availability/scope. Denied, unknown, restricted and cross-tenant selectors emit no outcome; policy errors fail the request.",
+    "server_owned": [
+      "permitted outcomes"
+    ],
+    "patch_allowed": false,
+    "contract_version": "1.73.0",
+    "draft_schema": "ResourceAccessBatch",
+    "output_schema": "PermittedResourceAccessBatch"
   }
 ]

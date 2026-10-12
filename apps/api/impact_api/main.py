@@ -62,6 +62,7 @@ from .entitlement_view import EntitlementView
 from .service_packages import ServicePackages
 from .tax_invoicing import TaxInvoicing
 from .agreement_coverage import AgreementCoverage
+from .access_checks import AccessChecks
 from .ai_trials import AITrials
 from .partner_revenue import PartnerRevenue
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
@@ -153,6 +154,7 @@ def create_app():
     service_packages = ServicePackages(service)
     tax_invoicing = TaxInvoicing(service)
     agreement_coverage = AgreementCoverage(service)
+    access_checks = AccessChecks(service)
     ai_trials = AITrials(service, ai_value_cases)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
@@ -1835,6 +1837,11 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/agreements")
     def organisation_agreement_read(request: Request, tenant: str):
         return agreement_coverage.read(auth.resolve(request), uuid(tenant))
+
+    @app.post("/v1/tenants/{tenant}/access-checks/resources")
+    async def access_check_resources(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(access_checks.permitted, auth.resolve(request), uuid(tenant), body)
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/trials")
     def ai_trial_list(request: Request, tenant: str, opportunity_id: str):

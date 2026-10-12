@@ -7,6 +7,7 @@
 | POST | `/v1/platform/outcome-evidence-publications/{publication_id}/actions/{action}` | `platform.operator` |
 | GET | `/v1/public/ai-solution-disclosures` | `public` |
 | GET | `/v1/public/ai-vetting-criteria` | `public` |
+| POST | `/v1/tenants/{tenant_id}/access-checks/resources` | `grants.read` |
 | GET | `/v1/tenants/{tenant_id}/access-denials` | `access-denials.read` |
 | GET | `/v1/tenants/{tenant_id}/access-groups` | `groups.read` |
 | POST | `/v1/tenants/{tenant_id}/access-groups` | `groups.manage` |

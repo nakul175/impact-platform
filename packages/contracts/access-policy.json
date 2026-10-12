@@ -1,5 +1,5 @@
 {
-  "version": "1.72.0",
+  "version": "1.73.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5504,6 +5504,19 @@
       "fresh_assurance_seconds": null,
       "audit": false,
       "state_guard": "One current bundle covers all platform solutions; deployment pins a revision and cannot request a separate contract or DPA."
+    },
+    {
+      "operation_id": "check_permitted_resources",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/access-checks/resources",
+      "capability": "grants.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Every item is resolved against current tenant, type, availability and requested capability; denied/unknown items emit no row and policy resolution errors fail closed."
     },
     {
       "operation_id": "list_ai_option_trials",

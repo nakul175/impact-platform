@@ -1,6 +1,6 @@
 """Tenant-authorised planning and AI drafts with bounded attempts and sealed replay."""
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import hashlib
 import hmac
 import json
@@ -294,7 +294,7 @@ class AIEnablement:
             # FR-AI-001: the tenant policy in force is read under the tenant lock and checked before
             # any reservation or provider call. An unreadable policy fails the transaction (closed).
             policy = ai_policy.in_force(c, tenant)
-            ai_policy.require(
+            rule = ai_policy.require(
                 policy,
                 USE_CASE,
                 version,
@@ -307,6 +307,17 @@ class AIEnablement:
             minimized_profile, handling = prepare_transmission(
                 body["profile"], getattr(self.provider, "destination", None), body["purpose"]
             )
+            requester = str(ctx.principal_id)
+            policy_trace = {
+                "policy_version": policy["version"],
+                "policy_version_id": policy["policy_version_id"],
+                "use_case": USE_CASE,
+                "purpose": body["purpose"],
+                "data_classes": rule["data_classes"],
+                "destinations": rule["destinations"],
+                "review_mode": rule["review_mode"],
+                "tools": tools,
+            }
             # Policy permission never creates a runtime tool. This advisory runtime deliberately
             # exposes an empty server-owned catalogue, so document/model text cannot execute one.
             runtime_tools({}, tools)
@@ -391,6 +402,22 @@ class AIEnablement:
                 "assessment": assessment,
                 "model": generated["model"],
                 "disclaimer": DISCLAIMER,
+            }
+            output["trace"] = {
+                "requester_principal_id": requester,
+                "scope": {"use_case": USE_CASE, "purpose": body["purpose"]},
+                "source_versions": [
+                    {key: item[key] for key in ("object_id", "revision_id", "object_type")}
+                    for item in normalized_sources
+                ],
+                "use_case_configuration": policy_trace,
+                "model_identifier": generated["model"],
+                "tool_receipts": [],
+                "proposed_changes": [],
+                "review_decisions": [],
+                "applied_domain_receipts": [],
+                "output_version": hashlib.sha256(generated["text"].encode()).hexdigest(),
+                "retention_until": (datetime.now(timezone.utc) + timedelta(days=30)).isoformat(),
             }
         except Exception:
             # No provider exception, response body, prompt or credential is persisted or exposed.

@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.36.0"
+VERSION = "1.37.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
@@ -25,6 +25,8 @@ IMPLEMENTED = [
     ("get", "ai-enablement/safety-shutdowns"),
     ("post", "ai-enablement/safety-shutdowns"),
     ("post", "ai-enablement/safety-shutdowns/{event_id}/actions/approve-recovery"),
+    ("post", "ai-enablement/extractions"),
+    ("post", "ai-enablement/extractions/{draft_id}/actions/apply"),
     ("get", "ai-enablement/solutions"),
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
@@ -370,6 +372,77 @@ def augment(spec, policy):
             "state": {"const": "REGRESSION_APPROVED"},
         }
     )
+    extraction_location = closed(
+        {
+            "line": {"type": "integer", "minimum": 1},
+            "section": {"type": ["string", "null"], "maxLength": 200},
+        }
+    )
+    schemas["AIExtractionRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "source_object_id": {"type": "string", "format": "uuid"},
+            "source_revision_id": {"type": "string", "format": "uuid"},
+            "policy_version": {"type": "integer", "minimum": 1},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        }
+    )
+    schemas["AIExtractionDraft"] = closed(
+        {
+            "draft_id": {"type": "string", "format": "uuid"},
+            "source_object_id": {"type": "string", "format": "uuid"},
+            "source_revision_id": {"type": "string", "format": "uuid"},
+            "proposals": {
+                "type": "array",
+                "maxItems": 500,
+                "items": closed(
+                    {
+                        "proposal_id": {"type": "string", "format": "uuid"},
+                        "field_key": {"type": "string"},
+                        "proposed_value": {"type": "string"},
+                        "classification": {"enum": ["EXTRACTED", "INFERRED", "SUGGESTED"]},
+                        "location": extraction_location,
+                        "evidence_span": {"type": "string"},
+                        "conflict": {"type": "boolean"},
+                    }
+                ),
+            },
+            "missing_fields": {"type": "array", "items": {"type": "string"}},
+            "activation_blocked": {"type": "boolean"},
+            "domain_objects_changed": {"const": False},
+        }
+    )
+    schemas["AIExtractionApplyRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "selected_proposal_ids": {
+                "type": "array",
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": {"type": "string", "format": "uuid"},
+            },
+            "human_additions": {
+                "type": "array",
+                "maxItems": 20,
+                "items": closed(
+                    {
+                        "field_key": {"type": "string", "minLength": 1, "maxLength": 100},
+                        "value": {"type": "string", "minLength": 1, "maxLength": 2000},
+                        "rationale": {"type": "string", "minLength": 1, "maxLength": 1000},
+                    }
+                ),
+            },
+        }
+    )
+    schemas["AIExtractionReview"] = closed(
+        {
+            "draft_id": {"type": "string", "format": "uuid"},
+            "state": {"enum": ["BLOCKED", "READY_FOR_DOMAIN_DRAFT"]},
+            "accepted_fields": {"type": "object"},
+            "unresolved_fields": {"type": "array", "items": {"type": "string"}},
+            "domain_objects_changed": {"const": False},
+        }
+    )
     safety_base = "/v1/tenants/{tenant_id}/ai-enablement"
     safety_ops = [
         (
@@ -462,6 +535,75 @@ def augment(spec, policy):
                 "fresh_assurance_seconds": 300
                 if operation in {"manage_ai_safety_shutdown", "approve_ai_safety_recovery"}
                 else None,
+                "audit": False,
+            }
+        )
+    extraction_base = "/v1/tenants/{tenant_id}/ai-enablement/extractions"
+    extraction_ops = [
+        (
+            "post",
+            extraction_base,
+            "create_ai_extraction",
+            "AIExtractionRequest",
+            "AIExtractionDraft",
+        ),
+        (
+            "post",
+            extraction_base + "/{draft_id}/actions/apply",
+            "review_ai_extraction",
+            "AIExtractionApplyRequest",
+            "AIExtractionReview",
+        ),
+    ]
+    for method, path, operation, request, response in extraction_ops:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{draft_id}" in path:
+            parameters.append(
+                {
+                    "name": "draft_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        entry = {
+            "operationId": operation,
+            "summary": operation.replace("_", " "),
+            "x-capability": "ai.advisory.request",
+            "x-contract-version": VERSION,
+            "requestBody": {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            },
+            "responses": {
+                "200": {
+                    "description": "Traceable review-only extraction",
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
+                }
+            },
+        }
+        for status in ["400", "401", "403", "404", "409", "422", "503"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        spec["paths"][path] = {"parameters": parameters, method: entry}
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": method.upper(),
+                "path": path,
+                "capability": "ai.advisory.request",
+                "role_templates": ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
                 "audit": False,
             }
         )

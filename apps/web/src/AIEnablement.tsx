@@ -177,6 +177,30 @@ export function AIEnablementPanel({
     manual_workflows_enabled: boolean;
   } | null>(null);
   const [recoveryApproval, setRecoveryApproval] = useState("");
+  const [extractionSource, setExtractionSource] = useState({
+    object_id: "",
+    revision_id: "",
+    language: "en",
+  });
+  const [extraction, setExtraction] = useState<{
+    draft_id: string;
+    proposals: Array<{
+      proposal_id: string;
+      field_key: string;
+      proposed_value: string;
+      classification: string;
+      location: { line: number; section: string | null };
+      evidence_span: string;
+      conflict: boolean;
+    }>;
+    missing_fields: string[];
+    activation_blocked: boolean;
+  } | null>(null);
+  const [selectedExtraction, setSelectedExtraction] = useState<string[]>([]);
+  const [extractionReview, setExtractionReview] = useState<{
+    state: string;
+    unresolved_fields: string[];
+  } | null>(null);
   const [busy, setBusy] = useState<"assessment" | "advisory" | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -731,6 +755,126 @@ export function AIEnablementPanel({
                   )}
                 </div>
               </section>
+            )}
+            {canAdvise && (
+              <details>
+                <summary>Extract proposal fields for review</summary>
+                <p className="muted">
+                  Clean UTF-8 text Evidence only. No framework or target is
+                  changed until a separate domain draft is created.
+                </p>
+                <label>
+                  Evidence object ID
+                  <input
+                    value={extractionSource.object_id}
+                    onChange={(event) =>
+                      setExtractionSource({
+                        ...extractionSource,
+                        object_id: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Exact Evidence revision ID
+                  <input
+                    value={extractionSource.revision_id}
+                    onChange={(event) =>
+                      setExtractionSource({
+                        ...extractionSource,
+                        revision_id: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+                <button
+                  type="button"
+                  disabled={!policy}
+                  onClick={async () => {
+                    const draft = await request(
+                      base + "ai-enablement/extractions",
+                      {
+                        method: "POST",
+                        body: JSON.stringify({
+                          operation_id: crypto.randomUUID(),
+                          source_object_id: extractionSource.object_id,
+                          source_revision_id: extractionSource.revision_id,
+                          policy_version: policy!.policy_version,
+                          language: extractionSource.language,
+                        }),
+                      },
+                    );
+                    setExtraction(draft);
+                    setSelectedExtraction([]);
+                    setExtractionReview(null);
+                  }}
+                >
+                  Create extraction proposals
+                </button>
+                {extraction && (
+                  <section aria-label="Extraction proposal review">
+                    <p role="status">
+                      {extraction.proposals.length} proposals · missing:{" "}
+                      {extraction.missing_fields.join(", ") || "none"}
+                    </p>
+                    {extraction.proposals.map((proposal) => (
+                      <label key={proposal.proposal_id}>
+                        <input
+                          type="checkbox"
+                          checked={selectedExtraction.includes(
+                            proposal.proposal_id,
+                          )}
+                          onChange={(event) =>
+                            setSelectedExtraction(
+                              event.target.checked
+                                ? [...selectedExtraction, proposal.proposal_id]
+                                : selectedExtraction.filter(
+                                    (value) => value !== proposal.proposal_id,
+                                  ),
+                            )
+                          }
+                        />
+                        {label(proposal.field_key)}: {proposal.proposed_value} ·{" "}
+                        {label(proposal.classification)} · line{" "}
+                        {proposal.location.line}
+                        {proposal.location.section
+                          ? " · " + proposal.location.section
+                          : ""}
+                        {proposal.conflict ? " · conflicting value" : ""}
+                      </label>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        const review = await request(
+                          base +
+                            "ai-enablement/extractions/" +
+                            extraction.draft_id +
+                            "/actions/apply",
+                          {
+                            method: "POST",
+                            body: JSON.stringify({
+                              operation_id: crypto.randomUUID(),
+                              selected_proposal_ids: selectedExtraction,
+                              human_additions: [],
+                            }),
+                          },
+                        );
+                        setExtractionReview(review);
+                      }}
+                    >
+                      Record selected proposals
+                    </button>
+                    {extractionReview && (
+                      <p role="status">
+                        {label(extractionReview.state)} · unresolved:{" "}
+                        {extractionReview.unresolved_fields.join(", ") ||
+                          "none"}
+                      </p>
+                    )}
+                  </section>
+                )}
+              </details>
             )}
             {canAdvise && (
               <details>

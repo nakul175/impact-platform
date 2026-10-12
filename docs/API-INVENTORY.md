@@ -58,6 +58,8 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnosis-reviews/{review_id}/actions/start` | `ai.diagnosis.review` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnosis-reviews/{review_id}/actions/validate` | `ai.diagnosis.review` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnosis-reviews/{review_id}/comments` | `ai.diagnosis.review` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/extractions` | `ai.advisory.request` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/extractions/{draft_id}/actions/apply` | `ai.advisory.request` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/forecasts` | `ai.advisory.request` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/forecasts/{scenario_id}` | `ai.advisory.request` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/forecasts/{scenario_id}/export` | `ai.advisory.request` |

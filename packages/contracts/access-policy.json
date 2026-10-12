@@ -1,5 +1,5 @@
 {
-  "version": "1.89.0",
+  "version": "1.90.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6937,6 +6937,34 @@
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": 300,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_extraction",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/extractions",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "review_ai_extraction",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/extractions/{draft_id}/actions/apply",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
       "audit": false
     },
     {

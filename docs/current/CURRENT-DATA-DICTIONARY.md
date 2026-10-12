@@ -7046,3 +7046,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0083_ai_safety_shutdown.sql | 2b207f95eb22d7df2be21f2568a7a1b72e25a1f8751c6256ec3c09c7a7bfefed |
+
+## Migration0084 — traceable AI extraction drafts (local1.00 coding candidate)
+
+`0084_ai_extraction_drafts.sql` SHA256 `0e117f7f457382fdb948a74d99fab53d5809ccc54a5685d6b807aab69af14b09`. Schema84 adds tenant-fenced extraction drafts, field proposals and one immutable review. Every proposal pins an exact Evidence revision and location/span; conflicting values remain separate, unsupported commitments remain missing, and review records only selected proposals plus explicit human additions. The review endpoint rechecks current Evidence authority, exact source head and policy version. It changes no framework, target or other domain object. All0001–0083 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0084_ai_extraction_drafts.sql | 0e117f7f457382fdb948a74d99fab53d5809ccc54a5685d6b807aab69af14b09 |

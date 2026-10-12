@@ -40,6 +40,7 @@ from .ai_enablement import AIEnablement
 from .ai_jobs import AIJobs
 from .ai_forecasts import AIForecasts
 from .ai_safety import AISafety
+from .ai_extraction import AIExtraction
 from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
@@ -142,6 +143,9 @@ def create_app():
     ai_jobs = AIJobs(service, ai_enablement)
     ai_forecasts = AIForecasts(service)
     ai_safety = AISafety(service)
+    ai_extraction = AIExtraction(
+        service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
+    )
     ai_policy = AIPolicy(service, ai_enablement.server_ready)
     ai_plans = AIAdoptionPlans(service)
     ai_role_training = AIRoleTraining(service)
@@ -1440,6 +1444,24 @@ def create_app():
         body = await strict_body(request)
         validate("AIRecoveryApprovalRequest", body)
         return ai_safety.approve_recovery(auth.resolve(request), uuid(tenant), uuid(event), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/extractions")
+    async def create_ai_extraction(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIExtractionRequest", body)
+        return await run_in_threadpool(
+            ai_extraction.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/extractions/{draft}/actions/apply")
+    async def review_ai_extraction(request: Request, tenant: str, draft: str):
+        body = await strict_body(request)
+        validate("AIExtractionApplyRequest", body)
+        return ai_extraction.apply(auth.resolve(request), uuid(tenant), uuid(draft), body)
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/cost-comparison")
     async def ai_cost_comparison(request: Request, tenant: str):

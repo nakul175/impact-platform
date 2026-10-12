@@ -747,5 +747,19 @@
     "contract_version": "1.62.0",
     "draft_schema": "DimensionCrosswalkDraftData",
     "output_schema": "DimensionCrosswalkData"
+  },
+  {
+    "entity": "FormulaDefinition",
+    "route": "formula-definitions",
+    "owner": "C05",
+    "fsd_id": "FR-CAL-012",
+    "fields": "title:text target_definition_id:uuid output_unit:code ast:object",
+    "source_required_fields": "title:text target_definition_id:uuid output_unit:code ast:object",
+    "invariant": "Closed typed AST only; exact approved readable references; bounded function catalogue; cycles and incompatible units refused before review.",
+    "server_owned": [],
+    "patch_allowed": true,
+    "contract_version": "1.63.0",
+    "draft_schema": "FormulaDefinitionDraftData",
+    "output_schema": "FormulaDefinitionData"
   }
 ]

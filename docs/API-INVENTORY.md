@@ -171,6 +171,12 @@
 | POST | `/v1/tenants/{tenant_id}/forms/{object_id}/actions/submit` | `form.submit` |
 | GET | `/v1/tenants/{tenant_id}/forms/{object_id}/completeness` | `forms.read` |
 | GET | `/v1/tenants/{tenant_id}/forms/{object_id}/published` | `forms.read` |
+| GET | `/v1/tenants/{tenant_id}/formula-definitions` | `calculated-results.read` |
+| POST | `/v1/tenants/{tenant_id}/formula-definitions` | `calculated-results.read` |
+| POST | `/v1/tenants/{tenant_id}/formula-definitions/preview` | `calculated-results.read` |
+| GET | `/v1/tenants/{tenant_id}/formula-definitions/{object_id}` | `calculated-results.read` |
+| PATCH | `/v1/tenants/{tenant_id}/formula-definitions/{object_id}` | `calculated-results.read` |
+| POST | `/v1/tenants/{tenant_id}/formula-definitions/{object_id}/actions/submit` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/frameworks` | `frameworks.read` |
 | POST | `/v1/tenants/{tenant_id}/frameworks` | `frameworks.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/frameworks/{object_id}` | `frameworks.read` |

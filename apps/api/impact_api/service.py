@@ -38,6 +38,7 @@ from .calculation_compatibility import CalculationCompatibility
 from .population_overlap import PopulationOverlap
 from .hierarchical_aggregation import HierarchicalAggregation, validate_hierarchy
 from .dimension_crosswalk import DimensionCrosswalk, validate_crosswalk
+from .formula_authoring import FormulaAuthoring, validate_formula
 from .keyring import ring
 from .store import (
     context,
@@ -80,6 +81,7 @@ READ_ROUTES = {
     "population-matching-scopes",
     "aggregation-hierarchies",
     "dimension-crosswalks",
+    "formula-definitions",
     "workflow-templates",
     "lineage-manifests",
     *READS,
@@ -126,6 +128,7 @@ WRITE_ROUTES = {
     "population-matching-scopes",
     "aggregation-hierarchies",
     "dimension-crosswalks",
+    "formula-definitions",
 }
 REQUEST_ROUTES = {"disclosure-requests": "Disclosure"}
 READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route in ENTITIES} | {
@@ -140,6 +143,7 @@ READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route
     "population-matching-scopes": "PopulationMatchingScope",
     "aggregation-hierarchies": "AggregationHierarchy",
     "dimension-crosswalks": "DimensionCrosswalk",
+    "formula-definitions": "FormulaDefinition",
 }
 ACTIONS = {
     "observations": {"submit"},
@@ -149,6 +153,7 @@ ACTIONS = {
     "population-matching-scopes": {"submit"},
     "aggregation-hierarchies": {"submit"},
     "dimension-crosswalks": {"submit"},
+    "formula-definitions": {"submit"},
     "programmes": {"ready", "activate", "revise"},
     "collection-plans": {"submit"},
     "measurement-changes": {"submit"},
@@ -219,6 +224,7 @@ class Service:
         self.population_overlap = PopulationOverlap(self)
         self.hierarchical_aggregation = HierarchicalAggregation(self)
         self.dimension_crosswalk = DimensionCrosswalk(self)
+        self.formula_authoring = FormulaAuthoring(self)
 
     def tenants(self, identity):
         with self.db.transaction(identity=True) as c:
@@ -633,6 +639,8 @@ class Service:
             validate_hierarchy(data)
         if kind == "DimensionCrosswalk":
             validate_crosswalk(c, ctx, data)
+        if kind == "FormulaDefinition":
+            validate_formula(c, ctx, data)
         if kind in PLANNING_KINDS:
             self.planning.validate(c, ctx, kind, data, owner_id)
         if kind == "MeasurementChange":

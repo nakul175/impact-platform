@@ -1,6 +1,6 @@
 {
-  "build": "0.71.0",
-  "domain_api": "1.62.0",
+  "build": "0.72.0",
+  "domain_api": "1.63.0",
   "platform_api": "1.11.0",
   "documentation_edition": "1.1",
   "schema_rule": "derived: the number of files in infrastructure/migrations (impact_api/version.py)"

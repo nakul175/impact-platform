@@ -6907,3 +6907,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0064_dimension_crosswalk.sql | eb9fa3b15a62ae5774a1570a4604ced355d12f649b09e0eee1269a6ec9768cb0 |
+
+## Migration0065 — typed formula definitions (local0.72 coding candidate)
+
+`0065_formula_definitions.sql` SHA256 `f2568e02cb4539f394d51b7f6938c4c98a39b092715ca26efdcbdda785a0bc72`. Schema65 adds revisioned `FormulaDefinition` objects with a target indicator definition, declared output unit and closed JSON AST. Runtime validation admits only typed literals, exact approved indicator-definition references, category filters and the bounded arithmetic/aggregate catalogue; scripts, URLs, filesystem references, SQL and dynamic queries have no representable node. Forced tenant RLS and restrictive worker policies apply. All0001–0064 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0065_formula_definitions.sql | f2568e02cb4539f394d51b7f6938c4c98a39b092715ca26efdcbdda785a0bc72 |

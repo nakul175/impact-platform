@@ -1,0 +1,20 @@
+{
+  "separate_code_review": true,
+  "separate_evidence_review": true,
+  "actual_native_worker_cases": 9,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "source_pins": 302,
+  "stable_source_pins": true,
+  "historical_evidence_unchanged": true,
+  "owned_cluster_stopped": true,
+  "initial_sandbox_bind_refusal_tests": 0,
+  "credential_pattern_hits": 0,
+  "scanned_artifacts": 6,
+  "application_or_SQL_change": false,
+  "fresh_hosted_CI_required": true,
+  "human_signoff": false,
+  "staging_deployed": false,
+  "supporting_review": "Read-only independent supporting agent verified raw9-caseXML/all302hashes/actual30-second physical takeover/cluster stopped/no credential patterns; not human signoff"
+}

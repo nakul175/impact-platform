@@ -51,8 +51,9 @@ original=Worker.process
 paused=False
 def process(self,tenant,row,summary):
     global paused
+    sent_before=summary['sent']
     original(self,tenant,row,summary)
-    if not paused and str(row['event_id']) in gate['events']:
+    if not paused and str(row['event_id']) in gate['events'] and summary['sent']==sent_before+1:
         paused=True
         Path(gate['ready']).touch(mode=0o600)
         deadline=time.monotonic()+180
@@ -379,7 +380,7 @@ def test_native_worker_login_cannot_touch_tables_revoked_by_migration_0025(live)
 
 
 def test_native_batch_outliving_its_lease_sends_every_row_once(live):
-    """The reviewer's scenario: worker A claims a batch whose total send time exceeds the lease;
+    """The reviewer's scenario: worker A claims a batch whose controlled between-message pause exceeds the real lease;
     worker B takes over the rows whose lease ran out. Before the per-row lease renewal every row was
     sent twice; now each row is sent exactly once, by whichever worker holds it at send time."""
     drain(live)
@@ -396,7 +397,7 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
         between_message_gate=gate,
         batch_size=6,
         synthetic_delay=2,
-        lease_seconds=5,
+        lease_seconds=30,
         smtp_timeout=1,
     )
     try:
@@ -431,6 +432,8 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
         json.dumps(
             {
                 "scenario": "Actual native lease expiry during a test-only between-message pause",
+                "ready_requires_committed_send": True,
+                "slow_lease_seconds": 30,
                 "before_fast_states": [row["state"] for row in rows],
                 "before_fast_leased_by_slow": sum(
                     row["state"] == "LEASED" and row["lease_owner"] == slow.name for row in rows

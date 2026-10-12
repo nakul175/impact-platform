@@ -357,17 +357,21 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
         live,
         "native-batch-a-" + uuid4().hex[:6],
         batch_size=6,
-        synthetic_delay=2,
+        # The first send must still be in progress when the lease on the rest of the batch ends.
+        # Waiting only until the rows left PENDING started the second worker immediately, and a fast
+        # runner reached this tenant while the lease was still valid, so the first worker sent every
+        # row itself (generation stayed 1). 30s matches the single-row takeover test: the second
+        # worker's first pass can spend several seconds walking other tenants.
+        synthetic_delay=30,
         lease_seconds=5,
         smtp_timeout=1,
     )
     try:
         wait_for(
-            lambda: all(deliveries(live, r["object_id"])[0]["state"] != "PENDING" for r in receipts),
-            # The first pass walks every tenant of the shared database before it reaches this one; a
-            # loaded runner needs far longer than the 2 s per-row send, so the wait is not the claim.
-            timeout=90,
+            lambda: all(deliveries(live, r["object_id"])[0]["state"] == "LEASED" for r in receipts),
+            timeout=30,
         )
+        time.sleep(5.5)
         fast = start(live, "native-batch-b-" + uuid4().hex[:6], batch_size=6, lease_seconds=30)
         try:
             wait_for(

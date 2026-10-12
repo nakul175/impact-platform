@@ -15,6 +15,7 @@ import { AIHumanAdvice } from "./AIHumanAdvice";
 import { AIPlanPortability } from "./AIPlanPortability";
 import { AILearningLesson } from "./AILearningLesson";
 import { AIRoleTrainingPanel } from "./AIRoleTrainingPanel";
+import { AIChampionSupportPanel } from "./AIChampionSupportPanel";
 import {
   AIDisclosureLabel,
   AIToolComparison,
@@ -751,9 +752,9 @@ export function AIAdoptionWorkspace({
           ? "Accountable deployment plan generated from the fixed template."
           : captured.action === "attest"
             ? "Actual solution deployment attestation recorded for role training."
-          : captured.action === "complete"
-            ? "Deployment plan completed after every milestone was accepted."
-            : "Milestone progress saved by its named owner.",
+            : captured.action === "complete"
+              ? "Deployment plan completed after every milestone was accepted."
+              : "Milestone progress saved by its named owner.",
       );
     } catch (cause) {
       if (current !== epoch.current) return;
@@ -1897,9 +1898,8 @@ export function AIAdoptionWorkspace({
             progress.
           </p>
           {head &&
-            plans
-              .find((plan) => plan.object_id === head.object_id)
-              ?.data.training_deployment && (
+            plans.find((plan) => plan.object_id === head.object_id)?.data
+              .training_deployment && (
               <AIRoleTrainingPanel
                 key={`${sessionIdentity}:${principalId}:${head.revision_id}:role-training`}
                 base={base}
@@ -2293,8 +2293,8 @@ export function AIAdoptionWorkspace({
                     <h5>Record the actual deployed solution</h5>
                     <p className="muted">
                       A completed plan does not prove deployment. An authorised
-                      manager must record the selected solution, deployment
-                      time and accountable reference before role training is
+                      manager must record the selected solution, deployment time
+                      and accountable reference before role training is
                       available.
                     </p>
                     <label>
@@ -2310,7 +2310,11 @@ export function AIAdoptionWorkspace({
                     </label>
                     <label>
                       Deployed at
-                      <input name="deployed_at" type="datetime-local" required />
+                      <input
+                        name="deployed_at"
+                        type="datetime-local"
+                        required
+                      />
                     </label>
                     <label>
                       Deployment reference
@@ -2335,14 +2339,31 @@ export function AIAdoptionWorkspace({
                 )}
               {plans.find((plan) => plan.object_id === head?.object_id)?.data
                 .training_deployment && (
-                <p role="status" className="ai-notice">
-                  Actual deployment recorded for solution{" "}
-                  {
-                    plans.find((plan) => plan.object_id === head?.object_id)!
-                      .data.training_deployment!.solution_id
-                  }
-                  . Data Authors can now open their role training.
-                </p>
+                <>
+                  <p role="status" className="ai-notice">
+                    Actual deployment recorded for solution{" "}
+                    {
+                      plans.find((plan) => plan.object_id === head?.object_id)!
+                        .data.training_deployment!.solution_id
+                    }
+                    . Data Authors can now open their role training.
+                  </p>
+                  <AIChampionSupportPanel
+                    key={`${sessionIdentity}:${principalId}:${head?.revision_id}:champion-support`}
+                    base={base}
+                    contextKey={`${base}:${sessionIdentity}:${principalId}`}
+                    canRead={canRead}
+                    canManage={canManage}
+                    planId={head!.object_id}
+                    planRevision={head!.revision_id}
+                    solutionId={
+                      plans.find((plan) => plan.object_id === head?.object_id)!
+                        .data.training_deployment!.solution_id
+                    }
+                    request={request}
+                    explain={explain}
+                  />
+                </>
               )}
             </>
           )}

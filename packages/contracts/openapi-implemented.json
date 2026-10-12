@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.51.0",
+    "version": "1.52.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -28995,7 +28995,7 @@
         "operationId": "list_ai_adoption_plans",
         "summary": "list ai adoption plans",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.51.0",
+        "x-contract-version": "1.52.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29121,7 +29121,7 @@
         "operationId": "create_ai_adoption_plan",
         "summary": "create ai adoption plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.51.0",
+        "x-contract-version": "1.52.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29242,7 +29242,7 @@
         "operationId": "get_ai_adoption_plan",
         "summary": "get ai adoption plan",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.51.0",
+        "x-contract-version": "1.52.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29360,7 +29360,7 @@
         "operationId": "update_ai_adoption_plan",
         "summary": "update ai adoption plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.51.0",
+        "x-contract-version": "1.52.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29490,7 +29490,7 @@
         "operationId": "generate_ai_deployment_plan",
         "summary": "generate ai deployment plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.51.0",
+        "x-contract-version": "1.52.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29610,7 +29610,7 @@
         "operationId": "update_ai_deployment_milestone",
         "summary": "update ai deployment milestone",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.51.0",
+        "x-contract-version": "1.52.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29742,7 +29742,7 @@
         "operationId": "complete_ai_deployment_plan",
         "summary": "complete ai deployment plan",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.51.0",
+        "x-contract-version": "1.52.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29862,7 +29862,7 @@
         "operationId": "attest_ai_solution_deployment",
         "summary": "attest actual solution deployment",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.51.0",
+        "x-contract-version": "1.52.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -29982,7 +29982,7 @@
         "operationId": "get_ai_role_training",
         "summary": "get learner role training",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.51.0",
+        "x-contract-version": "1.52.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -30102,7 +30102,7 @@
         "operationId": "complete_ai_role_training_module",
         "summary": "record learner module completion",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.51.0",
+        "x-contract-version": "1.52.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -30150,6 +30150,354 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AIRoleTraining"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/champion-appointments": {
+      "get": {
+        "operationId": "list_ai_champion_appointments",
+        "summary": "list visible internal champion appointments",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.52.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Visible current-deployment appointments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIChampionAppointmentList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "appoint_ai_internal_champion",
+        "summary": "appoint an internal champion with support",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.52.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIChampionAppointmentCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Confirmed internal champion appointment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIChampionAppointment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/champion-guide": {
+      "get": {
+        "operationId": "get_ai_champion_guide",
+        "summary": "open the appointed champion guide",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.52.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "object_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "solution_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pinned internal champion guide",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIChampionGuide"
                 }
               }
             }
@@ -67530,6 +67878,288 @@
           "expected_plan_revision",
           "solution_id",
           "module_version"
+        ]
+      },
+      "AIChampionAppointment": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "const": "Completed"
+          },
+          "appointment": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "plan_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "plan_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "deployment_attestation_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "solution_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "role": {
+                "const": "CHAMPION"
+              },
+              "guide_id": {
+                "const": "internal-champion-guide"
+              },
+              "guide_version": {
+                "const": "internal-champion-guide-2026-10-12.1"
+              },
+              "guide_hash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "champion_principal_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "champion_membership_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "support_owner_principal_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "support_owner_membership_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "check_ins": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 12,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "check_in_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "scheduled_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 150
+                    }
+                  },
+                  "required": [
+                    "check_in_id",
+                    "scheduled_at",
+                    "title"
+                  ]
+                }
+              },
+              "appointed_by": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "appointed_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "confirmed_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "plan_id",
+              "plan_revision",
+              "deployment_attestation_id",
+              "solution_id",
+              "role",
+              "guide_id",
+              "guide_version",
+              "guide_hash",
+              "champion_principal_id",
+              "champion_membership_id",
+              "support_owner_principal_id",
+              "support_owner_membership_id",
+              "check_ins",
+              "appointed_by",
+              "appointed_at",
+              "confirmed_at"
+            ]
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "appointment"
+        ]
+      },
+      "AIChampionAppointmentCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_plan_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "champion_membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "support_owner_membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "check_ins": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "scheduled_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 150
+                }
+              },
+              "required": [
+                "scheduled_at",
+                "title"
+              ]
+            }
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_plan_revision",
+          "champion_membership_id",
+          "support_owner_membership_id",
+          "check_ins"
+        ]
+      },
+      "AIChampionAppointmentList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/AIChampionAppointment"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "AIChampionGuide": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "guide_id": {
+            "const": "internal-champion-guide"
+          },
+          "version": {
+            "const": "internal-champion-guide-2026-10-12.1"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "sections": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "body": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                }
+              },
+              "required": [
+                "key",
+                "title",
+                "body"
+              ]
+            }
+          },
+          "plan_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "plan_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "solution_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "deployment_attestation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "role": {
+            "const": "CHAMPION"
+          }
+        },
+        "required": [
+          "guide_id",
+          "version",
+          "title",
+          "sections",
+          "plan_id",
+          "plan_revision",
+          "solution_id",
+          "deployment_attestation_id",
+          "role"
         ]
       },
       "AIDiagnosisError": {

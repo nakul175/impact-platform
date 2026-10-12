@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_enablement_contracts import ROLES
 from .measurement_contracts import closed
 
-VERSION = "1.51.0"
+VERSION = "1.52.0"
 IMPLEMENTED = [
     ("get", "ai-enablement/plans"),
     ("post", "ai-enablement/plans"),
@@ -17,6 +17,9 @@ IMPLEMENTED = [
     ("post", "ai-enablement/plans/{object_id}/deployment/actions/attest"),
     ("get", "ai-enablement/plans/{object_id}/role-training"),
     ("post", "ai-enablement/plans/{object_id}/role-training/modules/{module_key}/actions/complete"),
+    ("get", "ai-enablement/plans/{object_id}/champion-appointments"),
+    ("post", "ai-enablement/plans/{object_id}/champion-appointments"),
+    ("get", "ai-enablement/plans/{object_id}/champion-guide"),
 ]
 MANAGERS = ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"]
 
@@ -523,5 +526,220 @@ def augment(spec, policy):
                 "fresh_assurance_seconds": None,
                 "audit": audit_enabled,
                 "state_guard": "Current active Data Author role and explicit deployed-solution attestation; completion belongs only to the authenticated learner.",
+            }
+        )
+
+    check_in = closed(
+        {
+            "check_in_id": {"type": "string", "format": "uuid"},
+            "scheduled_at": {"type": "string", "format": "date-time"},
+            "title": {"type": "string", "minLength": 1, "maxLength": 150},
+        },
+        ["check_in_id", "scheduled_at", "title"],
+    )
+    appointment = closed(
+        {
+            "plan_id": {"type": "string", "format": "uuid"},
+            "plan_revision": {"type": "string", "format": "uuid"},
+            "deployment_attestation_id": {"type": "string", "format": "uuid"},
+            "solution_id": {"type": "string", "minLength": 1, "maxLength": 100},
+            "role": {"const": "CHAMPION"},
+            "guide_id": {"const": "internal-champion-guide"},
+            "guide_version": {"const": "internal-champion-guide-2026-10-12.1"},
+            "guide_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "champion_principal_id": {"type": "string", "format": "uuid"},
+            "champion_membership_id": {"type": "string", "format": "uuid"},
+            "support_owner_principal_id": {"type": "string", "format": "uuid"},
+            "support_owner_membership_id": {"type": "string", "format": "uuid"},
+            "check_ins": {"type": "array", "minItems": 1, "maxItems": 12, "items": check_in},
+            "appointed_by": {"type": "string", "format": "uuid"},
+            "appointed_at": {"type": "string", "format": "date-time"},
+            "confirmed_at": {"type": "string", "format": "date-time"},
+        },
+        [
+            "plan_id",
+            "plan_revision",
+            "deployment_attestation_id",
+            "solution_id",
+            "role",
+            "guide_id",
+            "guide_version",
+            "guide_hash",
+            "champion_principal_id",
+            "champion_membership_id",
+            "support_owner_principal_id",
+            "support_owner_membership_id",
+            "check_ins",
+            "appointed_by",
+            "appointed_at",
+            "confirmed_at",
+        ],
+    )
+    schemas["AIChampionAppointment"] = closed(
+        {
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+            "business_state": {"const": "Completed"},
+            "appointment": appointment,
+        },
+        ["object_id", "revision_id", "business_state", "appointment"],
+    )
+    schemas["AIChampionAppointmentCreate"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "expected_plan_revision": {"type": "string", "format": "uuid"},
+            "champion_membership_id": {"type": "string", "format": "uuid"},
+            "support_owner_membership_id": {"type": "string", "format": "uuid"},
+            "check_ins": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 12,
+                "items": closed(
+                    {
+                        "scheduled_at": {"type": "string", "format": "date-time"},
+                        "title": {"type": "string", "minLength": 1, "maxLength": 150},
+                    },
+                    ["scheduled_at", "title"],
+                ),
+            },
+        },
+        [
+            "operation_id",
+            "expected_plan_revision",
+            "champion_membership_id",
+            "support_owner_membership_id",
+            "check_ins",
+        ],
+    )
+    schemas["AIChampionAppointmentList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/AIChampionAppointment"},
+            }
+        },
+        ["items"],
+    )
+    guide_section = closed(
+        {
+            "key": {"type": "string", "minLength": 1, "maxLength": 100},
+            "title": {"type": "string", "minLength": 1, "maxLength": 200},
+            "body": {"type": "string", "minLength": 1, "maxLength": 2000},
+        },
+        ["key", "title", "body"],
+    )
+    schemas["AIChampionGuide"] = closed(
+        {
+            "guide_id": {"const": "internal-champion-guide"},
+            "version": {"const": "internal-champion-guide-2026-10-12.1"},
+            "title": {"type": "string", "minLength": 1, "maxLength": 200},
+            "sections": {"type": "array", "minItems": 1, "maxItems": 12, "items": guide_section},
+            "plan_id": {"type": "string", "format": "uuid"},
+            "plan_revision": {"type": "string", "format": "uuid"},
+            "solution_id": {"type": "string", "minLength": 1, "maxLength": 100},
+            "deployment_attestation_id": {"type": "string", "format": "uuid"},
+            "role": {"const": "CHAMPION"},
+        },
+        [
+            "guide_id",
+            "version",
+            "title",
+            "sections",
+            "plan_id",
+            "plan_revision",
+            "solution_id",
+            "deployment_attestation_id",
+            "role",
+        ],
+    )
+    appointments_path = "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/champion-appointments"
+    guide_path = "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/champion-guide"
+    spec["paths"][appointments_path] = {
+        "get": {
+            "operationId": "list_ai_champion_appointments",
+            "summary": "list visible internal champion appointments",
+            "x-capability": "ai.enablement.read",
+            "x-contract-version": VERSION,
+            "parameters": common,
+            "responses": {
+                "200": {
+                    "description": "Visible current-deployment appointments",
+                    "content": {
+                        "application/json": {
+                            "schema": {"$ref": "#/components/schemas/AIChampionAppointmentList"}
+                        }
+                    },
+                },
+                **errors,
+            },
+        },
+        "post": {
+            "operationId": "appoint_ai_internal_champion",
+            "summary": "appoint an internal champion with support",
+            "x-capability": "ai.enablement.manage",
+            "x-contract-version": VERSION,
+            "parameters": common,
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {
+                        "schema": {"$ref": "#/components/schemas/AIChampionAppointmentCreate"}
+                    }
+                },
+            },
+            "responses": {
+                "201": {
+                    "description": "Confirmed internal champion appointment",
+                    "content": {
+                        "application/json": {"schema": {"$ref": "#/components/schemas/AIChampionAppointment"}}
+                    },
+                },
+                **errors,
+            },
+        },
+    }
+    spec["paths"][guide_path] = {
+        "get": {
+            "operationId": "get_ai_champion_guide",
+            "summary": "open the appointed champion guide",
+            "x-capability": "ai.enablement.read",
+            "x-contract-version": VERSION,
+            "parameters": common
+            + [
+                {
+                    "name": "solution_id",
+                    "in": "query",
+                    "required": True,
+                    "schema": {"type": "string", "minLength": 1, "maxLength": 100},
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Pinned internal champion guide",
+                    "content": {
+                        "application/json": {"schema": {"$ref": "#/components/schemas/AIChampionGuide"}}
+                    },
+                },
+                **errors,
+            },
+        }
+    }
+    for operation_id, method, path, capability, roles, audit_enabled in [
+        ("list_ai_champion_appointments", "GET", appointments_path, "ai.enablement.read", ROLES, False),
+        ("appoint_ai_internal_champion", "POST", appointments_path, "ai.enablement.manage", ["OWNER"], True),
+        ("get_ai_champion_guide", "GET", guide_path, "ai.enablement.read", ROLES, False),
+    ]:
+        policy["operations"].append(
+            {
+                "operation_id": operation_id,
+                "method": method,
+                "path": path,
+                "capability": capability,
+                "role_templates": deepcopy(roles),
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": audit_enabled,
+                "state_guard": "Exact current deployed-solution attestation; active participant memberships and scoped authority. CHAMPION is a solution appointment, not an IAM grant.",
             }
         )

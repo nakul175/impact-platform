@@ -41,6 +41,7 @@ from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
 from .ai_role_training import AIRoleTraining
+from .ai_champion_appointments import AIChampionAppointments
 from .ai_diagnoses import AIDiagnoses
 from .ai_diagnosis_contributions import AIDiagnosisContributions
 from .ai_diagnosis_reviews import AIDiagnosisReviews
@@ -120,6 +121,7 @@ def create_app():
     ai_policy = AIPolicy(service, ai_enablement.server_ready)
     ai_plans = AIAdoptionPlans(service)
     ai_role_training = AIRoleTraining(service)
+    ai_champion_appointments = AIChampionAppointments(service)
     ai_diagnoses = AIDiagnoses(service)
     ai_diagnosis_contributions = AIDiagnosisContributions(service, ai_diagnoses)
     ai_diagnosis_reviews = AIDiagnosisReviews(service, ai_diagnoses)
@@ -1092,6 +1094,43 @@ def create_app():
             module_key,
             body,
             request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/champion-appointments")
+    async def ai_champion_appointments_list(request: Request, tenant: str, obj: str):
+        return await run_in_threadpool(
+            ai_champion_appointments.listing,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/plans/{obj}/champion-appointments",
+        status_code=201,
+    )
+    async def ai_champion_appointment_create(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIChampionAppointmentCreate", body)
+        return await run_in_threadpool(
+            ai_champion_appointments.create,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/champion-guide")
+    async def ai_champion_guide_get(
+        request: Request, tenant: str, obj: str, solution_id: str
+    ):
+        return await run_in_threadpool(
+            ai_champion_appointments.guide,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            solution_id,
         )
 
     @app.put("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/impact-reference")

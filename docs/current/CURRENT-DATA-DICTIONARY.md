@@ -6827,3 +6827,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0054_ai_training_completion_kind.sql | 1a33ae4ecf7a1c257d2ae264540d0497c3181b6e7f3402d95308b01f929e3253 |
+
+## Migration0055 — internal champion appointment kind (local0.61 coding candidate)
+
+`0055_ai_champion_appointment_kind.sql` SHA256 `7d943816514b6948d6dd07dc2528e91a681fb4960e2ca5ba787a024e0845a003`. Schema55 extends the existing registry object-type check with `AIChampionAppointment` and adds restrictive registry/revision policies that withhold this participant-and-schedule payload from the worker role. Appointment records use immutable generic revisions and existing forced tenant RLS; no table or runtime grant is added. All0001–0054 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0055_ai_champion_appointment_kind.sql | 7d943816514b6948d6dd07dc2528e91a681fb4960e2ca5ba787a024e0845a003 |

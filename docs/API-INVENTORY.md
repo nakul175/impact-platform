@@ -60,6 +60,9 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}` | `ai.enablement.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/champion-appointments` | `ai.enablement.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/champion-appointments` | `ai.enablement.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/champion-guide` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/attest` | `ai.enablement.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/complete` | `ai.enablement.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/generate` | `ai.enablement.manage` |

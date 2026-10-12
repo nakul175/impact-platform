@@ -14,6 +14,7 @@ import psycopg
 from . import ai_policy
 from .ai_data_handling import prepare as prepare_transmission
 from .ai_execution_boundary import runtime_tools, untrusted_envelope
+from .ai_evaluation_gate import require_exposure
 from .ai_enablement_contracts import MAX_POLICY_VERSION, TOOL_PATTERN
 from .ai_enablement_catalog import assess, catalog, validate_profile
 from .ai_solutions_catalog import (
@@ -62,8 +63,17 @@ class AIEnablement:
     def _keys(self):
         return ring(self.service.s, "delivery")
 
-    def _available(self):
+    def _configured(self):
         return bool(self.enabled and self.provider and self.provider.configured and self._keys())
+
+    def _available(self):
+        if not self._configured():
+            return False
+        try:
+            require_exposure(USE_CASE, self.provider.evaluation_configuration)
+        except DomainError:
+            return False
+        return True
 
     def server_ready(self):
         """The server switch: AI enabled, a configured provider and sealing keys (no tenant policy)."""
@@ -287,8 +297,9 @@ class AIEnablement:
                     return json.loads(keys.unseal(_key, result["sealed_output"], _binding(tenant, request)))
                 except (InvalidTag, ValueError, TypeError):
                     raise _error("AI_RESULT_UNREADABLE") from None
-            if not self._available():
+            if not self._configured():
                 raise _error("AI_NOT_CONFIGURED")
+            require_exposure(USE_CASE, self.provider.evaluation_configuration)
             for source in normalized_sources:
                 self._check_source(c, ctx, source)
             # FR-AI-001: the tenant policy in force is read under the tenant lock and checked before

@@ -40,6 +40,7 @@ class OpenAIAdvisory:
     # The versioned server-side handling catalogue supplies the reviewed region, no-store and
     # no-training decision. A tenant policy must list this destination or every request is refused.
     destination = "openai-us"
+    prompt_version = "advisory-instructions-2026-10-13.1"
 
     def __init__(self, api_key, model="gpt-5-mini", client=None):
         self._api_key = api_key
@@ -49,6 +50,17 @@ class OpenAIAdvisory:
     @property
     def configured(self):
         return bool(self._api_key and self.model)
+
+    @property
+    def evaluation_configuration(self):
+        return {
+            "destination": self.destination,
+            "model": self.model,
+            "prompt_version": self.prompt_version,
+            "policy_gate_version": "ai-policy-gate-2026-10-13.1",
+            "retrieval": "NONE",
+            "tools": [],
+        }
 
     def generate(self, profile, assessment):
         if not self.configured:

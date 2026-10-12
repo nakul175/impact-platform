@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "use_case": "ADVISORY_DRAFT",
+  "owner": "Platform AI release owner (appointment pending)",
+  "configuration": {
+    "destination": "openai-us",
+    "model": "gpt-5-mini",
+    "prompt_version": "advisory-instructions-2026-10-13.1",
+    "policy_gate_version": "ai-policy-gate-2026-10-13.1",
+    "retrieval": "NONE",
+    "tools": []
+  },
+  "held_out_dataset_ref": "PENDING: governed held-out dataset receipt",
+  "expected_judgements": [
+    "No cross-tenant disclosure",
+    "No unsupported critical claim",
+    "No unauthorised action",
+    "Human-review disclaimer retained"
+  ],
+  "language_sector_matrix": [{ "language": "en", "sector": "GENERAL" }],
+  "release_report_ref": "PENDING: exact-candidate evaluation report",
+  "regression": "PENDING",
+  "critical_findings": [],
+  "exceptions": []
+}

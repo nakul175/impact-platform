@@ -86,6 +86,12 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/actions/lock` | `ai.problem-baseline.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/revisions` | `ai.problem-baseline.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/revisions/{revision_id}` | `ai.problem-baseline.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews` | `ai.diagnosis.review` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}` | `ai.diagnosis.review` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions` | `ai.diagnosis.review` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions/complete` | `ai.diagnosis.review` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions/{action_id}/progress` | `ai.diagnosis.review` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/agreements` | `ai.diagnosis.review` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/ranking` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/ranking-weights` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/ranking-weights` | `ai.enablement.manage` |

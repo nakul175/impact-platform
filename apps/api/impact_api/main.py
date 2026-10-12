@@ -49,6 +49,7 @@ from .ai_solution_fit_scores import AISolutionFitScores
 from .ai_problem_baselines import AIProblemBaselines
 from .ai_outcome_observations import AIOutcomeObservations
 from .ai_sponsor_value_reports import AISponsorValueReports
+from .ai_quarterly_value_reviews import AIQuarterlyValueReviews
 from .ai_value_case_versions import AIValueCaseVersions
 from .ai_opportunity_mapping import AIOpportunityMapping
 from .ai_plan_exports import AIPlanExports
@@ -131,6 +132,7 @@ def create_app():
     ai_problem_baselines = AIProblemBaselines(service, ai_diagnoses)
     ai_outcome_observations = AIOutcomeObservations(service, ai_diagnoses, ai_problem_baselines)
     ai_sponsor_value_reports = AISponsorValueReports(service, ai_outcome_observations)
+    ai_quarterly_value_reviews = AIQuarterlyValueReviews(service, ai_outcome_observations)
     ai_value_cases = AIValueCaseVersions(service)
     ai_opportunity_mapping = AIOpportunityMapping(ai_diagnoses)
     ai_ranking = AIRanking(service, mappings=ai_opportunity_mapping)
@@ -922,6 +924,40 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/ai-enablement/sponsor-value-reports/{obj}")
     def ai_sponsor_value_report_get(request: Request, tenant: str, obj: str):
         return ai_sponsor_value_reports.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews", status_code=201)
+    async def ai_quarterly_value_review_start(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIQuarterlyValueReviewStart", body)
+        return await run_in_threadpool(ai_quarterly_value_reviews.start, auth.resolve(request), uuid(tenant), body, request.state.correlation)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}")
+    def ai_quarterly_value_review_get(request: Request, tenant: str, review_id: str):
+        return ai_quarterly_value_reviews.get(auth.resolve(request), uuid(tenant), uuid(review_id))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/agreements", status_code=201)
+    async def ai_quarterly_value_review_agreement(request: Request, tenant: str, review_id: str):
+        body = await strict_body(request)
+        validate("AIQuarterlyValueReviewAgreementCreate", body)
+        return await run_in_threadpool(ai_quarterly_value_reviews.agreement, auth.resolve(request), uuid(tenant), uuid(review_id), body, request.state.correlation)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/actions", status_code=201)
+    async def ai_quarterly_value_review_action(request: Request, tenant: str, review_id: str):
+        body = await strict_body(request)
+        validate("AIQuarterlyValueReviewActionCreate", body)
+        return await run_in_threadpool(ai_quarterly_value_reviews.action, auth.resolve(request), uuid(tenant), uuid(review_id), body, request.state.correlation)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/actions/{action_id}/progress", status_code=201)
+    async def ai_quarterly_value_review_progress(request: Request, tenant: str, review_id: str, action_id: str):
+        body = await strict_body(request)
+        validate("AIQuarterlyValueReviewActionProgress", body)
+        return await run_in_threadpool(ai_quarterly_value_reviews.action, auth.resolve(request), uuid(tenant), uuid(review_id), body, request.state.correlation, uuid(action_id))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/actions/complete", status_code=201)
+    async def ai_quarterly_value_review_complete(request: Request, tenant: str, review_id: str):
+        body = await strict_body(request)
+        validate("AIQuarterlyValueReviewComplete", body)
+        return await run_in_threadpool(ai_quarterly_value_reviews.complete, auth.resolve(request), uuid(tenant), uuid(review_id), body, request.state.correlation)
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/opportunity-map")
     def ai_opportunity_map_get(

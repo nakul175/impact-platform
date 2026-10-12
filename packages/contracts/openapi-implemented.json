@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.54.0",
+    "version": "1.55.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -34694,6 +34694,296 @@
                 "schema": {
                   "$ref": "#/components/schemas/AISponsorValueReport"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews": {
+      "post": {
+        "operationId": "start_ai_quarterly_value_review",
+        "summary": "start ai quarterly value review",
+        "x-capability": "ai.diagnosis.review",
+        "x-contract-version": "1.55.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Current exact quarterly value review",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIQuarterlyValueReviewReceipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIQuarterlyValueReviewStart"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}": {
+      "get": {
+        "operationId": "get_ai_quarterly_value_review",
+        "summary": "get ai quarterly value review",
+        "x-capability": "ai.diagnosis.review",
+        "x-contract-version": "1.55.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "review_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current exact quarterly value review",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIQuarterlyValueReview"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/agreements": {
+      "post": {
+        "operationId": "record_ai_quarterly_review_agreement",
+        "summary": "record ai quarterly review agreement",
+        "x-capability": "ai.diagnosis.review",
+        "x-contract-version": "1.55.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "review_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Current exact quarterly value review",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIQuarterlyValueReviewReceipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIQuarterlyValueReviewAgreementCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions": {
+      "post": {
+        "operationId": "record_ai_quarterly_review_action",
+        "summary": "record ai quarterly review action",
+        "x-capability": "ai.diagnosis.review",
+        "x-contract-version": "1.55.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "review_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Current exact quarterly value review",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIQuarterlyValueReviewReceipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIQuarterlyValueReviewActionCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions/{action_id}/progress": {
+      "post": {
+        "operationId": "track_ai_quarterly_review_action",
+        "summary": "track ai quarterly review action",
+        "x-capability": "ai.diagnosis.review",
+        "x-contract-version": "1.55.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "review_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Current exact quarterly value review",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIQuarterlyValueReviewReceipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIQuarterlyValueReviewActionProgress"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions/complete": {
+      "post": {
+        "operationId": "complete_ai_quarterly_value_review",
+        "summary": "complete ai quarterly value review",
+        "x-capability": "ai.diagnosis.review",
+        "x-contract-version": "1.55.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "review_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Current exact quarterly value review",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIQuarterlyValueReviewReceipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIQuarterlyValueReviewComplete"
               }
             }
           }
@@ -71150,6 +71440,523 @@
           "disclaimer",
           "manifest",
           "content_base64"
+        ]
+      },
+      "AIQuarterlyValueReviewStart": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome_observation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome_observation_revision": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "outcome_observation_id",
+          "outcome_observation_revision"
+        ]
+      },
+      "AIQuarterlyValueReviewAgreementCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agreement_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "agreement_id",
+          "text"
+        ]
+      },
+      "AIQuarterlyValueReviewActionCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "action_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "agreement_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300,
+            "pattern": "\\S"
+          },
+          "owner_membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "due_on": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "action_id",
+          "agreement_id",
+          "title",
+          "owner_membership_id",
+          "due_on"
+        ]
+      },
+      "AIQuarterlyValueReviewActionProgress": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "enum": [
+              "OPEN",
+              "IN_PROGRESS",
+              "BLOCKED",
+              "DONE"
+            ]
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "status",
+          "note"
+        ]
+      },
+      "AIQuarterlyValueReviewComplete": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "operation_id",
+          "expected_revision",
+          "summary"
+        ]
+      },
+      "AIQuarterlyValueReviewData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "template": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "edition": {
+                "const": "quarterly-value-review-2026-10-12.1"
+              },
+              "title": {
+                "type": "string"
+              },
+              "sections": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "key": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "key",
+                    "title"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "edition",
+              "title",
+              "sections"
+            ]
+          },
+          "period_start": {
+            "type": "string",
+            "format": "date"
+          },
+          "period_end": {
+            "type": "string",
+            "format": "date"
+          },
+          "due_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "outcome_observation_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "outcome_observation_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "plan_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "plan_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "deployment_attestation_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "baseline_object_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "baseline_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "opportunity_id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome_observation_id",
+              "outcome_observation_revision",
+              "plan_id",
+              "plan_revision",
+              "deployment_attestation_id",
+              "baseline_object_id",
+              "baseline_revision",
+              "opportunity_id"
+            ]
+          },
+          "agreements": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "agreement_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "agreed_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "agreed_by": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "agreement_id",
+                "text",
+                "agreed_at",
+                "agreed_by"
+              ]
+            }
+          },
+          "actions": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "action_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "agreement_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "owner_membership_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "owner_principal_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "due_on": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "status": {
+                  "enum": [
+                    "OPEN",
+                    "IN_PROGRESS",
+                    "BLOCKED",
+                    "DONE"
+                  ]
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "created_by": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "progress": {
+                  "type": "array",
+                  "maxItems": 20,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "OPEN",
+                          "IN_PROGRESS",
+                          "BLOCKED",
+                          "DONE"
+                        ]
+                      },
+                      "note": {
+                        "type": "string"
+                      },
+                      "recorded_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "recorded_by": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "note",
+                      "recorded_at",
+                      "recorded_by"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "action_id",
+                "agreement_id",
+                "title",
+                "owner_membership_id",
+                "owner_principal_id",
+                "due_on",
+                "status",
+                "created_at",
+                "created_by",
+                "progress"
+              ]
+            }
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "started_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "advisor_principal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "advisor_membership_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "advisor_natural_identity_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "completed_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "completed_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "completion_summary": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "template",
+          "period_start",
+          "period_end",
+          "due_on",
+          "source",
+          "agreements",
+          "actions",
+          "started_at",
+          "started_by",
+          "advisor_principal_id",
+          "advisor_membership_id",
+          "advisor_natural_identity_id",
+          "completed_at",
+          "completed_by",
+          "completion_summary"
+        ]
+      },
+      "AIQuarterlyValueReview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "enum": [
+              "InProgress",
+              "Completed"
+            ]
+          },
+          "review": {
+            "$ref": "#/components/schemas/AIQuarterlyValueReviewData"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "review"
+        ]
+      },
+      "AIQuarterlyValueReviewReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "enum": [
+              "InProgress",
+              "Completed"
+            ]
+          },
+          "review": {
+            "$ref": "#/components/schemas/AIQuarterlyValueReviewData"
+          },
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "object_id",
+          "revision_id",
+          "business_state",
+          "review",
+          "operation_id",
+          "correlation_id",
+          "saved_at"
         ]
       },
       "AIOpportunityExample": {

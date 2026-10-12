@@ -1,5 +1,5 @@
 {
-  "version": "1.54.0",
+  "version": "1.55.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6883,6 +6883,78 @@
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "start_ai_quarterly_value_review",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_quarterly_value_review",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "record_ai_quarterly_review_agreement",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/agreements",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "record_ai_quarterly_review_action",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "track_ai_quarterly_review_action",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions/{action_id}/progress",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "complete_ai_quarterly_value_review",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions/complete",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
       "audit": true
     },
     {

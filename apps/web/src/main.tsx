@@ -10,6 +10,7 @@ import { AIDiagnosisReviewQueue } from "./AIDiagnosisReviewQueue";
 import { AIProblemBaselinesPanel } from "./AIProblemBaselines";
 import { AIOutcomeDashboardPanel } from "./AIOutcomeDashboard";
 import { AISponsorValueReportPanel } from "./AISponsorValueReport";
+import { AIQuarterlyValueReviewPanel } from "./AIQuarterlyValueReview";
 import { DashboardsPanel } from "./Dashboards";
 import { FormsPanel } from "./Forms";
 import { RoundsPanel } from "./Rounds";
@@ -1085,6 +1086,12 @@ function Workspace({
                 capabilities={access.capabilities}
               />
               <AISponsorValueReportPanel
+                base={base}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
+              <AIQuarterlyValueReviewPanel
                 base={base}
                 request={api}
                 explain={explain}

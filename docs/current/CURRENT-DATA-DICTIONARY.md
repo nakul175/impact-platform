@@ -6851,3 +6851,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0057_ai_sponsor_value_report_kind.sql | 75134f2d48434bf9b6a46ffa71f0dae05df7485504c6e5ea43ed6cc32cd36012 |
+
+## Migration0058 — quarterly value review kind (local0.64 coding candidate)
+
+`0058_ai_quarterly_value_reviews.sql` SHA256 `e9f6a5540d2ad4f6c5ea51ab58c88b5a99b1db5a58180c4367db7c3104379638`. Schema58 extends the registry object-type check with `AIQuarterlyValueReview` and adds restrictive registry/revision worker policies. Reviews use confidential immutable generic revisions. They pin one current outcome observation and its exact plan, deployment, baseline and opportunity selectors, one server-owned template edition and the starting advisor identity. Explicit agreements are separate from linked tracked actions, so completion can refuse any agreement without exactly one action. All0001–0057 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0058_ai_quarterly_value_reviews.sql | e9f6a5540d2ad4f6c5ea51ab58c88b5a99b1db5a58180c4367db7c3104379638 |

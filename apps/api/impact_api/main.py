@@ -64,6 +64,7 @@ from .tax_invoicing import TaxInvoicing
 from .agreement_coverage import AgreementCoverage
 from .access_checks import AccessChecks
 from .fine_grained_access import FineGrainedAccess
+from .effective_access import EffectiveAccess
 from .ai_trials import AITrials
 from .partner_revenue import PartnerRevenue
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
@@ -157,6 +158,7 @@ def create_app():
     agreement_coverage = AgreementCoverage(service)
     access_checks = AccessChecks(service)
     fine_grained_access = FineGrainedAccess(service)
+    effective_access = EffectiveAccess(service)
     ai_trials = AITrials(service, ai_value_cases)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
@@ -1849,6 +1851,16 @@ def create_app():
     async def attach_grant_field_policy(request: Request, tenant: str, grant_id: str):
         body = await strict_body(request)
         return await run_in_threadpool(fine_grained_access.attach, auth.resolve(request), uuid(tenant), str(uuid(grant_id)), body, request.state.correlation)
+
+    @app.post("/v1/tenants/{tenant}/access/effective/self")
+    async def explain_own_access(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(effective_access.own, auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/access/effective/simulations")
+    async def simulate_member_access(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(effective_access.simulate, auth.resolve(request), uuid(tenant), body)
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/trials")
     def ai_trial_list(request: Request, tenant: str, opportunity_id: str):

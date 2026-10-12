@@ -43,6 +43,7 @@ from impact_api.tax_invoicing_contracts import IMPLEMENTED as TAX_INVOICING_ROUT
 from impact_api.agreement_coverage_contracts import IMPLEMENTED as AGREEMENT_COVERAGE_ROUTES  # noqa: E402
 from impact_api.access_check_contracts import IMPLEMENTED as ACCESS_CHECK_ROUTES  # noqa: E402
 from impact_api.fine_grained_access_contracts import IMPLEMENTED as FINE_GRAINED_ACCESS_ROUTES  # noqa: E402
+from impact_api.effective_access_contracts import IMPLEMENTED as EFFECTIVE_ACCESS_ROUTES  # noqa: E402
 from impact_api.ai_trial_contracts import IMPLEMENTED as AI_TRIAL_ROUTES  # noqa: E402
 from impact_api.ai_opportunity_mapping_contracts import (  # noqa: E402
     IMPLEMENTED as AI_OPPORTUNITY_MAPPING_ROUTES,
@@ -130,6 +131,7 @@ allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AGREEMENT_COVERAGE_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in ACCESS_CHECK_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in FINE_GRAINED_ACCESS_ROUTES)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in EFFECTIVE_ACCESS_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_TRIAL_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in RETENTION_ROUTES)
 allowed.add(("post", "/v1/tenants/{tenant_id}/disclosure-requests"))

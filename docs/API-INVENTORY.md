@@ -19,6 +19,8 @@
 | POST | `/v1/tenants/{tenant_id}/access-requests/{object_id}/actions/reject` | `grant.approve` |
 | GET | `/v1/tenants/{tenant_id}/access-scopes` | `access-scopes.read` |
 | POST | `/v1/tenants/{tenant_id}/access-scopes` | `access-scopes.create` |
+| POST | `/v1/tenants/{tenant_id}/access/effective/self` | `notifications.read` |
+| POST | `/v1/tenants/{tenant_id}/access/effective/simulations` | `grants.read` |
 | GET | `/v1/tenants/{tenant_id}/aggregation-hierarchies` | `calculated-results.read` |
 | POST | `/v1/tenants/{tenant_id}/aggregation-hierarchies` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}` | `calculated-results.read` |

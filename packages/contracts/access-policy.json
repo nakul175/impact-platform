@@ -1,5 +1,5 @@
 {
-  "version": "1.74.0",
+  "version": "1.75.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5530,6 +5530,39 @@
       "fresh_assurance_seconds": 300,
       "audit": true,
       "state_guard": "Active existing grant only; selected records remain inside its existing scope; writable categories are a subset of readable categories; the facet is attach-once and can only narrow."
+    },
+    {
+      "operation_id": "explain_own_effective_access",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/access/effective/self",
+      "capability": "notifications.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "FINANCE"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Self explains only the current principal. Simulation requires tenant-wide grants.read and a current in-tenant subject; outputs contain no resource names or field values."
+    },
+    {
+      "operation_id": "simulate_effective_access",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/access/effective/simulations",
+      "capability": "grants.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Self explains only the current principal. Simulation requires tenant-wide grants.read and a current in-tenant subject; outputs contain no resource names or field values."
     },
     {
       "operation_id": "list_ai_option_trials",

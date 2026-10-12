@@ -996,5 +996,25 @@
     "contract_version": "1.74.0",
     "draft_schema": "FineGrainedGrantFacetAttach",
     "output_schema": "FineGrainedGrantFacet"
+  },
+  {
+    "entity": "EffectiveAccessExplanation",
+    "route": "access/effective/self",
+    "owner": "C03",
+    "fsd_id": "FR-ACC-003",
+    "fields": "operation_id:code capability:code decision:code grant_paths:array restrictions:code[] missing_assurance:code[]",
+    "source_required_fields": "Known operation and optional object selector; simulation additionally names a current same-tenant principal",
+    "invariant": "Self inspection uses only the caller. Simulation requires tenant-wide administrator authority. Explanations show sanitized path/scope codes and categories, never resource names or field values; restrictions remain effective across direct/group paths.",
+    "server_owned": [
+      "capability",
+      "decision",
+      "grant_paths",
+      "restrictions",
+      "missing_assurance"
+    ],
+    "patch_allowed": false,
+    "contract_version": "1.75.0",
+    "draft_schema": "OwnEffectiveAccessRequest",
+    "output_schema": "OwnEffectiveAccess"
   }
 ]

@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.74.0",
+    "version": "1.75.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -39604,6 +39604,88 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/FineGrainedGrantFacet"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/access/effective/self": {
+      "post": {
+        "operationId": "explain_own_effective_access",
+        "summary": "Explain effective access without hidden resource names or values",
+        "x-capability": "notifications.read",
+        "x-contract-version": "1.75.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OwnEffectiveAccessRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sanitized grant paths, restrictions and missing assurance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OwnEffectiveAccess"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/access/effective/simulations": {
+      "post": {
+        "operationId": "simulate_effective_access",
+        "summary": "Explain effective access without hidden resource names or values",
+        "x-capability": "grants.read",
+        "x-contract-version": "1.75.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EffectiveAccessSimulationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sanitized grant paths, restrictions and missing assurance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulatedEffectiveAccess"
                 }
               }
             }
@@ -81253,6 +81335,286 @@
           "writable_field_categories",
           "grant_id",
           "attached_at"
+        ]
+      },
+      "OwnEffectiveAccessRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "object_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "object_id"
+        ]
+      },
+      "EffectiveAccessSimulationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "object_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "subject_principal_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "object_id",
+          "subject_principal_id"
+        ]
+      },
+      "OwnEffectiveAccess": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "capability": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "decision": {
+            "enum": [
+              "PERMITTED",
+              "DENIED"
+            ]
+          },
+          "grant_paths": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "source": {
+                  "enum": [
+                    "DIRECT",
+                    "GROUP"
+                  ]
+                },
+                "scope_type": {
+                  "enum": [
+                    "TENANT",
+                    "PROGRAMME",
+                    "ASSIGNMENT",
+                    "OBJECT_SET"
+                  ]
+                },
+                "scope_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "record_condition_applied": {
+                  "type": "boolean"
+                },
+                "readable_field_categories": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 16
+                },
+                "writable_field_categories": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "source",
+                "scope_type",
+                "scope_id",
+                "record_condition_applied",
+                "readable_field_categories",
+                "writable_field_categories"
+              ]
+            }
+          },
+          "restrictions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "RECORD_CONDITION"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "missing_assurance": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "CURRENT_SESSION_ASSURANCE",
+                "MFA_ASSURANCE",
+                "FRESH_AUTHENTICATION"
+              ]
+            },
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "operation_id",
+          "capability",
+          "decision",
+          "grant_paths",
+          "restrictions",
+          "missing_assurance"
+        ]
+      },
+      "SimulatedEffectiveAccess": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "capability": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "decision": {
+            "enum": [
+              "PERMITTED",
+              "DENIED"
+            ]
+          },
+          "grant_paths": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "source": {
+                  "enum": [
+                    "DIRECT",
+                    "GROUP"
+                  ]
+                },
+                "scope_type": {
+                  "enum": [
+                    "TENANT",
+                    "PROGRAMME",
+                    "ASSIGNMENT",
+                    "OBJECT_SET"
+                  ]
+                },
+                "scope_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "record_condition_applied": {
+                  "type": "boolean"
+                },
+                "readable_field_categories": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 16
+                },
+                "writable_field_categories": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "source",
+                "scope_type",
+                "scope_id",
+                "record_condition_applied",
+                "readable_field_categories",
+                "writable_field_categories"
+              ]
+            }
+          },
+          "restrictions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "RECORD_CONDITION"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "missing_assurance": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "CURRENT_SESSION_ASSURANCE",
+                "MFA_ASSURANCE",
+                "FRESH_AUTHENTICATION"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "subject_principal_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "capability",
+          "decision",
+          "grant_paths",
+          "restrictions",
+          "missing_assurance",
+          "subject_principal_id"
         ]
       },
       "AITrialCreate": {

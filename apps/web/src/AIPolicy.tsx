@@ -46,6 +46,7 @@ const USE_CASE_NAMES: Record<string, string> = {
   REPORT_DRAFT: "report drafting",
   CHAT: "chat",
 };
+const USE_CASES = Object.keys(USE_CASE_NAMES);
 const REVIEW_NAMES: Record<string, string> = {
   HUMAN_REVIEW: "Human review before use",
 };
@@ -54,8 +55,8 @@ const list = (items: string[], empty = "None") =>
   items.length ? items.join(", ") : empty;
 export const advisoryRule = (policy: AIPolicyView | null) =>
   policy?.use_cases.find((rule) => rule.use_case === "ADVISORY_DRAFT") || null;
-const blankRule = (): UseCasePolicy => ({
-  use_case: "ADVISORY_DRAFT",
+const blankRule = (useCase = "ADVISORY_DRAFT"): UseCasePolicy => ({
+  use_case: useCase,
   enabled: false,
   data_classes: [],
   destinations: [],
@@ -104,7 +105,6 @@ export function AIPolicyInForce({
   // The outcome of the last change: a saved version (status) or a refusal (alert).
   const [saved, setSaved] = useState("");
   const [notice, setNotice] = useState("");
-  const rule = advisoryRule(policy);
   async function loadHistory() {
     setHistoryError("");
     setHistoryLoading(true);
@@ -157,52 +157,56 @@ export function AIPolicyInForce({
                   : "") +
                 "."}
           </p>
-          <dl className="ai-policy-terms">
-            <dt>AI advisory drafts</dt>
-            <dd>{rule?.enabled ? "On" : "Off"}</dd>
-            {rule?.enabled && (
-              <>
-                <dt>Data allowed</dt>
-                <dd>{ceilingText(rule.data_classes)}</dd>
-                <dt>Destinations</dt>
-                <dd>
-                  {list(
-                    rule.destinations.map((id) => {
-                      const known = policy.destinations.find(
-                        (item) => item.id === id,
-                      );
-                      return known
-                        ? known.provider + " (" + known.region + ")"
-                        : id;
-                    }),
-                  )}
-                </dd>
-                <dt>Approved purposes</dt>
-                <dd>{list(rule.purposes)}</dd>
-                <dt>Languages</dt>
-                <dd>{list(rule.languages)}</dd>
-                <dt>Review</dt>
-                <dd>
-                  {REVIEW_NAMES[rule.review_mode] || lower(rule.review_mode)}
-                </dd>
-                <dt>Budget units</dt>
-                <dd>{rule.budget_units}</dd>
-                <dt>Tools</dt>
-                <dd>{list(rule.tools)}</dd>
-              </>
-            )}
-          </dl>
+          {USE_CASES.map((useCase) => {
+            const active = policy.use_cases.find(
+              (item) => item.use_case === useCase,
+            );
+            return (
+              <dl className="ai-policy-terms" key={useCase}>
+                <dt>{USE_CASE_NAMES[useCase]}</dt>
+                <dd>{active?.enabled ? "On" : "Off"}</dd>
+                {active?.enabled && (
+                  <>
+                    <dt>Data allowed</dt>
+                    <dd>{ceilingText(active.data_classes)}</dd>
+                    <dt>Destinations</dt>
+                    <dd>
+                      {list(
+                        active.destinations.map((id) => {
+                          const known = policy.destinations.find(
+                            (item) => item.id === id,
+                          );
+                          return known
+                            ? known.provider + " (" + known.region + ")"
+                            : id;
+                        }),
+                      )}
+                    </dd>
+                    <dt>Approved purposes</dt>
+                    <dd>{list(active.purposes)}</dd>
+                    <dt>Languages</dt>
+                    <dd>{list(active.languages)}</dd>
+                    <dt>Review</dt>
+                    <dd>
+                      {REVIEW_NAMES[active.review_mode] ||
+                        lower(active.review_mode)}
+                    </dd>
+                    <dt>Budget units</dt>
+                    <dd>{active.budget_units}</dd>
+                    <dt>Tools</dt>
+                    <dd>{list(active.tools)}</dd>
+                  </>
+                )}
+              </dl>
+            );
+          })}
           <p className="muted">
             {policy.server_enabled
               ? "The platform's AI service is switched on for this deployment."
               : "The platform's AI service is switched off for this deployment, so no AI request is sent whatever this policy says."}{" "}
-            Reserved for later releases and always off:{" "}
-            {list(
-              policy.reserved_use_cases.map(
-                (item) => USE_CASE_NAMES[item] || lower(item),
-              ),
-            )}
-            .
+            Every use case and tool is separately controlled. Enabling chat does
+            not enable extraction, report drafting, advisory drafts, or any
+            tool.
           </p>
           {canManage && (
             <button
@@ -296,18 +300,56 @@ function AIPolicyEditor({
   saved: (version: number) => void;
   stale: (message: string) => void;
 }) {
-  const current = advisoryRule(policy) || blankRule();
-  const [enabled, setEnabled] = useState(current.enabled);
-  const [dataClasses, setDataClasses] = useState<string[]>(
-    current.data_classes,
+  const [selectedUseCase, setSelectedUseCase] = useState("ADVISORY_DRAFT");
+  const [drafts, setDrafts] = useState<UseCasePolicy[]>(
+    USE_CASES.map(
+      (useCase) =>
+        policy.use_cases.find((item) => item.use_case === useCase) ||
+        blankRule(useCase),
+    ),
   );
-  const [destinations, setDestinations] = useState<string[]>(
-    current.destinations,
+  const [purposeText, setPurposeText] = useState<Record<string, string>>(
+    Object.fromEntries(
+      USE_CASES.map((useCase) => [
+        useCase,
+        (
+          policy.use_cases.find((item) => item.use_case === useCase) ||
+          blankRule(useCase)
+        ).purposes.join("\n"),
+      ]),
+    ),
   );
-  const [purposes, setPurposes] = useState(current.purposes.join("\n"));
-  const [languages, setLanguages] = useState(current.languages.join(", "));
-  const [budget, setBudget] = useState(String(current.budget_units));
-  const [reviewMode, setReviewMode] = useState(current.review_mode);
+  const [languageText, setLanguageText] = useState<Record<string, string>>(
+    Object.fromEntries(
+      USE_CASES.map((useCase) => [
+        useCase,
+        (
+          policy.use_cases.find((item) => item.use_case === useCase) ||
+          blankRule(useCase)
+        ).languages.join(", "),
+      ]),
+    ),
+  );
+  const [toolText, setToolText] = useState<Record<string, string>>(
+    Object.fromEntries(
+      USE_CASES.map((useCase) => [
+        useCase,
+        (
+          policy.use_cases.find((item) => item.use_case === useCase) ||
+          blankRule(useCase)
+        ).tools.join(", "),
+      ]),
+    ),
+  );
+  const current =
+    drafts.find((item) => item.use_case === selectedUseCase) ||
+    blankRule(selectedUseCase);
+  const update = (change: Partial<UseCasePolicy>) =>
+    setDrafts((items) =>
+      items.map((item) =>
+        item.use_case === selectedUseCase ? { ...item, ...change } : item,
+      ),
+    );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   // One operation identifier for the life of this dialog, renewed only when the payload changes,
@@ -326,28 +368,24 @@ function AIPolicyEditor({
     );
   async function submit(event: React.FormEvent) {
     event.preventDefault();
-    const rule: UseCasePolicy = {
-      use_case: "ADVISORY_DRAFT",
-      enabled,
-      data_classes: DATA_CLASSES.filter((item) => dataClasses.includes(item)),
-      destinations: policy.destinations
-        .map((item) => item.id)
-        .filter((item) => destinations.includes(item)),
-      purposes: purposes
+    const normalizedDrafts = drafts.map((draft) => ({
+      ...draft,
+      purposes: purposeText[draft.use_case]
         .split("\n")
         .map((item) => item.trim())
         .filter(Boolean),
-      languages: languages
+      languages: languageText[draft.use_case]
         .split(",")
         .map((item) => item.trim())
         .filter(Boolean),
-      review_mode: reviewMode,
-      budget_units: Number(budget),
-      tools: [],
-    };
+      tools: toolText[draft.use_case]
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean),
+    }));
     const payload = JSON.stringify({
       expected_version: policy.policy_version,
-      data: { use_cases: [rule] },
+      data: { use_cases: normalizedDrafts },
     });
     if (!attempt.current || attempt.current.payload !== payload)
       attempt.current = { payload, id: crypto.randomUUID() };
@@ -359,7 +397,7 @@ function AIPolicyEditor({
         body: JSON.stringify({
           operation_id: attempt.current.id,
           expected_version: policy.policy_version,
-          data: { use_cases: [rule] },
+          data: { use_cases: normalizedDrafts },
         }),
       });
       saved(receipt.policy_version);
@@ -386,14 +424,27 @@ function AIPolicyEditor({
           </div>
         )}
         <fieldset disabled={busy}>
-          <legend>AI advisory drafts</legend>
+          <legend>Named AI use case</legend>
+          <label>
+            Use case
+            <select
+              value={selectedUseCase}
+              onChange={(e) => setSelectedUseCase(e.target.value)}
+            >
+              {USE_CASES.map((useCase) => (
+                <option key={useCase} value={useCase}>
+                  {USE_CASE_NAMES[useCase]}
+                </option>
+              ))}
+            </select>
+          </label>
           <label className="ai-checkbox">
             <input
               type="checkbox"
-              checked={enabled}
-              onChange={(e) => setEnabled(e.target.checked)}
+              checked={current.enabled}
+              onChange={(e) => update({ enabled: e.target.checked })}
             />
-            Allow AI advisory drafts
+            Allow {USE_CASE_NAMES[selectedUseCase]}
           </label>
           <fieldset>
             <legend>Data classes that may be sent</legend>
@@ -405,9 +456,14 @@ function AIPolicyEditor({
               <label key={item} className="ai-checkbox">
                 <input
                   type="checkbox"
-                  checked={dataClasses.includes(item)}
+                  checked={current.data_classes.includes(item)}
                   onChange={(e) =>
-                    toggle(dataClasses, setDataClasses, item, e.target.checked)
+                    toggle(
+                      current.data_classes,
+                      (next) => update({ data_classes: next }),
+                      item,
+                      e.target.checked,
+                    )
                   }
                 />
                 {lower(item)}
@@ -420,11 +476,11 @@ function AIPolicyEditor({
               <label key={item.id} className="ai-checkbox">
                 <input
                   type="checkbox"
-                  checked={destinations.includes(item.id)}
+                  checked={current.destinations.includes(item.id)}
                   onChange={(e) =>
                     toggle(
-                      destinations,
-                      setDestinations,
+                      current.destinations,
+                      (next) => update({ destinations: next }),
                       item.id,
                       e.target.checked,
                     )
@@ -439,23 +495,33 @@ function AIPolicyEditor({
             <textarea
               rows={3}
               maxLength={2100}
-              value={purposes}
-              onChange={(e) => setPurposes(e.target.value)}
+              value={purposeText[selectedUseCase]}
+              onChange={(e) =>
+                setPurposeText((values) => ({
+                  ...values,
+                  [selectedUseCase]: e.target.value,
+                }))
+              }
             />
           </label>
           <label>
             Languages (BCP 47 tags, separated by commas)
             <input
-              value={languages}
+              value={languageText[selectedUseCase]}
               maxLength={400}
-              onChange={(e) => setLanguages(e.target.value)}
+              onChange={(e) =>
+                setLanguageText((values) => ({
+                  ...values,
+                  [selectedUseCase]: e.target.value,
+                }))
+              }
             />
           </label>
           <label>
             Review mode
             <select
-              value={reviewMode}
-              onChange={(e) => setReviewMode(e.target.value)}
+              value={current.review_mode}
+              onChange={(e) => update({ review_mode: e.target.value })}
             >
               {Object.entries(REVIEW_NAMES).map(([value, name]) => (
                 <option key={value} value={value}>
@@ -472,12 +538,27 @@ function AIPolicyEditor({
               max="1000000"
               step="1"
               required
-              value={budget}
-              onChange={(e) => setBudget(e.target.value)}
+              value={String(current.budget_units)}
+              onChange={(e) => update({ budget_units: Number(e.target.value) })}
+            />
+          </label>
+          <label>
+            Permitted tools (reviewed identifiers, separated by commas)
+            <input
+              value={toolText[selectedUseCase]}
+              maxLength={1300}
+              placeholder="No tools enabled"
+              onChange={(e) =>
+                setToolText((values) => ({
+                  ...values,
+                  [selectedUseCase]: e.target.value,
+                }))
+              }
             />
           </label>
           <p className="muted">
-            Tools: none. No AI tool can be enabled in this release.
+            Use-case permission does not enable a tool. Each tool must be listed
+            explicitly and is checked again before execution.
           </p>
           <div className="dialog-actions">
             <button type="button" className="secondary" onClick={close}>

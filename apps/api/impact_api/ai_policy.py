@@ -35,17 +35,17 @@ KIND = "AIConfiguration"
 ROUTE = "ai-enablement/policy"
 AUDIT_ACTION = "ai_policy.changed"
 OPERATION = "update_ai_policy"
-# Only ADVISORY_DRAFT has a runtime in this build. The other use cases are reserved for later stories
-# and can be recorded only as disabled (migration 0041 CHECK), so nothing is pre-approved for a feature
-# whose data flows have not been designed and reviewed yet.
-ACTIVE_USE_CASES = ("ADVISORY_DRAFT",)
-RESERVED_USE_CASES = tuple(case for case in USE_CASES if case not in ACTIVE_USE_CASES)
+# Configuration and execution remain separate gates. A tenant may explicitly approve any named use
+# case, but only an implemented runtime can execute it, and every runtime must call require() with the
+# exact use case and requested tools before content leaves the authorised boundary.
+ACTIVE_USE_CASES = tuple(USE_CASES)
+RESERVED_USE_CASES = ()
 DESTINATION_DETAILS = {"openai-us": {"provider": "OpenAI", "region": "United States"}}
 # Allowed data classes are a ceiling: a request passes when its class is at or below the highest
 # class the rule lists (PUBLIC < INTERNAL < CONFIDENTIAL < RESTRICTED). An advisory brief is at least
 # INTERNAL, so an enabled ADVISORY_DRAFT rule whose ceiling is below INTERNAL could never run.
 CLASS_RANK = {name: rank for rank, name in enumerate(DATA_CLASSES)}
-MINIMUM_CLASS = {"ADVISORY_DRAFT": "INTERNAL"}
+MINIMUM_CLASS = {case: "INTERNAL" for case in USE_CASES}
 FIELDS = {
     "use_case",
     "enabled",
@@ -131,9 +131,13 @@ def validate_policy(data):
         seen.add(use_case)
         if type(item["enabled"]) is not bool:
             _invalid()
-        if not isinstance(item["tools"], list) or item["tools"]:
-            # No tool catalogue exists: a policy may never grant a tool implicitly or explicitly yet.
-            _invalid("AI_TOOLS_NOT_ALLOWED", "No AI tool can be enabled in this release; leave tools empty.")
+        if (
+            not isinstance(item["tools"], list)
+            or len(item["tools"]) > 20
+            or any(not isinstance(tool, str) or not TOOL.fullmatch(tool) for tool in item["tools"])
+            or len(set(item["tools"])) != len(item["tools"])
+        ):
+            _invalid("AI_TOOLS_INVALID", "Tools must be distinct reviewed tool identifiers.")
         if item["review_mode"] not in REVIEW_MODES:
             _invalid()
         budget = item["budget_units"]
@@ -148,13 +152,8 @@ def validate_policy(data):
             "languages": _languages(item["languages"]),
             "review_mode": item["review_mode"],
             "budget_units": budget,
-            "tools": [],
+            "tools": sorted(item["tools"]),
         }
-        if rule["enabled"] and use_case not in ACTIVE_USE_CASES:
-            _invalid(
-                "AI_USE_CASE_RESERVED",
-                "This AI use case is reserved for a later release and cannot be enabled yet.",
-            )
         if rule["enabled"] and not all(
             rule[field] for field in ("data_classes", "destinations", "purposes", "languages")
         ):
@@ -166,8 +165,8 @@ def validate_policy(data):
         if rule["enabled"] and minimum and ceiling(rule["data_classes"]) < CLASS_RANK[minimum]:
             _invalid(
                 "AI_DATA_CLASS_TOO_LOW",
-                "AI advisory drafts send an organisation brief, which is internal data. Allow at least "
-                "internal data or turn the use case off.",
+                "AI use cases send organisation content, which is at least internal data. Allow at "
+                "least internal data or turn the use case off.",
             )
         rules.append(rule)
     return sorted(rules, key=lambda rule: USE_CASES.index(rule["use_case"]))

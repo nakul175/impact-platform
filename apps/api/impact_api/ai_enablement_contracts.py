@@ -7,7 +7,7 @@ from .measurement_contracts import closed
 
 VERSION = "1.33.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
-POLICY_VERSION = "1.26.0"
+POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
 RANKING_VERSION = "1.27.0"
 IMPLEMENTED = [
@@ -223,9 +223,7 @@ def assessment_schemas(schemas):
             ]
         },
         "score": {"type": "integer", "minimum": 1, "maximum": 5},
-        "level": {
-            "enum": ["FOUNDATION_NEEDED", "EARLY", "DEVELOPING", "PREPARED", "ESTABLISHED"]
-        },
+        "level": {"enum": ["FOUNDATION_NEEDED", "EARLY", "DEVELOPING", "PREPARED", "ESTABLISHED"]},
         "scale_min": {"const": 1},
         "scale_max": {"const": 5},
         "explanation": {"type": "string", "minLength": 1, "maxLength": 1000},
@@ -321,8 +319,14 @@ def policy_schemas(schemas):
         "languages": _strings(pattern=LANGUAGE_PATTERN, maximum=20),
         "review_mode": {"enum": list(REVIEW_MODES)},
         "budget_units": {"type": "integer", "minimum": 0, "maximum": MAX_BUDGET_UNITS},
-        # Empty by default and, in this build, always: no tool catalogue exists yet.
-        "tools": {"type": "array", "maxItems": 0, "items": {"type": "string", "pattern": TOOL_PATTERN}},
+        # Use-case enablement never implies a tool. Each reviewed tool identifier is named separately,
+        # and require() refuses any requested tool absent from this exact rule.
+        "tools": {
+            "type": "array",
+            "maxItems": 20,
+            "uniqueItems": True,
+            "items": {"type": "string", "pattern": TOOL_PATTERN},
+        },
     }
     schemas["AIUseCasePolicy"] = closed(rule, list(rule))
     schemas["AIPolicyData"] = closed(

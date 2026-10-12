@@ -6992,3 +6992,12 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0074_fine_grained_grant_facets.sql | bcb46a4230d8208d3a65b1c2b63cb37b94e6ef2660bfd24549a4da1edc3a14d6 |
+
+
+## Migration0078 — named AI use cases and separate tools (local0.90 coding candidate)
+
+`0078_named_ai_use_cases_and_tools.sql` SHA256 `a80e69526e3c5484c2acbcd9ee34529243e0fc33542c27f94b5e02486721654c`. Schema78 widens the existing immutable AI-policy revision rows so every closed named use case may be configured and each may carry at most20 distinct reviewed tool identifiers. This does not create a runtime: the shared pre-transmission policy gate must still match the exact use case and every requested tool. All0001–0077 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0078_named_ai_use_cases_and_tools.sql | a80e69526e3c5484c2acbcd9ee34529243e0fc33542c27f94b5e02486721654c |

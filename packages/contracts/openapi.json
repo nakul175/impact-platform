@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.79.0",
+    "version": "1.80.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -47103,7 +47103,7 @@
         "operationId": "get_ai_policy",
         "summary": "get ai policy",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.26.0",
+        "x-contract-version": "1.80.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -47202,7 +47202,7 @@
         "operationId": "update_ai_policy",
         "summary": "update ai policy",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.26.0",
+        "x-contract-version": "1.80.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -47313,7 +47313,7 @@
         "operationId": "list_ai_policy_revisions",
         "summary": "list ai policy revisions",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.26.0",
+        "x-contract-version": "1.80.0",
         "parameters": [
           {
             "name": "tenant_id",
@@ -89296,7 +89296,8 @@
           },
           "tools": {
             "type": "array",
-            "maxItems": 0,
+            "maxItems": 20,
+            "uniqueItems": true,
             "items": {
               "type": "string",
               "pattern": "^[a-z][a-z0-9_.-]{0,63}$"

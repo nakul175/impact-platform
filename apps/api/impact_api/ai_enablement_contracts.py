@@ -14,6 +14,9 @@ IMPLEMENTED = [
     ("get", "ai-enablement/catalog"),
     ("post", "ai-enablement/assessment"),
     ("post", "ai-enablement/advisory"),
+    ("post", "ai-enablement/advisory-jobs"),
+    ("get", "ai-enablement/advisory-jobs/{job_id}"),
+    ("post", "ai-enablement/advisory-jobs/{job_id}/actions/cancel"),
     ("get", "ai-enablement/solutions"),
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
@@ -166,6 +169,40 @@ def augment(spec, policy):
         },
         ["status", "text", "assessment", "model", "disclaimer", "trace"],
     )
+    schemas["AIAdvisoryJob"] = closed(
+        {
+            "job_id": {"type": "string", "format": "uuid"},
+            "operation_id": {"type": "string", "format": "uuid"},
+            "state": {
+                "enum": [
+                    "Requested",
+                    "Validating",
+                    "Queued",
+                    "Running",
+                    "Cancelling",
+                    "Succeeded",
+                    "SucceededWithIssues",
+                    "Failed",
+                    "Cancelled",
+                ]
+            },
+            "estimated_units": {"type": "integer", "minimum": 1},
+            "requested_at": {"type": "string", "format": "date-time"},
+            "cancellation_requested": {"type": "boolean"},
+            "progress": {"type": "integer", "minimum": 0, "maximum": 100},
+            "can_cancel": {"type": "boolean"},
+        },
+        [
+            "job_id",
+            "operation_id",
+            "state",
+            "estimated_units",
+            "requested_at",
+            "cancellation_requested",
+            "progress",
+            "can_cancel",
+        ],
+    )
     for method, route, op, cap, request, response, roles in [
         (
             "get",
@@ -249,6 +286,69 @@ def augment(spec, policy):
                 "purpose_required": op == "create_ai_advisory",
                 "fresh_assurance_seconds": None,
                 "audit": op == "create_ai_advisory",
+            }
+        )
+    job_base = "/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs"
+    for method, path, operation in [
+        ("post", job_base, "create_ai_advisory_job"),
+        ("get", job_base + "/{job_id}", "get_ai_advisory_job"),
+        ("post", job_base + "/{job_id}/actions/cancel", "cancel_ai_advisory_job"),
+    ]:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{job_id}" in path:
+            parameters.append(
+                {
+                    "name": "job_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        success = "202" if operation == "create_ai_advisory_job" else "200"
+        entry = {
+            "operationId": operation,
+            "summary": operation.replace("_", " "),
+            "x-capability": "ai.advisory.request",
+            "x-contract-version": VERSION,
+            "responses": {
+                success: {
+                    "description": "Durable AI job",
+                    "content": {
+                        "application/json": {"schema": {"$ref": "#/components/schemas/AIAdvisoryJob"}}
+                    },
+                }
+            },
+        }
+        if operation == "create_ai_advisory_job":
+            entry["requestBody"] = {
+                "required": True,
+                "content": {
+                    "application/json": {"schema": {"$ref": "#/components/schemas/AIAdvisoryRequest"}}
+                },
+            }
+        for status in ["400", "401", "403", "404", "409", "429", "503"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        spec["paths"][path] = {"parameters": parameters, method: entry}
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": method.upper(),
+                "path": path,
+                "capability": "ai.advisory.request",
+                "role_templates": ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
             }
         )
     policy_paths(spec, policy)

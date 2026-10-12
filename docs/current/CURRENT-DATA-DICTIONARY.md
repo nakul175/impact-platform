@@ -7010,3 +7010,12 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0079_ai_advisory_sources.sql | 5993b9623735ccbc4db80b259dd25ba3fd75fd9214a8bf5515623dd0e406ada5 |
+
+
+## Migration0080 — AI advisory jobs and budget reservations (local0.96 coding candidate)
+
+`0080_ai_advisory_jobs.sql` SHA256 `b3e4796db9d40b55143a8e6292f0d77716450dc855dcc801f5c6296567bdc152`. Schema80 adds tenant-fenced durable advisory-job metadata with encrypted input and an exact immutable policy-version pin, plus one reservation ledger row per job. Reservations move only from RESERVED to SETTLED or RELEASED; estimated and actual units are non-negative and settlement fields reconcile with state. The shared job row provides queued/running/cancellation lifecycle. All0001–0079 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0080_ai_advisory_jobs.sql | b3e4796db9d40b55143a8e6292f0d77716450dc855dcc801f5c6296567bdc152 |

@@ -29,6 +29,9 @@
 | GET | `/v1/tenants/{tenant_id}/agreements` | `subscriptions.read` |
 | POST | `/v1/tenants/{tenant_id}/agreements` | `subscription.admin` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/advisory` | `ai.advisory.request` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs` | `ai.advisory.request` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs/{job_id}` | `ai.advisory.request` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs/{job_id}/actions/cancel` | `ai.advisory.request` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/assessment` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/catalog` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/cost-comparison` | `ai.enablement.read` |

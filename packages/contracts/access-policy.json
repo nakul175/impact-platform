@@ -1,5 +1,5 @@
 {
-  "version": "1.85.0",
+  "version": "1.86.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6959,6 +6959,48 @@
       "purpose_required": true,
       "fresh_assurance_seconds": null,
       "audit": true
+    },
+    {
+      "operation_id": "create_ai_advisory_job",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_advisory_job",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs/{job_id}",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "cancel_ai_advisory_job",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs/{job_id}/actions/cancel",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
     },
     {
       "operation_id": "get_ai_policy",

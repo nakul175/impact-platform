@@ -37,6 +37,7 @@ from . import security_events
 from .dashboards import Dashboards
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
 from .ai_enablement import AIEnablement
+from .ai_jobs import AIJobs
 from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
@@ -136,6 +137,7 @@ def create_app():
     account = Account(auth)
     service = Service(s, db)
     ai_enablement = AIEnablement(service, OpenAIAdvisory(s.ai_api_key, s.ai_model), enabled=s.ai_enabled)
+    ai_jobs = AIJobs(service, ai_enablement)
     ai_policy = AIPolicy(service, ai_enablement.server_ready)
     ai_plans = AIAdoptionPlans(service)
     ai_role_training = AIRoleTraining(service)
@@ -1378,6 +1380,20 @@ def create_app():
         return await run_in_threadpool(
             ai_enablement.advisory, auth.resolve(request), uuid(tenant), body, request.state.correlation
         )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/advisory-jobs", status_code=202)
+    async def create_ai_advisory_job(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIAdvisoryRequest", body)
+        return await run_in_threadpool(ai_jobs.submit, auth.resolve(request), uuid(tenant), body)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/advisory-jobs/{job}")
+    def get_ai_advisory_job(request: Request, tenant: str, job: str):
+        return ai_jobs.status(auth.resolve(request), uuid(tenant), uuid(job))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/advisory-jobs/{job}/actions/cancel")
+    def cancel_ai_advisory_job(request: Request, tenant: str, job: str):
+        return ai_jobs.cancel(auth.resolve(request), uuid(tenant), uuid(job))
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/cost-comparison")
     async def ai_cost_comparison(request: Request, tenant: str):

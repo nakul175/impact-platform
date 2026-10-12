@@ -139,6 +139,15 @@ export function AIEnablementPanel({
     model: string;
     disclaimer: string;
   } | null>(null);
+  const [advisoryJob, setAdvisoryJob] = useState<{
+    job_id: string;
+    operation_id: string;
+    state: string;
+    estimated_units: number;
+    progress: number;
+    can_cancel: boolean;
+    cancellation_requested: boolean;
+  } | null>(null);
   const [busy, setBusy] = useState<"assessment" | "advisory" | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -188,6 +197,7 @@ export function AIEnablementPanel({
     setCatalogState(null);
     setAssessment(null);
     setAdvisory(null);
+    setAdvisoryJob(null);
     setError("");
     setBusy(null);
     setProfile(initialProfile);
@@ -237,6 +247,7 @@ export function AIEnablementPanel({
     setConsent(false);
     setAssessment(null);
     setAdvisory(null);
+    setAdvisoryJob(null);
     setError("");
   };
   function loadProfile(value: Profile) {
@@ -248,6 +259,7 @@ export function AIEnablementPanel({
     setConsent(false);
     setAssessment(null);
     setAdvisory(null);
+    setAdvisoryJob(null);
     setError("");
     setBusy(null);
   }
@@ -276,19 +288,24 @@ export function AIEnablementPanel({
     setBusy(kind);
     setAdvisory(null);
     try {
-      const result = await request(base + "ai-enablement/" + kind, {
-        method: "POST",
-        signal: controller.signal,
-        body:
-          kind === "advisory"
-            ? pendingAdvisory.current!
-            : JSON.stringify({ profile }),
-      });
+      const result = await request(
+        base +
+          "ai-enablement/" +
+          (kind === "advisory" ? "advisory-jobs" : kind),
+        {
+          method: "POST",
+          signal: controller.signal,
+          body:
+            kind === "advisory"
+              ? pendingAdvisory.current!
+              : JSON.stringify({ profile }),
+        },
+      );
       if (currentGeneration !== generation.current) return;
-      setAssessment(result.assessment);
+      if (result.assessment) setAssessment(result.assessment);
       if (kind === "advisory") {
         pendingAdvisory.current = null;
-        setAdvisory(result);
+        setAdvisoryJob(result);
       }
     } catch (e) {
       if (
@@ -515,7 +532,7 @@ export function AIEnablementPanel({
                           }
                         }}
                       >
-                        Request AI advisory draft
+                        Queue AI advisory draft
                       </button>
                     )}
                   </div>
@@ -550,7 +567,7 @@ export function AIEnablementPanel({
                 <p role="status">
                   {busy === "assessment"
                     ? "Assessing your brief…"
-                    : "Preparing an AI advisory draft…"}
+                    : "Reserving budget and queueing the advisory job…"}
                 </p>
               )}
             </section>
@@ -638,6 +655,47 @@ export function AIEnablementPanel({
               request={request}
               explain={explain}
             />
+            {advisoryJob && (
+              <section aria-labelledby="ai-advisory-job" aria-live="polite">
+                <h3 id="ai-advisory-job">AI advisory job</h3>
+                <p role="status">
+                  {label(advisoryJob.state)} · {advisoryJob.progress}% ·{" "}
+                  {advisoryJob.estimated_units} unit reserved
+                </p>
+                <div className="actions">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      const current = await request(
+                        base +
+                          "ai-enablement/advisory-jobs/" +
+                          advisoryJob.job_id,
+                      );
+                      setAdvisoryJob(current);
+                    }}
+                  >
+                    Refresh progress
+                  </button>
+                  {advisoryJob.can_cancel && (
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        const cancelled = await request(
+                          base +
+                            "ai-enablement/advisory-jobs/" +
+                            advisoryJob.job_id +
+                            "/actions/cancel",
+                          { method: "POST" },
+                        );
+                        setAdvisoryJob(cancelled);
+                      }}
+                    >
+                      Cancel AI job
+                    </button>
+                  )}
+                </div>
+              </section>
+            )}
             {advisory && (
               <section aria-labelledby="ai-advisory">
                 <h3 id="ai-advisory">AI advisory draft</h3>

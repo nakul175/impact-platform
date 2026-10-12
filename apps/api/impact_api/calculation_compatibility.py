@@ -61,6 +61,17 @@ def _semantic_signature(definition):
     }
 
 
+def _scalar_value(definition, raw):
+    value = decimal_value(raw)
+    if not _valid_count(definition, value):
+        raise DomainError("VALIDATION_FAILED", reason="INVALID_MEASUREMENT_VALUE")
+    return value
+
+
+def _valid_count(definition, value):
+    return definition["measurement_type"] != "COUNT" or (value >= 0 and value == value.to_integral_value())
+
+
 class CalculationCompatibility:
     def __init__(self, service):
         self.service = service
@@ -85,7 +96,7 @@ class CalculationCompatibility:
                     source_data = source["payload"]
                     if _semantic_signature(source_data) != signature:
                         raise DomainError("INCOMPATIBLE_MEASURE", reason="SEMANTIC_MISMATCH")
-                    original = decimal_value(item["value"])
+                    original = _scalar_value(source_data, item["value"])
                     conversion = None
                     converted = original
                     if source_data["unit"] != target_data["unit"]:
@@ -103,6 +114,8 @@ class CalculationCompatibility:
                         )
                     elif item.get("conversion_version") is not None:
                         raise DomainError("VALIDATION_FAILED", reason="UNNECESSARY_CONVERSION")
+                    if not _valid_count(target_data, converted):
+                        raise DomainError("VALIDATION_FAILED", reason="INVALID_CONVERTED_MEASUREMENT_VALUE")
                     converted_text = stored(converted)
                     normalized.append(
                         {

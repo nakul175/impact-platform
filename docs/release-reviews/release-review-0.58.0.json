@@ -291,6 +291,7 @@
   "notes": [
     "Coding-only candidate: tests, CI, independent review, merge and deployment were not run.",
     "The sealed conversion catalogue is provisional platform governance pending owner confirmation; it currently contains only acre to hectare.",
-    "Tenant-authored conversion approval, currency and population conversions, affine conversions and non-SUM previews remain outside this bounded increment."
+    "Tenant-authored conversion approval, currency and population conversions, affine conversions and non-SUM previews remain outside this bounded increment.",
+    "Declared time semantics are compared, but actual source-period, observation-window and reporting-calendar compatibility remain pending execution-path integration."
   ]
 }

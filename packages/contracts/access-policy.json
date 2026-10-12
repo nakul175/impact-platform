@@ -1,5 +1,5 @@
 {
-  "version": "1.76.0",
+  "version": "1.77.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5563,6 +5563,36 @@
       "fresh_assurance_seconds": null,
       "audit": false,
       "state_guard": "Self explains only the current principal. Simulation requires tenant-wide grants.read and a current in-tenant subject; outputs contain no resource names or field values."
+    },
+    {
+      "operation_id": "create_derivative_manifest",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/derivatives/{derivative_id}/revisions",
+      "capability": "reports.write",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "All exact sources must be currently readable; mixed sources remain private unless the object is an approved aggregate."
+    },
+    {
+      "operation_id": "read_derivative_manifest",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/derivatives/{derivative_id}/revisions/{revision_id}",
+      "capability": "reports.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Every immutable source dependency is rechecked against current authority before disclosure."
     },
     {
       "operation_id": "list_ai_option_trials",

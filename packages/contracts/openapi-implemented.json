@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.76.0",
+    "version": "1.77.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -25685,6 +25685,94 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/derivatives/{derivative_id}/revisions": {
+      "post": {
+        "operationId": "create_derivative_manifest",
+        "summary": "Create immutable derivative source provenance",
+        "x-capability": "reports.write",
+        "x-contract-version": "1.77.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "derivative_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DerivativeManifestRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Immutable derivative manifest"
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/derivatives/{derivative_id}/revisions/{revision_id}": {
+      "get": {
+        "operationId": "read_derivative_manifest",
+        "summary": "Read a derivative only while every source remains readable",
+        "x-capability": "reports.read",
+        "x-contract-version": "1.77.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "derivative_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "revision_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Manifest with exact source revisions"
+          },
+          "404": {
+            "description": "Derivative or a source is unavailable"
           }
         }
       }
@@ -67611,6 +67699,68 @@
           "restrictions",
           "missing_assurance",
           "subject_principal_id"
+        ]
+      },
+      "DerivativeManifestRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "enum": [
+              "Dashboard",
+              "Search",
+              "Analysis",
+              "AIArtifact",
+              "ApprovedAggregate"
+            ]
+          },
+          "disclosure_mode": {
+            "enum": [
+              "PRIVATE",
+              "APPROVED_AGGREGATE"
+            ]
+          },
+          "sources": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "object_type": {
+                  "type": "string"
+                },
+                "capability": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "object_id",
+                "revision_id",
+                "object_type",
+                "capability"
+              ]
+            }
+          }
+        },
+        "required": [
+          "revision_id",
+          "kind",
+          "disclosure_mode",
+          "sources"
         ]
       },
       "AITrialCreate": {

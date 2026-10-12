@@ -65,6 +65,7 @@ from .agreement_coverage import AgreementCoverage
 from .access_checks import AccessChecks
 from .fine_grained_access import FineGrainedAccess
 from .effective_access import EffectiveAccess
+from .permission_safe_derivatives import PermissionSafeDerivatives
 from .ai_trials import AITrials
 from .partner_revenue import PartnerRevenue
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
@@ -159,6 +160,7 @@ def create_app():
     access_checks = AccessChecks(service)
     fine_grained_access = FineGrainedAccess(service)
     effective_access = EffectiveAccess(service)
+    permission_safe_derivatives = PermissionSafeDerivatives(service)
     ai_trials = AITrials(service, ai_value_cases)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
@@ -724,7 +726,9 @@ def create_app():
     @app.post("/v1/tenants/{tenant}/ai-enablement/solution-fit-scores", status_code=201)
     async def ai_solution_fit_score_create(request: Request, tenant: str):
         body = await strict_body(request)
-        return ai_solution_fit_scores.create(auth.resolve(request), uuid(tenant), body, request.state.correlation)
+        return ai_solution_fit_scores.create(
+            auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/task-templates")
     def ai_task_templates(request: Request, tenant: str):
@@ -799,17 +803,13 @@ def create_app():
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributor-invitations")
     def ai_diagnosis_contributor_invitations(request: Request, tenant: str, obj: str):
-        return ai_diagnosis_contributions.list_invitations(
-            auth.resolve(request), uuid(tenant), uuid(obj)
-        )
+        return ai_diagnosis_contributions.list_invitations(auth.resolve(request), uuid(tenant), uuid(obj))
 
     @app.post(
         "/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributor-invitations",
         status_code=201,
     )
-    async def ai_diagnosis_contributor_invitation_create(
-        request: Request, tenant: str, obj: str
-    ):
+    async def ai_diagnosis_contributor_invitation_create(request: Request, tenant: str, obj: str):
         body = await strict_body(request)
         validate("AIDiagnosisContributorInvitationCreate", body)
         return await run_in_threadpool(
@@ -823,9 +823,7 @@ def create_app():
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributions")
     def ai_diagnosis_contributions_list(request: Request, tenant: str, obj: str):
-        return ai_diagnosis_contributions.list_contributions(
-            auth.resolve(request), uuid(tenant), uuid(obj)
-        )
+        return ai_diagnosis_contributions.list_contributions(auth.resolve(request), uuid(tenant), uuid(obj))
 
     @app.post(
         "/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributions",
@@ -846,9 +844,7 @@ def create_app():
     @app.post(
         "/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributions/{contribution_id}/actions/accept"
     )
-    async def ai_diagnosis_contribution_accept(
-        request: Request, tenant: str, obj: str, contribution_id: str
-    ):
+    async def ai_diagnosis_contribution_accept(request: Request, tenant: str, obj: str, contribution_id: str):
         body = await strict_body(request)
         validate("AIDiagnosisContributionDecision", body)
         return await run_in_threadpool(
@@ -865,9 +861,7 @@ def create_app():
     @app.post(
         "/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributions/{contribution_id}/actions/reject"
     )
-    async def ai_diagnosis_contribution_reject(
-        request: Request, tenant: str, obj: str, contribution_id: str
-    ):
+    async def ai_diagnosis_contribution_reject(request: Request, tenant: str, obj: str, contribution_id: str):
         body = await strict_body(request)
         validate("AIDiagnosisContributionRejection", body)
         return await run_in_threadpool(
@@ -885,7 +879,14 @@ def create_app():
     async def ai_diagnosis_review_request(request: Request, tenant: str, obj: str):
         body = await strict_body(request)
         validate("AIDiagnosisReviewRequest", body)
-        return await run_in_threadpool(ai_diagnosis_reviews.request, auth.resolve(request), uuid(tenant), uuid(obj), body, request.state.correlation)
+        return await run_in_threadpool(
+            ai_diagnosis_reviews.request,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/advisor-reviews")
     def ai_diagnosis_review_list(request: Request, tenant: str, obj: str):
@@ -902,7 +903,15 @@ def create_app():
     async def diagnosis_review_action(request, tenant, review_id, schema, kind):
         body = await strict_body(request)
         validate(schema, body)
-        return await run_in_threadpool(ai_diagnosis_reviews.act, auth.resolve(request), uuid(tenant), uuid(review_id), body, request.state.correlation, kind)
+        return await run_in_threadpool(
+            ai_diagnosis_reviews.act,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(review_id),
+            body,
+            request.state.correlation,
+            kind,
+        )
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/diagnosis-reviews/{review_id}/actions/start")
     async def ai_diagnosis_review_start(request: Request, tenant: str, review_id: str):
@@ -910,16 +919,18 @@ def create_app():
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/diagnosis-reviews/{review_id}/comments")
     async def ai_diagnosis_review_comment(request: Request, tenant: str, review_id: str):
-        return await diagnosis_review_action(request, tenant, review_id, "AIDiagnosisReviewComment", "COMMENTED")
+        return await diagnosis_review_action(
+            request, tenant, review_id, "AIDiagnosisReviewComment", "COMMENTED"
+        )
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/diagnosis-reviews/{review_id}/actions/validate")
     async def ai_diagnosis_review_validate(request: Request, tenant: str, review_id: str):
-        return await diagnosis_review_action(request, tenant, review_id, "AIDiagnosisReviewAction", "VALIDATED")
+        return await diagnosis_review_action(
+            request, tenant, review_id, "AIDiagnosisReviewAction", "VALIDATED"
+        )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines")
-    def ai_problem_baseline_list(
-        request: Request, tenant: str, limit: int = 50, cursor: str | None = None
-    ):
+    def ai_problem_baseline_list(request: Request, tenant: str, limit: int = 50, cursor: str | None = None):
         return ai_problem_baselines.listing(auth.resolve(request), uuid(tenant), limit, cursor)
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/outcome-observations", status_code=201)
@@ -938,7 +949,9 @@ def create_app():
     async def ai_outcome_sharing_consent_create(request: Request, tenant: str):
         body = await strict_body(request)
         validate("AIOutcomeSharingConsentCreate", body)
-        return await run_in_threadpool(ai_outcome_evidence.consent, auth.resolve(request), uuid(tenant), body, request.state.correlation)
+        return await run_in_threadpool(
+            ai_outcome_evidence.consent, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
 
     @app.get("/v1/platform/outcome-evidence-publications")
     def ai_outcome_evidence_publication_list(request: Request):
@@ -954,7 +967,9 @@ def create_app():
     async def ai_outcome_evidence_publication_action(request: Request, publication_id: str, action: str):
         body = await strict_body(request)
         validate("AIOutcomeEvidenceAction", body)
-        return await run_in_threadpool(ai_outcome_evidence.action, auth.resolve(request), uuid(publication_id), action, body)
+        return await run_in_threadpool(
+            ai_outcome_evidence.action, auth.resolve(request), uuid(publication_id), action, body
+        )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/outcomes-dashboard")
     def ai_outcomes_dashboard_get(
@@ -992,41 +1007,91 @@ def create_app():
     async def ai_quarterly_value_review_start(request: Request, tenant: str):
         body = await strict_body(request)
         validate("AIQuarterlyValueReviewStart", body)
-        return await run_in_threadpool(ai_quarterly_value_reviews.start, auth.resolve(request), uuid(tenant), body, request.state.correlation)
+        return await run_in_threadpool(
+            ai_quarterly_value_reviews.start,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}")
     def ai_quarterly_value_review_get(request: Request, tenant: str, review_id: str):
         return ai_quarterly_value_reviews.get(auth.resolve(request), uuid(tenant), uuid(review_id))
 
-    @app.post("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/agreements", status_code=201)
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/agreements", status_code=201
+    )
     async def ai_quarterly_value_review_agreement(request: Request, tenant: str, review_id: str):
         body = await strict_body(request)
         validate("AIQuarterlyValueReviewAgreementCreate", body)
-        return await run_in_threadpool(ai_quarterly_value_reviews.agreement, auth.resolve(request), uuid(tenant), uuid(review_id), body, request.state.correlation)
+        return await run_in_threadpool(
+            ai_quarterly_value_reviews.agreement,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(review_id),
+            body,
+            request.state.correlation,
+        )
 
-    @app.post("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/actions", status_code=201)
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/actions", status_code=201
+    )
     async def ai_quarterly_value_review_action(request: Request, tenant: str, review_id: str):
         body = await strict_body(request)
         validate("AIQuarterlyValueReviewActionCreate", body)
-        return await run_in_threadpool(ai_quarterly_value_reviews.action, auth.resolve(request), uuid(tenant), uuid(review_id), body, request.state.correlation)
+        return await run_in_threadpool(
+            ai_quarterly_value_reviews.action,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(review_id),
+            body,
+            request.state.correlation,
+        )
 
-    @app.post("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/actions/{action_id}/progress", status_code=201)
-    async def ai_quarterly_value_review_progress(request: Request, tenant: str, review_id: str, action_id: str):
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/actions/{action_id}/progress",
+        status_code=201,
+    )
+    async def ai_quarterly_value_review_progress(
+        request: Request, tenant: str, review_id: str, action_id: str
+    ):
         body = await strict_body(request)
         validate("AIQuarterlyValueReviewActionProgress", body)
-        return await run_in_threadpool(ai_quarterly_value_reviews.action, auth.resolve(request), uuid(tenant), uuid(review_id), body, request.state.correlation, uuid(action_id))
+        return await run_in_threadpool(
+            ai_quarterly_value_reviews.action,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(review_id),
+            body,
+            request.state.correlation,
+            uuid(action_id),
+        )
 
-    @app.post("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/actions/complete", status_code=201)
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/actions/complete",
+        status_code=201,
+    )
     async def ai_quarterly_value_review_complete(request: Request, tenant: str, review_id: str):
         body = await strict_body(request)
         validate("AIQuarterlyValueReviewComplete", body)
-        return await run_in_threadpool(ai_quarterly_value_reviews.complete, auth.resolve(request), uuid(tenant), uuid(review_id), body, request.state.correlation)
+        return await run_in_threadpool(
+            ai_quarterly_value_reviews.complete,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(review_id),
+            body,
+            request.state.correlation,
+        )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/next-opportunities")
     def ai_next_opportunity_list(request: Request, tenant: str):
         return ai_next_opportunities.listing(auth.resolve(request), uuid(tenant))
 
-    @app.post("/v1/tenants/{tenant}/ai-enablement/next-opportunities/{suggestion_id}/actions/take-up", status_code=201)
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/next-opportunities/{suggestion_id}/actions/take-up",
+        status_code=201,
+    )
     async def ai_next_opportunity_take_up(request: Request, tenant: str, suggestion_id: str):
         body = await strict_body(request)
         validate("AINextOpportunityTakeUp", body)
@@ -1040,9 +1105,7 @@ def create_app():
         )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/opportunity-map")
-    def ai_opportunity_map_get(
-        request: Request, tenant: str, obj: str, revision_id: str | None = None
-    ):
+    def ai_opportunity_map_get(request: Request, tenant: str, obj: str, revision_id: str | None = None):
         return ai_opportunity_mapping.get(
             auth.resolve(request),
             uuid(tenant),
@@ -1071,19 +1134,11 @@ def create_app():
     def ai_problem_baseline_history(
         request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
     ):
-        return ai_problem_baselines.history(
-            auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor
-        )
+        return ai_problem_baselines.history(auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor)
 
-    @app.get(
-        "/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}/revisions/{revision_id}"
-    )
-    def ai_problem_baseline_revision(
-        request: Request, tenant: str, obj: str, revision_id: str
-    ):
-        return ai_problem_baselines.get(
-            auth.resolve(request), uuid(tenant), uuid(obj), uuid(revision_id)
-        )
+    @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}/revisions/{revision_id}")
+    def ai_problem_baseline_revision(request: Request, tenant: str, obj: str, revision_id: str):
+        return ai_problem_baselines.get(auth.resolve(request), uuid(tenant), uuid(obj), uuid(revision_id))
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/problem-baselines", status_code=201)
     async def ai_problem_baseline_create(request: Request, tenant: str):
@@ -1110,9 +1165,7 @@ def create_app():
             uuid(obj),
         )
 
-    @app.post(
-        "/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}/actions/lock"
-    )
+    @app.post("/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}/actions/lock")
     async def ai_problem_baseline_lock(request: Request, tenant: str, obj: str):
         body = await strict_body(request)
         validate("AIProblemBaselineLock", body)
@@ -1186,12 +1239,8 @@ def create_app():
             "generate",
         )
 
-    @app.put(
-        "/v1/tenants/{tenant}/ai-enablement/plans/{obj}/deployment/milestones/{milestone_code}"
-    )
-    async def ai_deployment_progress(
-        request: Request, tenant: str, obj: str, milestone_code: str
-    ):
+    @app.put("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/deployment/milestones/{milestone_code}")
+    async def ai_deployment_progress(request: Request, tenant: str, obj: str, milestone_code: str):
         body = await strict_body(request)
         validate("AIDeploymentProgress", body)
         return await run_in_threadpool(
@@ -1245,9 +1294,7 @@ def create_app():
     @app.post(
         "/v1/tenants/{tenant}/ai-enablement/plans/{obj}/role-training/modules/{module_key}/actions/complete"
     )
-    async def ai_role_training_complete(
-        request: Request, tenant: str, obj: str, module_key: str
-    ):
+    async def ai_role_training_complete(request: Request, tenant: str, obj: str, module_key: str):
         body = await strict_body(request)
         validate("AIRoleTrainingComplete", body)
         return await run_in_threadpool(
@@ -1286,9 +1333,7 @@ def create_app():
         )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/champion-guide")
-    async def ai_champion_guide_get(
-        request: Request, tenant: str, obj: str, solution_id: str
-    ):
+    async def ai_champion_guide_get(request: Request, tenant: str, obj: str, solution_id: str):
         return await run_in_threadpool(
             ai_champion_appointments.guide,
             auth.resolve(request),
@@ -1850,7 +1895,14 @@ def create_app():
     @app.post("/v1/tenants/{tenant}/grants/{grant_id}/field-policy")
     async def attach_grant_field_policy(request: Request, tenant: str, grant_id: str):
         body = await strict_body(request)
-        return await run_in_threadpool(fine_grained_access.attach, auth.resolve(request), uuid(tenant), str(uuid(grant_id)), body, request.state.correlation)
+        return await run_in_threadpool(
+            fine_grained_access.attach,
+            auth.resolve(request),
+            uuid(tenant),
+            str(uuid(grant_id)),
+            body,
+            request.state.correlation,
+        )
 
     @app.post("/v1/tenants/{tenant}/access/effective/self")
     async def explain_own_access(request: Request, tenant: str):
@@ -1861,6 +1913,27 @@ def create_app():
     async def simulate_member_access(request: Request, tenant: str):
         body = await strict_body(request)
         return await run_in_threadpool(effective_access.simulate, auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/derivatives/{derivative_id}/revisions")
+    async def create_derivative(tenant: str, derivative_id: str, request: Request):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            permission_safe_derivatives.create,
+            auth.resolve(request),
+            uuid(tenant),
+            str(uuid(derivative_id)),
+            body,
+        )
+
+    @app.get("/v1/tenants/{tenant}/derivatives/{derivative_id}/revisions/{revision_id}")
+    async def read_derivative(tenant: str, derivative_id: str, revision_id: str, request: Request):
+        return await run_in_threadpool(
+            permission_safe_derivatives.read,
+            auth.resolve(request),
+            uuid(tenant),
+            str(uuid(derivative_id)),
+            str(uuid(revision_id)),
+        )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/trials")
     def ai_trial_list(request: Request, tenant: str, opportunity_id: str):
@@ -1880,12 +1953,21 @@ def create_app():
     @app.post("/v1/tenants/{tenant}/ai-enablement/trials/{trial_id}/results", status_code=201)
     async def ai_trial_result_create(request: Request, tenant: str, trial_id: str):
         body = await strict_body(request)
-        return await run_in_threadpool(ai_trials.record_result, auth.resolve(request), uuid(tenant), str(uuid(trial_id)), body, request.state.correlation)
+        return await run_in_threadpool(
+            ai_trials.record_result,
+            auth.resolve(request),
+            uuid(tenant),
+            str(uuid(trial_id)),
+            body,
+            request.state.correlation,
+        )
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/value-cases/from-trial", status_code=201)
     async def ai_value_case_from_trial(request: Request, tenant: str):
         body = await strict_body(request)
-        return await run_in_threadpool(ai_trials.build_value_case, auth.resolve(request), uuid(tenant), body, request.state.correlation)
+        return await run_in_threadpool(
+            ai_trials.build_value_case, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
 
     @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")
     def report_exports(request: Request, tenant: str, obj: str):

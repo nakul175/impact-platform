@@ -55,6 +55,18 @@ type Solutions = {
   solutions: Solution[];
   comparison_criteria: { id: string; label: string; prompt: string }[];
 };
+type Shortlist = {
+  content_version: string;
+  opportunity_id: string;
+  expanded: boolean;
+  default_limit: 3;
+  total_vetted: number;
+  items: {
+    solution: Solution;
+    vetting_basis: "SOURCE_BACKED_EDITORIAL_EDITION";
+    opportunity_id: string;
+  }[];
+};
 type PlanDraft = {
   title: string;
   solution_ids: string[];
@@ -171,6 +183,12 @@ export function AIAdoptionWorkspace({
   const canManage = capabilities.includes("ai.enablement.manage");
   const canExport = capabilities.includes("ai.enablement.export");
   const [solutions, setSolutions] = useState<Solutions | null>(null);
+  const [shortlistOpportunity, setShortlistOpportunity] = useState(
+    catalog.use_cases[0]?.id || "",
+  );
+  const [shortlistExpanded, setShortlistExpanded] = useState(false);
+  const [shortlist, setShortlist] = useState<Shortlist | null>(null);
+  const [shortlistError, setShortlistError] = useState("");
   const [plans, setPlans] = useState<Plan[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [draft, setDraft] = useState<PlanDraft>(blankDraft);
@@ -767,6 +785,25 @@ export function AIAdoptionWorkspace({
           .toLowerCase()
           .includes(search.toLowerCase()),
     ) || [];
+  useEffect(() => {
+    if (!canRead || !shortlistOpportunity) return;
+    const controller = new AbortController();
+    setShortlist(null);
+    setShortlistError("");
+    request(
+      base +
+        "ai-enablement/solution-shortlist?opportunity_id=" +
+        encodeURIComponent(shortlistOpportunity) +
+        "&expanded=" +
+        String(shortlistExpanded),
+      { signal: controller.signal },
+    )
+      .then((value) => setShortlist(value))
+      .catch((cause) => {
+        if (!controller.signal.aborted) setShortlistError(explain(cause));
+      });
+    return () => controller.abort();
+  }, [base, canRead, shortlistOpportunity, shortlistExpanded]);
   return (
     <section className="ai-adoption" aria-labelledby="ai-adoption-tool">
       <header className="ai-section-title">
@@ -779,6 +816,64 @@ export function AIAdoptionWorkspace({
         </div>
         <span className="badge">Draft for human review</span>
       </header>
+      <section aria-labelledby="ai-opportunity-shortlist">
+        <h4 id="ai-opportunity-shortlist">
+          Vetted options for one opportunity
+        </h4>
+        <p className="muted">
+          The default list is capped at three source-backed editorial options.
+          More appear only after your explicit request. Source-backed does not
+          mean endorsed or approved for purchase.
+        </p>
+        <label>
+          Opportunity
+          <select
+            value={shortlistOpportunity}
+            onChange={(event) => {
+              setShortlistOpportunity(event.target.value);
+              setShortlistExpanded(false);
+            }}
+          >
+            {catalog.use_cases.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        {shortlistError && <p role="alert">{shortlistError}</p>}
+        {shortlist && (
+          <>
+            <p aria-live="polite">
+              {shortlist.items.length} of {shortlist.total_vetted} vetted
+              options shown.
+            </p>
+            <div className="ai-cards">
+              {shortlist.items.map(({ solution }) => (
+                <article key={solution.id}>
+                  <h5>{solution.name}</h5>
+                  <p>{solution.description}</p>
+                  <AIDisclosureLabel
+                    name={solution.name}
+                    disclosure={solution.commercial_disclosure}
+                  />
+                  <AIToolSources solution={solution} />
+                </article>
+              ))}
+            </div>
+            {!shortlist.expanded && shortlist.total_vetted > 3 && (
+              <button type="button" onClick={() => setShortlistExpanded(true)}>
+                Show more vetted options
+              </button>
+            )}
+            {shortlist.expanded && shortlist.total_vetted > 3 && (
+              <button type="button" onClick={() => setShortlistExpanded(false)}>
+                Show only the first three
+              </button>
+            )}
+          </>
+        )}
+      </section>
       <div className="ai-plan-bar">
         <label>
           Saved adoption plans

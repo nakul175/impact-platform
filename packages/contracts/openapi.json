@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.35.0",
+    "version": "1.36.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -45920,6 +45920,96 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/solution-shortlist": {
+      "get": {
+        "operationId": "get_ai_solution_shortlist",
+        "summary": "Get a bounded source-backed shortlist",
+        "x-capability": "ai.enablement.read",
+        "x-contract-version": "1.36.0",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "opportunity_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            }
+          },
+          {
+            "name": "expanded",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "At most three by default; all source-backed matches only after explicit expansion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AISolutionShortlist"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid opportunity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Policy denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Catalogue unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDiagnosisError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/problem-baselines": {
       "get": {
         "operationId": "list_ai_problem_baselines",
@@ -79136,6 +79226,259 @@
           }
         },
         "required": [
+          "items"
+        ]
+      },
+      "AISolutionShortlist": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "content_version": {
+            "type": "string"
+          },
+          "opportunity_id": {
+            "type": "string"
+          },
+          "expanded": {
+            "type": "boolean"
+          },
+          "default_limit": {
+            "const": 3
+          },
+          "total_vetted": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "solution": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "maxLength": 12000
+                    },
+                    "name": {
+                      "type": "string",
+                      "maxLength": 12000
+                    },
+                    "provider": {
+                      "type": "string",
+                      "maxLength": 12000
+                    },
+                    "category": {
+                      "enum": [
+                        "DESIGN",
+                        "DEVELOPER_PLATFORM",
+                        "GENERAL_ASSISTANT",
+                        "KNOWLEDGE_ASSISTANT",
+                        "TRANSLATION",
+                        "WORKSPACE_ASSISTANT"
+                      ]
+                    },
+                    "use_case_ids": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "type": "string",
+                        "maxLength": 12000
+                      }
+                    },
+                    "description": {
+                      "type": "string",
+                      "maxLength": 12000
+                    },
+                    "deployment": {
+                      "type": "string",
+                      "maxLength": 12000
+                    },
+                    "commercial_model": {
+                      "type": "string",
+                      "maxLength": 12000
+                    },
+                    "nonprofit_offer": {
+                      "type": "string",
+                      "maxLength": 12000
+                    },
+                    "api_available": {
+                      "type": "string",
+                      "maxLength": 12000
+                    },
+                    "source_urls": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "label": {
+                            "type": "string",
+                            "maxLength": 12000
+                          },
+                          "url": {
+                            "type": "string",
+                            "maxLength": 12000
+                          }
+                        },
+                        "required": [
+                          "label",
+                          "url"
+                        ]
+                      }
+                    },
+                    "verification_notes": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "type": "string",
+                        "maxLength": 12000
+                      }
+                    },
+                    "data_review_questions": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "type": "string",
+                        "maxLength": 12000
+                      }
+                    },
+                    "commercial_disclosure": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "status": {
+                              "const": "NONE_KNOWN"
+                            },
+                            "relationship_types": {
+                              "type": "array",
+                              "maxItems": 0
+                            },
+                            "statement": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 1000,
+                              "pattern": "\\S"
+                            },
+                            "declared_on": {
+                              "type": "string",
+                              "format": "date",
+                              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                            },
+                            "editorial_confirmation": {
+                              "enum": [
+                                "PENDING",
+                                "CONFIRMED"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "relationship_types",
+                            "statement",
+                            "declared_on",
+                            "editorial_confirmation"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "status": {
+                              "const": "DISCLOSED"
+                            },
+                            "relationship_types": {
+                              "type": "array",
+                              "minItems": 1,
+                              "maxItems": 5,
+                              "uniqueItems": true,
+                              "items": {
+                                "enum": [
+                                  "referral_fee",
+                                  "revenue_share",
+                                  "reseller",
+                                  "sponsorship",
+                                  "ownership"
+                                ]
+                              }
+                            },
+                            "statement": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 1000,
+                              "pattern": "\\S"
+                            },
+                            "declared_on": {
+                              "type": "string",
+                              "format": "date",
+                              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                            },
+                            "editorial_confirmation": {
+                              "enum": [
+                                "PENDING",
+                                "CONFIRMED"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "relationship_types",
+                            "statement",
+                            "declared_on",
+                            "editorial_confirmation"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "provider",
+                    "category",
+                    "use_case_ids",
+                    "description",
+                    "deployment",
+                    "commercial_model",
+                    "nonprofit_offer",
+                    "api_available",
+                    "source_urls",
+                    "verification_notes",
+                    "data_review_questions",
+                    "commercial_disclosure"
+                  ]
+                },
+                "vetting_basis": {
+                  "const": "SOURCE_BACKED_EDITORIAL_EDITION"
+                },
+                "opportunity_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 120
+                }
+              },
+              "required": [
+                "solution",
+                "vetting_basis",
+                "opportunity_id"
+              ]
+            }
+          }
+        },
+        "required": [
+          "content_version",
+          "opportunity_id",
+          "expanded",
+          "default_limit",
+          "total_vetted",
           "items"
         ]
       },

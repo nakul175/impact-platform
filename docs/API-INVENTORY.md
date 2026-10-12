@@ -74,6 +74,7 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/ranking` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/ranking-weights` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/ranking-weights` | `ai.enablement.manage` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/solution-shortlist` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/solutions` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/task-templates` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/assignments` | `assignments.read` |

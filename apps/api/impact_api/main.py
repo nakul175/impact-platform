@@ -643,6 +643,10 @@ def create_app():
     def ai_solutions(request: Request, tenant: str):
         return ai_enablement.solutions(auth.resolve(request), uuid(tenant))
 
+    @app.get("/v1/tenants/{tenant}/ai-enablement/solution-shortlist")
+    def ai_solution_shortlist(request: Request, tenant: str, opportunity_id: str, expanded: bool = False):
+        return ai_enablement.solution_shortlist(auth.resolve(request), uuid(tenant), opportunity_id, expanded)
+
     @app.get("/v1/tenants/{tenant}/ai-enablement/task-templates")
     def ai_task_templates(request: Request, tenant: str):
         return ai_enablement.task_templates(auth.resolve(request), uuid(tenant))

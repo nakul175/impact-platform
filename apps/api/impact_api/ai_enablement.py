@@ -104,6 +104,27 @@ class AIEnablement:
                 LOG.error("AI solutions catalogue refused: %s", error)
                 raise DomainError("SERVICE_UNAVAILABLE", 503, reason="AI_SOLUTIONS_CATALOG_INVALID") from None
 
+    def solution_shortlist(self, identity, tenant, opportunity_id, expanded=False):
+        if not isinstance(opportunity_id, str) or not opportunity_id.strip() or len(opportunity_id) > 120 or type(expanded) is not bool:
+            raise DomainError("VALIDATION_FAILED", 400, reason="AI_SHORTLIST_INVALID")
+        with self.service.db.transaction(tenant) as c:
+            self._authority(c, identity, tenant, "get_ai_solution_shortlist")
+            try:
+                catalog = solutions_catalog()
+            except SolutionsCatalogInvalid as error:
+                LOG.error("AI solutions shortlist refused: %s", error)
+                raise DomainError("SERVICE_UNAVAILABLE", 503, reason="AI_SOLUTIONS_CATALOG_INVALID") from None
+            matches = [item for item in catalog["solutions"] if opportunity_id in item["use_case_ids"]]
+            shown = matches if expanded else matches[:3]
+            return {
+                "content_version": catalog["content_version"],
+                "opportunity_id": opportunity_id,
+                "expanded": expanded,
+                "default_limit": 3,
+                "total_vetted": len(matches),
+                "items": [{"solution": item, "vetting_basis": "SOURCE_BACKED_EDITORIAL_EDITION", "opportunity_id": opportunity_id} for item in shown],
+            }
+
     def cost_comparison(self, identity, tenant, body):
         from .ai_procurement_costs import compare_costs
 

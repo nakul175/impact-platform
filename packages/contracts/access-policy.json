@@ -1,5 +1,5 @@
 {
-  "version": "1.35.0",
+  "version": "1.36.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6529,6 +6529,25 @@
       "purpose_required": false,
       "fresh_assurance_seconds": 300,
       "audit": true
+    },
+    {
+      "operation_id": "get_ai_solution_shortlist",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/solution-shortlist",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "FINANCE"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
     },
     {
       "operation_id": "list_ai_problem_baselines",

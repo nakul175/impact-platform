@@ -111,3 +111,10 @@ def augment(spec, policy):
             ),
         },
     )
+    schemas["Freshness"]["properties"]["failed_attempt"] = closed(
+        {
+            "error_code": text(64),
+            "reason_code": {"type": ["string", "null"], "maxLength": 64},
+            "failed_at": {"type": "string", "format": "date-time"},
+        }
+    )

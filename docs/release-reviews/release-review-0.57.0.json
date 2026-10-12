@@ -255,8 +255,10 @@
       "change_id": "FR-CAL-001-deterministic-manifest",
       "paths": [
         "apps/api/impact_api/calculation_contracts.py",
+        "apps/api/impact_api/main.py",
         "apps/api/impact_api/service.py",
         "infrastructure/migrations/0052_calculation_provenance.sql",
+        "infrastructure/migrations/0053_calculation_failures.sql",
         "docs/current/CURRENT-DATA-DICTIONARY.md",
         "packages/contracts/openapi.json",
         "packages/contracts/openapi-implemented.json"
@@ -266,12 +268,13 @@
         "deterministic formula metadata",
         "source contribution explanation",
         "immutable result lineage",
-        "failed-run non-overwrite",
+        "failed-run non-overwrite and exact retry",
+        "visible stale marker after a later failed attempt",
         "AI exclusion from official arithmetic",
         "typed projection migration compatibility"
       ],
       "threats": ["TH09", "TH22", "TH28", "TH32"],
-      "summary": "Coding-only candidate binds every successful calculation to a frozen rule/source/execution manifest, records included and excluded source explanations, and exposes formula, precision, filter and raw/display metadata without accepting AI-supplied official values. Failed runs remain transactional refusals rather than zero results; a durable failed-attempt record for unchanged dependencies remains an explicit gap.",
+      "summary": "Coding-only candidate binds every successful calculation to a frozen rule/source/execution manifest, records included and excluded source explanations, and exposes formula, precision, filter and raw/display metadata without accepting AI-supplied official values. Failed runs remain transactional refusals rather than zero results; an immutable post-rollback record makes exact retries deterministic and marks a prior result stale. The bounded reproduction export remains incomplete.",
       "confirmed_by": null
     }
   ],
@@ -279,6 +282,6 @@
   "notes": [
     "Coding-only candidate: tests, CI, independent review, merge and deployment were not run.",
     "Hierarchy, unit conversion, weighting, population overlap, dimension crosswalks and production workload qualification remain outside this bounded story increment.",
-    "A failed run with unchanged dependencies does not yet create a durable failed-attempt record; the prior result remains immutable but this part of AC-FR-CAL-001-004 is incomplete."
+    "A bounded current-authority reproduction export remains incomplete; this part of AC-FR-CAL-001-002 is still open."
   ]
 }

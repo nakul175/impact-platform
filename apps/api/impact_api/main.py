@@ -169,6 +169,11 @@ def create_app():
             await run_in_threadpool(
                 security_events.record, db, exc.denial, request.state.correlation, request.url.path
             )
+        if getattr(exc, "calculation_failure", None):
+            try:
+                await run_in_threadpool(service.record_calculation_failure, exc.calculation_failure)
+            except Exception:
+                LOG.exception("Could not preserve calculation failure receipt")
         return error(request, exc)
 
     @app.exception_handler(RequestValidationError)

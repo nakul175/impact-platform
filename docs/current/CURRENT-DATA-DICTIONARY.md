@@ -6811,3 +6811,11 @@ COMMIT;
 | Migration | SHA-256 |
 | --- | --- |
 | 0052_calculation_provenance.sql | 142930422fd39e5a3648654b77eebe82ed3e3a252081a43ceaa95cfb72f34684 |
+
+## Migration0053 — durable calculation failures (local0.57 coding candidate)
+
+`0053_calculation_failures.sql` SHA256 `adbee99acca6c337367725b725cf3f756ab9ba026b0b2ca160ef17d3a270b769`. Schema53 adds immutable, forced-RLS, tenant-fenced failure records for authorised calculation attempts. Each record pins the actor, exact operation and payload hash, indicator/definition/source revisions, period, safe error fields, correlation and retry expiry. Runtime authority is SELECT/INSERT only. An exact retry returns the saved error, a changed payload is refused, and a later failed attempt can mark the prior result stale without replacing it with zero. All0001–0052 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0053_calculation_failures.sql | adbee99acca6c337367725b725cf3f756ab9ba026b0b2ca160ef17d3a270b769 |

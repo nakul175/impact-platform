@@ -293,14 +293,29 @@ class Service:
                 stale = stale or (str(plan["head_revision"]) if plan else None) != (
                     str(bound["plan_revision"]) if bound["plan_revision"] else None
                 )
+                failed = c.execute(
+                    "SELECT error_code,reason_code,failed_at FROM impact.calculation_failure "
+                    "WHERE tenant_id=%s AND indicator_id=%s AND period_id=%s AND failed_at>%s "
+                    "ORDER BY failed_at DESC,operation_id DESC LIMIT 1",
+                    (ctx.tenant_id, bound["indicator_id"], bound["period_id"], row["updated_at"]),
+                ).fetchone()
+                stale = stale or bool(failed)
                 result["data"] = {
                     **result["data"],
                     "freshness": {**result["data"]["freshness"], "stale": stale},
                 }
                 if stale:
                     result["data"]["freshness"]["stale_reason"] = (
-                        "Source revisions or the approved collection plan changed since this calculation."
+                        "A later authorised calculation attempt failed; the prior value was preserved."
+                        if failed
+                        else "Source revisions or the approved collection plan changed since this calculation."
                     )
+                    if failed:
+                        result["data"]["freshness"]["failed_attempt"] = {
+                            "error_code": failed["error_code"],
+                            "reason_code": failed["reason_code"],
+                            "failed_at": failed["failed_at"].isoformat(),
+                        }
         if row["object_type"] == "LineageManifest":
             if row["payload"].get("indicator_revision"):
                 pinned_indicator = revision(
@@ -612,6 +627,24 @@ class Service:
                     raise DomainError("IDEMPOTENCY_EXPIRED", 409)
                 load(c, ctx, old["outcome"]["object_id"])
                 return old["outcome"]
+            if action == "calculate":
+                failed = c.execute(
+                    "SELECT * FROM impact.calculation_failure WHERE tenant_id=%s AND actor_id=%s "
+                    "AND operation_id=%s",
+                    (tenant, ctx.principal_id, body["operation_id"]),
+                ).fetchone()
+                if failed:
+                    if bytes(failed["payload_hash"]) != fingerprint:
+                        raise DomainError("CONFLICT_OPERATION", 409)
+                    if failed["expires_at"] <= now:
+                        raise DomainError("IDEMPOTENCY_EXPIRED", 409)
+                    load(c, ctx, failed["indicator_id"], "IndicatorInstance", "indicator-instances.read")
+                    raise DomainError(
+                        failed["error_code"],
+                        failed["error_status"],
+                        message=failed["error_message"],
+                        reason=failed["reason_code"],
+                    )
             previous = load(c, ctx, obj, READ_KINDS[route], lock=True) if obj else None
             if previous and str(previous["head_revision"]) != body["expected_revision"]:
                 raise DomainError("CONFLICT_VERSION", 409)
@@ -644,7 +677,24 @@ class Service:
             elif action in {"approve", "return", "reject"}:
                 receipt = self.review(c, ctx, previous, action, body["data"], correlation)
             elif action == "calculate":
-                receipt = self.calculate(c, ctx, previous, body["data"], correlation=correlation)
+                try:
+                    receipt = self.calculate(c, ctx, previous, body["data"], correlation=correlation)
+                except DomainError as exc:
+                    exc.calculation_failure = {
+                        "identity": identity,
+                        "tenant": tenant,
+                        "indicator_id": obj,
+                        "expected_revision": body["expected_revision"],
+                        "period_id": body["data"]["period_id"],
+                        "operation_id": body["operation_id"],
+                        "payload_hash": fingerprint,
+                        "correlation_id": correlation,
+                        "error_code": exc.code,
+                        "error_status": exc.status,
+                        "error_message": exc.message,
+                        "reason_code": exc.reason,
+                    }
+                    raise
             elif action in {"ready", "activate", "revise"}:
                 receipt = self.measurement.transition(c, ctx, kind, previous, action, body["data"])
             elif action == "close":
@@ -726,6 +776,101 @@ class Service:
                 ),
             )
             return receipt
+
+    def record_calculation_failure(self, failure):
+        """Persist a definitive authorised calculation failure after its command transaction rolled back."""
+        tenant = failure["tenant"]
+        with self.db.transaction(tenant) as c:
+            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
+            ctx = context(c, failure["identity"], tenant, write=True)
+            authorize(
+                c,
+                ctx,
+                "action_indicator_instances_calculate",
+                failure["indicator_id"],
+                hidden=True,
+            )
+            c.execute(
+                "SELECT pg_advisory_xact_lock(hashtextextended(%s,1))",
+                (failure["operation_id"],),
+            )
+            old = c.execute(
+                "SELECT payload_hash FROM impact.calculation_failure WHERE tenant_id=%s "
+                "AND actor_id=%s AND operation_id=%s",
+                (tenant, ctx.principal_id, failure["operation_id"]),
+            ).fetchone()
+            if old:
+                if bytes(old["payload_hash"]) != failure["payload_hash"]:
+                    raise DomainError("CONFLICT_OPERATION", 409)
+                return
+            indicator = load(
+                c,
+                ctx,
+                failure["indicator_id"],
+                "IndicatorInstance",
+                "indicator-instances.read",
+                lock=True,
+            )
+            if str(indicator["head_revision"]) != failure["expected_revision"]:
+                return
+            period = load(c, ctx, failure["period_id"], "Period", "periods.read")
+            definition = revision(
+                c,
+                ctx,
+                indicator["payload"]["definition_version"],
+                "IndicatorDefinition",
+                "indicator-definitions.read",
+            )
+            rows = source_rows(c, ctx, indicator["object_id"], period["payload"])
+            observed = c.execute("SELECT statement_timestamp() AS now").fetchone()["now"]
+            manifest = {
+                "indicator_revision": str(indicator["head_revision"]),
+                "definition_revision": str(definition["revision_id"]),
+                "period_id": failure["period_id"],
+                "source_revisions": [str(row["head_revision"]) for row in rows],
+                "source_digest": source_digest(rows),
+            }
+            c.execute(
+                "INSERT INTO impact.calculation_failure(tenant_id,operation_id,actor_id,indicator_id,"
+                "indicator_revision,period_id,definition_revision,payload_hash,input_manifest,error_code,"
+                "error_status,error_message,reason_code,failed_at,correlation_id,expires_at) "
+                "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (
+                    tenant,
+                    failure["operation_id"],
+                    ctx.principal_id,
+                    indicator["object_id"],
+                    indicator["head_revision"],
+                    failure["period_id"],
+                    definition["revision_id"],
+                    failure["payload_hash"],
+                    Jsonb(manifest),
+                    failure["error_code"],
+                    failure["error_status"],
+                    failure["error_message"],
+                    failure["reason_code"],
+                    observed,
+                    failure["correlation_id"],
+                    observed + timedelta(days=7),
+                ),
+            )
+            write(
+                c,
+                ctx,
+                "AuditEvent",
+                {
+                    "real_actor_id": str(ctx.principal_id),
+                    "effective_actor_id": str(ctx.principal_id),
+                    "action_type": "calculation.failed",
+                    "object_reference": str(indicator["object_id"]),
+                    "outcome": "FAILED",
+                    "occurred_at": observed.isoformat(),
+                    "correlation_id": failure["correlation_id"],
+                    "specification_ref": "FR-CAL-001",
+                },
+                "Recorded",
+                track_author=False,
+            )
 
     def submit(self, c, ctx, kind, row, data):
         if row["lifecycle_state"] not in {"Draft", "Returned"}:

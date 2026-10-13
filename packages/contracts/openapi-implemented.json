@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.112.0",
+    "version": "1.113.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -31738,7 +31738,7 @@
             }
           }
         },
-        "x-contract-version": "1.17.0",
+        "x-contract-version": "1.18.0",
         "parameters": [
           {
             "name": "limit",
@@ -31880,7 +31880,7 @@
             }
           }
         },
-        "x-contract-version": "1.17.0",
+        "x-contract-version": "1.18.0",
         "parameters": [
           {
             "name": "limit",
@@ -32013,7 +32013,7 @@
             }
           }
         },
-        "x-contract-version": "1.17.0",
+        "x-contract-version": "1.18.0",
         "parameters": [
           {
             "name": "limit",
@@ -32155,7 +32155,7 @@
             }
           }
         },
-        "x-contract-version": "1.17.0",
+        "x-contract-version": "1.18.0",
         "parameters": [
           {
             "name": "limit",
@@ -32295,7 +32295,7 @@
             }
           }
         },
-        "x-contract-version": "1.17.0",
+        "x-contract-version": "1.18.0",
         "parameters": [
           {
             "name": "viewport",
@@ -32318,6 +32318,128 @@
                 "PARTNER",
                 "PROGRAMME"
               ]
+            }
+          }
+        ]
+      }
+    },
+    "/v1/tenants/{tenant_id}/dashboards/{object_id}/geographic-preview": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "preview_dashboard_geography",
+        "summary": "Preview a disclosure-filtered geographic map and table",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "dashboards.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardGeographicPreview"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.18.0",
+        "parameters": [
+          {
+            "name": "widget_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
             }
           }
         ]
@@ -32450,7 +32572,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.17.0",
+        "x-contract-version": "1.18.0",
         "x-audit-required": true
       }
     },
@@ -32581,7 +32703,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.17.0",
+        "x-contract-version": "1.18.0",
         "x-audit-required": true
       }
     },
@@ -32712,7 +32834,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.17.0",
+        "x-contract-version": "1.18.0",
         "x-audit-required": true
       }
     },
@@ -32833,7 +32955,7 @@
             }
           }
         },
-        "x-contract-version": "1.17.0",
+        "x-contract-version": "1.18.0",
         "parameters": []
       }
     },
@@ -32954,7 +33076,7 @@
             }
           }
         },
-        "x-contract-version": "1.17.0",
+        "x-contract-version": "1.18.0",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -59719,7 +59841,8 @@
                     "TREND",
                     "TARGET",
                     "NARRATIVE",
-                    "EVIDENCE"
+                    "EVIDENCE",
+                    "MAP"
                   ]
                 },
                 "title": {
@@ -59883,6 +60006,66 @@
                       "binding"
                     ]
                   }
+                },
+                "geographic_config": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "dimension": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64
+                        },
+                        "boundary_version": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "layer": {
+                          "enum": [
+                            "AUTHORISED_POINT_REFERENCE",
+                            "AGGREGATE"
+                          ]
+                        },
+                        "granularity": {
+                          "enum": [
+                            "COUNTRY",
+                            "REGION",
+                            "DISTRICT",
+                            "POINT"
+                          ]
+                        },
+                        "legend": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "missingness": {
+                          "enum": [
+                            "SHOW_MISSING",
+                            "EXCLUDE_WITH_COUNT",
+                            "EXCLUDE_WITHOUT_COUNT"
+                          ]
+                        },
+                        "external_map": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "dimension",
+                        "boundary_version",
+                        "layer",
+                        "granularity",
+                        "legend",
+                        "missingness",
+                        "external_map"
+                      ]
+                    }
+                  ]
                 }
               },
               "required": [
@@ -59899,6 +60082,80 @@
                 "compatible_filters",
                 "drilldown_levels",
                 "approved_slices"
+              ],
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "MAP"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ]
+                  },
+                  "then": {
+                    "required": [
+                      "geographic_config"
+                    ],
+                    "properties": {
+                      "geographic_config": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "dimension": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64
+                          },
+                          "boundary_version": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "layer": {
+                            "enum": [
+                              "AUTHORISED_POINT_REFERENCE",
+                              "AGGREGATE"
+                            ]
+                          },
+                          "granularity": {
+                            "enum": [
+                              "COUNTRY",
+                              "REGION",
+                              "DISTRICT",
+                              "POINT"
+                            ]
+                          },
+                          "legend": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          },
+                          "missingness": {
+                            "enum": [
+                              "SHOW_MISSING",
+                              "EXCLUDE_WITH_COUNT",
+                              "EXCLUDE_WITHOUT_COUNT"
+                            ]
+                          },
+                          "external_map": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "dimension",
+                          "boundary_version",
+                          "layer",
+                          "granularity",
+                          "legend",
+                          "missingness",
+                          "external_map"
+                        ]
+                      }
+                    }
+                  }
+                }
               ]
             }
           },
@@ -60048,7 +60305,8 @@
                     "TREND",
                     "TARGET",
                     "NARRATIVE",
-                    "EVIDENCE"
+                    "EVIDENCE",
+                    "MAP"
                   ]
                 },
                 "title": {
@@ -60212,6 +60470,66 @@
                       "binding"
                     ]
                   }
+                },
+                "geographic_config": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "dimension": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64
+                        },
+                        "boundary_version": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "layer": {
+                          "enum": [
+                            "AUTHORISED_POINT_REFERENCE",
+                            "AGGREGATE"
+                          ]
+                        },
+                        "granularity": {
+                          "enum": [
+                            "COUNTRY",
+                            "REGION",
+                            "DISTRICT",
+                            "POINT"
+                          ]
+                        },
+                        "legend": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "missingness": {
+                          "enum": [
+                            "SHOW_MISSING",
+                            "EXCLUDE_WITH_COUNT",
+                            "EXCLUDE_WITHOUT_COUNT"
+                          ]
+                        },
+                        "external_map": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "dimension",
+                        "boundary_version",
+                        "layer",
+                        "granularity",
+                        "legend",
+                        "missingness",
+                        "external_map"
+                      ]
+                    }
+                  ]
                 }
               },
               "required": [
@@ -60228,6 +60546,80 @@
                 "compatible_filters",
                 "drilldown_levels",
                 "approved_slices"
+              ],
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "MAP"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ]
+                  },
+                  "then": {
+                    "required": [
+                      "geographic_config"
+                    ],
+                    "properties": {
+                      "geographic_config": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "dimension": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64
+                          },
+                          "boundary_version": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "layer": {
+                            "enum": [
+                              "AUTHORISED_POINT_REFERENCE",
+                              "AGGREGATE"
+                            ]
+                          },
+                          "granularity": {
+                            "enum": [
+                              "COUNTRY",
+                              "REGION",
+                              "DISTRICT",
+                              "POINT"
+                            ]
+                          },
+                          "legend": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          },
+                          "missingness": {
+                            "enum": [
+                              "SHOW_MISSING",
+                              "EXCLUDE_WITH_COUNT",
+                              "EXCLUDE_WITHOUT_COUNT"
+                            ]
+                          },
+                          "external_map": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "dimension",
+                          "boundary_version",
+                          "layer",
+                          "granularity",
+                          "legend",
+                          "missingness",
+                          "external_map"
+                        ]
+                      }
+                    }
+                  }
+                }
               ]
             }
           },
@@ -65322,7 +65714,8 @@
               "TREND",
               "TARGET",
               "NARRATIVE",
-              "EVIDENCE"
+              "EVIDENCE",
+              "MAP"
             ]
           },
           "title": {
@@ -65486,6 +65879,66 @@
                 "binding"
               ]
             }
+          },
+          "geographic_config": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "dimension": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "boundary_version": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "layer": {
+                    "enum": [
+                      "AUTHORISED_POINT_REFERENCE",
+                      "AGGREGATE"
+                    ]
+                  },
+                  "granularity": {
+                    "enum": [
+                      "COUNTRY",
+                      "REGION",
+                      "DISTRICT",
+                      "POINT"
+                    ]
+                  },
+                  "legend": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "missingness": {
+                    "enum": [
+                      "SHOW_MISSING",
+                      "EXCLUDE_WITH_COUNT",
+                      "EXCLUDE_WITHOUT_COUNT"
+                    ]
+                  },
+                  "external_map": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "dimension",
+                  "boundary_version",
+                  "layer",
+                  "granularity",
+                  "legend",
+                  "missingness",
+                  "external_map"
+                ]
+              }
+            ]
           }
         },
         "required": [
@@ -65502,6 +65955,80 @@
           "compatible_filters",
           "drilldown_levels",
           "approved_slices"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "MAP"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "required": [
+                "geographic_config"
+              ],
+              "properties": {
+                "geographic_config": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "dimension": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 64
+                    },
+                    "boundary_version": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "layer": {
+                      "enum": [
+                        "AUTHORISED_POINT_REFERENCE",
+                        "AGGREGATE"
+                      ]
+                    },
+                    "granularity": {
+                      "enum": [
+                        "COUNTRY",
+                        "REGION",
+                        "DISTRICT",
+                        "POINT"
+                      ]
+                    },
+                    "legend": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "missingness": {
+                      "enum": [
+                        "SHOW_MISSING",
+                        "EXCLUDE_WITH_COUNT",
+                        "EXCLUDE_WITHOUT_COUNT"
+                      ]
+                    },
+                    "external_map": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "dimension",
+                    "boundary_version",
+                    "layer",
+                    "granularity",
+                    "legend",
+                    "missingness",
+                    "external_map"
+                  ]
+                }
+              }
+            }
+          }
         ]
       },
       "TemplateSection": {
@@ -78730,7 +79257,8 @@
                     "TREND",
                     "TARGET",
                     "NARRATIVE",
-                    "EVIDENCE"
+                    "EVIDENCE",
+                    "MAP"
                   ]
                 },
                 "title": {
@@ -78894,6 +79422,66 @@
                       "binding"
                     ]
                   }
+                },
+                "geographic_config": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "dimension": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64
+                        },
+                        "boundary_version": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "layer": {
+                          "enum": [
+                            "AUTHORISED_POINT_REFERENCE",
+                            "AGGREGATE"
+                          ]
+                        },
+                        "granularity": {
+                          "enum": [
+                            "COUNTRY",
+                            "REGION",
+                            "DISTRICT",
+                            "POINT"
+                          ]
+                        },
+                        "legend": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "missingness": {
+                          "enum": [
+                            "SHOW_MISSING",
+                            "EXCLUDE_WITH_COUNT",
+                            "EXCLUDE_WITHOUT_COUNT"
+                          ]
+                        },
+                        "external_map": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "dimension",
+                        "boundary_version",
+                        "layer",
+                        "granularity",
+                        "legend",
+                        "missingness",
+                        "external_map"
+                      ]
+                    }
+                  ]
                 },
                 "availability": {
                   "enum": [
@@ -79207,6 +79795,307 @@
           "state",
           "cancellation_requested",
           "result"
+        ]
+      },
+      "DashboardGeographicPreview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "dashboard_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dashboard_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "widget_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "period_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "boundary_version": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data_boundary_versions": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "boundary_status": {
+            "enum": [
+              "MATCH",
+              "MISMATCH",
+              "UNVERSIONED"
+            ]
+          },
+          "layer": {
+            "enum": [
+              "AUTHORISED_POINT_REFERENCE",
+              "AGGREGATE"
+            ]
+          },
+          "granularity": {
+            "enum": [
+              "COUNTRY",
+              "REGION",
+              "DISTRICT",
+              "POINT"
+            ]
+          },
+          "legend": {
+            "type": "string"
+          },
+          "missingness": {
+            "enum": [
+              "SHOW_MISSING",
+              "EXCLUDE_WITH_COUNT",
+              "EXCLUDE_WITHOUT_COUNT"
+            ]
+          },
+          "coordinate_delivery": {
+            "const": "NO_COORDINATES_IN_PLATFORM_PAYLOAD"
+          },
+          "map_request": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "geography_key": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 200
+                },
+                "value_state": {
+                  "enum": [
+                    "PRESENT",
+                    "MISSING",
+                    "NOT_COLLECTED",
+                    "NOT_APPLICABLE",
+                    "INVALID",
+                    "UNDEFINED",
+                    null
+                  ]
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                },
+                "displayed_value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 2000
+                },
+                "disclosure": {
+                  "enum": [
+                    "VISIBLE",
+                    "SUPPRESSED"
+                  ]
+                },
+                "boundary_version": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "uuid"
+                },
+                "tooltip": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "label": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "displayed_value": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "maxLength": 2000
+                    },
+                    "value_state": {
+                      "enum": [
+                        "PRESENT",
+                        "MISSING",
+                        "NOT_COLLECTED",
+                        "NOT_APPLICABLE",
+                        "INVALID",
+                        "UNDEFINED",
+                        null
+                      ]
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "displayed_value",
+                    "value_state"
+                  ]
+                }
+              },
+              "required": [
+                "geography_key",
+                "value_state",
+                "value",
+                "displayed_value",
+                "disclosure",
+                "boundary_version",
+                "tooltip"
+              ]
+            }
+          },
+          "equivalent_table": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "geography_key": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 200
+                },
+                "value_state": {
+                  "enum": [
+                    "PRESENT",
+                    "MISSING",
+                    "NOT_COLLECTED",
+                    "NOT_APPLICABLE",
+                    "INVALID",
+                    "UNDEFINED",
+                    null
+                  ]
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                },
+                "displayed_value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 2000
+                },
+                "disclosure": {
+                  "enum": [
+                    "VISIBLE",
+                    "SUPPRESSED"
+                  ]
+                },
+                "boundary_version": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "uuid"
+                },
+                "tooltip": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "label": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "displayed_value": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "maxLength": 2000
+                    },
+                    "value_state": {
+                      "enum": [
+                        "PRESENT",
+                        "MISSING",
+                        "NOT_COLLECTED",
+                        "NOT_APPLICABLE",
+                        "INVALID",
+                        "UNDEFINED",
+                        null
+                      ]
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "displayed_value",
+                    "value_state"
+                  ]
+                }
+              },
+              "required": [
+                "geography_key",
+                "value_state",
+                "value",
+                "displayed_value",
+                "disclosure",
+                "boundary_version",
+                "tooltip"
+              ]
+            }
+          },
+          "sortable_fields": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "geography_key",
+                "value",
+                "value_state"
+              ]
+            }
+          },
+          "missing_count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        },
+        "required": [
+          "dashboard_id",
+          "dashboard_revision",
+          "widget_id",
+          "period_id",
+          "boundary_version",
+          "data_boundary_versions",
+          "boundary_status",
+          "layer",
+          "granularity",
+          "legend",
+          "missingness",
+          "coordinate_delivery",
+          "map_request",
+          "equivalent_table",
+          "sortable_fields",
+          "missing_count"
         ]
       },
       "DashboardValue": {

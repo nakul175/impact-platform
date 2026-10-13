@@ -332,6 +332,7 @@ export function DashboardsPanel({
     [pivotDimension, setPivotDimension] = useState("service_type"),
     [pivotStatistic, setPivotStatistic] = useState("DISTINCT_COUNT"),
     [pivotResult, setPivotResult] = useState<any>(null),
+    [geographicPreview, setGeographicPreview] = useState<any>(null),
     [sourcesFor, setSourcesFor] = useState(""),
     [sources, setSources] = useState<any>(null),
     [error, setError] = useState(""),
@@ -518,6 +519,68 @@ export function DashboardsPanel({
         }),
       });
       setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function addMapWidget() {
+    const dashboard = savedDashboards.find(
+      (row) => row.object_id === savedDashboard,
+    );
+    const result = calculatedResults.find((row) =>
+      row.data.disaggregation?.some(
+        (entry: any) => entry.dimension && entry.dimension_version,
+      ),
+    );
+    const geographic = result?.data.disaggregation?.find(
+      (entry: any) => entry.dimension && entry.dimension_version,
+    );
+    if (!dashboard || !result || !geographic)
+      return setError("A versioned geographic result is required.");
+    if (dashboard.data.widgets.length >= 10) return;
+    const widget = {
+      ...widgetFor(result, dashboard.data.widgets.length),
+      type: "MAP",
+      title: `Map ${result.object_id.slice(0, 8)}`,
+      geographic_config: {
+        dimension: geographic.dimension,
+        boundary_version: geographic.dimension_version,
+        layer: "AGGREGATE",
+        granularity: "DISTRICT",
+        legend: "Approved result by district",
+        missingness: "SHOW_MISSING",
+        external_map: false,
+      },
+    };
+    try {
+      await request(base + "dashboards/" + dashboard.object_id, {
+        method: "PATCH",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          expected_revision: dashboard.revision_id,
+          data: { widgets: [...dashboard.data.widgets, widget] },
+        }),
+      });
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function previewMap() {
+    const dashboard = savedDashboards.find(
+      (row) => row.object_id === savedDashboard,
+    );
+    const widget = dashboard?.data.widgets.find(
+      (item: any) => item.type === "MAP",
+    );
+    if (!dashboard || !widget)
+      return setError("A configured map widget is required.");
+    try {
+      setGeographicPreview(
+        await request(
+          `${base}dashboards/${dashboard.object_id}/geographic-preview?widget_id=${encodeURIComponent(widget.widget_id)}`,
+        ),
+      );
     } catch (e) {
       setError(explain(e));
     }
@@ -732,6 +795,12 @@ export function DashboardsPanel({
             <button type="button" className="secondary" onClick={addWidget}>
               Add result widget
             </button>
+            <button type="button" className="secondary" onClick={addMapWidget}>
+              Add district map
+            </button>
+            <button type="button" className="secondary" onClick={previewMap}>
+              Preview safe map
+            </button>
             <button type="button" className="secondary" onClick={copyDashboard}>
               Copy privately
             </button>
@@ -825,6 +894,61 @@ export function DashboardsPanel({
                   </table>
                 </div>
               ) : null}
+            </section>
+          ) : null}
+          {geographicPreview ? (
+            <section
+              className="dashboard-card"
+              aria-label="Geographic map and equivalent table"
+            >
+              <h3>{geographicPreview.legend}</h3>
+              <p role="status">
+                Boundary {words(geographicPreview.boundary_status)} ·{" "}
+                {words(geographicPreview.granularity)} ·{" "}
+                {words(geographicPreview.coordinate_delivery)}
+              </p>
+              <div
+                className="geographic-map"
+                role="img"
+                aria-label={`${geographicPreview.legend}; ${geographicPreview.map_request.length} permitted geographic features`}
+              >
+                {geographicPreview.map_request.map(
+                  (feature: any, index: number) => (
+                    <span
+                      key={`${feature.geography_key}-${index}`}
+                      title={`${feature.tooltip.label}: ${feature.tooltip.displayed_value ?? words(feature.tooltip.value_state)}`}
+                    >
+                      {feature.geography_key ?? "Missing"}:{" "}
+                      {feature.displayed_value ?? words(feature.value_state)}
+                    </span>
+                  ),
+                )}
+              </div>
+              <div className="table-scroll">
+                <table>
+                  <caption>Sortable equivalent table</caption>
+                  <thead>
+                    <tr>
+                      <th>Geography</th>
+                      <th>Value</th>
+                      <th>State</th>
+                      <th>Disclosure</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {geographicPreview.equivalent_table.map(
+                      (row: any, index: number) => (
+                        <tr key={`${row.geography_key}-${index}`}>
+                          <td>{row.geography_key ?? "—"}</td>
+                          <td>{row.displayed_value ?? row.value ?? "—"}</td>
+                          <td>{words(row.value_state)}</td>
+                          <td>{words(row.disclosure)}</td>
+                        </tr>
+                      ),
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </section>
           ) : null}
           <div className="planning-toolbar">

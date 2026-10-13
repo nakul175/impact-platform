@@ -194,6 +194,7 @@
 | PATCH | `/v1/tenants/{tenant_id}/dashboards/{object_id}` | `dashboards.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/copy` | `dashboards.draft.create` |
 | POST | `/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/run-pivot` | `dashboards.read` |
+| GET | `/v1/tenants/{tenant_id}/dashboards/{object_id}/geographic-preview` | `dashboards.read` |
 | GET | `/v1/tenants/{tenant_id}/dashboards/{object_id}/pivot-jobs/{job_id}` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/dashboards/{object_id}/pivot-jobs/{job_id}/actions/cancel` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/dashboards/{object_id}/pivot-preview` | `dashboards.read` |

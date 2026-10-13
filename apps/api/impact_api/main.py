@@ -37,6 +37,7 @@ from . import security_events
 from .dashboards import Dashboards
 from .dashboard_authoring import DashboardAuthoring
 from .dashboard_pivots import DashboardPivots
+from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
 from .ai_enablement import AIEnablement
 from .ai_jobs import AIJobs
@@ -231,6 +232,7 @@ def create_app():
     dashboards = Dashboards(service)
     dashboard_authoring = DashboardAuthoring(service)
     dashboard_pivots = DashboardPivots(service)
+    dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
     audit_exports = AuditExports(service)
     retention_policies = RetentionPolicies(service)
@@ -1810,6 +1812,10 @@ def create_app():
         return await run_in_threadpool(
             dashboard_pivots.preview, auth.resolve(request), uuid(tenant), uuid(obj), body
         )
+
+    @app.get("/v1/tenants/{tenant}/dashboards/{obj}/geographic-preview")
+    def dashboard_geographic_preview(request: Request, tenant: str, obj: str, widget_id: str):
+        return dashboard_geography.preview(auth.resolve(request), uuid(tenant), uuid(obj), uuid(widget_id))
 
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/run-pivot")
     async def dashboard_pivot_run(request: Request, tenant: str, obj: str):

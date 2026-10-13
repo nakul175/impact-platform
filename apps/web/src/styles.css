@@ -1732,6 +1732,18 @@ button.link {
     break-inside: avoid;
   }
 }
+.geographic-map {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.geographic-map span {
+  border: 1px solid #c9d1c4;
+  border-radius: 6px;
+  background: #edf5ef;
+  padding: 10px;
+}
 /* v0.27: waiting page before any area is usable, and readable review stages. */
 .access-gate {
   max-width: 720px;

@@ -25,6 +25,16 @@ def validate_dashboard(c, ctx, data):
     for item in widgets:
         if item["disclosure_context"].get("quality_context_required") is not True:
             raise DomainError("VALIDATION_FAILED", reason="QUALITY_CONTEXT_REQUIRED")
+        geographic = item.get("geographic_config")
+        if item["type"] == "MAP":
+            if not geographic or item["binding"]["resource_type"] != "CALCULATED_RESULT":
+                raise DomainError("VALIDATION_FAILED", reason="GEOGRAPHIC_RESULT_BINDING_REQUIRED")
+            if (geographic["granularity"] == "POINT") != (
+                geographic["layer"] == "AUTHORISED_POINT_REFERENCE"
+            ):
+                raise DomainError("VALIDATION_FAILED", reason="GEOGRAPHIC_LAYER_GRANULARITY_MISMATCH")
+            if geographic["external_map"] and geographic["granularity"] == "POINT":
+                raise DomainError("VALIDATION_FAILED", reason="EXTERNAL_POINT_MAP_NOT_PERMITTED")
         bindings = [item["binding"]] + [entry["binding"] for entry in item.get("approved_slices", [])]
         for binding in bindings:
             kind, capability = BINDINGS[binding["resource_type"]]

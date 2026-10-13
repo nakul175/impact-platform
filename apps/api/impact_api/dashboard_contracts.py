@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.17.0"
+VERSION = "1.18.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -44,6 +44,7 @@ IMPLEMENTED = {
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
     ("post", "dashboards/{object_id}/pivot-jobs/{job_id}/actions/cancel"),
+    ("get", "dashboards/{object_id}/geographic-preview"),
 }
 
 
@@ -66,10 +67,22 @@ def augment(spec, policy):
         },
         ["classification", "quality_context_required"],
     )
+    geographic_config = closed(
+        {
+            "dimension": {"type": "string", "minLength": 1, "maxLength": 64},
+            "boundary_version": UUID,
+            "layer": {"enum": ["AUTHORISED_POINT_REFERENCE", "AGGREGATE"]},
+            "granularity": {"enum": ["COUNTRY", "REGION", "DISTRICT", "POINT"]},
+            "legend": {"type": "string", "minLength": 1, "maxLength": 200},
+            "missingness": {"enum": ["SHOW_MISSING", "EXCLUDE_WITH_COUNT", "EXCLUDE_WITHOUT_COUNT"]},
+            "external_map": {"type": "boolean"},
+        },
+        ["dimension", "boundary_version", "layer", "granularity", "legend", "missingness", "external_map"],
+    )
     widget = closed(
         {
             "widget_id": UUID,
-            "type": {"enum": ["METRIC", "TABLE", "TREND", "TARGET", "NARRATIVE", "EVIDENCE"]},
+            "type": {"enum": ["METRIC", "TABLE", "TREND", "TARGET", "NARRATIVE", "EVIDENCE", "MAP"]},
             "title": {"type": "string", "minLength": 1, "maxLength": 200},
             "binding": binding,
             "view_mode": {"enum": ["OFFICIAL", "PROVISIONAL"]},
@@ -109,6 +122,7 @@ def augment(spec, policy):
                     ["field", "value", "binding"],
                 ),
             },
+            "geographic_config": {"oneOf": [{"type": "null"}, geographic_config]},
         },
         [
             "widget_id",
@@ -127,6 +141,15 @@ def augment(spec, policy):
         ],
     )
     schemas["Widget"] = widget
+    widget["allOf"] = [
+        {
+            "if": {"properties": {"type": {"const": "MAP"}}, "required": ["type"]},
+            "then": {
+                "required": ["geographic_config"],
+                "properties": {"geographic_config": geographic_config},
+            },
+        }
+    ]
     for name in ["DashboardData", "DashboardDraftData"]:
         schemas[name] = closed(
             {
@@ -259,6 +282,74 @@ def augment(spec, policy):
             "result": {"oneOf": [{"type": "null"}, {"$ref": "#/components/schemas/DashboardPivotResult"}]},
         },
         ["job_id", "state", "cancellation_requested", "result"],
+    )
+    geographic_row = closed(
+        {
+            "geography_key": {"type": ["string", "null"], "maxLength": 200},
+            "value_state": {"enum": VALUE_STATES + [None]},
+            "value": NULLABLE_DECIMAL,
+            "displayed_value": NULLABLE_TEXT,
+            "disclosure": {"enum": ["VISIBLE", "SUPPRESSED"]},
+            "boundary_version": NULLABLE_UUID,
+            "tooltip": closed(
+                {
+                    "label": {"type": ["string", "null"]},
+                    "displayed_value": NULLABLE_TEXT,
+                    "value_state": {"enum": VALUE_STATES + [None]},
+                },
+                ["label", "displayed_value", "value_state"],
+            ),
+        },
+        [
+            "geography_key",
+            "value_state",
+            "value",
+            "displayed_value",
+            "disclosure",
+            "boundary_version",
+            "tooltip",
+        ],
+    )
+    schemas["DashboardGeographicPreview"] = closed(
+        {
+            "dashboard_id": UUID,
+            "dashboard_revision": UUID,
+            "widget_id": UUID,
+            "period_id": UUID,
+            "boundary_version": UUID,
+            "data_boundary_versions": {"type": "array", "uniqueItems": True, "items": UUID},
+            "boundary_status": {"enum": ["MATCH", "MISMATCH", "UNVERSIONED"]},
+            "layer": {"enum": ["AUTHORISED_POINT_REFERENCE", "AGGREGATE"]},
+            "granularity": {"enum": ["COUNTRY", "REGION", "DISTRICT", "POINT"]},
+            "legend": {"type": "string"},
+            "missingness": {"enum": ["SHOW_MISSING", "EXCLUDE_WITH_COUNT", "EXCLUDE_WITHOUT_COUNT"]},
+            "coordinate_delivery": {"const": "NO_COORDINATES_IN_PLATFORM_PAYLOAD"},
+            "map_request": {"type": "array", "maxItems": 1000, "items": geographic_row},
+            "equivalent_table": {"type": "array", "maxItems": 1000, "items": geographic_row},
+            "sortable_fields": {
+                "type": "array",
+                "items": {"enum": ["geography_key", "value", "value_state"]},
+            },
+            "missing_count": {"type": ["integer", "null"], "minimum": 0},
+        },
+        [
+            "dashboard_id",
+            "dashboard_revision",
+            "widget_id",
+            "period_id",
+            "boundary_version",
+            "data_boundary_versions",
+            "boundary_status",
+            "layer",
+            "granularity",
+            "legend",
+            "missingness",
+            "coordinate_delivery",
+            "map_request",
+            "equivalent_table",
+            "sortable_fields",
+            "missing_count",
+        ],
     )
 
     category = closed(
@@ -688,6 +779,22 @@ def augment(spec, policy):
         "parameters": deepcopy(dashboard_item["parameters"]),
         "get": preview,
     }
+    geographic_preview = deepcopy(preview)
+    geographic_preview.update(
+        operationId="preview_dashboard_geography",
+        summary="Preview a disclosure-filtered geographic map and table",
+        **{"x-capability": "dashboards.read", "x-contract-version": VERSION},
+    )
+    geographic_preview["parameters"] = [
+        {"name": "widget_id", "in": "query", "required": True, "schema": UUID}
+    ]
+    geographic_preview["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardGeographicPreview"
+    }
+    paths[prefix + "dashboards/{object_id}/geographic-preview"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": geographic_preview,
+    }
     copy_entry = deepcopy(paths[prefix + "dashboards"]["post"])
     copy_entry.update(
         operationId="action_dashboards_copy",
@@ -754,6 +861,13 @@ def augment(spec, policy):
     }
     for op, method, path, cap, audit_event in [
         ("preview_dashboards", "GET", prefix + "dashboards/{object_id}/preview", "dashboards.read", False),
+        (
+            "preview_dashboard_geography",
+            "GET",
+            prefix + "dashboards/{object_id}/geographic-preview",
+            "dashboards.read",
+            False,
+        ),
         (
             "action_dashboards_copy",
             "POST",

@@ -243,6 +243,9 @@
 | POST | `/v1/tenants/{tenant_id}/external-shares` | `reports.share` |
 | GET | `/v1/tenants/{tenant_id}/external-shares/{share_id}` | `reports.read` |
 | POST | `/v1/tenants/{tenant_id}/external-shares/{share_id}/revocation` | `reports.share` |
+| POST | `/v1/tenants/{tenant_id}/finding-publications` | `dashboards.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/finding-revisions` | `dashboards.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/findings` | `dashboards.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/forms` | `forms.read` |
 | POST | `/v1/tenants/{tenant_id}/forms` | `forms.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/forms/{object_id}` | `forms.read` |

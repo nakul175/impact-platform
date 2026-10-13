@@ -47,6 +47,7 @@ from .learning_agenda import LearningAgenda
 from .management_responses import ManagementResponses
 from .qualitative_evidence import QualitativeEvidence
 from .transcription import Transcription
+from .findings import Findings
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
@@ -253,6 +254,7 @@ def create_app():
     management_responses = ManagementResponses(service)
     qualitative_evidence = QualitativeEvidence(service)
     transcription = Transcription(service)
+    findings = Findings(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
@@ -2164,6 +2166,30 @@ def create_app():
         validate("QuotationReferenceCreate", body)
         return await run_in_threadpool(
             transcription.quote, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/findings", status_code=201)
+    async def finding_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("FindingCreate", body)
+        return await run_in_threadpool(
+            findings.create, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/finding-revisions", status_code=201)
+    async def finding_revise(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("FindingRevise", body)
+        return await run_in_threadpool(
+            findings.revise, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/finding-publications", status_code=201)
+    async def finding_publish(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("FindingPublish", body)
+        return await run_in_threadpool(
+            findings.publish, auth.resolve(request), uuid(tenant), body, request.state.correlation
         )
 
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy", status_code=201)

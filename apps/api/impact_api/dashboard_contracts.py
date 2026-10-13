@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.29.0"
+VERSION = "1.30.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -74,6 +74,9 @@ IMPLEMENTED = {
     ("post", "transcription-requests"),
     ("post", "transcript-corrections"),
     ("post", "quotation-references"),
+    ("post", "findings"),
+    ("post", "finding-revisions"),
+    ("post", "finding-publications"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -1126,6 +1129,71 @@ def augment(spec, policy):
                     "original_meaning_reviewed": {"type": "boolean"},
                 },
                 ["artifact_id", "segment_id", "original_meaning_reviewed"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    finding_pin = closed(
+        {"object_type": {"type": "string", "minLength": 1}, "object_id": UUID, "revision_id": UUID},
+        ["object_type", "object_id", "revision_id"],
+    )
+    schemas["FindingCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "statement": {"type": "string", "minLength": 1},
+                    "method": {"type": "string", "minLength": 1},
+                    "observation": {"type": "string", "minLength": 1},
+                    "interpretation": {"type": "string", "minLength": 1},
+                    "supporting_evidence": {"type": "array", "minItems": 1, "items": finding_pin},
+                    "contradictory_evidence": {"type": "array", "items": finding_pin},
+                    "confidence_rationale": {"type": "string", "minLength": 1},
+                    "limitations": {"type": "array", "items": {"type": "string"}},
+                    "reviewer_id": UUID,
+                    "ai_confidence": {"type": ["number", "null"]},
+                },
+                [
+                    "statement",
+                    "method",
+                    "observation",
+                    "interpretation",
+                    "supporting_evidence",
+                    "contradictory_evidence",
+                    "confidence_rationale",
+                    "limitations",
+                    "reviewer_id",
+                    "ai_confidence",
+                ],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["FindingRevise"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "finding_id": UUID,
+                    "interpretation": {"type": "string", "minLength": 1},
+                    "supporting_evidence": {"type": "array", "minItems": 1, "items": finding_pin},
+                    "contradictory_evidence": {"type": "array", "items": finding_pin},
+                },
+                ["finding_id", "interpretation", "supporting_evidence", "contradictory_evidence"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["FindingPublish"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "finding_id": UUID,
+                    "preserve_contradictory_evidence": {"type": "boolean"},
+                    "disclosed_limitation": NULLABLE_TEXT,
+                },
+                ["finding_id", "preserve_contradictory_evidence", "disclosed_limitation"],
             ),
         },
         ["operation_id", "data"],
@@ -2251,6 +2319,21 @@ def augment(spec, policy):
         ("transcription-requests", "TranscriptionRequest", "request_transcription"),
         ("transcript-corrections", "TranscriptCorrection", "correct_transcript_segment"),
         ("quotation-references", "QuotationReferenceCreate", "create_reviewed_quotation"),
+    ]:
+        entry = deepcopy(analysis_create)
+        entry.update(
+            operationId=operation,
+            summary=operation.replace("_", " ").title(),
+            **{"x-contract-version": VERSION},
+        )
+        entry["requestBody"]["content"]["application/json"]["schema"] = {
+            "$ref": f"#/components/schemas/{schema_name}"
+        }
+        paths[prefix + route] = {"post": entry}
+    for route, schema_name, operation in [
+        ("findings", "FindingCreate", "create_triangulated_finding"),
+        ("finding-revisions", "FindingRevise", "revise_finding_interpretation"),
+        ("finding-publications", "FindingPublish", "publish_triangulated_finding"),
     ]:
         entry = deepcopy(analysis_create)
         entry.update(

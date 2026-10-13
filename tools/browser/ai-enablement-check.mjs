@@ -1131,7 +1131,7 @@ try {
         exact: false,
       })
       .waitFor();
-    assert(await button("Request AI advisory draft").isDisabled());
+    assert(await button("Queue AI advisory draft").isDisabled());
     assert.equal(advisoryRequests, 0);
     assert.equal(
       await label("I consent to sending this brief to OpenAI").count(),

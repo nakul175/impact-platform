@@ -73,10 +73,8 @@ export function AIProblemBaselinesPanel(props: Props) {
     if (!canRead) return;
     try {
       const [diagnosisPage, baselinePage] = await Promise.all([
-        props.request(props.base + "/ai-enablement/diagnoses?limit=100"),
-        props.request(
-          props.base + "/ai-enablement/problem-baselines?limit=100",
-        ),
+        props.request(props.base + "ai-enablement/diagnoses?limit=100"),
+        props.request(props.base + "ai-enablement/problem-baselines?limit=100"),
       ]);
       const completed = Array.isArray(diagnosisPage?.items)
         ? diagnosisPage.items.filter(
@@ -163,8 +161,8 @@ export function AIProblemBaselinesPanel(props: Props) {
     try {
       await props.request(
         current
-          ? props.base + "/ai-enablement/problem-baselines/" + current.object_id
-          : props.base + "/ai-enablement/problem-baselines",
+          ? props.base + "ai-enablement/problem-baselines/" + current.object_id
+          : props.base + "ai-enablement/problem-baselines",
         {
           method: current ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
@@ -187,7 +185,7 @@ export function AIProblemBaselinesPanel(props: Props) {
     try {
       await props.request(
         props.base +
-          "/ai-enablement/problem-baselines/" +
+          "ai-enablement/problem-baselines/" +
           current.object_id +
           "/actions/lock",
         {

@@ -556,6 +556,8 @@ function DiagnosisWorkspace({
   const reads = useRef(0);
   const sending = useRef(false);
   const pendingRef = useRef<PendingCommand | null>(null);
+  const pendingProblemFocus = useRef<string | null>(null);
+  const pendingProblemHeadingFocus = useRef<string | null>(null);
   const requests = useRef(request);
   requests.current = request;
   const controllers = useRef(new Set<AbortController>());
@@ -565,6 +567,24 @@ function DiagnosisWorkspace({
   const editingBlocked = busy || !!pending || conflict || needsReadback;
   const canEdit = canRead && canManage && !completed && !unavailable;
   const endpoint = base + "ai-enablement/diagnoses";
+
+  useEffect(() => {
+    const problemId = pendingProblemFocus.current;
+    if (!problemId) return;
+    const field = document.getElementById(id + "-description-" + problemId);
+    if (!field) return;
+    pendingProblemFocus.current = null;
+    field.focus();
+  }, [draft.problems, id]);
+
+  useEffect(() => {
+    const problemId = pendingProblemHeadingFocus.current;
+    if (!problemId) return;
+    const heading = document.getElementById(id + "-problem-" + problemId);
+    if (!heading) return;
+    pendingProblemHeadingFocus.current = null;
+    heading.focus();
+  }, [draft.priority_order, id]);
 
   async function guardedRequest(path: string, options?: RequestInit) {
     const controller = new AbortController();
@@ -885,12 +905,9 @@ function DiagnosisWorkspace({
     const destination = index + direction;
     if (index < 0 || destination < 0 || destination >= order.length) return;
     [order[index], order[destination]] = [order[destination], order[index]];
+    pendingProblemHeadingFocus.current = problemId;
     change({ ...draft, priority_order: order });
     setNotice(`Problem moved to priority ${destination + 1}.`);
-    requestAnimationFrame(() => {
-      if (active())
-        document.getElementById(id + "-problem-" + problemId)?.focus();
-    });
   }
   async function send(command: PendingCommand) {
     if (!active() || sending.current || !canRead || !canManage || unavailable)
@@ -1630,6 +1647,7 @@ function DiagnosisWorkspace({
                     disabled={draft.problems.length >= 20 || editingBlocked}
                     onClick={() => {
                       const problemId = crypto.randomUUID();
+                      pendingProblemFocus.current = problemId;
                       change({
                         ...draft,
                         problems: [
@@ -1642,12 +1660,6 @@ function DiagnosisWorkspace({
                           },
                         ],
                         priority_order: [...draft.priority_order, problemId],
-                      });
-                      requestAnimationFrame(() => {
-                        if (active())
-                          document
-                            .getElementById(id + "-description-" + problemId)
-                            ?.focus();
                       });
                     }}
                   >

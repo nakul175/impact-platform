@@ -208,6 +208,18 @@ try {
       .getByText("Reviewer", { exact: true })
       .waitFor();
   });
+  await test("New administrator deliberately sets up the tenant reference data", async () => {
+    await second
+      .getByRole("button", {
+        name: "Set up the standard reference data",
+        exact: true,
+      })
+      .click();
+    await second
+      .getByRole("status")
+      .filter({ hasText: "Standard reference data set up" })
+      .waitFor();
+  });
   await test("Second administrator requests business access and owner approves", async () => {
     await second
       .locator("tbody tr")

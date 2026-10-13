@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-10-13T04:24:00.013959+00:00",
+  "recorded_at": "2026-10-13T06:01:10.036862+00:00",
   "environment": "PGLITE",
   "scope": "Actual applied migration ledger for focused internal-copy API checks; not acceptance",
   "migrations": [

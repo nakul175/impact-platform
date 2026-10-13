@@ -137,7 +137,7 @@ export function AIValueCase(props: {
     try {
       const submitted = input();
       setResult(
-        (await props.request(`${props.base}/ai-enablement/value-case`, {
+        (await props.request(`${props.base}ai-enablement/value-case`, {
           method: "POST",
           body: JSON.stringify(submitted),
         })) as Result,
@@ -155,7 +155,7 @@ export function AIValueCase(props: {
     setError("");
     try {
       const artifact = (await props.request(
-        `${props.base}/ai-enablement/value-case/export`,
+        `${props.base}ai-enablement/value-case/export`,
         {
           method: "POST",
           body: JSON.stringify({
@@ -228,7 +228,7 @@ export function AIValueCase(props: {
     setError("");
     try {
       const loaded = (await props.request(
-        `${props.base}/ai-enablement/value-cases/${versionId.trim()}`,
+        `${props.base}ai-enablement/value-cases/${versionId.trim()}`,
       )) as VersionRecord;
       setVersion(loaded);
       setResult(loaded.value_case);
@@ -255,8 +255,8 @@ export function AIValueCase(props: {
         }
         const path =
           action === "create"
-            ? `${props.base}/ai-enablement/value-cases`
-            : `${props.base}/ai-enablement/value-cases/${version!.object_id}/actions/${action}`;
+            ? `${props.base}ai-enablement/value-cases`
+            : `${props.base}ai-enablement/value-cases/${version!.object_id}/actions/${action}`;
         const body: Record<string, unknown> = {
           operation_id: crypto.randomUUID(),
         };

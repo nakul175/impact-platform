@@ -1,0 +1,26 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "A Programme Manager sees the policy in force before the request button",
+      "status": "passed"
+    },
+    {
+      "name": "A MEL Manager reads the policy and has no editor",
+      "status": "passed"
+    },
+    {
+      "name": "Only the Organisation Administrator gets the editor and saves a new version",
+      "status": "passed"
+    },
+    {
+      "name": "A save against a version that changed meanwhile is refused and the policy reloads",
+      "status": "passed"
+    },
+    {
+      "name": "The policy history shows a loading status, then every version",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

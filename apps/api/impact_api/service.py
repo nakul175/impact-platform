@@ -582,7 +582,10 @@ class Service:
             raise DomainError("VALIDATION_FAILED")
         with self.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
-            cap = route + ".read"
+            # Listing authorization must follow the published operation contract. Most resources
+            # use ``<route>.read``; personal saved views intentionally reuse ``work-items.read``
+            # so the work centre does not require a second, undeclared capability.
+            cap = OPERATIONS.get(operation(route, "list"), {}).get("capability", route + ".read")
             if not any(g["capability"] == cap and g["purpose"] is None for g in ctx.grants):
                 raise DomainError("POLICY_DENIED", 403)
             bound = self.cursor_binding(ctx, route)

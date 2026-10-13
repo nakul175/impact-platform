@@ -1066,6 +1066,7 @@ function Workspace({
                 request={api}
                 explain={explain}
                 capabilities={access.capabilities}
+                custody={Boolean(access.custody)}
               />
               <AIDiagnosisPanel
                 base={base}

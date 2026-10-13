@@ -63,7 +63,7 @@ async function enact(changes) {
 const card = (page) =>
   page.getByRole("region", { name: "Policy in force", exact: true });
 const requestButton = (page) =>
-  page.getByRole("button", { name: "Request AI advisory draft", exact: true });
+  page.getByRole("button", { name: "Queue AI advisory draft", exact: true });
 const editorButton = (page) =>
   page.getByRole("button", { name: "Change AI policy", exact: true });
 async function openArea(page, version) {
@@ -184,9 +184,28 @@ await finish(async () => {
     assert.match(text, /Up to confidential data/);
     assert.match(text, /Budget units\s*75/);
     const stored = await policyApi();
-    assert.deepEqual(stored.body.use_cases, [
+    assert.deepEqual(
+      stored.body.use_cases[0],
       rule({ data_classes: ["INTERNAL", "CONFIDENTIAL"], budget_units: 75 }),
-    ]);
+    );
+    assert.deepEqual(
+      stored.body.use_cases.slice(1).map(({ use_case, enabled }) => ({
+        use_case,
+        enabled,
+      })),
+      [
+        "EXTRACTION",
+        "REPORT_DRAFT",
+        "CHAT",
+        "INDICATOR_DESIGN",
+        "IMPORT_CLEANING",
+        "EVIDENCE_QUESTION",
+        "NUMERIC_ANALYSIS",
+        "QUALITATIVE_ASSISTANCE",
+        "PROACTIVE_FINDINGS",
+        "ACTION_PROPOSAL",
+      ].map((use_case) => ({ use_case, enabled: false })),
+    );
   });
 
   await test("A save against a version that changed meanwhile is refused and the policy reloads", async () => {

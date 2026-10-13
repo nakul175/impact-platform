@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-10-13T04:26:01.831043+00:00",
+  "recorded_at": "2026-10-13T06:02:58.641065+00:00",
   "environment": "PGLITE",
   "scope": "Actually applied migration checksums for dependent listing visibility; not formal acceptance",
   "migrations": [

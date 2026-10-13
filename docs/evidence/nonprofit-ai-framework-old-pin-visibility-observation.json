@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-10-13T04:25:20.052088+00:00",
+  "recorded_at": "2026-10-13T06:02:19.918261+00:00",
   "scope": "Storage-valid append-only unavailable historical pin negative; not an API privacy or approval workflow and not hosted/native qualification",
   "source_sha256": {
     "apps/api/impact_api/planning.py": "c3ac2569536ec35282a0ff9f5b3ad0fca7acfd342f941aa15a87571271fa06e4",
@@ -401,7 +401,7 @@
   "top_level_framework": null,
   "open_governing_revision": null,
   "open_node_ids": [],
-  "locked_governing_revision": "cf5e29d1-b7c1-4aef-80cb-b7ee63f6d82d",
+  "locked_governing_revision": "d93302f3-ac49-47d1-b7fd-907b96f47228",
   "locked_actual_value": "46.363636363636",
   "immutable_old_payloads_and_snapshot_unchanged": true,
   "immutable_and_fk_guards_unchanged": true

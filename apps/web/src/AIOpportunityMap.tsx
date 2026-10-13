@@ -60,7 +60,7 @@ export function AIOpportunityMap(props: {
     setError("");
     try {
       const result = await props.request(
-        `${props.base}/ai-enablement/diagnoses/${props.diagnosisId}/opportunity-map?revision_id=${props.revisionId}`,
+        `${props.base}ai-enablement/diagnoses/${props.diagnosisId}/opportunity-map?revision_id=${props.revisionId}`,
       );
       setMapping(result as Mapping);
     } catch (value) {

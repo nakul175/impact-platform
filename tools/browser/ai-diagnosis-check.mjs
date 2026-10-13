@@ -148,7 +148,7 @@ const sha = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const copy = (value) => JSON.parse(JSON.stringify(value));
 const diagnosisRoute = `/v1/tenants/${fixture.tenant_a}/ai-enablement/diagnoses`;
 const objectRoute = () => diagnosisRoute + "/" + created.object_id;
-const region = () => page.locator(".ai-diagnosis");
+const region = () => page.locator("[data-diagnosis-state]");
 const button = (name) => page.getByRole("button", { name, exact: true });
 const label = (name) => page.getByLabel(name, { exact: true });
 const diagnosisButton = (name) =>
@@ -472,7 +472,7 @@ async function openWorkspace() {
   await page.waitForFunction(
     () =>
       !document
-        .querySelector(".ai-diagnosis")
+        .querySelector("[data-diagnosis-state]")
         ?.textContent.includes("Loading saved diagnoses…"),
   );
 }
@@ -505,7 +505,7 @@ async function openSaved() {
   await page.waitForFunction(
     (revision) =>
       document
-        .querySelector(".ai-diagnosis")
+        .querySelector("[data-diagnosis-state]")
         ?.getAttribute("data-diagnosis-revision") === revision,
     value.revision_id,
   );
@@ -526,14 +526,15 @@ async function writeFromUI(
   const response = await ready;
   eq(response.status(), expected, "Actual browser command outcome");
   const answer = await response.json();
-  if (expected < 300)
+  if (expected < 300) {
     await page.waitForFunction(
       (revision) =>
         document
-          .querySelector(".ai-diagnosis")
+          .querySelector("[data-diagnosis-state]")
           ?.getAttribute("data-diagnosis-revision") === revision,
       answer.revision_id,
     );
+  }
   return answer;
 }
 async function scan(name) {
@@ -700,7 +701,7 @@ async function qualifyDelayedReadAfterActualCollectionRefusal() {
       .waitFor();
 
     await page.evaluate(() => {
-      const element = document.querySelector(".ai-diagnosis");
+      const element = document.querySelector("[data-diagnosis-state]");
       const sample = () => ({
         revision: element.getAttribute("data-diagnosis-revision"),
         state: element.getAttribute("data-diagnosis-state"),
@@ -1385,14 +1386,14 @@ try {
     await page.waitForFunction(
       (revision) =>
         document
-          .querySelector(".ai-diagnosis")
+          .querySelector("[data-diagnosis-state]")
           ?.getAttribute("data-diagnosis-revision") === revision,
       lastReplay.receipt.revision_id,
     );
     await page.waitForFunction(
       () =>
         !document
-          .querySelector(".ai-diagnosis")
+          .querySelector("[data-diagnosis-state]")
           ?.textContent.includes("Loading saved diagnoses…"),
     );
     const before = state();

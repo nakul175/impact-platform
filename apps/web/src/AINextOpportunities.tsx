@@ -16,6 +16,7 @@ type Receipt = {
 export function AINextOpportunitiesPanel(props: {
   base: string;
   capabilities: string[];
+  custody: boolean;
   request: Request;
   explain: (error: unknown) => string;
 }) {
@@ -27,11 +28,11 @@ export function AINextOpportunitiesPanel(props: {
   const canRead = props.capabilities.includes("ai.diagnosis.read");
   const canManage = props.capabilities.includes("ai.diagnosis.manage");
   const load = useCallback(async () => {
-    if (!canRead) return;
+    if (!canRead || !props.custody) return;
     setBusy(true);
     try {
       const result = await props.request<{ items: Suggestion[] }>(
-        `${props.base}/ai-enablement/next-opportunities`,
+        `${props.base}ai-enablement/next-opportunities`,
       );
       setItems(result.items);
       setError("");
@@ -40,15 +41,15 @@ export function AINextOpportunitiesPanel(props: {
     } finally {
       setBusy(false);
     }
-  }, [canRead, props]);
+  }, [canRead, props.base, props.custody, props.explain, props.request]);
   useEffect(() => void load(), [load]);
-  if (!canRead) return null;
+  if (!canRead || !props.custody) return null;
   async function takeUp(item: Suggestion) {
     const operationId = crypto.randomUUID();
     setBusy(true);
     try {
       const receipt = await props.request<Receipt>(
-        `${props.base}/ai-enablement/next-opportunities/${item.suggestion_id}/actions/take-up`,
+        `${props.base}ai-enablement/next-opportunities/${item.suggestion_id}/actions/take-up`,
         {
           method: "POST",
           headers: { "content-type": "application/json" },

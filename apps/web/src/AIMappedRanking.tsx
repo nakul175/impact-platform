@@ -40,7 +40,7 @@ export function AIMappedRanking(props: {
     try {
       setRanking(
         (await props.request(
-          `${props.base}/ai-enablement/diagnoses/${props.diagnosisId}/opportunity-ranking`,
+          `${props.base}ai-enablement/diagnoses/${props.diagnosisId}/opportunity-ranking`,
           {
             method: "POST",
             body: JSON.stringify({ revision_id: props.revisionId, profile }),

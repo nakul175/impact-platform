@@ -35,13 +35,101 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.14.0"
+VERSION = "1.15.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
+IMPLEMENTED = {
+    ("get", "dashboards/{object_id}/preview"),
+    ("post", "dashboards/{object_id}/actions/copy"),
+}
 
 
 def augment(spec, policy):
     schemas, paths = spec["components"]["schemas"], spec["paths"]
     prefix = "/v1/tenants/{tenant_id}/"
+
+    binding = closed(
+        {
+            "resource_type": {"enum": ["CALCULATED_RESULT", "EVIDENCE"]},
+            "object_id": UUID,
+            "revision_id": UUID,
+        },
+        ["resource_type", "object_id", "revision_id"],
+    )
+    disclosure = closed(
+        {
+            "classification": {"enum": ["PUBLIC", "INTERNAL", "CONFIDENTIAL"]},
+            "quality_context_required": {"const": True},
+        },
+        ["classification", "quality_context_required"],
+    )
+    widget = closed(
+        {
+            "widget_id": UUID,
+            "type": {"enum": ["METRIC", "TABLE", "TREND", "TARGET", "NARRATIVE", "EVIDENCE"]},
+            "title": {"type": "string", "minLength": 1, "maxLength": 200},
+            "binding": binding,
+            "view_mode": {"enum": ["OFFICIAL", "PROVISIONAL"]},
+            "period_id": UUID,
+            "dimensions": {
+                "type": "array",
+                "maxItems": 5,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 64},
+            },
+            "disclosure_context": disclosure,
+            "position": {"type": "integer", "minimum": 0, "maximum": 9},
+            "width": {"type": "integer", "minimum": 1, "maximum": 12},
+        },
+        [
+            "widget_id",
+            "type",
+            "title",
+            "binding",
+            "view_mode",
+            "period_id",
+            "dimensions",
+            "disclosure_context",
+            "position",
+            "width",
+        ],
+    )
+    schemas["Widget"] = widget
+    for name in ["DashboardData", "DashboardDraftData"]:
+        schemas[name] = closed(
+            {
+                "title": {"type": "string", "minLength": 1, "maxLength": 200},
+                "mode": {"const": "PRIVATE_DRAFT"},
+                "widgets": {"type": "array", "minItems": 1, "maxItems": 10, "items": widget},
+                "filters": schemas["FilterSet"],
+            },
+            ["title", "mode", "widgets", "filters"],
+        )
+    schemas["DashboardCopyData"] = closed({"title": {"type": "string", "minLength": 1, "maxLength": 200}}, [])
+    schemas["DashboardCopy"] = closed(
+        {"operation_id": UUID, "data": {"$ref": "#/components/schemas/DashboardCopyData"}},
+        ["operation_id", "data"],
+    )
+    preview_widget = closed(
+        {
+            **deepcopy(widget["properties"]),
+            "availability": {"enum": ["AVAILABLE", "UNAVAILABLE"]},
+            "chart_values": {"type": "array", "maxItems": 100, "items": NULLABLE_DECIMAL},
+            "table_rows": {"type": "array", "maxItems": 100, "items": {"type": "object"}},
+            "quality_context": {"type": ["object", "null"]},
+        },
+        list(widget["required"]) + ["availability", "chart_values", "table_rows", "quality_context"],
+    )
+    schemas["DashboardPreview"] = closed(
+        {
+            "dashboard_id": UUID,
+            "dashboard_revision": UUID,
+            "title": {"type": "string"},
+            "mode": {"const": "PRIVATE_DRAFT"},
+            "viewport": {"enum": ["DESKTOP", "MOBILE", "TABLE"]},
+            "widgets": {"type": "array", "maxItems": 10, "items": preview_widget},
+        },
+        ["dashboard_id", "dashboard_revision", "title", "mode", "viewport", "widgets"],
+    )
 
     category = closed(
         {
@@ -385,5 +473,63 @@ def augment(spec, policy):
                 "purpose_required": False,
                 "fresh_assurance_seconds": None,
                 "audit": False,
+            }
+        )
+
+    dashboard_item = paths[prefix + "dashboards/{object_id}"]
+    preview = deepcopy(dashboard_item["get"])
+    preview.update(
+        operationId="preview_dashboards",
+        summary="Preview an authored dashboard",
+        **{"x-capability": "dashboards.read", "x-contract-version": VERSION},
+    )
+    preview["parameters"] = [
+        {
+            "name": "viewport",
+            "in": "query",
+            "schema": {"enum": ["DESKTOP", "MOBILE", "TABLE"], "default": "DESKTOP"},
+        }
+    ]
+    preview["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardPreview"
+    }
+    paths[prefix + "dashboards/{object_id}/preview"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": preview,
+    }
+    copy_entry = deepcopy(paths[prefix + "dashboards"]["post"])
+    copy_entry.update(
+        operationId="action_dashboards_copy",
+        summary="Copy a dashboard into a private draft",
+        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+    )
+    copy_entry["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardCopy"
+    }
+    paths[prefix + "dashboards/{object_id}/actions/copy"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": copy_entry,
+    }
+    for op, method, path, cap, audit_event in [
+        ("preview_dashboards", "GET", prefix + "dashboards/{object_id}/preview", "dashboards.read", False),
+        (
+            "action_dashboards_copy",
+            "POST",
+            prefix + "dashboards/{object_id}/actions/copy",
+            "dashboards.draft.create",
+            True,
+        ),
+    ]:
+        policy["operations"] = [row for row in policy["operations"] if row["operation_id"] != op]
+        policy["operations"].append(
+            {
+                "operation_id": op,
+                "method": method,
+                "path": path,
+                "capability": cap,
+                "role_templates": ROLES,
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": audit_event,
             }
         )

@@ -188,6 +188,12 @@
 | POST | `/v1/tenants/{tenant_id}/commercial-invoices/{invoice_id}/actions/issue` | `subscription.admin` |
 | GET | `/v1/tenants/{tenant_id}/connections` | `connections.read` |
 | GET | `/v1/tenants/{tenant_id}/connections/{object_id}` | `connections.read` |
+| GET | `/v1/tenants/{tenant_id}/dashboards` | `dashboards.read` |
+| POST | `/v1/tenants/{tenant_id}/dashboards` | `dashboards.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/dashboards/{object_id}` | `dashboards.read` |
+| PATCH | `/v1/tenants/{tenant_id}/dashboards/{object_id}` | `dashboards.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/copy` | `dashboards.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/dashboards/{object_id}/preview` | `dashboards.read` |
 | GET | `/v1/tenants/{tenant_id}/decisions` | `decisions.read` |
 | GET | `/v1/tenants/{tenant_id}/decisions/{object_id}` | `decisions.read` |
 | POST | `/v1/tenants/{tenant_id}/derivatives/{derivative_id}/revisions` | `reports.write` |

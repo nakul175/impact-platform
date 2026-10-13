@@ -1,5 +1,5 @@
 {
-  "version": "1.107.0",
+  "version": "1.108.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6579,6 +6579,42 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "preview_dashboards",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/preview",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "action_dashboards_copy",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/copy",
+      "capability": "dashboards.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
     },
     {
       "operation_id": "create_audit_export",

@@ -35,6 +35,7 @@ from .audit_export import AuditExports
 from .retention_policies import RetentionPolicies
 from . import security_events
 from .dashboards import Dashboards
+from .dashboard_authoring import DashboardAuthoring
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
 from .ai_enablement import AIEnablement
 from .ai_jobs import AIJobs
@@ -227,6 +228,7 @@ def create_app():
     recovery_contacts = RecoveryContacts(lifecycle)
     worker_status = WorkerStatus(lifecycle)
     dashboards = Dashboards(service)
+    dashboard_authoring = DashboardAuthoring(service)
     ai_impact = AIImpactReferences(service, dashboards)
     audit_exports = AuditExports(service)
     retention_policies = RetentionPolicies(service)
@@ -1772,6 +1774,23 @@ def create_app():
             limit=limit,
             cursor=cursor,
             period_id=uuid(period_id) if period_id else None,
+        )
+
+    @app.get("/v1/tenants/{tenant}/dashboards/{obj}/preview")
+    def dashboard_preview(request: Request, tenant: str, obj: str, viewport: str = "DESKTOP"):
+        return dashboard_authoring.preview(auth.resolve(request), uuid(tenant), uuid(obj), viewport)
+
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy", status_code=201)
+    async def dashboard_copy(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardCopy", body)
+        return await run_in_threadpool(
+            dashboard_authoring.copy,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
         )
 
     @app.get("/v1/tenants/{tenant}/indicator-instances/{obj}/dashboard-series")

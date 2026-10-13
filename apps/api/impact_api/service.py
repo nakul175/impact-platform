@@ -44,6 +44,7 @@ from .hierarchical_aggregation import HierarchicalAggregation, validate_hierarch
 from .dimension_crosswalk import DimensionCrosswalk, validate_crosswalk
 from .formula_authoring import FormulaAuthoring, validate_formula
 from .portfolio_attribution import PortfolioAttribution, validate_portfolio_view
+from .dashboard_authoring import validate_dashboard
 from .keyring import ring
 from .store import (
     context,
@@ -89,6 +90,7 @@ READ_ROUTES = {
     "dimension-crosswalks",
     "formula-definitions",
     "portfolio-allocation-views",
+    "dashboards",
     "workflow-templates",
     "lineage-manifests",
     *READS,
@@ -137,6 +139,7 @@ WRITE_ROUTES = {
     "dimension-crosswalks",
     "formula-definitions",
     "portfolio-allocation-views",
+    "dashboards",
 }
 REQUEST_ROUTES = {"disclosure-requests": "Disclosure"}
 READ_KINDS = {route: ENTITIES[route]["entity"] for route in READ_ROUTES if route in ENTITIES} | {
@@ -656,6 +659,8 @@ class Service:
             validate_formula(c, ctx, data)
         if kind == "PortfolioAllocationView":
             validate_portfolio_view(c, ctx, data)
+        if kind == "Dashboard":
+            validate_dashboard(c, ctx, data)
         if kind in PLANNING_KINDS:
             self.planning.validate(c, ctx, kind, data, owner_id)
         if kind == "MeasurementChange":

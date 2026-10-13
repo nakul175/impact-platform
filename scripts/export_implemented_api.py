@@ -79,7 +79,10 @@ from impact_api.evidence_contracts import (  # noqa: E402
     IMPLEMENTED as EVIDENCE_ROUTES,
 )
 from impact_api.export_contracts import SPECIAL_READS as EXPORT_READS  # noqa: E402
-from impact_api.dashboard_contracts import SPECIAL_READS as DASHBOARD_READS  # noqa: E402
+from impact_api.dashboard_contracts import (  # noqa: E402
+    SPECIAL_READS as DASHBOARD_READS,
+    IMPLEMENTED as DASHBOARD_AUTHORING_ROUTES,
+)
 from impact_api.audit_export_contracts import IMPLEMENTED as AUDIT_EXPORT_ROUTES  # noqa: E402
 from impact_api.privacy_contracts import IMPLEMENTED as PRIVACY_ROUTES  # noqa: E402
 from impact_api.retention_contracts import IMPLEMENTED as RETENTION_ROUTES  # noqa: E402
@@ -100,6 +103,9 @@ allowed.update(
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in FORMS_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in EXPORT_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in DASHBOARD_READS)
+allowed.update(
+    (method, "/v1/tenants/{tenant_id}/" + route) for method, route in DASHBOARD_AUTHORING_ROUTES
+)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PUBLICATION_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PUBLICATION_DIRECTORIES)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in EVIDENCE_READS)

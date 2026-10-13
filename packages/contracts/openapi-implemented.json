@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.107.0",
+    "version": "1.108.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -9150,6 +9150,457 @@
           }
         },
         "x-contract-version": "1.1.0"
+      }
+    },
+    "/v1/tenants/{tenant_id}/dashboards": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "list_dashboards",
+        "summary": "list dashboards",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "dashboards.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          }
+        ],
+        "x-contract-version": "1.1.0"
+      },
+      "post": {
+        "operationId": "create_dashboards",
+        "summary": "create dashboards",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DashboardCreate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.1.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/dashboards/{object_id}": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "get_dashboards",
+        "summary": "get dashboards",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "dashboards.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dashboard"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.1.0"
+      },
+      "patch": {
+        "operationId": "patch_dashboards",
+        "summary": "patch dashboards",
+        "description": "Edit permitted Draft fields only. Reject lifecycle, actor, processing and authority properties. Governed material edits create a new draft child. expected_revision checked atomically.",
+        "x-capability": "dashboards.draft.edit",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DashboardPatch"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.1.0",
+        "x-audit-required": true
       }
     },
     "/v1/tenants/{tenant_id}/report-templates": {
@@ -31285,7 +31736,7 @@
             }
           }
         },
-        "x-contract-version": "1.14.0",
+        "x-contract-version": "1.15.0",
         "parameters": [
           {
             "name": "limit",
@@ -31425,7 +31876,7 @@
             }
           }
         },
-        "x-contract-version": "1.14.0",
+        "x-contract-version": "1.15.0",
         "parameters": [
           {
             "name": "limit",
@@ -31556,7 +32007,7 @@
             }
           }
         },
-        "x-contract-version": "1.14.0",
+        "x-contract-version": "1.15.0",
         "parameters": [
           {
             "name": "limit",
@@ -31696,7 +32147,7 @@
             }
           }
         },
-        "x-contract-version": "1.14.0",
+        "x-contract-version": "1.15.0",
         "parameters": [
           {
             "name": "limit",
@@ -31726,6 +32177,262 @@
             }
           }
         ]
+      }
+    },
+    "/v1/tenants/{tenant_id}/dashboards/{object_id}/preview": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "preview_dashboards",
+        "summary": "Preview an authored dashboard",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "dashboards.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardPreview"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.15.0",
+        "parameters": [
+          {
+            "name": "viewport",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "DESKTOP",
+                "MOBILE",
+                "TABLE"
+              ],
+              "default": "DESKTOP"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/copy": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "action_dashboards_copy",
+        "summary": "Copy a dashboard into a private draft",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DashboardCopy"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.15.0",
+        "x-audit-required": true
       }
     },
     "/v1/tenants/{tenant_id}/audit-exports": {
@@ -58458,22 +59165,148 @@
             "maxLength": 200
           },
           "mode": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 64
+            "const": "PRIVATE_DRAFT"
           },
           "widgets": {
             "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
             "items": {
-              "$ref": "#/components/schemas/Widget"
-            },
-            "maxItems": 100
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "widget_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": {
+                  "enum": [
+                    "METRIC",
+                    "TABLE",
+                    "TREND",
+                    "TARGET",
+                    "NARRATIVE",
+                    "EVIDENCE"
+                  ]
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "binding": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "resource_type": {
+                      "enum": [
+                        "CALCULATED_RESULT",
+                        "EVIDENCE"
+                      ]
+                    },
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "resource_type",
+                    "object_id",
+                    "revision_id"
+                  ]
+                },
+                "view_mode": {
+                  "enum": [
+                    "OFFICIAL",
+                    "PROVISIONAL"
+                  ]
+                },
+                "period_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "dimensions": {
+                  "type": "array",
+                  "maxItems": 5,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  }
+                },
+                "disclosure_context": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "classification": {
+                      "enum": [
+                        "PUBLIC",
+                        "INTERNAL",
+                        "CONFIDENTIAL"
+                      ]
+                    },
+                    "quality_context_required": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "classification",
+                    "quality_context_required"
+                  ]
+                },
+                "position": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9
+                },
+                "width": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 12
+                }
+              },
+              "required": [
+                "widget_id",
+                "type",
+                "title",
+                "binding",
+                "view_mode",
+                "period_id",
+                "dimensions",
+                "disclosure_context",
+                "position",
+                "width"
+              ]
+            }
           },
           "filters": {
-            "$ref": "#/components/schemas/FilterSet"
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "terms": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/FilterTerm"
+                },
+                "maxItems": 20
+              }
+            },
+            "required": [
+              "terms"
+            ]
           }
         },
-        "required": []
+        "required": [
+          "title",
+          "mode",
+          "widgets",
+          "filters"
+        ]
       },
       "Dashboard": {
         "type": "object",
@@ -58576,22 +59409,148 @@
             "maxLength": 200
           },
           "mode": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 64
+            "const": "PRIVATE_DRAFT"
           },
           "widgets": {
             "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
             "items": {
-              "$ref": "#/components/schemas/Widget"
-            },
-            "maxItems": 100
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "widget_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": {
+                  "enum": [
+                    "METRIC",
+                    "TABLE",
+                    "TREND",
+                    "TARGET",
+                    "NARRATIVE",
+                    "EVIDENCE"
+                  ]
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "binding": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "resource_type": {
+                      "enum": [
+                        "CALCULATED_RESULT",
+                        "EVIDENCE"
+                      ]
+                    },
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "resource_type",
+                    "object_id",
+                    "revision_id"
+                  ]
+                },
+                "view_mode": {
+                  "enum": [
+                    "OFFICIAL",
+                    "PROVISIONAL"
+                  ]
+                },
+                "period_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "dimensions": {
+                  "type": "array",
+                  "maxItems": 5,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  }
+                },
+                "disclosure_context": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "classification": {
+                      "enum": [
+                        "PUBLIC",
+                        "INTERNAL",
+                        "CONFIDENTIAL"
+                      ]
+                    },
+                    "quality_context_required": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "classification",
+                    "quality_context_required"
+                  ]
+                },
+                "position": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9
+                },
+                "width": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 12
+                }
+              },
+              "required": [
+                "widget_id",
+                "type",
+                "title",
+                "binding",
+                "view_mode",
+                "period_id",
+                "dimensions",
+                "disclosure_context",
+                "position",
+                "width"
+              ]
+            }
           },
           "filters": {
-            "$ref": "#/components/schemas/FilterSet"
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "terms": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/FilterTerm"
+                },
+                "maxItems": 20
+              }
+            },
+            "required": [
+              "terms"
+            ]
           }
         },
-        "required": []
+        "required": [
+          "title",
+          "mode",
+          "widgets",
+          "filters"
+        ]
       },
       "DashboardCreate": {
         "type": "object",
@@ -63654,51 +64613,107 @@
             "format": "uuid"
           },
           "type": {
-            "type": "string",
             "enum": [
               "METRIC",
               "TABLE",
-              "LINE",
-              "BAR",
-              "MAP",
-              "NARRATIVE"
+              "TREND",
+              "TARGET",
+              "NARRATIVE",
+              "EVIDENCE"
             ]
           },
           "title": {
             "type": "string",
+            "minLength": 1,
             "maxLength": 200
           },
-          "indicator_versions": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
+          "binding": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "resource_type": {
+                "enum": [
+                  "CALCULATED_RESULT",
+                  "EVIDENCE"
+                ]
+              },
+              "object_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "revision_id": {
+                "type": "string",
+                "format": "uuid"
+              }
             },
-            "maxItems": 30
+            "required": [
+              "resource_type",
+              "object_id",
+              "revision_id"
+            ]
           },
-          "filters": {
-            "$ref": "#/components/schemas/FilterSet"
-          },
-          "position": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "mode": {
-            "type": "string",
+          "view_mode": {
             "enum": [
               "OFFICIAL",
               "PROVISIONAL"
             ]
+          },
+          "period_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dimensions": {
+            "type": "array",
+            "maxItems": 5,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            }
+          },
+          "disclosure_context": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "classification": {
+                "enum": [
+                  "PUBLIC",
+                  "INTERNAL",
+                  "CONFIDENTIAL"
+                ]
+              },
+              "quality_context_required": {
+                "const": true
+              }
+            },
+            "required": [
+              "classification",
+              "quality_context_required"
+            ]
+          },
+          "position": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
           }
         },
         "required": [
           "widget_id",
           "type",
           "title",
-          "indicator_versions",
-          "filters",
+          "binding",
+          "view_mode",
+          "period_id",
+          "dimensions",
+          "disclosure_context",
           "position",
-          "mode"
+          "width"
         ]
       },
       "TemplateSection": {
@@ -76819,6 +77834,220 @@
         },
         "required": [
           "items"
+        ]
+      },
+      "DashboardCopyData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "required": []
+      },
+      "DashboardCopy": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/DashboardCopyData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "DashboardPreview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "dashboard_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dashboard_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "mode": {
+            "const": "PRIVATE_DRAFT"
+          },
+          "viewport": {
+            "enum": [
+              "DESKTOP",
+              "MOBILE",
+              "TABLE"
+            ]
+          },
+          "widgets": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "widget_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": {
+                  "enum": [
+                    "METRIC",
+                    "TABLE",
+                    "TREND",
+                    "TARGET",
+                    "NARRATIVE",
+                    "EVIDENCE"
+                  ]
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "binding": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "resource_type": {
+                      "enum": [
+                        "CALCULATED_RESULT",
+                        "EVIDENCE"
+                      ]
+                    },
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "resource_type",
+                    "object_id",
+                    "revision_id"
+                  ]
+                },
+                "view_mode": {
+                  "enum": [
+                    "OFFICIAL",
+                    "PROVISIONAL"
+                  ]
+                },
+                "period_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "dimensions": {
+                  "type": "array",
+                  "maxItems": 5,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  }
+                },
+                "disclosure_context": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "classification": {
+                      "enum": [
+                        "PUBLIC",
+                        "INTERNAL",
+                        "CONFIDENTIAL"
+                      ]
+                    },
+                    "quality_context_required": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "classification",
+                    "quality_context_required"
+                  ]
+                },
+                "position": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9
+                },
+                "width": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 12
+                },
+                "availability": {
+                  "enum": [
+                    "AVAILABLE",
+                    "UNAVAILABLE"
+                  ]
+                },
+                "chart_values": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                  }
+                },
+                "table_rows": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "quality_context": {
+                  "type": [
+                    "object",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "widget_id",
+                "type",
+                "title",
+                "binding",
+                "view_mode",
+                "period_id",
+                "dimensions",
+                "disclosure_context",
+                "position",
+                "width",
+                "availability",
+                "chart_values",
+                "table_rows",
+                "quality_context"
+              ]
+            }
+          }
+        },
+        "required": [
+          "dashboard_id",
+          "dashboard_revision",
+          "title",
+          "mode",
+          "viewport",
+          "widgets"
         ]
       },
       "DashboardValue": {

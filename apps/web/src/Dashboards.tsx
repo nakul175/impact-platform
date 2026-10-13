@@ -9,7 +9,12 @@ type Props = {
   request: (path: string, options?: RequestInit) => Promise<any>;
   explain: (e: unknown) => string;
 };
-type Row = { object_id: string; data: Record<string, any> };
+type Row = {
+  object_id: string;
+  revision_id: string;
+  classification?: string;
+  data: Record<string, any>;
+};
 type Value = {
   mode: "OFFICIAL" | "PROVISIONAL";
   value_state: string;
@@ -287,7 +292,16 @@ export function DashboardsPanel({
     [view, setView] = useState<any>(null),
     [indicator, setIndicator] = useState(""),
     [series, setSeries] = useState<any>(null),
-    [mode, setMode] = useState<"programme" | "portfolio">("programme"),
+    [mode, setMode] = useState<"programme" | "portfolio" | "authored">(
+      "programme",
+    ),
+    [savedDashboards, setSavedDashboards] = useState<Row[]>([]),
+    [calculatedResults, setCalculatedResults] = useState<Row[]>([]),
+    [savedDashboard, setSavedDashboard] = useState(""),
+    [authoredPreview, setAuthoredPreview] = useState<any>(null),
+    [viewport, setViewport] = useState<"DESKTOP" | "MOBILE" | "TABLE">(
+      "DESKTOP",
+    ),
     [sourcesFor, setSourcesFor] = useState(""),
     [sources, setSources] = useState<any>(null),
     [error, setError] = useState(""),
@@ -297,6 +311,10 @@ export function DashboardsPanel({
     allowed("dashboards.read") &&
     allowed("programmes.read") &&
     allowed("periods.read");
+  const canAuthor =
+    allowed("dashboards.read") &&
+    allowed("dashboards.draft.create") &&
+    allowed("calculated-results.read");
   useEffect(() => {
     if (!permitted) return;
     Promise.all([
@@ -374,6 +392,117 @@ export function DashboardsPanel({
       live = false;
     };
   }, [sourcesFor, period, tick, base]);
+  useEffect(() => {
+    if (mode !== "authored" || !canAuthor) return;
+    Promise.all([
+      all(request, base + "dashboards"),
+      all(request, base + "calculated-results"),
+    ])
+      .then(([dashboards, results]) => {
+        setSavedDashboards(dashboards);
+        setCalculatedResults(results);
+        setSavedDashboard(
+          (current) => current || dashboards[0]?.object_id || "",
+        );
+      })
+      .catch((e) => setError(explain(e)));
+  }, [mode, canAuthor, base, tick]);
+  useEffect(() => {
+    if (mode !== "authored" || !savedDashboard) {
+      setAuthoredPreview(null);
+      return;
+    }
+    request(`${base}dashboards/${savedDashboard}/preview?viewport=${viewport}`)
+      .then(setAuthoredPreview)
+      .catch((e) => setError(explain(e)));
+  }, [mode, savedDashboard, viewport, base, tick]);
+  const widgetFor = (result: Row, position: number) => ({
+    widget_id: crypto.randomUUID(),
+    type: "METRIC",
+    title: `Result ${result.object_id.slice(0, 8)}`,
+    binding: {
+      resource_type: "CALCULATED_RESULT",
+      object_id: result.object_id,
+      revision_id: result.revision_id,
+    },
+    view_mode: result.data.mode || "PROVISIONAL",
+    period_id: result.data.period_id,
+    dimensions: [],
+    disclosure_context: {
+      classification: result.classification || "INTERNAL",
+      quality_context_required: true,
+    },
+    position,
+    width: 6,
+  });
+  async function createAuthoredDashboard() {
+    const result = calculatedResults[0];
+    if (!result) return setError("A permitted calculated result is required.");
+    try {
+      const receipt = await request(base + "dashboards", {
+        method: "POST",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          data: {
+            title: "New private dashboard",
+            mode: "PRIVATE_DRAFT",
+            widgets: [widgetFor(result, 0)],
+            filters: { terms: [] },
+          },
+        }),
+      });
+      setSavedDashboard(receipt.object_id);
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function addWidget() {
+    const dashboard = savedDashboards.find(
+      (row) => row.object_id === savedDashboard,
+    );
+    if (!dashboard || dashboard.data.widgets.length >= 10) return;
+    const used = new Set(
+      dashboard.data.widgets.map((widget: any) => widget.binding.object_id),
+    );
+    const result = calculatedResults.find((row) => !used.has(row.object_id));
+    if (!result)
+      return setError("No additional permitted result is available.");
+    try {
+      await request(base + "dashboards/" + dashboard.object_id, {
+        method: "PATCH",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          expected_revision: dashboard.revision_id,
+          data: {
+            widgets: [
+              ...dashboard.data.widgets,
+              widgetFor(result, dashboard.data.widgets.length),
+            ],
+          },
+        }),
+      });
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function copyDashboard() {
+    if (!savedDashboard) return;
+    try {
+      const receipt = await request(
+        `${base}dashboards/${savedDashboard}/actions/copy`,
+        {
+          method: "POST",
+          body: JSON.stringify({ operation_id: crypto.randomUUID(), data: {} }),
+        },
+      );
+      setSavedDashboard(receipt.object_id);
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
   async function more() {
     try {
       const next = await request(
@@ -412,16 +541,26 @@ export function DashboardsPanel({
           aria-label="Dashboard view"
           onKeyDown={tabListKeys}
         >
-          {(["programme", "portfolio"] as const).map((m) => (
+          {(
+            [
+              "programme",
+              "portfolio",
+              ...(canAuthor ? ["authored"] : []),
+            ] as const
+          ).map((m) => (
             <button
               key={m}
               role="tab"
               type="button"
               aria-selected={mode === m}
               className={mode === m ? "primary" : "secondary"}
-              onClick={() => setMode(m)}
+              onClick={() => setMode(m as typeof mode)}
             >
-              {m === "programme" ? "Programme dashboard" : "Portfolio"}
+              {m === "programme"
+                ? "Programme dashboard"
+                : m === "portfolio"
+                  ? "Portfolio"
+                  : "Authored dashboards"}
             </button>
           ))}
         </div>
@@ -436,9 +575,85 @@ export function DashboardsPanel({
           setPeriod={setPeriod}
         />
       ) : null}
+      {mode === "authored" ? (
+        <section className="panel" aria-label="Authored dashboard preview">
+          <div className="planning-toolbar">
+            <label>
+              Private dashboard
+              <select
+                value={savedDashboard}
+                onChange={(event) => setSavedDashboard(event.target.value)}
+              >
+                {!savedDashboards.length && <option value="">No drafts</option>}
+                {savedDashboards.map((row) => (
+                  <option key={row.object_id} value={row.object_id}>
+                    {row.data.title}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Preview
+              <select
+                value={viewport}
+                onChange={(event) =>
+                  setViewport(event.target.value as typeof viewport)
+                }
+              >
+                <option>DESKTOP</option>
+                <option>MOBILE</option>
+                <option>TABLE</option>
+              </select>
+            </label>
+            <button type="button" onClick={createAuthoredDashboard}>
+              New draft
+            </button>
+            <button type="button" className="secondary" onClick={addWidget}>
+              Add result widget
+            </button>
+            <button type="button" className="secondary" onClick={copyDashboard}>
+              Copy privately
+            </button>
+          </div>
+          {authoredPreview?.widgets.map((widget: any) => (
+            <article className="dashboard-card" key={widget.widget_id}>
+              <h3>{widget.title}</h3>
+              {widget.availability === "UNAVAILABLE" ? (
+                <p role="status">
+                  Unavailable — no saved private value is shown.
+                </p>
+              ) : (
+                <div className="table-scroll">
+                  <table aria-label={`${widget.title} tabular equivalent`}>
+                    <thead>
+                      <tr>
+                        <th>Measure</th>
+                        <th>Value</th>
+                        <th>State</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {widget.table_rows.map((row: any) => (
+                        <tr key={row.label}>
+                          <td>{row.label}</td>
+                          <td>{row.displayed_value ?? "—"}</td>
+                          <td>{words(row.value_state)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              <p className="muted">
+                Quality context is always visible · {words(widget.view_mode)}
+              </p>
+            </article>
+          ))}
+        </section>
+      ) : null}
       <div
         className="planning-toolbar"
-        style={mode === "portfolio" ? { display: "none" } : undefined}
+        style={mode !== "programme" ? { display: "none" } : undefined}
       >
         <label>
           Programme

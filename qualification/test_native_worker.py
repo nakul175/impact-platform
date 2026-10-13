@@ -360,15 +360,14 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
     events = {str(deliveries(live, r["object_id"])[0]["event_id"]) for r in receipts}
     # Each send is shorter than the lease, so the row in flight is renewed and stays with worker A.
     # Rows still waiting keep the original batch expiry and become due during that send. Worker B
-    # claims them in this process at the moment the database clock says so. A second subprocess
-    # cannot: its first pass walks every tenant (several seconds) and either arrives while the
-    # lease is still valid, or the first worker re-claims the rows itself. A send longer than
-    # stop()'s wait also cannot be interrupted — time.sleep returns before SIGTERM is handled.
+    # claims them in this process at the moment the database clock says so.
     delay = 8
     slow = Worker(
         settings(
             live,
-            batch_size=6,
+            # A prior native race may leave unexpired leases which drain() cannot yet reclaim.
+            # Claim enough rows to include this test's six, then release every unrelated claim.
+            batch_size=100,
             synthetic_delay=delay,
             lease_seconds=delay + 2,
             smtp_timeout=1,
@@ -396,7 +395,11 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
 
     tenant = live.fixture["tenant_a"]
     summary = empty_summary()
-    batch = slow.claim(tenant, summary)
+    claimed = slow.claim(tenant, summary)
+    batch = [row for row in claimed if str(row["event_id"]) in events]
+    unrelated = [row for row in claimed if str(row["event_id"]) not in events]
+    if unrelated:
+        assert slow.release(tenant, unrelated) == len(unrelated)
     assert {str(row["event_id"]) for row in batch} == events
 
     def send_claimed_batch():

@@ -38,6 +38,7 @@ from .evidence import Evidence
 from .privacy import Privacy
 from .work import WorkCenter
 from .calculation_compatibility import CalculationCompatibility
+from .calculation_reconciliation import CalculationReconciliation
 from .population_overlap import PopulationOverlap
 from .hierarchical_aggregation import HierarchicalAggregation, validate_hierarchy
 from .dimension_crosswalk import DimensionCrosswalk, validate_crosswalk
@@ -230,6 +231,7 @@ class Service:
         self.evidence = Evidence(self)
         self.privacy = Privacy(self)
         self.calculation_compatibility = CalculationCompatibility(self)
+        self.calculation_reconciliation = CalculationReconciliation(self)
         self.population_overlap = PopulationOverlap(self)
         self.hierarchical_aggregation = HierarchicalAggregation(self)
         self.dimension_crosswalk = DimensionCrosswalk(self)
@@ -1286,6 +1288,7 @@ class Service:
             self.periods.apply_restatement(c, ctx, candidate, correlation)
         if action == "approve" and candidate["object_type"] == "Report":
             self.reporting.reconcile(c, ctx, candidate["payload"], complete=True)
+            self.calculation_reconciliation.assert_report_reconciled(c, ctx, candidate)
         if action == "approve" and candidate["object_type"] == "Disclosure":
             self.reporting.validate_disclosure(c, ctx, candidate["payload"])
         if action == "approve" and candidate["object_type"] in PLANNING_KINDS:
@@ -1490,6 +1493,7 @@ class Service:
             "period_id": data["period_id"],
             "formula": formula,
             "filters": {},
+            "permission_epoch": ctx.policy_epoch,
             "contributions": contributions,
             **plan_pin,
         }

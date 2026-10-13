@@ -1549,6 +1549,132 @@ function dimensionCodes(text: string) {
   }
   return codes;
 }
+function CalculationExplanationPanel({
+  explanation,
+  comparison,
+  candidates,
+  compareWith,
+  setCompareWith,
+  compare,
+  busy,
+}: {
+  explanation: any;
+  comparison: any;
+  candidates: RecordRow[];
+  compareWith: string;
+  setCompareWith: (value: string) => void;
+  compare: () => void;
+  busy: boolean;
+}) {
+  return (
+    <section className="panel" aria-labelledby="result-explanation-heading">
+      <h3 id="result-explanation-heading">How this result was produced</h3>
+      <dl className="fields">
+        <dt>Rule version</dt>
+        <dd>
+          {explanation.formula.method} · <code>{explanation.rule_version}</code>
+        </dd>
+        <dt>Sources</dt>
+        <dd>
+          {explanation.source_set.included_count} included ·{" "}
+          {explanation.source_set.excluded_count} excluded
+        </dd>
+        <dt>Coverage</dt>
+        <dd>{explanation.coverage.coverage_state}</dd>
+        <dt>Filters</dt>
+        <dd>
+          {Object.keys(explanation.filters).length
+            ? JSON.stringify(explanation.filters)
+            : "No additional filters"}
+        </dd>
+        <dt>Adjustments</dt>
+        <dd>
+          {explanation.adjustments.length
+            ? explanation.adjustments
+                .map((item: any) => item.code + ": " + item.message)
+                .join("; ")
+            : "No governed adjustments"}
+        </dd>
+        <dt>Approval</dt>
+        <dd>
+          {explanation.approval.mode} · {explanation.approval.lifecycle_state}
+        </dd>
+      </dl>
+      {explanation.source_set.excluded_reasons.length > 0 && (
+        <table aria-label="Excluded source summary">
+          <thead>
+            <tr>
+              <th>Exclusion reason</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {explanation.source_set.excluded_reasons.map((item: any) => (
+              <tr key={item.reason_code}>
+                <td>{item.reason_code}</td>
+                <td>{item.count}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      <h4>Compare with another run</h4>
+      <div className="form-grid">
+        <label>
+          Comparison run
+          <select
+            value={compareWith}
+            onChange={(event) => setCompareWith(event.target.value)}
+          >
+            <option value="">Choose a result</option>
+            {candidates.map((candidate) => (
+              <option key={candidate.object_id} value={candidate.object_id}>
+                {label(candidate)} · {candidate.revision_id.slice(0, 8)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button
+          type="button"
+          className="secondary"
+          disabled={!compareWith || busy}
+          onClick={compare}
+        >
+          Compare runs
+        </button>
+      </div>
+      {comparison && (
+        <div role="status">
+          <p>
+            Difference:{" "}
+            <strong>{comparison.difference ?? "Unavailable"}</strong> ·{" "}
+            {comparison.reconciled
+              ? "Reconciled to stated causes"
+              : "Approval blocked until the difference is reconciled"}
+          </p>
+          <table aria-label="Run difference causes">
+            <thead>
+              <tr>
+                <th>Cause</th>
+                <th>Effect</th>
+                <th>Reference</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparison.causes.map((cause: any) => (
+                <tr key={cause.category}>
+                  <td>{cause.category}</td>
+                  <td>{cause.effect ?? "Withheld"}</td>
+                  <td>{cause.reference_state}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
 function Breakdown({ entries }: { entries: any[] }) {
   return (
     <div className="table-scroll">
@@ -1614,6 +1740,9 @@ function Editor({
     [resources, setResources] = useState<Record<string, RecordRow[]>>({}),
     [candidate, setCandidate] = useState<RecordRow | null>(null),
     [currentTarget, setCurrentTarget] = useState<RecordRow | null>(null),
+    [explanation, setExplanation] = useState<any>(null),
+    [comparison, setComparison] = useState<any>(null),
+    [compareWith, setCompareWith] = useState(""),
     [reportSnapshot, setReportSnapshot] = useState(""),
     [programmeReview, setProgrammeReview] = useState(false),
     [programmeCalendar, setProgrammeCalendar] = useState(
@@ -1644,6 +1773,12 @@ function Editor({
     if (mode === "publish-report") routes = ["disclosures"];
     if (mode === "programme" || mode === "edit")
       routes = ["reporting-calendars", "geographies"];
+    if (
+      mode === "inspect" &&
+      route === "calculated-results" &&
+      allowed("lineage-manifests.read")
+    )
+      routes = ["calculated-results"];
     Promise.all(
       routes.map(
         async (r) =>
@@ -1667,6 +1802,20 @@ function Editor({
           setCandidate(r);
           setCurrentTarget(current_target || null);
         })
+        .catch((e) => {
+          if (e.name !== "AbortError") setError(explain(e));
+        });
+    }
+    if (
+      mode === "inspect" &&
+      route === "calculated-results" &&
+      row &&
+      allowed("lineage-manifests.read")
+    ) {
+      api(base + "calculated-results/" + row.object_id + "/explanation", {
+        signal: c.signal,
+      })
+        .then(setExplanation)
         .catch((e) => {
           if (e.name !== "AbortError") setError(explain(e));
         });
@@ -1695,6 +1844,26 @@ function Editor({
       setError(
         explain(e),
       ); /* Preserve operation ID: retries must remain exact. */
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function compareRuns() {
+    if (!row || !compareWith) return;
+    setBusy(true);
+    setError("");
+    try {
+      setComparison(
+        await api(
+          base +
+            "calculated-results/" +
+            row.object_id +
+            "/comparison/" +
+            compareWith,
+        ),
+      );
+    } catch (e) {
+      setError(explain(e));
     } finally {
       setBusy(false);
     }
@@ -1884,6 +2053,19 @@ function Editor({
               : row.data
           }
         />
+        {route === "calculated-results" && explanation && (
+          <CalculationExplanationPanel
+            explanation={explanation}
+            comparison={comparison}
+            candidates={(resources["calculated-results"] || []).filter(
+              (candidate) => candidate.object_id !== row.object_id,
+            )}
+            compareWith={compareWith}
+            setCompareWith={setCompareWith}
+            compare={compareRuns}
+            busy={busy}
+          />
+        )}
         {route === "programmes" && row.data.template_code === "SIMPLE" && (
           <section className="panel" aria-labelledby="saved-programme-rules">
             <h3 id="saved-programme-rules">Calculation and sharing rules</h3>

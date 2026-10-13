@@ -7,7 +7,12 @@ CATEGORY = {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,31}$"}
 NUMBER = {"type": ["string", "null"], "pattern": r"^-?(0|[1-9][0-9]{0,25})(\.[0-9]{1,12})?$"}
 UUID = {"type": "string", "format": "uuid"}
 METHODS = ["SUM", "POOLED_RATIO", "COUNT", "LAST_VALID", "MEAN", "MEDIAN", "MIN", "MAX"]
-SPECIAL_READS = {"calculated-results/{object_id}/reproduction"}
+VERSION = "1.65.0"
+SPECIAL_READS = {
+    "calculated-results/{object_id}/reproduction",
+    "calculated-results/{object_id}/explanation",
+    "calculated-results/{object_id}/comparison/{later_result_id}",
+}
 
 
 def text(maximum=200):
@@ -133,6 +138,7 @@ def augment(spec, policy):
         period_id=UUID,
         formula={"$ref": "#/components/schemas/CalculatedResultData/properties/formula"},
         filters=closed({}),
+        permission_epoch={"type": "integer", "minimum": 0},
         contributions={
             "type": "array",
             "maxItems": 10000,
@@ -207,6 +213,69 @@ def augment(spec, policy):
             "exact_match": {"type": "boolean"},
         }
     )
+    schemas["CalculationExplanation"] = closed(
+        {
+            "result_id": UUID,
+            "result_revision": UUID,
+            "rule_version": UUID,
+            "source_set": closed(
+                {
+                    "manifest_id": UUID,
+                    "execution_id": UUID,
+                    "included_count": {"type": "integer", "minimum": 0},
+                    "excluded_count": {"type": "integer", "minimum": 0},
+                    "excluded_reasons": {
+                        "type": "array",
+                        "maxItems": 100,
+                        "items": closed(
+                            {
+                                "reason_code": text(64),
+                                "count": {"type": "integer", "minimum": 1},
+                            }
+                        ),
+                    },
+                }
+            ),
+            "formula": {"$ref": "#/components/schemas/CalculatedResultData/properties/formula"},
+            "filters": closed({}),
+            "adjustments": {
+                "type": "array",
+                "maxItems": 100,
+                "items": closed({"code": text(64), "message": text(2100)}),
+            },
+            "coverage": {"$ref": "#/components/schemas/CalculatedResultData/properties/coverage"},
+            "approval": closed(
+                {
+                    "mode": {"enum": ["PROVISIONAL", "OFFICIAL"]},
+                    "lifecycle_state": text(64),
+                }
+            ),
+        }
+    )
+    schemas["CalculationDifferenceCause"] = closed(
+        {
+            "category": {
+                "enum": ["SOURCE", "FILTER", "RULE", "PERIOD", "TARGET", "PERMISSION", "DISCLOSURE"]
+            },
+            "effect": NUMBER,
+            "reference_state": {"enum": ["PERMITTED", "WITHHELD"]},
+        }
+    )
+    schemas["CalculationComparison"] = closed(
+        {
+            "earlier_result_revision": UUID,
+            "later_result_revision": UUID,
+            "difference": NUMBER,
+            "causes": {
+                "type": "array",
+                "maxItems": 7,
+                "items": {"$ref": "#/components/schemas/CalculationDifferenceCause"},
+            },
+            "explained_difference": NUMBER,
+            "reconciled": {"type": "boolean"},
+            "approval_blocked": {"type": "boolean"},
+        }
+    )
     prefix = "/v1/tenants/{tenant_id}/calculated-results/{object_id}/reproduction"
     template = deepcopy(paths["/v1/tenants/{tenant_id}/calculated-results/{object_id}"])
     get = template["get"]
@@ -221,6 +290,37 @@ def augment(spec, policy):
         "$ref": "#/components/schemas/CalculationReproduction"
     }
     paths[prefix] = {"parameters": template["parameters"], "get": get}
+    explanation_path = "/v1/tenants/{tenant_id}/calculated-results/{object_id}/explanation"
+    explanation = deepcopy(get)
+    explanation.update(
+        operationId="get_calculated_result_explanation",
+        summary="Explain a calculated result without exposing restricted source records",
+        **{"x-capability": "lineage-manifests.read", "x-contract-version": VERSION},
+    )
+    explanation["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/CalculationExplanation"
+    }
+    paths[explanation_path] = {"parameters": deepcopy(template["parameters"]), "get": explanation}
+    comparison_path = "/v1/tenants/{tenant_id}/calculated-results/{object_id}/comparison/{later_result_id}"
+    comparison = deepcopy(get)
+    comparison.update(
+        operationId="compare_calculated_result_runs",
+        summary="Classify and reconcile the numerical difference between two result runs",
+        **{"x-capability": "lineage-manifests.read", "x-contract-version": VERSION},
+    )
+    comparison["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/CalculationComparison"
+    }
+    comparison_parameters = deepcopy(template["parameters"])
+    comparison_parameters.append(
+        {
+            "name": "later_result_id",
+            "in": "path",
+            "required": True,
+            "schema": deepcopy(UUID),
+        }
+    )
+    paths[comparison_path] = {"parameters": comparison_parameters, "get": comparison}
     policy["operations"] = [
         row for row in policy["operations"] if row["operation_id"] != "get_calculated_result_reproduction"
     ]
@@ -237,3 +337,33 @@ def augment(spec, policy):
             "state_guard": "Current authority for the result and every frozen dependency; bounded arithmetic fields only.",
         }
     )
+    policy["operations"] = [
+        row
+        for row in policy["operations"]
+        if row["operation_id"] not in {"get_calculated_result_explanation", "compare_calculated_result_runs"}
+    ]
+    for operation_id, path, guard in (
+        (
+            "get_calculated_result_explanation",
+            explanation_path,
+            "Current result and lineage authority; excluded sources are aggregate counts only.",
+        ),
+        (
+            "compare_calculated_result_runs",
+            comparison_path,
+            "Current authority for both results and permitted sources; withheld references cannot be inspected and prevent a reconciled approval claim.",
+        ),
+    ):
+        policy["operations"].append(
+            {
+                "operation_id": operation_id,
+                "method": "GET",
+                "path": path,
+                "capability": "lineage-manifests.read",
+                "role_templates": ["AUTHOR", "REVIEWER", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": True,
+                "state_guard": guard,
+            }
+        )

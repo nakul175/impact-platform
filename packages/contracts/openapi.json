@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.105.0",
+    "version": "1.106.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -42599,6 +42599,237 @@
         "x-contract-version": "1.1.0"
       }
     },
+    "/v1/tenants/{tenant_id}/calculated-results/{object_id}/explanation": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "get_calculated_result_explanation",
+        "summary": "Explain a calculated result without exposing restricted source records",
+        "description": "Returns a bounded arithmetic bundle only after current authority is rechecked for the result, indicator, definition, period, lineage manifest and every source revision.",
+        "x-capability": "lineage-manifests.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculationExplanation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.65.0"
+      }
+    },
+    "/v1/tenants/{tenant_id}/calculated-results/{object_id}/comparison/{later_result_id}": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "later_result_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "compare_calculated_result_runs",
+        "summary": "Classify and reconcile the numerical difference between two result runs",
+        "description": "Returns a bounded arithmetic bundle only after current authority is rechecked for the result, indicator, definition, period, lineage manifest and every source revision.",
+        "x-capability": "lineage-manifests.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculationComparison"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.65.0"
+      }
+    },
     "/v1/tenants/{tenant_id}/calculation-compatibility/preview": {
       "parameters": [
         {
@@ -77900,6 +78131,10 @@
             "properties": {},
             "required": []
           },
+          "permission_epoch": {
+            "type": "integer",
+            "minimum": 0
+          },
           "contributions": {
             "type": "array",
             "maxItems": 10000,
@@ -88586,6 +88821,233 @@
           "stored",
           "recomputed",
           "exact_match"
+        ]
+      },
+      "CalculationExplanation": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "result_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "result_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "rule_version": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "source_set": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "manifest_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "execution_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "included_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "excluded_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "excluded_reasons": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason_code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 64,
+                      "pattern": "\\S"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  },
+                  "required": [
+                    "reason_code",
+                    "count"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "manifest_id",
+              "execution_id",
+              "included_count",
+              "excluded_count",
+              "excluded_reasons"
+            ]
+          },
+          "formula": {
+            "$ref": "#/components/schemas/CalculatedResultData/properties/formula"
+          },
+          "filters": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {},
+            "required": []
+          },
+          "adjustments": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "\\S"
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2100,
+                  "pattern": "\\S"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ]
+            }
+          },
+          "coverage": {
+            "$ref": "#/components/schemas/CalculatedResultData/properties/coverage"
+          },
+          "approval": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "mode": {
+                "enum": [
+                  "PROVISIONAL",
+                  "OFFICIAL"
+                ]
+              },
+              "lifecycle_state": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "mode",
+              "lifecycle_state"
+            ]
+          }
+        },
+        "required": [
+          "result_id",
+          "result_revision",
+          "rule_version",
+          "source_set",
+          "formula",
+          "filters",
+          "adjustments",
+          "coverage",
+          "approval"
+        ]
+      },
+      "CalculationDifferenceCause": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "enum": [
+              "SOURCE",
+              "FILTER",
+              "RULE",
+              "PERIOD",
+              "TARGET",
+              "PERMISSION",
+              "DISCLOSURE"
+            ]
+          },
+          "effect": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "reference_state": {
+            "enum": [
+              "PERMITTED",
+              "WITHHELD"
+            ]
+          }
+        },
+        "required": [
+          "category",
+          "effect",
+          "reference_state"
+        ]
+      },
+      "CalculationComparison": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "earlier_result_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "later_result_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "difference": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "causes": {
+            "type": "array",
+            "maxItems": 7,
+            "items": {
+              "$ref": "#/components/schemas/CalculationDifferenceCause"
+            }
+          },
+          "explained_difference": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "reconciled": {
+            "type": "boolean"
+          },
+          "approval_blocked": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "earlier_result_revision",
+          "later_result_revision",
+          "difference",
+          "causes",
+          "explained_difference",
+          "reconciled",
+          "approval_blocked"
         ]
       },
       "CalculationCompatibilityInput": {

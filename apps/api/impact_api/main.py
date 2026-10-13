@@ -1981,6 +1981,22 @@ def create_app():
             auth.resolve(request), uuid(tenant), uuid(obj), request.state.correlation
         )
 
+    @app.get("/v1/tenants/{tenant}/calculated-results/{obj}/explanation")
+    def result_explanation(request: Request, tenant: str, obj: str):
+        return service.calculation_reconciliation.explain(
+            auth.resolve(request), uuid(tenant), uuid(obj), request.state.correlation
+        )
+
+    @app.get("/v1/tenants/{tenant}/calculated-results/{obj}/comparison/{later_result_id}")
+    def result_comparison(request: Request, tenant: str, obj: str, later_result_id: str):
+        return service.calculation_reconciliation.compare(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(later_result_id),
+            request.state.correlation,
+        )
+
     @app.post("/v1/tenants/{tenant}/calculation-compatibility/preview")
     async def calculation_compatibility_preview(request: Request, tenant: str):
         body = await strict_body(request)

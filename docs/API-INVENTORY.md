@@ -169,7 +169,9 @@
 | POST | `/v1/tenants/{tenant_id}/billing-profile` | `subscription.admin` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}` | `calculated-results.read` |
+| GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}/comparison/{later_result_id}` | `lineage-manifests.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}/evidence` | `evidence.read` |
+| GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}/explanation` | `lineage-manifests.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}/reproduction` | `lineage-manifests.read` |
 | POST | `/v1/tenants/{tenant_id}/calculation-compatibility/preview` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/collection-plans` | `collection-plans.read` |

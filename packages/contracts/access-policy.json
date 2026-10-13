@@ -1,5 +1,5 @@
 {
-  "version": "1.105.0",
+  "version": "1.106.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6107,6 +6107,38 @@
       "fresh_assurance_seconds": null,
       "audit": true,
       "state_guard": "Current authority for the result and every frozen dependency; bounded arithmetic fields only."
+    },
+    {
+      "operation_id": "get_calculated_result_explanation",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/calculated-results/{object_id}/explanation",
+      "capability": "lineage-manifests.read",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current result and lineage authority; excluded sources are aggregate counts only."
+    },
+    {
+      "operation_id": "compare_calculated_result_runs",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/calculated-results/{object_id}/comparison/{later_result_id}",
+      "capability": "lineage-manifests.read",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current authority for both results and permitted sources; withheld references cannot be inspected and prevent a reconciled approval claim."
     },
     {
       "operation_id": "preview_calculation_compatibility",

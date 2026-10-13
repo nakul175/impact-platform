@@ -153,3 +153,44 @@ class FinanceGovernance:
             )
 
         return self._run(identity, tenant, "import_expenditure", body, correlation, apply)
+
+    def save_variance(self, identity, tenant, body, correlation):
+        def apply(c, ctx):
+            data = body["data"]
+            budget = load(c, ctx, data["budget_id"], "BudgetVersion")
+            if (
+                str(budget["head_revision"]) != data["budget_revision"]
+                or budget["lifecycle_state"] != "Approved"
+            ):
+                raise DomainError("BUDGET_VERSION_NOT_APPROVED", 409)
+            actuals = []
+            for pin in data["actual_transactions"]:
+                row = load(c, ctx, pin["object_id"], "ExpenditureTransaction")
+                if str(row["head_revision"]) != pin["revision_id"]:
+                    raise DomainError("CONFLICT_VERSION", 409)
+                actuals.append(row["payload"])
+            budget_total = Decimal(budget["payload"]["total"])
+            actual_total = sum((Decimal(row["amount"]) for row in actuals), Decimal(0))
+            commitments = Decimal(data["commitments"])
+            forecast_total = Decimal(data["forecast_total"])
+            complete = data["actual_data_state"] == "COMPLETE"
+            payload = {
+                **data,
+                "budget_total": format(budget_total, "f"),
+                "actual_total": format(actual_total, "f") if complete else None,
+                "remaining_budget": format(budget_total - actual_total, "f") if complete else None,
+                "remaining_sign_convention": "POSITIVE_MEANS_UNSPENT",
+                "forecast_overrun": format(max(forecast_total - budget_total, Decimal(0)), "f"),
+                "forecast": {
+                    "total": format(forecast_total, "f"),
+                    "commitments": format(commitments, "f"),
+                    "method": data["forecast_method"],
+                    "method_version": data["forecast_method_version"],
+                    "assumptions": data["forecast_assumptions"],
+                },
+                "actual_series_includes_forecast": False,
+                "impact_success_inference": "PROHIBITED",
+            }
+            return write(c, ctx, "FinanceVarianceView", payload, state="Saved")
+
+        return self._run(identity, tenant, "save_finance_variance", body, correlation, apply)

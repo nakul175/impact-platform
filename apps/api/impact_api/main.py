@@ -2242,6 +2242,18 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.post("/v1/tenants/{tenant}/finance-variance-views", status_code=201)
+    async def finance_variance_save(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("FinanceVarianceSave", body)
+        return await run_in_threadpool(
+            finance_governance.save_variance,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy", status_code=201)
     async def dashboard_copy(request: Request, tenant: str, obj: str):
         body = await strict_body(request)

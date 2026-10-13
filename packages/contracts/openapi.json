@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.128.0",
+    "version": "1.129.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -13523,7 +13523,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -45171,7 +45171,7 @@
             }
           }
         },
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "parameters": [
           {
             "name": "limit",
@@ -45313,7 +45313,7 @@
             }
           }
         },
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "parameters": [
           {
             "name": "limit",
@@ -45446,7 +45446,7 @@
             }
           }
         },
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "parameters": [
           {
             "name": "limit",
@@ -45588,7 +45588,7 @@
             }
           }
         },
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "parameters": [
           {
             "name": "limit",
@@ -45728,7 +45728,7 @@
             }
           }
         },
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "parameters": [
           {
             "name": "viewport",
@@ -45864,7 +45864,7 @@
             }
           }
         },
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "parameters": [
           {
             "name": "widget_id",
@@ -46005,7 +46005,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -46117,7 +46117,7 @@
             }
           }
         },
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "parameters": [
           {
             "name": "recipient_id",
@@ -46258,7 +46258,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -46379,7 +46379,7 @@
             }
           }
         },
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "parameters": []
       }
     },
@@ -46490,7 +46490,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -46621,7 +46621,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -46732,7 +46732,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -46863,7 +46863,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -46994,7 +46994,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -47105,7 +47105,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -47236,7 +47236,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -47367,7 +47367,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -47478,7 +47478,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -47609,7 +47609,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -47740,7 +47740,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -47871,7 +47871,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -47982,7 +47982,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -48094,7 +48094,7 @@
             }
           }
         },
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "parameters": []
       }
     },
@@ -48225,7 +48225,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -48336,7 +48336,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -48467,7 +48467,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -48598,7 +48598,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -48729,7 +48729,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -48841,7 +48841,7 @@
             }
           }
         },
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "parameters": [
           {
             "name": "disclosure_id",
@@ -48982,7 +48982,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -49113,7 +49113,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -49244,7 +49244,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -49355,7 +49355,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -49466,7 +49466,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -49577,7 +49577,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -49688,7 +49688,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -49799,7 +49799,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -49910,7 +49910,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -50021,7 +50021,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -50132,7 +50132,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -50243,7 +50243,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -50354,7 +50354,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -50465,7 +50465,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -50576,7 +50576,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -50687,7 +50687,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -50798,7 +50798,118 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/finance-variance-views": {
+      "post": {
+        "operationId": "save_finance_variance",
+        "summary": "Save separated actual and forecast variance",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FinanceVarianceSave"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -50929,7 +51040,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -51060,7 +51171,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "x-audit-required": true
       }
     },
@@ -51181,7 +51292,7 @@
             }
           }
         },
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "parameters": []
       }
     },
@@ -51302,7 +51413,7 @@
             }
           }
         },
-        "x-contract-version": "1.32.0",
+        "x-contract-version": "1.33.0",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -100623,6 +100734,105 @@
               "control_total",
               "permitted_exception",
               "transactions"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "FinanceVarianceSave": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "budget_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "budget_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "actual_cutoff": {
+                "type": "string",
+                "format": "date"
+              },
+              "actual_data_state": {
+                "enum": [
+                  "COMPLETE",
+                  "MISSING"
+                ]
+              },
+              "actual_transactions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "object_id",
+                    "revision_id"
+                  ]
+                }
+              },
+              "commitments": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "forecast_total": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "forecast_method": {
+                "type": "string",
+                "minLength": 1
+              },
+              "forecast_method_version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "forecast_assumptions": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "author_id": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "budget_id",
+              "budget_revision",
+              "actual_cutoff",
+              "actual_data_state",
+              "actual_transactions",
+              "commitments",
+              "forecast_total",
+              "forecast_method",
+              "forecast_method_version",
+              "forecast_assumptions",
+              "author_id"
             ]
           }
         },

@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.32.0"
+VERSION = "1.33.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -81,6 +81,7 @@ IMPLEMENTED = {
     ("post", "budget-revisions"),
     ("post", "budget-approvals"),
     ("post", "expenditure-imports"),
+    ("post", "finance-variance-views"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -1294,6 +1295,41 @@ def augment(spec, policy):
         },
         ["operation_id", "data"],
     )
+    transaction_pin = closed({"object_id": UUID, "revision_id": UUID}, ["object_id", "revision_id"])
+    schemas["FinanceVarianceSave"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "budget_id": UUID,
+                    "budget_revision": UUID,
+                    "actual_cutoff": {"type": "string", "format": "date"},
+                    "actual_data_state": {"enum": ["COMPLETE", "MISSING"]},
+                    "actual_transactions": {"type": "array", "items": transaction_pin},
+                    "commitments": {"type": "string", "pattern": DECIMAL},
+                    "forecast_total": {"type": "string", "pattern": DECIMAL},
+                    "forecast_method": {"type": "string", "minLength": 1},
+                    "forecast_method_version": {"type": "string", "minLength": 1},
+                    "forecast_assumptions": {"type": "array", "items": {"type": "string", "minLength": 1}},
+                    "author_id": UUID,
+                },
+                [
+                    "budget_id",
+                    "budget_revision",
+                    "actual_cutoff",
+                    "actual_data_state",
+                    "actual_transactions",
+                    "commitments",
+                    "forecast_total",
+                    "forecast_method",
+                    "forecast_method_version",
+                    "forecast_assumptions",
+                    "author_id",
+                ],
+            ),
+        },
+        ["operation_id", "data"],
+    )
     preview_widget = closed(
         {
             **deepcopy(widget["properties"]),
@@ -2466,6 +2502,16 @@ def augment(spec, policy):
         "$ref": "#/components/schemas/ExpenditureImport"
     }
     paths[prefix + "expenditure-imports"] = {"post": expenditure_entry}
+    variance_entry = deepcopy(analysis_create)
+    variance_entry.update(
+        operationId="save_finance_variance",
+        summary="Save separated actual and forecast variance",
+        **{"x-contract-version": VERSION},
+    )
+    variance_entry["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/FinanceVarianceSave"
+    }
+    paths[prefix + "finance-variance-views"] = {"post": variance_entry}
     pivot_preview = deepcopy(copy_entry)
     pivot_preview.update(
         operationId="preview_dashboard_pivot",

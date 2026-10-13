@@ -44,6 +44,7 @@ from .evaluation_registry import EvaluationRegistry
 from .evaluation_methodology import EvaluationMethodology
 from .analysis_packages import AnalysisPackages
 from .learning_agenda import LearningAgenda
+from .management_responses import ManagementResponses
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
@@ -247,6 +248,7 @@ def create_app():
     evaluation_methodology = EvaluationMethodology(service)
     analysis_packages = AnalysisPackages(service)
     learning_agenda = LearningAgenda(service)
+    management_responses = ManagementResponses(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
@@ -2046,6 +2048,45 @@ def create_app():
         validate("AnalysisResultRegister", body)
         return await run_in_threadpool(
             analysis_packages.register_result,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluation-recommendations/{obj}/response", status_code=201)
+    async def management_response_create(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("ManagementResponseCreate", body)
+        return await run_in_threadpool(
+            management_responses.respond,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/management-actions/{obj}/actions/complete")
+    async def management_action_complete(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("ManagementActionComplete", body)
+        return await run_in_threadpool(
+            management_responses.complete,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/management-actions/{obj}/actions/escalate-overdue")
+    async def management_action_escalate(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("ManagementActionEscalate", body)
+        return await run_in_threadpool(
+            management_responses.evaluate_overdue,
             auth.resolve(request),
             uuid(tenant),
             uuid(obj),

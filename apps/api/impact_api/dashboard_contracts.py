@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.26.0"
+VERSION = "1.27.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -64,6 +64,9 @@ IMPLEMENTED = {
     ("post", "learning-questions/{object_id}/actions/reopen"),
     ("get", "learning-questions/{object_id}/summary"),
     ("post", "learning-questions/{object_id}/actions/consider-context"),
+    ("post", "evaluation-recommendations/{object_id}/response"),
+    ("post", "management-actions/{object_id}/actions/complete"),
+    ("post", "management-actions/{object_id}/actions/escalate-overdue"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -924,6 +927,51 @@ def augment(spec, policy):
         ["operation_id", "data"],
     )
     schemas["LearningQuestionSummary"] = {"type": "object"}
+    schemas["ManagementResponseCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "response": {"enum": ["ACCEPT", "PARTIALLY_ACCEPT", "REJECT"]},
+                    "reason": {"type": "string", "minLength": 1, "maxLength": 2000},
+                    "accepted_scope": NULLABLE_TEXT,
+                    "owner_id": NULLABLE_UUID,
+                    "due_date": {"type": ["string", "null"], "format": "date"},
+                    "required_completion_evidence": {
+                        "type": "array",
+                        "maxItems": 20,
+                        "items": {"type": "string", "minLength": 1, "maxLength": 500},
+                    },
+                },
+                [
+                    "response",
+                    "reason",
+                    "accepted_scope",
+                    "owner_id",
+                    "due_date",
+                    "required_completion_evidence",
+                ],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["ManagementActionComplete"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {"evidence": {"type": "array", "minItems": 1, "maxItems": 20, "items": evidence_pin}},
+                ["evidence"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["ManagementActionEscalate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed({"reason": {"type": "string", "minLength": 1, "maxLength": 2000}}, ["reason"]),
+        },
+        ["operation_id", "data"],
+    )
     preview_widget = closed(
         {
             **deepcopy(widget["properties"]),
@@ -1998,6 +2046,33 @@ def augment(spec, policy):
         "parameters": deepcopy(dashboard_item["parameters"]),
         "get": learning_summary,
     }
+    for route, schema_name, operation in [
+        (
+            "evaluation-recommendations/{object_id}/response",
+            "ManagementResponseCreate",
+            "respond_to_evaluation_recommendation",
+        ),
+        (
+            "management-actions/{object_id}/actions/complete",
+            "ManagementActionComplete",
+            "complete_management_action",
+        ),
+        (
+            "management-actions/{object_id}/actions/escalate-overdue",
+            "ManagementActionEscalate",
+            "escalate_overdue_management_action",
+        ),
+    ]:
+        entry = deepcopy(analysis_result)
+        entry.update(
+            operationId=operation,
+            summary=operation.replace("_", " ").title(),
+            **{"x-contract-version": VERSION},
+        )
+        entry["requestBody"]["content"]["application/json"]["schema"] = {
+            "$ref": f"#/components/schemas/{schema_name}"
+        }
+        paths[prefix + route] = {"parameters": deepcopy(dashboard_item["parameters"]), "post": entry}
     pivot_preview = deepcopy(copy_entry)
     pivot_preview.update(
         operationId="preview_dashboard_pivot",

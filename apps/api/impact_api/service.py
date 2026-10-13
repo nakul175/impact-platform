@@ -16,6 +16,7 @@ from .domain import (
     calculate,
     decimal_value,
     disaggregate,
+    method_disclosure,
     method_limitations,
     unavailable,
     validate_dimensions,
@@ -1432,6 +1433,7 @@ class Service:
             "unit": definition["payload"]["unit"],
             "display_decimals": definition["payload"].get("display_decimals", 2),
             "rounding_rule": "HALF_UP",
+            **method_disclosure(definition["payload"]),
         }
         excepted_keys = {
             (item["source_namespace"], item["source_key"])

@@ -92,7 +92,40 @@ def ratio(definition, n, d):
 
 
 def components(o):
-    return decimal_value(o.get("numerator")), decimal_value(o.get("denominator"))
+    if o.get("numerator") is None or o.get("denominator") is None:
+        raise DomainError("INCOMPATIBLE_MEASURE", reason="RATIO_QUANTITIES_REQUIRED")
+    return decimal_value(o["numerator"]), decimal_value(o["denominator"])
+
+
+def method_disclosure(definition):
+    """Machine-readable interpretation guard carried with every frozen calculation formula."""
+    rule = definition["combination_rule"]
+    if rule == "POOLED_RATIO":
+        return {
+            "statistic_label": "POOLED_RATIO",
+            "weighting_basis": "DENOMINATOR_WEIGHTED",
+            "component_requirement": "NUMERATOR_AND_DENOMINATOR_REQUIRED",
+            "multiplier_stage": "AFTER_POOLING",
+        }
+    if rule == "MEAN":
+        return {
+            "statistic_label": "UNWEIGHTED_MEAN",
+            "weighting_basis": "EQUAL_CONTRIBUTOR_WEIGHT",
+            "component_requirement": "NUMERATOR_AND_DENOMINATOR_REQUIRED"
+            if definition["measurement_type"] in RATIO_TYPES
+            else "VALUE_REQUIRED",
+            "multiplier_stage": "PER_CONTRIBUTOR_BEFORE_MEAN"
+            if definition["measurement_type"] in RATIO_TYPES
+            else "NOT_APPLICABLE",
+        }
+    return {
+        "statistic_label": rule,
+        "weighting_basis": "NOT_APPLICABLE",
+        "component_requirement": "NUMERATOR_AND_DENOMINATOR_REQUIRED"
+        if definition["measurement_type"] in RATIO_TYPES
+        else "VALUE_REQUIRED",
+        "multiplier_stage": "NOT_APPLICABLE",
+    }
 
 
 def aware(value):

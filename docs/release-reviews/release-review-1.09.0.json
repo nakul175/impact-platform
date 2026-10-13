@@ -1,0 +1,19 @@
+{
+  "release": "1.09.0",
+  "story": "FR-CAL-003",
+  "linear_issue": "APL-402",
+  "state": "CODING_CANDIDATE_ONLY",
+  "scope": "Pooled ratios with frozen weighting and multiplier-order disclosure",
+  "eligible_quantities_required": true,
+  "pool_before_multiplier": true,
+  "weighting_basis": "DENOMINATOR_WEIGHTED",
+  "zero_pooled_denominator": "UNDEFINED",
+  "unweighted_mean_separately_labelled": true,
+  "deterministic_decimal_arithmetic_preserved": true,
+  "database_migration": "NONE_REQUIRED",
+  "tests": "NOT_RUN_BY_OWNER_REQUEST",
+  "ci": "NOT_RUN_BY_OWNER_REQUEST",
+  "merge": "NOT_MERGED",
+  "staging": "NOT_DEPLOYED",
+  "acceptance": "PENDING"
+}

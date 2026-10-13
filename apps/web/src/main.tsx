@@ -1440,6 +1440,8 @@ function Fields({ data }: { data: Record<string, any> }) {
               "—"
             ) : k === "coverage" ? (
               <CoverageSummary data={v} />
+            ) : k === "formula" && typeof v === "object" ? (
+              <CalculationMethod formula={v} />
             ) : k === "disaggregation" && Array.isArray(v) ? (
               <Breakdown entries={v} />
             ) : typeof v === "object" ? (
@@ -1451,6 +1453,29 @@ function Fields({ data }: { data: Record<string, any> }) {
         </React.Fragment>
       ))}
     </dl>
+  );
+}
+function CalculationMethod({ formula }: { formula: Record<string, any> }) {
+  const pooled = formula.statistic_label === "POOLED_RATIO";
+  const unweighted = formula.statistic_label === "UNWEIGHTED_MEAN";
+  return (
+    <div>
+      <strong>
+        {pooled
+          ? "Pooled ratio"
+          : unweighted
+            ? "Unweighted mean"
+            : formula.method}
+      </strong>
+      <p className="footnote">
+        {pooled
+          ? "Approved numerator and denominator quantities are pooled first. The percentage multiplier is applied after pooling; contributors are therefore denominator-weighted."
+          : unweighted
+            ? "Each approved contributor has equal weight. This is labelled separately and is never presented as a pooled percentage."
+            : "Calculated from approved source values using the frozen method below."}
+      </p>
+      <pre>{JSON.stringify(formula, null, 2)}</pre>
+    </div>
   );
 }
 // A review's stages as people read them (v0.27): which stage, who may decide, when it was

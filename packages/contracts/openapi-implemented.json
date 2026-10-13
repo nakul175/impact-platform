@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.98.0",
+    "version": "1.99.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -50716,6 +50716,39 @@
               },
               "rounding_rule": {
                 "const": "HALF_UP"
+              },
+              "statistic_label": {
+                "enum": [
+                  "SUM",
+                  "POOLED_RATIO",
+                  "COUNT",
+                  "LAST_VALID",
+                  "MEAN",
+                  "MEDIAN",
+                  "MIN",
+                  "MAX",
+                  "UNWEIGHTED_MEAN"
+                ]
+              },
+              "weighting_basis": {
+                "enum": [
+                  "DENOMINATOR_WEIGHTED",
+                  "EQUAL_CONTRIBUTOR_WEIGHT",
+                  "NOT_APPLICABLE"
+                ]
+              },
+              "component_requirement": {
+                "enum": [
+                  "NUMERATOR_AND_DENOMINATOR_REQUIRED",
+                  "VALUE_REQUIRED"
+                ]
+              },
+              "multiplier_stage": {
+                "enum": [
+                  "AFTER_POOLING",
+                  "PER_CONTRIBUTOR_BEFORE_MEAN",
+                  "NOT_APPLICABLE"
+                ]
               }
             },
             "required": [

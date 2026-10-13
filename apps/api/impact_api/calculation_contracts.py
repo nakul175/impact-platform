@@ -90,7 +90,25 @@ def augment(spec, policy):
                 "unit": {"type": "string", "maxLength": 64},
                 "display_decimals": {"type": "integer", "minimum": 0, "maximum": 6},
                 "rounding_rule": {"const": "HALF_UP"},
-            }
+                "statistic_label": {"enum": METHODS + ["UNWEIGHTED_MEAN"]},
+                "weighting_basis": {
+                    "enum": ["DENOMINATOR_WEIGHTED", "EQUAL_CONTRIBUTOR_WEIGHT", "NOT_APPLICABLE"]
+                },
+                "component_requirement": {
+                    "enum": ["NUMERATOR_AND_DENOMINATOR_REQUIRED", "VALUE_REQUIRED"]
+                },
+                "multiplier_stage": {
+                    "enum": ["AFTER_POOLING", "PER_CONTRIBUTOR_BEFORE_MEAN", "NOT_APPLICABLE"]
+                },
+            },
+            required=[
+                "method",
+                "measurement_type",
+                "time_semantic",
+                "unit",
+                "display_decimals",
+                "rounding_rule",
+            ],
         ),
         filters=closed({}),
     )

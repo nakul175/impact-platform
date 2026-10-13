@@ -33,6 +33,13 @@ def definition_ready(data):
         raise DomainError("INCOMPATIBLE_MEASURE", reason="CONFIGURATION_NOT_IMPLEMENTED")
     if ratio and any(not str(data.get(k, "")).strip() for k in ["numerator_meaning", "denominator_meaning"]):
         raise DomainError("VALIDATION_FAILED", reason="COMPONENT_MEANINGS_REQUIRED")
+    if data.get("combination_rule") == "CUMULATIVE_DIFFERENCE":
+        if data.get("cumulative_baseline") is None or not str(
+            data.get("cumulative_baseline_basis", "")
+        ).strip():
+            raise DomainError("VALIDATION_FAILED", reason="CUMULATIVE_BASELINE_REQUIRED")
+        if decimal_value(data["cumulative_baseline"]) < 0:
+            raise DomainError("VALIDATION_FAILED", reason="CUMULATIVE_BASELINE_INVALID")
     validate_scheme(data)
 
 

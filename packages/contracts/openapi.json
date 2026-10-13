@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.99.0",
+    "version": "1.100.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -62762,6 +62762,19 @@
             "required": [
               "dimensions"
             ]
+          },
+          "cumulative_baseline": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "cumulative_baseline_basis": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
           }
         },
         "required": []
@@ -63030,6 +63043,19 @@
             "required": [
               "dimensions"
             ]
+          },
+          "cumulative_baseline": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "cumulative_baseline_basis": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
           }
         },
         "required": []
@@ -64753,6 +64779,18 @@
                   "PER_CONTRIBUTOR_BEFORE_MEAN",
                   "NOT_APPLICABLE"
                 ]
+              },
+              "cumulative_baseline": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "cumulative_baseline_basis": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
               }
             },
             "required": [

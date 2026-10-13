@@ -10,6 +10,7 @@ const METHODS: Record<string, [string[], string[]]> = {
     ["COUNT", "DECIMAL", "RATIO", "PERCENTAGE"],
     ["STOCK", "CUMULATIVE"],
   ],
+  CUMULATIVE_DIFFERENCE: [["COUNT", "DECIMAL"], ["CUMULATIVE"]],
   MEAN: [
     ["COUNT", "DECIMAL", "RATIO", "PERCENTAGE"],
     ["FLOW", "STOCK"],
@@ -32,6 +33,7 @@ const METHOD_LABELS: Record<string, string> = {
   POOLED_RATIO: "pooled numerator / denominator",
   COUNT: "count of approved events",
   LAST_VALID: "latest approved position",
+  CUMULATIVE_DIFFERENCE: "approved cumulative difference",
   MEAN: "unweighted mean",
   MEDIAN: "median of approved values",
   MIN: "minimum approved value",
@@ -752,6 +754,23 @@ function ConfigurationEditor({
                   {METHOD_LABELS[method]}. Drafts require independent approval
                   before use.
                 </p>
+              )}
+              {method === "CUMULATIVE_DIFFERENCE" && (
+                <fieldset>
+                  <legend>Approved cumulative baseline</legend>
+                  {input("cumulative_baseline", "Starting cumulative value")}
+                  {input(
+                    "cumulative_baseline_basis",
+                    "Why this baseline is valid",
+                    true,
+                    true,
+                  )}
+                  <p className="muted">
+                    The result is the latest approved position minus this
+                    reviewed baseline. A decline is refused until a correction
+                    or explicit reset method is approved.
+                  </p>
+                </fieldset>
               )}
               <label className="checkbox">
                 <input

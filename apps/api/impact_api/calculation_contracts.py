@@ -79,6 +79,8 @@ def augment(spec, policy):
         rules = properties["combination_rule"]["enum"]
         properties["combination_rule"]["enum"] = rules + [m for m in METHODS if m not in rules]
         properties["disaggregation"] = SCHEME
+        properties["cumulative_baseline"] = NUMBER
+        properties["cumulative_baseline_basis"] = text(2000)
     schemas["CalculatedResultData"]["properties"]["disaggregation"] = BREAKDOWN
     schemas["CalculatedResultData"]["properties"].update(
         calculation_precision_digits={"type": "integer", "const": 100},
@@ -100,6 +102,8 @@ def augment(spec, policy):
                 "multiplier_stage": {
                     "enum": ["AFTER_POOLING", "PER_CONTRIBUTOR_BEFORE_MEAN", "NOT_APPLICABLE"]
                 },
+                "cumulative_baseline": NUMBER,
+                "cumulative_baseline_basis": {"type": "string", "minLength": 1, "maxLength": 2000},
             },
             required=[
                 "method",

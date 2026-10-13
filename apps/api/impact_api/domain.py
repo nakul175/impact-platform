@@ -56,6 +56,7 @@ METHODS = {
     "POOLED_RATIO": ({"RATIO", "PERCENTAGE"}, {"FLOW"}),
     "COUNT": ({"COUNT"}, {"EVENT"}),
     "LAST_VALID": ({"COUNT", "DECIMAL", "RATIO", "PERCENTAGE"}, {"STOCK", "CUMULATIVE"}),
+    "CUMULATIVE_DIFFERENCE": ({"COUNT", "DECIMAL"}, {"CUMULATIVE"}),
     "MEAN": ({"COUNT", "DECIMAL", "RATIO", "PERCENTAGE"}, {"FLOW", "STOCK"}),
     "MEDIAN": ({"COUNT", "DECIMAL"}, {"FLOW", "STOCK"}),
     "MIN": ({"COUNT", "DECIMAL"}, {"FLOW", "STOCK"}),
@@ -117,6 +118,15 @@ def method_disclosure(definition):
             "multiplier_stage": "PER_CONTRIBUTOR_BEFORE_MEAN"
             if definition["measurement_type"] in RATIO_TYPES
             else "NOT_APPLICABLE",
+        }
+    if rule == "CUMULATIVE_DIFFERENCE":
+        return {
+            "statistic_label": "CUMULATIVE_DIFFERENCE",
+            "weighting_basis": "NOT_APPLICABLE",
+            "component_requirement": "VALUE_REQUIRED",
+            "multiplier_stage": "NOT_APPLICABLE",
+            "cumulative_baseline": definition["cumulative_baseline"],
+            "cumulative_baseline_basis": definition["cumulative_baseline_basis"],
         }
     return {
         "statistic_label": rule,
@@ -184,7 +194,7 @@ def calculate(definition, observations):
             value = ratio(definition, n, d)
             if value is None:
                 return {**base, "reason_code": "ZERO_DENOMINATOR"}
-        elif rule == "LAST_VALID":
+        elif rule in {"LAST_VALID", "CUMULATIVE_DIFFERENCE"}:
             ordered = sorted(values, key=event_order)
             latest = event_order(ordered[-1])
             tied = [o for o in ordered if event_order(o) == latest]
@@ -200,6 +210,20 @@ def calculate(definition, observations):
                     any(b < a for a, b in zip(earlier, later)) for earlier, later in zip(series, series[1:])
                 ):
                     return {**base, "reason_code": "CUMULATIVE_DECLINE"}
+            if rule == "CUMULATIVE_DIFFERENCE":
+                baseline = decimal_value(definition["cumulative_baseline"])
+                latest_value = decimal_value(tied[0]["value"])
+                if any(decimal_value(o["value"]) < baseline for o in ordered):
+                    return {**base, "reason_code": "CUMULATIVE_DECLINE"}
+                value = latest_value - baseline
+                raw = stored(value)
+                return {
+                    **base,
+                    "value_state": "PRESENT",
+                    "value": raw,
+                    "displayed_value": display(Decimal(raw), places),
+                    "reason_code": "CALCULATED",
+                }
             if ratio_type:
                 n, d = keys.pop()
                 base.update(numerator=stored(n), denominator=stored(d))
@@ -255,6 +279,10 @@ def method_limitations(definition):
         "LAST_VALID": (
             "LATEST_POSITION",
             "Latest approved position by event time; positions are never summed across the period.",
+        ),
+        "CUMULATIVE_DIFFERENCE": (
+            "CUMULATIVE_INCREMENT",
+            "Latest approved cumulative position minus the approved starting baseline; cumulative totals are never summed.",
         ),
     }
     return [{"code": labels[rule][0], "message": labels[rule][1]}] if rule in labels else []

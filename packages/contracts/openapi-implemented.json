@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.99.0",
+    "version": "1.100.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -48758,6 +48758,19 @@
             "required": [
               "dimensions"
             ]
+          },
+          "cumulative_baseline": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "cumulative_baseline_basis": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
           }
         },
         "required": []
@@ -49026,6 +49039,19 @@
             "required": [
               "dimensions"
             ]
+          },
+          "cumulative_baseline": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "cumulative_baseline_basis": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
           }
         },
         "required": []
@@ -50749,6 +50775,18 @@
                   "PER_CONTRIBUTOR_BEFORE_MEAN",
                   "NOT_APPLICABLE"
                 ]
+              },
+              "cumulative_baseline": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "cumulative_baseline_basis": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
               }
             },
             "required": [

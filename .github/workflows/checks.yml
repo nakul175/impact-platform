@@ -11,6 +11,8 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main]
+  # The merge queue builds a new commit, so the check named "checks" has to run there too.
+  merge_group:
   workflow_dispatch:
 # One in-flight run per pull request, and one per branch for a main push or a manual run.
 # A newer pull-request or non-main commit cancels the run it replaces. A main push is left

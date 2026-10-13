@@ -1,9 +1,12 @@
 name: Application qualification
-# Push runs only on main. Every other branch is qualified by its pull request, so a commit
-# is not billed twice (once for the branch push and once for the same pull request). A
-# documentation-only change does not start the suite (paths-ignore). Draft pull requests do
-# not start the jobs; marking the draft ready does (ready_for_review). workflow_dispatch
-# still runs the full suite on any ref, with no path filter. There is no matrix.
+# Push runs only on main, and a main push runs the long jobs. A pull request runs
+# lint-and-unit only, unless it carries the full-ci label: adding that label (labeled)
+# starts the four long jobs on the current commit. The merge queue (merge_group) and a
+# manual run (workflow_dispatch) also run them. A documentation-only change does not start
+# this workflow at all (paths-ignore), so a docs-only pull request does not run the long
+# jobs even with the label. Draft pull requests do not start the jobs; marking the draft
+# ready does (ready_for_review). There is no matrix. Before merge, add full-ci and wait
+# until the four long jobs are green on that commit. A skipped long job is not a pass.
 on:
   push:
     branches: [main]
@@ -11,10 +14,11 @@ on:
       - "**.md"
       - "docs/**"
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
+    types: [opened, synchronize, reopened, ready_for_review, labeled]
     paths-ignore:
       - "**.md"
       - "docs/**"
+  merge_group:
   workflow_dispatch:
 # One in-flight run per pull request, and one per branch for a main push or a manual run.
 # A newer pull-request or non-main commit cancels the run it replaces. A main push is left
@@ -25,16 +29,16 @@ concurrency:
 permissions:
   contents: read
 jobs:
-  # About a minute (pip, npm, lint, unit). The four heavy jobs need it, so a lint or unit
-  # failure does not start them. They still run in parallel with each other once this
-  # passes: waiting on the 17-minute browser job would add that time to every green run
-  # without removing any minutes. A green run pays about one extra billed minute for this
-  # job. A documentation-only change never reaches it (paths-ignore above). Docs pull
-  # requests #91 and #92 merged with the checks job alone, so these four names are not what
-  # GitHub requires on a docs-only change; a pass-through copy of each would bill another
-  # minute per job on every docs change.
+  # About a minute (pip, npm, lint, unit). An ordinary pull request stops after this
+  # job. The four long jobs need it, so a lint or unit failure does not start them, and
+  # they run only with the full-ci label, on main, in the merge queue, or by hand. A
+  # documentation-only change never reaches it (paths-ignore above). Docs pull requests
+  # #91 and #92 merged with the checks job alone, so these four names are not what GitHub
+  # requires on a docs-only change.
   lint-and-unit:
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
+    # A label other than full-ci must not start a runner. full-ci does, because the long
+    # jobs need this one on that same run.
+    if: ${{ (github.event_name != 'pull_request' || github.event.pull_request.draft == false) && (github.event_name != 'pull_request' || github.event.action != 'labeled' || github.event.label.name == 'full-ci') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -61,7 +65,9 @@ jobs:
         run: make unit
   local-reference-and-browser:
     needs: lint-and-unit
-    if: ${{ needs.lint-and-unit.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false) }}
+    # The four long jobs share this condition. A pull request runs them only with the
+    # full-ci label. main, the merge queue and a manual run always do.
+    if: &long-jobs ${{ needs.lint-and-unit.result == 'success' && (github.event_name == 'workflow_dispatch' || github.event_name == 'merge_group' || (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.draft == false && contains(github.event.pull_request.labels.*.name, 'full-ci'))) }}
     runs-on: ubuntu-latest
     # Green pull-request run 38216169161 on 12 October 2026: about 17 minutes. 30 leaves
     # headroom for a slow runner and stops a hang well short of the 6-hour default.
@@ -104,7 +110,7 @@ jobs:
             .local/test-*/api.log
   live-identity-provider:
     needs: lint-and-unit
-    if: ${{ needs.lint-and-unit.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false) }}
+    if: *long-jobs
     runs-on: ubuntu-latest
     # Last green main run: 2m59s. 20 covers a cache miss on the Keycloak archive.
     timeout-minutes: 20
@@ -157,7 +163,7 @@ jobs:
             docs/evidence/idp-browser-tests.json
   native-postgresql-gate:
     needs: lint-and-unit
-    if: ${{ needs.lint-and-unit.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false) }}
+    if: *long-jobs
     runs-on: ubuntu-latest
     # Green pull-request run 38216169161 on 12 October 2026: about 18 minutes, most of it
     # the suite. 40 is the hang cap. The job starts with the other heavy jobs once
@@ -311,7 +317,7 @@ jobs:
           path: .local/pooler-evidence/
   container-stack:
     needs: lint-and-unit
-    if: ${{ needs.lint-and-unit.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false) }}
+    if: *long-jobs
     # The staging deployment package (v0.17) end to end on the runner: deploy/update.sh builds the
     # image and brings up PostgreSQL, Keycloak (production mode), the API, the worker with its mail
     # capture, Caddy and the backup service exactly as on the server, except that Caddy issues

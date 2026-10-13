@@ -29,4 +29,4 @@
 ## Risks and open owner decisions
 
 ## Merge
-Not to be merged without all four CI jobs green and the owner's confirmation.
+Not to be merged without all four CI jobs green (`local-reference-and-browser`, `live-identity-provider`, `native-postgresql-gate`, `container-stack`) and the owner's confirmation. An ordinary push runs only `checks` and `lint-and-unit`. Add the `full-ci` label on the commit you intend to merge, and wait until those four are green. A skipped job is not a pass. Leave the label off while you are still pushing.

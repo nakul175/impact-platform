@@ -43,6 +43,7 @@ RESERVED_USE_CASES = (
     "IMPORT_CLEANING",
     "EVIDENCE_QUESTION",
     "NUMERIC_ANALYSIS",
+    "QUALITATIVE_ASSISTANCE",
 )
 ACTIVE_USE_CASES = tuple(case for case in USE_CASES if case not in RESERVED_USE_CASES)
 DESTINATION_DETAILS = {"openai-us": {"provider": "OpenAI", "region": "United States"}}

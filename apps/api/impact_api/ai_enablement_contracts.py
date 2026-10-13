@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.42.0"
+VERSION = "1.43.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
@@ -35,6 +35,8 @@ IMPLEMENTED = [
     ("post", "ai-enablement/numeric-analysis"),
     ("post", "ai-enablement/report-drafts"),
     ("post", "ai-enablement/report-drafts/{draft_id}/actions/review"),
+    ("post", "ai-enablement/qualitative-runs"),
+    ("post", "ai-enablement/qualitative-suggestions/{suggestion_id}/actions/review"),
     ("get", "ai-enablement/solutions"),
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
@@ -73,6 +75,7 @@ USE_CASES = [
     "IMPORT_CLEANING",
     "EVIDENCE_QUESTION",
     "NUMERIC_ANALYSIS",
+    "QUALITATIVE_ASSISTANCE",
 ]
 DATA_CLASSES = ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"]
 # The closed provider-and-region list. Adding a destination is a reviewed change to this list and to
@@ -893,6 +896,164 @@ def augment(spec, policy):
             "domain_objects_changed",
         ],
     )
+    qualitative_source = closed(
+        {
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        ["object_id", "revision_id", "language"],
+    )
+    qualitative_candidate = closed(
+        {
+            "source_revision_id": {"type": "string", "format": "uuid"},
+            "viewpoint": {"type": "string", "minLength": 1, "maxLength": 200},
+            "start_character": {"type": "integer", "minimum": 0},
+            "end_character": {"type": "integer", "minimum": 1},
+            "excerpt": {"type": "string", "minLength": 1, "maxLength": 4000},
+            "excerpt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "speaker_reference": {"type": ["string", "null"], "maxLength": 200},
+            "suggested_codes": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 64},
+            },
+            "theme": {"type": "string", "minLength": 1, "maxLength": 500},
+            "translation_language": {
+                "type": ["string", "null"],
+                "pattern": LANGUAGE_PATTERN,
+            },
+            "translation_text": {"type": ["string", "null"], "maxLength": 4000},
+        },
+        [
+            "source_revision_id",
+            "viewpoint",
+            "start_character",
+            "end_character",
+            "excerpt",
+            "excerpt_sha256",
+            "speaker_reference",
+            "suggested_codes",
+            "theme",
+            "translation_language",
+            "translation_text",
+        ],
+    )
+    qualitative_suggestion = deepcopy(qualitative_candidate)
+    qualitative_suggestion["properties"].update(
+        {
+            "suggestion_id": {"type": "string", "format": "uuid"},
+            "source_object_id": {"type": "string", "format": "uuid"},
+            "source_classification": {"enum": DATA_CLASSES},
+            "source_language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+            "translation_status": {"enum": ["NOT_REQUESTED", "MACHINE_UNREVIEWED"]},
+        }
+    )
+    qualitative_suggestion["required"] += [
+        "suggestion_id",
+        "source_object_id",
+        "source_classification",
+        "source_language",
+        "translation_status",
+    ]
+    schemas["AIQualitativeRunRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "codebook_id": {"type": "string", "format": "uuid"},
+            "codebook_revision_id": {"type": "string", "format": "uuid"},
+            "sources": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": qualitative_source,
+            },
+            "candidates": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "items": qualitative_candidate,
+            },
+            "policy_version": {"type": "integer", "minimum": 1},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        [
+            "operation_id",
+            "codebook_id",
+            "codebook_revision_id",
+            "sources",
+            "candidates",
+            "policy_version",
+            "language",
+        ],
+    )
+    schemas["AIQualitativeRun"] = closed(
+        {
+            "run_id": {"type": "string", "format": "uuid"},
+            "codebook_revision_id": {"type": "string", "format": "uuid"},
+            "suggestions": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "items": qualitative_suggestion,
+            },
+            "individual_review_required": {"const": True},
+            "consensus_inferred": {"const": False},
+        },
+        [
+            "run_id",
+            "codebook_revision_id",
+            "suggestions",
+            "individual_review_required",
+            "consensus_inferred",
+        ],
+    )
+    schemas["AIQualitativeReviewRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "disposition": {"enum": ["ACCEPTED", "REJECTED"]},
+            "final_codes": {
+                "type": "array",
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 64},
+            },
+            "final_theme": {"type": ["string", "null"], "maxLength": 500},
+            "final_translation": {"type": ["string", "null"], "maxLength": 4000},
+            "translation_reviewed": {"type": "boolean"},
+        },
+        [
+            "operation_id",
+            "disposition",
+            "final_codes",
+            "final_theme",
+            "final_translation",
+            "translation_reviewed",
+        ],
+    )
+    schemas["AIQualitativeReview"] = closed(
+        {
+            "suggestion_id": {"type": "string", "format": "uuid"},
+            "disposition": {"enum": ["ACCEPTED", "REJECTED"]},
+            "translation_status": {"enum": ["NOT_REQUESTED", "MACHINE_UNREVIEWED", "HUMAN_REVIEWED"]},
+            "qualitative_extract_id": {"type": ["string", "null"], "format": "uuid"},
+            "qualitative_extract_revision_id": {
+                "type": ["string", "null"],
+                "format": "uuid",
+            },
+            "source_classification_inherited": {"type": "boolean"},
+        },
+        [
+            "suggestion_id",
+            "disposition",
+            "translation_status",
+            "qualitative_extract_id",
+            "qualitative_extract_revision_id",
+            "source_classification_inherited",
+        ],
+    )
     safety_base = "/v1/tenants/{tenant_id}/ai-enablement"
     safety_ops = [
         (
@@ -1311,6 +1472,85 @@ def augment(spec, policy):
                     "reports.draft.edit" if operation == "review_ai_report_draft" else "reports.draft.create"
                 ),
                 "role_templates": ["AUTHOR", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
+            }
+        )
+    qualitative_path = "/v1/tenants/{tenant_id}/ai-enablement/qualitative-runs"
+    qualitative_review_path = (
+        "/v1/tenants/{tenant_id}/ai-enablement/qualitative-suggestions/{suggestion_id}/actions/review"
+    )
+    for path, operation, request, response, summary in [
+        (
+            qualitative_path,
+            "create_ai_qualitative_run",
+            "AIQualitativeRunRequest",
+            "AIQualitativeRun",
+            "create source-verifiable qualitative suggestions",
+        ),
+        (
+            qualitative_review_path,
+            "review_ai_qualitative_suggestion",
+            "AIQualitativeReviewRequest",
+            "AIQualitativeReview",
+            "accept or reject one qualitative suggestion",
+        ),
+    ]:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{suggestion_id}" in path:
+            parameters.append(
+                {
+                    "name": "suggestion_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        spec["paths"][path] = {
+            "parameters": parameters,
+            "post": {
+                "operationId": operation,
+                "summary": summary,
+                "x-capability": "qualitative-extracts.draft.create",
+                "x-contract-version": VERSION,
+                "requestBody": {
+                    "required": True,
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+                },
+                "responses": {
+                    "200": {
+                        "description": summary,
+                        "content": {
+                            "application/json": {"schema": {"$ref": "#/components/schemas/" + response}}
+                        },
+                    },
+                    **{
+                        status: {
+                            "description": "Request refused",
+                            "content": {
+                                "application/json": {"schema": {"$ref": "#/components/schemas/Error"}}
+                            },
+                        }
+                        for status in ["400", "401", "403", "404", "409", "422", "503"]
+                    },
+                },
+            },
+        }
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": "POST",
+                "path": path,
+                "capability": "qualitative-extracts.draft.create",
+                "role_templates": ["ANALYST", "MEL_ADMIN"],
                 "purpose_required": False,
                 "fresh_assurance_seconds": None,
                 "audit": False,

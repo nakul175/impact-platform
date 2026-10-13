@@ -46,6 +46,7 @@ from .ai_import_assistance import AIImportAssistance
 from .ai_evidence_questions import AIEvidenceQuestions
 from .ai_numeric_analysis import AINumericAnalysis
 from .ai_report_drafting import AIReportDrafting
+from .ai_qualitative_assistance import AIQualitativeAssistance
 from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
@@ -166,6 +167,11 @@ def create_app():
     ai_report_drafting = AIReportDrafting(
         service,
         service.reporting,
+        ai_enablement.provider.destination,
+        ai_enablement.provider.evaluation_configuration,
+    )
+    ai_qualitative_assistance = AIQualitativeAssistance(
+        service,
         ai_enablement.provider.destination,
         ai_enablement.provider.evaluation_configuration,
     )
@@ -1546,6 +1552,31 @@ def create_app():
         body = await strict_body(request)
         validate("AIReportDraftReviewRequest", body)
         return ai_report_drafting.review(auth.resolve(request), uuid(tenant), uuid(draft_id), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/qualitative-runs")
+    async def create_ai_qualitative_run(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIQualitativeRunRequest", body)
+        return await run_in_threadpool(
+            ai_qualitative_assistance.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/qualitative-suggestions/{suggestion_id}/actions/review")
+    async def review_ai_qualitative_suggestion(request: Request, tenant: str, suggestion_id: str):
+        body = await strict_body(request)
+        validate("AIQualitativeReviewRequest", body)
+        return await run_in_threadpool(
+            ai_qualitative_assistance.review,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(suggestion_id),
+            body,
+            request.state.correlation,
+        )
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/cost-comparison")
     async def ai_cost_comparison(request: Request, tenant: str):

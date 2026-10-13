@@ -1,5 +1,5 @@
 {
-  "version": "1.95.0",
+  "version": "1.96.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -7053,6 +7053,32 @@
         "AUTHOR",
         "MEL_ADMIN",
         "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_qualitative_run",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/qualitative-runs",
+      "capability": "qualitative-extracts.draft.create",
+      "role_templates": [
+        "ANALYST",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "review_ai_qualitative_suggestion",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/qualitative-suggestions/{suggestion_id}/actions/review",
+      "capability": "qualitative-extracts.draft.create",
+      "role_templates": [
+        "ANALYST",
+        "MEL_ADMIN"
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,

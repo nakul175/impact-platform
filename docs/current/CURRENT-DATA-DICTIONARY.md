@@ -7094,3 +7094,11 @@ COMMIT;
 | Migration | SHA256 |
 |---|---|
 | 0089_ai_report_drafts.sql | 98c9e9563040d4e19bdab05e35b82b156ab37f8a46aec17dd64d7ff68bc30626 |
+
+## Migration0090 — traceable AI qualitative assistance (local1.06 coding candidate)
+
+`0090_ai_qualitative_assistance.sql` SHA256 `26df65381b9b5721f284fb63423eab228c55f21c60c45e0fdfd8e577381a62f5`. Schema90 adds tenant-fenced, insert-only qualitative runs, source-verifiable suggestions and individual review receipts. Each suggestion pins an exact Evidence revision, approved Codebook revision, exact character span, excerpt digest, source classification, language and viewpoint. Accepted suggestions create ordinary QualitativeExtract revisions through the governed domain path and inherit the source classification; rejected suggestions create no domain object. Machine translations remain explicitly labelled until human review. All0001–0089 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0090_ai_qualitative_assistance.sql | 26df65381b9b5721f284fb63423eab228c55f21c60c45e0fdfd8e577381a62f5 |

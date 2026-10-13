@@ -1,0 +1,20 @@
+{
+  "release": "1.06.0",
+  "story": "FR-AI-008",
+  "linear_issue": "APL-597",
+  "state": "CODING_CANDIDATE_ONLY",
+  "scope": "Source-verifiable qualitative suggestions and individual governed review",
+  "source_revision_pinned": true,
+  "approved_codebook_revision_pinned": true,
+  "opposing_views_retained_separately": true,
+  "invented_quotation_allowed": false,
+  "invented_speaker_allowed": false,
+  "machine_translation_label_required": true,
+  "accepted_extract_inherits_source_classification": true,
+  "use_case_reserved_disabled": true,
+  "tests": "NOT_RUN_BY_OWNER_REQUEST",
+  "ci": "NOT_RUN_BY_OWNER_REQUEST",
+  "merge": "NOT_MERGED",
+  "staging": "NOT_DEPLOYED",
+  "acceptance": "PENDING"
+}

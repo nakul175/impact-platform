@@ -49,6 +49,7 @@ const USE_CASE_NAMES: Record<string, string> = {
   IMPORT_CLEANING: "import mapping and cleaning",
   EVIDENCE_QUESTION: "evidence questions",
   NUMERIC_ANALYSIS: "governed numerical analysis",
+  QUALITATIVE_ASSISTANCE: "qualitative assistance",
 };
 const USE_CASES = Object.keys(USE_CASE_NAMES);
 const REVIEW_NAMES: Record<string, string> = {

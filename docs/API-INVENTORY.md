@@ -117,6 +117,8 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/actions/lock` | `ai.problem-baseline.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/revisions` | `ai.problem-baseline.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/revisions/{revision_id}` | `ai.problem-baseline.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/qualitative-runs` | `qualitative-extracts.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/qualitative-suggestions/{suggestion_id}/actions/review` | `qualitative-extracts.draft.create` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews` | `ai.diagnosis.review` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}` | `ai.diagnosis.review` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions` | `ai.diagnosis.review` |

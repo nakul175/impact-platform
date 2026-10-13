@@ -5,6 +5,7 @@ import { AIOpportunityRanking } from "./AIRanking";
 import { AIEvidenceQuestions } from "./AIEvidenceQuestions";
 import { AINumericAnalysis } from "./AINumericAnalysis";
 import { AIReportDrafting } from "./AIReportDrafting";
+import { AIQualitativeAssistance } from "./AIQualitativeAssistance";
 import "./ai-enablement.css";
 
 export type Profile = {
@@ -245,6 +246,9 @@ export function AIEnablementPanel({
   const canAnalyse = capabilities.includes("calculated-results.read");
   const canDraftReport = capabilities.includes("reports.draft.create");
   const canReviewReportDraft = capabilities.includes("reports.draft.edit");
+  const canUseQualitativeAssistance = capabilities.includes(
+    "qualitative-extracts.draft.create",
+  );
   const canDesignIndicator = capabilities.includes(
     "indicator-definitions.draft.create",
   );
@@ -758,6 +762,13 @@ export function AIEnablementPanel({
               request={request}
               explain={explain}
             />
+            <AIQualitativeAssistance
+              base={base}
+              policyVersion={policy?.policy_version ?? null}
+              canUse={canUseQualitativeAssistance}
+              request={request}
+              explain={explain}
+            />
             {advisoryJob && (
               <section aria-labelledby="ai-advisory-job" aria-live="polite">
                 <h3 id="ai-advisory-job">AI advisory job</h3>
@@ -1220,6 +1231,9 @@ export function AIEnablementPanel({
                       </option>
                       <option value="NUMERIC_ANALYSIS">
                         Governed numerical analysis
+                      </option>
+                      <option value="QUALITATIVE_ASSISTANCE">
+                        Qualitative assistance
                       </option>
                     </select>
                   </label>

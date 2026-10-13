@@ -461,6 +461,7 @@ class Service:
                         "value",
                         "numerator",
                         "denominator",
+                        "statistical_weight",
                         "event_at",
                     )
                 }
@@ -1442,9 +1443,7 @@ class Service:
             "stored_scale_digits": 12,
             "rounding_boundary": "OUTPUT_ONLY",
             "max_contributors": MAX_CALCULATION_CONTRIBUTORS,
-            "allows_negative_adjustments": definition["payload"].get(
-                "allows_negative_adjustments", False
-            ),
+            "allows_negative_adjustments": definition["payload"].get("allows_negative_adjustments", False),
             "negative_adjustment_basis": definition["payload"].get("negative_adjustment_basis"),
             **method_disclosure(definition["payload"]),
         }

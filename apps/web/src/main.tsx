@@ -1458,6 +1458,8 @@ function Fields({ data }: { data: Record<string, any> }) {
 function CalculationMethod({ formula }: { formula: Record<string, any> }) {
   const pooled = formula.statistic_label === "POOLED_RATIO";
   const unweighted = formula.statistic_label === "UNWEIGHTED_MEAN";
+  const meanOfMedians = formula.statistic_label === "MEAN_OF_MEDIANS";
+  const pooledMedian = formula.statistic_label === "POOLED_MEDIAN";
   return (
     <div>
       <strong>
@@ -1465,14 +1467,22 @@ function CalculationMethod({ formula }: { formula: Record<string, any> }) {
           ? "Pooled ratio"
           : unweighted
             ? "Unweighted mean"
-            : formula.method}
+            : meanOfMedians
+              ? "Mean of subgroup medians"
+              : pooledMedian
+                ? "Pooled median from raw values"
+                : formula.method}
       </strong>
       <p className="footnote">
         {pooled
           ? "Approved numerator and denominator quantities are pooled first. The percentage multiplier is applied after pooling; contributors are therefore denominator-weighted."
           : unweighted
             ? "Each approved contributor has equal weight. This is labelled separately and is never presented as a pooled percentage."
-            : "Calculated from approved source values using the frozen method below."}
+            : meanOfMedians
+              ? "This result averages supplied subgroup medians and is never presented as a pooled median."
+              : pooledMedian
+                ? "The median is calculated across the approved eligible raw values."
+                : "Calculated from approved source values using the frozen method below."}
       </p>
       <pre>{JSON.stringify(formula, null, 2)}</pre>
     </div>

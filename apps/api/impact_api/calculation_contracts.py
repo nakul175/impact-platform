@@ -7,7 +7,7 @@ CATEGORY = {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,31}$"}
 NUMBER = {"type": ["string", "null"], "pattern": r"^-?(0|[1-9][0-9]{0,25})(\.[0-9]{1,12})?$"}
 UUID = {"type": "string", "format": "uuid"}
 METHODS = ["SUM", "POOLED_RATIO", "COUNT", "LAST_VALID", "MEAN", "MEDIAN", "MIN", "MAX"]
-VERSION = "1.65.0"
+VERSION = "1.66.0"
 SPECIAL_READS = {
     "calculated-results/{object_id}/reproduction",
     "calculated-results/{object_id}/explanation",
@@ -73,6 +73,22 @@ BREAKDOWN = {
     ),
 }
 
+STATISTICAL_INTERPRETATION = closed(
+    {
+        "sample_basis": {"enum": ["RAW_VALUES", "SUBGROUP_MEDIANS", "SAMPLE_ESTIMATE"]},
+        "weighting": {"enum": ["NONE", "FREQUENCY"]},
+        "uncertainty_method": {"enum": ["NONE", "STANDARD_ERROR", "CONFIDENCE_INTERVAL"]},
+        "uncertainty_level": NUMBER,
+        "population_interpretation": {"enum": ["SAMPLE", "POPULATION"]},
+        "expansion_method": {
+            "oneOf": [
+                {"type": "null"},
+                closed({"code": CODE, "basis": text(2000), "factor": NUMBER}),
+            ]
+        },
+    }
+)
+
 
 def augment(spec, policy):
     schemas, paths = spec["components"]["schemas"], spec["paths"]
@@ -88,6 +104,9 @@ def augment(spec, policy):
         properties["cumulative_baseline_basis"] = text(2000)
         properties["allows_negative_adjustments"] = {"type": "boolean"}
         properties["negative_adjustment_basis"] = text(2000)
+        properties["statistical_interpretation"] = STATISTICAL_INTERPRETATION
+    for name in ["ObservationData", "ObservationDraftData"]:
+        schemas[name]["properties"]["statistical_weight"] = NUMBER
     schemas["CalculatedResultData"]["properties"]["disaggregation"] = BREAKDOWN
     schemas["CalculatedResultData"]["properties"].update(
         calculation_precision_digits={"type": "integer", "const": 100},
@@ -105,18 +124,31 @@ def augment(spec, policy):
                 "max_contributors": {"type": "integer", "const": 10000},
                 "allows_negative_adjustments": {"type": "boolean"},
                 "negative_adjustment_basis": {"type": ["string", "null"], "maxLength": 2000},
-                "statistic_label": {"enum": METHODS + ["UNWEIGHTED_MEAN"]},
+                "statistic_label": {
+                    "enum": METHODS + ["UNWEIGHTED_MEAN", "WEIGHTED_MEAN", "MEAN_OF_MEDIANS", "POOLED_MEDIAN"]
+                },
                 "weighting_basis": {
-                    "enum": ["DENOMINATOR_WEIGHTED", "EQUAL_CONTRIBUTOR_WEIGHT", "NOT_APPLICABLE"]
+                    "enum": [
+                        "DENOMINATOR_WEIGHTED",
+                        "EQUAL_CONTRIBUTOR_WEIGHT",
+                        "FREQUENCY_WEIGHTED",
+                        "NOT_APPLICABLE",
+                    ]
                 },
-                "component_requirement": {
-                    "enum": ["NUMERATOR_AND_DENOMINATOR_REQUIRED", "VALUE_REQUIRED"]
-                },
+                "component_requirement": {"enum": ["NUMERATOR_AND_DENOMINATOR_REQUIRED", "VALUE_REQUIRED"]},
                 "multiplier_stage": {
                     "enum": ["AFTER_POOLING", "PER_CONTRIBUTOR_BEFORE_MEAN", "NOT_APPLICABLE"]
                 },
                 "cumulative_baseline": NUMBER,
                 "cumulative_baseline_basis": {"type": "string", "minLength": 1, "maxLength": 2000},
+                "sample_basis": STATISTICAL_INTERPRETATION["properties"]["sample_basis"],
+                "weighting": STATISTICAL_INTERPRETATION["properties"]["weighting"],
+                "uncertainty_method": STATISTICAL_INTERPRETATION["properties"]["uncertainty_method"],
+                "uncertainty_level": NUMBER,
+                "population_interpretation": STATISTICAL_INTERPRETATION["properties"][
+                    "population_interpretation"
+                ],
+                "expansion_method": STATISTICAL_INTERPRETATION["properties"]["expansion_method"],
             },
             required=[
                 "method",
@@ -186,6 +218,7 @@ def augment(spec, policy):
                                 "value": NUMBER,
                                 "numerator": NUMBER,
                                 "denominator": NUMBER,
+                                "statistical_weight": NUMBER,
                                 "event_at": {"type": ["string", "null"], "format": "date-time"},
                             }
                         ),

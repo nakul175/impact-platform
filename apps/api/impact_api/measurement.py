@@ -34,9 +34,10 @@ def definition_ready(data):
     if ratio and any(not str(data.get(k, "")).strip() for k in ["numerator_meaning", "denominator_meaning"]):
         raise DomainError("VALIDATION_FAILED", reason="COMPONENT_MEANINGS_REQUIRED")
     if data.get("combination_rule") == "CUMULATIVE_DIFFERENCE":
-        if data.get("cumulative_baseline") is None or not str(
-            data.get("cumulative_baseline_basis", "")
-        ).strip():
+        if (
+            data.get("cumulative_baseline") is None
+            or not str(data.get("cumulative_baseline_basis", "")).strip()
+        ):
             raise DomainError("VALIDATION_FAILED", reason="CUMULATIVE_BASELINE_REQUIRED")
         if decimal_value(data["cumulative_baseline"]) < 0:
             raise DomainError("VALIDATION_FAILED", reason="CUMULATIVE_BASELINE_INVALID")
@@ -45,6 +46,32 @@ def definition_ready(data):
             raise DomainError("VALIDATION_FAILED", reason="NEGATIVE_ADJUSTMENT_TYPE_INVALID")
         if not str(data.get("negative_adjustment_basis", "")).strip():
             raise DomainError("VALIDATION_FAILED", reason="NEGATIVE_ADJUSTMENT_BASIS_REQUIRED")
+    interpretation = data.get("statistical_interpretation") or {}
+    basis = interpretation.get("sample_basis", "RAW_VALUES")
+    weighting = interpretation.get("weighting", "NONE")
+    population = interpretation.get("population_interpretation", "SAMPLE")
+    expansion = interpretation.get("expansion_method")
+    uncertainty = interpretation.get("uncertainty_method", "NONE")
+    uncertainty_level = interpretation.get("uncertainty_level")
+    if population == "POPULATION" and not expansion:
+        raise DomainError("VALIDATION_FAILED", reason="REVIEWED_EXPANSION_METHOD_REQUIRED")
+    if expansion and (population != "POPULATION" or data.get("measurement_type") != "COUNT"):
+        raise DomainError("INCOMPATIBLE_MEASURE", reason="POPULATION_EXPANSION_NOT_SUPPORTED")
+    if expansion and decimal_value(expansion.get("factor")) <= 0:
+        raise DomainError("VALIDATION_FAILED", reason="INVALID_EXPANSION_FACTOR")
+    if data.get("combination_rule") == "MEDIAN" and basis != "RAW_VALUES":
+        raise DomainError("INCOMPATIBLE_MEASURE", reason="POOLED_MEDIAN_REQUIRES_RAW_VALUES")
+    if basis == "SUBGROUP_MEDIANS" and data.get("combination_rule") != "MEAN":
+        raise DomainError("INCOMPATIBLE_MEASURE", reason="SUBGROUP_MEDIANS_REQUIRE_LABELLED_MEAN")
+    if weighting == "FREQUENCY" and (
+        data.get("combination_rule") not in {"MEAN", "MEDIAN"}
+        or data.get("measurement_type") not in {"COUNT", "DECIMAL"}
+    ):
+        raise DomainError("INCOMPATIBLE_MEASURE", reason="STATISTICAL_WEIGHTING_NOT_SUPPORTED")
+    if uncertainty == "NONE" and uncertainty_level is not None:
+        raise DomainError("VALIDATION_FAILED", reason="UNCERTAINTY_LEVEL_NOT_APPLICABLE")
+    if uncertainty != "NONE" and (uncertainty_level is None or decimal_value(uncertainty_level) <= 0):
+        raise DomainError("VALIDATION_FAILED", reason="UNCERTAINTY_LEVEL_REQUIRED")
     validate_scheme(data)
 
 

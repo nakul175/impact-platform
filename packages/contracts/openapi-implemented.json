@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.106.0",
+    "version": "1.107.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -28703,7 +28703,7 @@
             }
           }
         },
-        "x-contract-version": "1.65.0"
+        "x-contract-version": "1.66.0"
       }
     },
     "/v1/tenants/{tenant_id}/calculated-results/{object_id}/comparison/{later_result_id}": {
@@ -28823,7 +28823,7 @@
             }
           }
         },
-        "x-contract-version": "1.65.0"
+        "x-contract-version": "1.66.0"
       }
     },
     "/v1/tenants/{tenant_id}/calculation-compatibility/preview": {
@@ -49011,6 +49011,88 @@
             "minLength": 1,
             "maxLength": 2000,
             "pattern": "\\S"
+          },
+          "statistical_interpretation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "sample_basis": {
+                "enum": [
+                  "RAW_VALUES",
+                  "SUBGROUP_MEDIANS",
+                  "SAMPLE_ESTIMATE"
+                ]
+              },
+              "weighting": {
+                "enum": [
+                  "NONE",
+                  "FREQUENCY"
+                ]
+              },
+              "uncertainty_method": {
+                "enum": [
+                  "NONE",
+                  "STANDARD_ERROR",
+                  "CONFIDENCE_INTERVAL"
+                ]
+              },
+              "uncertainty_level": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "population_interpretation": {
+                "enum": [
+                  "SAMPLE",
+                  "POPULATION"
+                ]
+              },
+              "expansion_method": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "code": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+                      },
+                      "basis": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000,
+                        "pattern": "\\S"
+                      },
+                      "factor": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "basis",
+                      "factor"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "sample_basis",
+              "weighting",
+              "uncertainty_method",
+              "uncertainty_level",
+              "population_interpretation",
+              "expansion_method"
+            ]
           }
         },
         "required": []
@@ -49301,6 +49383,88 @@
             "minLength": 1,
             "maxLength": 2000,
             "pattern": "\\S"
+          },
+          "statistical_interpretation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "sample_basis": {
+                "enum": [
+                  "RAW_VALUES",
+                  "SUBGROUP_MEDIANS",
+                  "SAMPLE_ESTIMATE"
+                ]
+              },
+              "weighting": {
+                "enum": [
+                  "NONE",
+                  "FREQUENCY"
+                ]
+              },
+              "uncertainty_method": {
+                "enum": [
+                  "NONE",
+                  "STANDARD_ERROR",
+                  "CONFIDENCE_INTERVAL"
+                ]
+              },
+              "uncertainty_level": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "population_interpretation": {
+                "enum": [
+                  "SAMPLE",
+                  "POPULATION"
+                ]
+              },
+              "expansion_method": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "code": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+                      },
+                      "basis": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000,
+                        "pattern": "\\S"
+                      },
+                      "factor": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "basis",
+                      "factor"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "sample_basis",
+              "weighting",
+              "uncertainty_method",
+              "uncertainty_level",
+              "population_interpretation",
+              "expansion_method"
+            ]
           }
         },
         "required": []
@@ -50484,6 +50648,13 @@
               "REJECTED"
             ],
             "readOnly": true
+          },
+          "statistical_weight": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
           }
         },
         "required": [],
@@ -50682,6 +50853,13 @@
           },
           "dimension_values": {
             "$ref": "#/components/schemas/DimensionValues"
+          },
+          "statistical_weight": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
           }
         },
         "required": [],
@@ -51027,13 +51205,17 @@
                   "MEDIAN",
                   "MIN",
                   "MAX",
-                  "UNWEIGHTED_MEAN"
+                  "UNWEIGHTED_MEAN",
+                  "WEIGHTED_MEAN",
+                  "MEAN_OF_MEDIANS",
+                  "POOLED_MEDIAN"
                 ]
               },
               "weighting_basis": {
                 "enum": [
                   "DENOMINATOR_WEIGHTED",
                   "EQUAL_CONTRIBUTOR_WEIGHT",
+                  "FREQUENCY_WEIGHTED",
                   "NOT_APPLICABLE"
                 ]
               },
@@ -51061,6 +51243,74 @@
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 2000
+              },
+              "sample_basis": {
+                "enum": [
+                  "RAW_VALUES",
+                  "SUBGROUP_MEDIANS",
+                  "SAMPLE_ESTIMATE"
+                ]
+              },
+              "weighting": {
+                "enum": [
+                  "NONE",
+                  "FREQUENCY"
+                ]
+              },
+              "uncertainty_method": {
+                "enum": [
+                  "NONE",
+                  "STANDARD_ERROR",
+                  "CONFIDENCE_INTERVAL"
+                ]
+              },
+              "uncertainty_level": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "population_interpretation": {
+                "enum": [
+                  "SAMPLE",
+                  "POPULATION"
+                ]
+              },
+              "expansion_method": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "code": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+                      },
+                      "basis": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000,
+                        "pattern": "\\S"
+                      },
+                      "factor": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "basis",
+                      "factor"
+                    ]
+                  }
+                ]
               }
             },
             "required": [
@@ -74688,6 +74938,13 @@
                       ],
                       "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
                     },
+                    "statistical_weight": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
                     "event_at": {
                       "type": [
                         "string",
@@ -74702,6 +74959,7 @@
                     "value",
                     "numerator",
                     "denominator",
+                    "statistical_weight",
                     "event_at"
                   ]
                 }

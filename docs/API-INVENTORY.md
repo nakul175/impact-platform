@@ -28,6 +28,8 @@
 | POST | `/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}/actions/submit` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/agreements` | `subscriptions.read` |
 | POST | `/v1/tenants/{tenant_id}/agreements` | `subscription.admin` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/action-proposals` | `work-items.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/action-proposals/{proposal_id}/actions/confirm` | `work-items.draft.create` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/advisory` | `ai.advisory.request` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs` | `ai.advisory.request` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs/{job_id}` | `ai.advisory.request` |

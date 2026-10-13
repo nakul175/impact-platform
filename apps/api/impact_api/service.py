@@ -738,7 +738,18 @@ class Service:
         if kind == "Report":
             self.reporting.reconcile(c, ctx, data)
 
-    def command(self, identity, tenant, route, body, correlation, obj=None, action=None):
+    def command(
+        self,
+        identity,
+        tenant,
+        route,
+        body,
+        correlation,
+        obj=None,
+        action=None,
+        precondition=None,
+        postcondition=None,
+    ):
         if action:
             if action not in ACTIONS.get(route, set()):
                 unavailable()
@@ -796,6 +807,8 @@ class Service:
                 raise DomainError("POLICY_DENIED", 403, reason="DERIVED_SCOPE_NOT_IMPLEMENTED")
             # Serializes writes per tenant so source sets and calculations are consistent.
             c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,1))", (body["operation_id"],))
+            if precondition:
+                precondition(c, ctx)
             old = c.execute(
                 "SELECT * FROM impact.operation_receipt WHERE tenant_id=%s AND actor_id=%s AND command_type=%s AND operation_id=%s",
                 (tenant, ctx.principal_id, op, body["operation_id"]),
@@ -955,6 +968,8 @@ class Service:
                         (tenant, data["source_namespace"], data["source_key"], receipt["object_id"]),
                     )
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
+            if postcondition:
+                postcondition(c, ctx, receipt)
             audit(c, ctx, op, receipt, correlation)
             c.execute(
                 "INSERT INTO impact.operation_receipt VALUES(%s,%s,%s,%s,%s,'SUCCEEDED',%s,%s)",

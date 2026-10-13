@@ -48,6 +48,7 @@ from .ai_numeric_analysis import AINumericAnalysis
 from .ai_report_drafting import AIReportDrafting
 from .ai_qualitative_assistance import AIQualitativeAssistance
 from .ai_proactive_findings import AIProactiveFindings
+from .ai_action_proposals import AIActionProposals
 from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
@@ -177,6 +178,11 @@ def create_app():
         ai_enablement.provider.evaluation_configuration,
     )
     ai_proactive_findings = AIProactiveFindings(
+        service,
+        ai_enablement.provider.destination,
+        ai_enablement.provider.evaluation_configuration,
+    )
+    ai_action_proposals = AIActionProposals(
         service,
         ai_enablement.provider.destination,
         ai_enablement.provider.evaluation_configuration,
@@ -1601,6 +1607,24 @@ def create_app():
         body = await strict_body(request)
         validate("AIFindingReviewRequest", body)
         return ai_proactive_findings.review(auth.resolve(request), uuid(tenant), uuid(suggestion_id), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/action-proposals")
+    async def create_ai_action_proposal(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIActionProposalRequest", body)
+        return ai_action_proposals.create(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/action-proposals/{proposal_id}/actions/confirm")
+    async def confirm_ai_action_proposal(request: Request, tenant: str, proposal_id: str):
+        body = await strict_body(request)
+        validate("AIActionConfirmationRequest", body)
+        return ai_action_proposals.confirm(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(proposal_id),
+            body,
+            request.state.correlation,
+        )
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/cost-comparison")
     async def ai_cost_comparison(request: Request, tenant: str):

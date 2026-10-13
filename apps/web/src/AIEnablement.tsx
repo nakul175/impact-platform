@@ -7,6 +7,7 @@ import { AINumericAnalysis } from "./AINumericAnalysis";
 import { AIReportDrafting } from "./AIReportDrafting";
 import { AIQualitativeAssistance } from "./AIQualitativeAssistance";
 import { AIProactiveFindings } from "./AIProactiveFindings";
+import { AIActionProposals } from "./AIActionProposals";
 import "./ai-enablement.css";
 
 export type Profile = {
@@ -251,6 +252,9 @@ export function AIEnablementPanel({
     "qualitative-extracts.draft.create",
   );
   const canSuggestFindings = capabilities.includes("calculated-results.read");
+  const canCreateActionProposal = capabilities.includes(
+    "work-items.draft.create",
+  );
   const canDesignIndicator = capabilities.includes(
     "indicator-definitions.draft.create",
   );
@@ -779,6 +783,13 @@ export function AIEnablementPanel({
               request={request}
               explain={explain}
             />
+            <AIActionProposals
+              base={base}
+              policyVersion={policy?.policy_version ?? null}
+              canCreate={canCreateActionProposal}
+              request={request}
+              explain={explain}
+            />
             {advisoryJob && (
               <section aria-labelledby="ai-advisory-job" aria-live="polite">
                 <h3 id="ai-advisory-job">AI advisory job</h3>
@@ -1247,6 +1258,9 @@ export function AIEnablementPanel({
                       </option>
                       <option value="PROACTIVE_FINDINGS">
                         Proactive finding suggestions
+                      </option>
+                      <option value="ACTION_PROPOSAL">
+                        Draft action proposals
                       </option>
                     </select>
                   </label>

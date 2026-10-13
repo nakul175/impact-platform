@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.97.0",
+    "version": "1.98.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -32686,7 +32686,7 @@
         "operationId": "create_ai_safety_feedback",
         "summary": "create ai safety feedback",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -32787,7 +32787,7 @@
         "operationId": "get_ai_safety_shutdowns",
         "summary": "get ai safety shutdowns",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -32865,7 +32865,7 @@
         "operationId": "manage_ai_safety_shutdown",
         "summary": "manage ai safety shutdown",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -32975,7 +32975,7 @@
         "operationId": "approve_ai_safety_recovery",
         "summary": "approve ai safety recovery",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -33076,7 +33076,7 @@
         "operationId": "create_ai_extraction",
         "summary": "create ai extraction",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33196,7 +33196,7 @@
         "operationId": "review_ai_extraction",
         "summary": "review ai extraction",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33307,7 +33307,7 @@
         "operationId": "create_ai_indicator_proposal",
         "summary": "create ai indicator proposal",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33418,7 +33418,7 @@
         "operationId": "create_ai_indicator_draft",
         "summary": "create ai indicator draft",
         "x-capability": "indicator-definitions.draft.create",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33547,7 +33547,7 @@
         "operationId": "create_ai_import_proposals",
         "summary": "create ai import proposals",
         "x-capability": "imports.read",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33676,7 +33676,7 @@
         "operationId": "apply_ai_import_proposals",
         "summary": "apply ai import proposals",
         "x-capability": "imports.draft.edit",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33787,7 +33787,7 @@
         "operationId": "answer_ai_evidence_question",
         "summary": "answer evidence question",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -33888,7 +33888,7 @@
         "operationId": "create_ai_report_draft",
         "summary": "create a snapshot-bound report proposal",
         "x-capability": "reports.draft.create",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -34008,7 +34008,7 @@
         "operationId": "review_ai_report_draft",
         "summary": "record human corrections and final wording",
         "x-capability": "reports.draft.edit",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -34119,7 +34119,7 @@
         "operationId": "create_ai_qualitative_run",
         "summary": "create source-verifiable qualitative suggestions",
         "x-capability": "qualitative-extracts.draft.create",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -34239,7 +34239,7 @@
         "operationId": "review_ai_qualitative_suggestion",
         "summary": "accept or reject one qualitative suggestion",
         "x-capability": "qualitative-extracts.draft.create",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -34350,7 +34350,7 @@
         "operationId": "configure_ai_detection_task",
         "summary": "configure one immutable scoped detection task",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -34461,7 +34461,7 @@
         "operationId": "create_ai_suggested_finding",
         "summary": "create an explicitly unconfirmed source-bound suggestion",
         "x-capability": "calculated-results.read",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -34581,7 +34581,7 @@
         "operationId": "review_ai_suggested_finding",
         "summary": "verify, dismiss or assign one suggested finding",
         "x-capability": "ai.enablement.manage",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -34676,6 +34676,237 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/action-proposals": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "create_ai_action_proposal",
+        "summary": "create an inspectable draft-only action proposal",
+        "x-capability": "work-items.draft.create",
+        "x-contract-version": "1.45.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIActionProposalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "create an inspectable draft-only action proposal",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIActionProposal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/action-proposals/{proposal_id}/actions/confirm": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "proposal_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "confirm_ai_action_proposal",
+        "summary": "confirm through the current ordinary draft command",
+        "x-capability": "work-items.draft.create",
+        "x-contract-version": "1.45.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIActionConfirmationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "confirm through the current ordinary draft command",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIActionConfirmation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/numeric-analysis": {
       "parameters": [
         {
@@ -34692,7 +34923,7 @@
         "operationId": "execute_ai_numeric_analysis",
         "summary": "execute governed numeric analysis",
         "x-capability": "calculated-results.read",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -34803,7 +35034,7 @@
         "operationId": "create_ai_forecast",
         "summary": "create ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -34912,7 +35143,7 @@
         "operationId": "get_ai_forecast",
         "summary": "get ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -35011,7 +35242,7 @@
         "operationId": "export_ai_forecast",
         "summary": "export ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -35110,7 +35341,7 @@
         "operationId": "request_ai_forecast_adoption",
         "summary": "request ai forecast adoption",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -35191,7 +35422,7 @@
         "operationId": "get_ai_enablement_catalog",
         "summary": "get ai enablement catalog",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -35292,7 +35523,7 @@
         "operationId": "assess_ai_enablement",
         "summary": "assess ai enablement",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -35403,7 +35634,7 @@
         "operationId": "get_ai_solutions",
         "summary": "get ai solutions",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -35504,7 +35735,7 @@
         "operationId": "create_ai_advisory",
         "summary": "create ai advisory",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -35615,7 +35846,7 @@
         "operationId": "create_ai_advisory_job",
         "summary": "create ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "202": {
             "description": "Durable AI job",
@@ -35735,7 +35966,7 @@
         "operationId": "get_ai_advisory_job",
         "summary": "get ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -35845,7 +36076,7 @@
         "operationId": "cancel_ai_advisory_job",
         "summary": "cancel ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.44.0",
+        "x-contract-version": "1.45.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -78111,7 +78342,8 @@
               "EVIDENCE_QUESTION",
               "NUMERIC_ANALYSIS",
               "QUALITATIVE_ASSISTANCE",
-              "PROACTIVE_FINDINGS"
+              "PROACTIVE_FINDINGS",
+              "ACTION_PROPOSAL"
             ]
           },
           "enabled": {
@@ -78197,7 +78429,7 @@
         "properties": {
           "use_cases": {
             "type": "array",
-            "maxItems": 10,
+            "maxItems": 11,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -78284,7 +78516,7 @@
           },
           "use_cases": {
             "type": "array",
-            "maxItems": 10,
+            "maxItems": 11,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -78330,7 +78562,7 @@
           },
           "use_cases": {
             "type": "array",
-            "maxItems": 10,
+            "maxItems": 11,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -78360,7 +78592,8 @@
                 "EVIDENCE_QUESTION",
                 "NUMERIC_ANALYSIS",
                 "QUALITATIVE_ASSISTANCE",
-                "PROACTIVE_FINDINGS"
+                "PROACTIVE_FINDINGS",
+                "ACTION_PROPOSAL"
               ]
             }
           }
@@ -81953,6 +82186,223 @@
           "assigned_to",
           "reason",
           "source_values_changed"
+        ]
+      },
+      "AIActionProposalRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "command_type": {
+            "const": "CREATE_WORK_ITEM_DRAFT"
+          },
+          "scope_object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "scope_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "after_values": {
+            "$ref": "#/components/schemas/WorkItemDraftData"
+          },
+          "affected_versions": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "object_type": {
+                  "enum": [
+                    "Evidence",
+                    "CalculatedResult"
+                  ]
+                }
+              },
+              "required": [
+                "object_id",
+                "revision_id",
+                "object_type"
+              ]
+            }
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "consequences": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            }
+          },
+          "language": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$"
+          }
+        },
+        "required": [
+          "operation_id",
+          "command_type",
+          "scope_object_id",
+          "scope_revision_id",
+          "after_values",
+          "affected_versions",
+          "policy_version",
+          "consequences",
+          "language"
+        ]
+      },
+      "AIActionProposal": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "proposal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "command_type": {
+            "const": "CREATE_WORK_ITEM_DRAFT"
+          },
+          "scope_object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "scope_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "before_values": {
+            "type": "null"
+          },
+          "after_values": {
+            "$ref": "#/components/schemas/WorkItemDraftData"
+          },
+          "affected_versions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "object_type": {
+                  "enum": [
+                    "Evidence",
+                    "CalculatedResult"
+                  ]
+                }
+              },
+              "required": [
+                "object_id",
+                "revision_id",
+                "object_type"
+              ]
+            }
+          },
+          "policy_version": {
+            "type": "integer"
+          },
+          "consequences": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confirmation_required": {
+            "const": true
+          },
+          "domain_side_effects_created": {
+            "const": false
+          }
+        },
+        "required": [
+          "proposal_id",
+          "command_type",
+          "scope_object_id",
+          "scope_revision_id",
+          "before_values",
+          "after_values",
+          "affected_versions",
+          "policy_version",
+          "consequences",
+          "confirmation_required",
+          "domain_side_effects_created"
+        ]
+      },
+      "AIActionConfirmationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "language": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$"
+          }
+        },
+        "required": [
+          "operation_id",
+          "language"
+        ]
+      },
+      "AIActionConfirmation": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "proposal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome_object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ordinary_command": {
+            "const": "create_work_items"
+          },
+          "protected_write": {
+            "const": false
+          }
+        },
+        "required": [
+          "proposal_id",
+          "outcome_object_id",
+          "outcome_revision_id",
+          "ordinary_command",
+          "protected_write"
         ]
       },
       "AITaskPracticeData": {

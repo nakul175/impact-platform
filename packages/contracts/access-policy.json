@@ -1,5 +1,5 @@
 {
-  "version": "1.97.0",
+  "version": "1.98.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -7117,6 +7117,32 @@
       "role_templates": [
         "MEL_ADMIN",
         "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_action_proposal",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/action-proposals",
+      "capability": "work-items.draft.create",
+      "role_templates": [
+        "PROGRAMME_MANAGER",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "confirm_ai_action_proposal",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/action-proposals/{proposal_id}/actions/confirm",
+      "capability": "work-items.draft.create",
+      "role_templates": [
+        "PROGRAMME_MANAGER",
+        "MEL_ADMIN"
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,

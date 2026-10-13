@@ -7110,3 +7110,11 @@ COMMIT;
 | Migration | SHA256 |
 |---|---|
 | 0091_ai_proactive_findings.sql | 0c3a6d1c8570bff2e1c816baa97fc9d3aa0bcf3d6f8aba1a4afce8e82a5a38a9 |
+
+## Migration0092 — inspectable AI action proposals (local1.08 coding candidate)
+
+`0092_ai_action_proposals.sql` SHA256 `6252948898c956839a5f62705b7401fd0a9fdd4df1cc9be9b84a1a13af042732`. Schema92 adds tenant-fenced, insert-only draft action proposals, exact source links and confirmation receipts. The closed command vocabulary permits only WorkItem draft creation. Proposals retain exact Programme scope, before/after values, source revisions, policy, consequences and a stable execution operation ID. Confirmation records the ordinary domain command outcome atomically; no protected direct-write route exists. All0001–0091 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0092_ai_action_proposals.sql | 6252948898c956839a5f62705b7401fd0a9fdd4df1cc9be9b84a1a13af042732 |

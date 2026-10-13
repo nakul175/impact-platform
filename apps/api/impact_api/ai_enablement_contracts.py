@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.44.0"
+VERSION = "1.45.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
@@ -40,6 +40,8 @@ IMPLEMENTED = [
     ("post", "ai-enablement/detection-tasks"),
     ("post", "ai-enablement/suggested-findings"),
     ("post", "ai-enablement/suggested-findings/{suggestion_id}/actions/review"),
+    ("post", "ai-enablement/action-proposals"),
+    ("post", "ai-enablement/action-proposals/{proposal_id}/actions/confirm"),
     ("get", "ai-enablement/solutions"),
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
@@ -80,6 +82,7 @@ USE_CASES = [
     "NUMERIC_ANALYSIS",
     "QUALITATIVE_ASSISTANCE",
     "PROACTIVE_FINDINGS",
+    "ACTION_PROPOSAL",
 ]
 DATA_CLASSES = ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"]
 # The closed provider-and-region list. Adding a destination is a reviewed change to this list and to
@@ -1196,6 +1199,101 @@ def augment(spec, policy):
         },
         ["suggestion_id", "decision", "assigned_to", "reason", "source_values_changed"],
     )
+    action_source = closed(
+        {
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+            "object_type": {"enum": ["Evidence", "CalculatedResult"]},
+        },
+        ["object_id", "revision_id", "object_type"],
+    )
+    schemas["AIActionProposalRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "command_type": {"const": "CREATE_WORK_ITEM_DRAFT"},
+            "scope_object_id": {"type": "string", "format": "uuid"},
+            "scope_revision_id": {"type": "string", "format": "uuid"},
+            "after_values": {"$ref": "#/components/schemas/WorkItemDraftData"},
+            "affected_versions": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": action_source,
+            },
+            "policy_version": {"type": "integer", "minimum": 1},
+            "consequences": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 500},
+            },
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        [
+            "operation_id",
+            "command_type",
+            "scope_object_id",
+            "scope_revision_id",
+            "after_values",
+            "affected_versions",
+            "policy_version",
+            "consequences",
+            "language",
+        ],
+    )
+    schemas["AIActionProposal"] = closed(
+        {
+            "proposal_id": {"type": "string", "format": "uuid"},
+            "command_type": {"const": "CREATE_WORK_ITEM_DRAFT"},
+            "scope_object_id": {"type": "string", "format": "uuid"},
+            "scope_revision_id": {"type": "string", "format": "uuid"},
+            "before_values": {"type": "null"},
+            "after_values": {"$ref": "#/components/schemas/WorkItemDraftData"},
+            "affected_versions": {"type": "array", "items": action_source},
+            "policy_version": {"type": "integer"},
+            "consequences": {"type": "array", "items": {"type": "string"}},
+            "confirmation_required": {"const": True},
+            "domain_side_effects_created": {"const": False},
+        },
+        [
+            "proposal_id",
+            "command_type",
+            "scope_object_id",
+            "scope_revision_id",
+            "before_values",
+            "after_values",
+            "affected_versions",
+            "policy_version",
+            "consequences",
+            "confirmation_required",
+            "domain_side_effects_created",
+        ],
+    )
+    schemas["AIActionConfirmationRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        ["operation_id", "language"],
+    )
+    schemas["AIActionConfirmation"] = closed(
+        {
+            "proposal_id": {"type": "string", "format": "uuid"},
+            "outcome_object_id": {"type": "string", "format": "uuid"},
+            "outcome_revision_id": {"type": "string", "format": "uuid"},
+            "ordinary_command": {"const": "create_work_items"},
+            "protected_write": {"const": False},
+        },
+        [
+            "proposal_id",
+            "outcome_object_id",
+            "outcome_revision_id",
+            "ordinary_command",
+            "protected_write",
+        ],
+    )
     safety_base = "/v1/tenants/{tenant_id}/ai-enablement"
     safety_ops = [
         (
@@ -1782,6 +1880,82 @@ def augment(spec, policy):
                 "path": path,
                 "capability": capability,
                 "role_templates": roles,
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
+            }
+        )
+    action_routes = [
+        (
+            "/v1/tenants/{tenant_id}/ai-enablement/action-proposals",
+            "create_ai_action_proposal",
+            "AIActionProposalRequest",
+            "AIActionProposal",
+            "create an inspectable draft-only action proposal",
+        ),
+        (
+            "/v1/tenants/{tenant_id}/ai-enablement/action-proposals/{proposal_id}/actions/confirm",
+            "confirm_ai_action_proposal",
+            "AIActionConfirmationRequest",
+            "AIActionConfirmation",
+            "confirm through the current ordinary draft command",
+        ),
+    ]
+    for path, operation, request, response, summary in action_routes:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{proposal_id}" in path:
+            parameters.append(
+                {
+                    "name": "proposal_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        spec["paths"][path] = {
+            "parameters": parameters,
+            "post": {
+                "operationId": operation,
+                "summary": summary,
+                "x-capability": "work-items.draft.create",
+                "x-contract-version": VERSION,
+                "requestBody": {
+                    "required": True,
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+                },
+                "responses": {
+                    "200": {
+                        "description": summary,
+                        "content": {
+                            "application/json": {"schema": {"$ref": "#/components/schemas/" + response}}
+                        },
+                    },
+                    **{
+                        status: {
+                            "description": "Request refused",
+                            "content": {
+                                "application/json": {"schema": {"$ref": "#/components/schemas/Error"}}
+                            },
+                        }
+                        for status in ["400", "401", "403", "404", "409", "422", "503"]
+                    },
+                },
+            },
+        }
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": "POST",
+                "path": path,
+                "capability": "work-items.draft.create",
+                "role_templates": ["PROGRAMME_MANAGER", "MEL_ADMIN"],
                 "purpose_required": False,
                 "fresh_assurance_seconds": None,
                 "audit": False,

@@ -1,0 +1,18 @@
+{
+  "release": "1.14.0",
+  "story": "FR-CAL-011",
+  "linear_issue": "APL-421",
+  "state": "CODING_CANDIDATE_ONLY",
+  "scope": "Immutable recalculation dependency inventory",
+  "exact_stale_result_revision": true,
+  "live_dashboard_dependency": true,
+  "unpublished_report_revision_dependencies": true,
+  "published_snapshot_rewritten": false,
+  "dependency_content_exposed_in_work_item": false,
+  "migration": "0093_recalculation_dependencies.sql",
+  "tests": "NOT_RUN_BY_OWNER_REQUEST",
+  "ci": "NOT_RUN_BY_OWNER_REQUEST",
+  "merge": "NOT_MERGED",
+  "staging": "NOT_DEPLOYED",
+  "acceptance": "PENDING"
+}

@@ -1,5 +1,7 @@
 # Current data dictionary and schema evolution
 
+Local proposed build 1.14.0, schema 93 (FR-CAL-011 / APL-421; coding candidate only): migration 0093 adds the insert-only, tenant-fenced `calculation_invalidation_dependency` register. At invalidation time each stale provisional result records its exact result revision, its live-dashboard dependency and each current unpublished Report revision that exactly pins it. Recalculation work exposes counts by dependency type without leaking report content; replacement results resolve the existing invalidation while frozen snapshots and published artifacts remain pinned. `impact_app` receives SELECT/INSERT only. Tests and CI are deferred.
+
 Local proposed build 1.13.0, schema 92 (FR-CAL-010 / APL-415; coding candidate only): calculation now refuses negative counts, negative ratio quantities and percentages above their denominator with distinct reason codes. Negative decimal adjustments are admitted only when the independently approved definition explicitly enables them and pins a written adjustment basis; that policy is frozen in result and lineage formula metadata. Zero denominators remain `UNDEFINED` rather than a successful zero. This release adds no migration or privilege change.
 
 Local proposed build 1.12.0, schema 92 (FR-CAL-009 / APL-411; coding candidate only): each new calculation formula now freezes the accepted 12-decimal input scale, 100-digit intermediate precision, 12-decimal stored scale, `HALF_UP` rule, output-only rounding boundary, requested display decimals and the 10,000-contributor arithmetic limit. Larger eligible source sets fail explicitly with `CALCULATION_INPUT_LIMIT` before arithmetic or lineage writes. Raw stored decimals remain the source for display and export. This release adds no migration or privilege change.
@@ -7128,3 +7130,11 @@ COMMIT;
 | Migration | SHA256 |
 |---|---|
 | 0092_ai_action_proposals.sql | 6252948898c956839a5f62705b7401fd0a9fdd4df1cc9be9b84a1a13af042732 |
+
+## Migration0093 — recalculation dependency inventory (local1.14 coding candidate)
+
+`0093_recalculation_dependencies.sql` SHA256 `0f3a5594bb7a8f4fa5e194122386efad6f26a1c86ffdfe99bbf3e48b11d9ea9a`. Schema93 adds one tenant-fenced, insert-only dependency register keyed by an existing calculation invalidation. It retains exact stale result, live-dashboard and unpublished-report revision dependencies without modifying snapshots, reports or published artifacts. `impact_app` receives SELECT/INSERT only. All0001–0092 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0093_recalculation_dependencies.sql | 0f3a5594bb7a8f4fa5e194122386efad6f26a1c86ffdfe99bbf3e48b11d9ea9a |

@@ -16,6 +16,14 @@ class WorkCenter:
     def _id(value):
         return str(uuid5(NAMESPACE_URL, "impact-work-v1:" + value))
 
+    @staticmethod
+    def _contains_revision(value, revision):
+        if isinstance(value, dict):
+            return any(WorkCenter._contains_revision(item, revision) for item in value.values())
+        if isinstance(value, list):
+            return any(WorkCenter._contains_revision(item, revision) for item in value)
+        return value == revision
+
     def ensure_visible(self, ctx, row):
         field = "assignee_id" if row["object_type"] == "WorkItem" else "recipient_id"
         if str(row["payload"].get(field)) != str(ctx.principal_id):
@@ -87,6 +95,12 @@ class WorkCenter:
                 (ctx.tenant_id, row["object_id"]),
             ).fetchall()
             if invalidations:
+                dependencies = c.execute(
+                    "SELECT dependency_type,count(*) AS count FROM impact.calculation_invalidation_dependency d "
+                    "JOIN impact.calculation_invalidation i ON i.tenant_id=d.tenant_id AND i.invalidation_id=d.invalidation_id "
+                    "WHERE d.tenant_id=%s AND i.work_item_id=%s GROUP BY dependency_type ORDER BY dependency_type",
+                    (ctx.tenant_id, row["object_id"]),
+                ).fetchall()
                 data["calculation"] = {
                     "state": (
                         "PENDING"
@@ -102,6 +116,9 @@ class WorkCenter:
                         if invalidations[0]["replacement_result_id"]
                         else None
                     ),
+                    "dependency_counts": {
+                        item["dependency_type"]: item["count"] for item in dependencies
+                    },
                 }
         result["data"] = data
         return result
@@ -175,6 +192,19 @@ class WorkCenter:
             raise DomainError("LIMIT_EXCEEDED", 422, reason="INVALIDATION_RESULT_LIMIT")
         if not results:
             return None
+        report_rows = c.execute(
+            "SELECT r.object_id,r.head_revision,v.payload FROM impact.object_registry r "
+            "JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision "
+            "WHERE r.tenant_id=%s AND r.object_type='Report' "
+            "AND r.lifecycle_state IN ('Draft','Returned','InReview','Approved') "
+            "AND v.restriction_state='AVAILABLE' AND NOT EXISTS("
+            "SELECT 1 FROM impact.report_publication_artifact a WHERE a.tenant_id=r.tenant_id "
+            "AND a.report_id=r.object_id AND a.report_revision=r.head_revision) "
+            "ORDER BY r.object_id LIMIT 501",
+            (ctx.tenant_id,),
+        ).fetchall()
+        if len(report_rows) > 500:
+            raise DomainError("LIMIT_EXCEEDED", 422, reason="INVALIDATION_REPORT_LIMIT")
         indicator = load(c, ctx, indicator_id, "IndicatorInstance")
         programme = load(c, ctx, indicator["payload"]["programme_id"], "Programme")
         period = load(c, ctx, period_id, "Period")
@@ -222,14 +252,16 @@ class WorkCenter:
                 track_author=False,
             )
         for result in results:
-            c.execute(
+            invalidation_id = str(uuid4())
+            inserted = c.execute(
                 "INSERT INTO impact.calculation_invalidation "
                 "(tenant_id,invalidation_id,result_id,result_revision,indicator_id,period_id,"
                 "triggering_revision,reason_code,work_item_id,state,created_at) "
-                "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,'PENDING',now()) ON CONFLICT DO NOTHING",
+                "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,'PENDING',now()) ON CONFLICT DO NOTHING "
+                "RETURNING invalidation_id",
                 (
                     ctx.tenant_id,
-                    str(uuid4()),
+                    invalidation_id,
                     result["object_id"],
                     result["head_revision"],
                     indicator_id,
@@ -238,7 +270,31 @@ class WorkCenter:
                     reason_code,
                     work_id,
                 ),
-            )
+            ).fetchone()
+            if not inserted:
+                inserted = c.execute(
+                    "SELECT invalidation_id FROM impact.calculation_invalidation "
+                    "WHERE tenant_id=%s AND result_revision=%s AND triggering_revision=%s",
+                    (ctx.tenant_id, result["head_revision"], triggering_revision),
+                ).fetchone()
+            invalidation_id = str(inserted["invalidation_id"])
+            dependencies = [
+                ("RESULT", result["object_id"], result["head_revision"]),
+                ("LIVE_DASHBOARD", result["object_id"], result["head_revision"]),
+            ]
+            needle = str(result["head_revision"])
+            for report in report_rows:
+                if self._contains_revision(report["payload"], needle):
+                    dependencies.append(
+                        ("UNPUBLISHED_REPORT", report["object_id"], report["head_revision"])
+                    )
+            for dependency_type, object_id, revision_id in dependencies:
+                c.execute(
+                    "INSERT INTO impact.calculation_invalidation_dependency "
+                    "(tenant_id,invalidation_id,dependency_type,object_id,revision_id,recorded_at) "
+                    "VALUES(%s,%s,%s,%s,%s,now()) ON CONFLICT DO NOTHING",
+                    (ctx.tenant_id, invalidation_id, dependency_type, object_id, revision_id),
+                )
         self.notify(c, ctx, work, assignee, "CALCULATION_STALE", correlation)
         return work
 

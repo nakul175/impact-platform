@@ -439,6 +439,19 @@ export function WorkCenterPanel({
                           : "s"}{" "}
                         affected ·{" "}
                         {row.data.calculation.reason_codes.join(", ")}
+                        {row.data.calculation.dependency_counts && (
+                          <>
+                            {" "}
+                            · dependencies: result{" "}
+                            {row.data.calculation.dependency_counts.RESULT || 0}
+                            , live dashboard{" "}
+                            {row.data.calculation.dependency_counts
+                              .LIVE_DASHBOARD || 0}
+                            , unpublished report{" "}
+                            {row.data.calculation.dependency_counts
+                              .UNPUBLISHED_REPORT || 0}
+                          </>
+                        )}
                       </small>
                     )}
                   </td>

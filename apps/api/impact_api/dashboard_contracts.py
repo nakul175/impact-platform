@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.30.0"
+VERSION = "1.31.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -77,6 +77,9 @@ IMPLEMENTED = {
     ("post", "findings"),
     ("post", "finding-revisions"),
     ("post", "finding-publications"),
+    ("post", "budgets"),
+    ("post", "budget-revisions"),
+    ("post", "budget-approvals"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -1194,6 +1197,55 @@ def augment(spec, policy):
                     "disclosed_limitation": NULLABLE_TEXT,
                 },
                 ["finding_id", "preserve_contradictory_evidence", "disclosed_limitation"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    budget_line = closed(
+        {
+            "activity_id": UUID,
+            "category_id": UUID,
+            "partner_id": UUID,
+            "period_id": UUID,
+            "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+            "amount": {"type": "string", "pattern": DECIMAL},
+        },
+        ["activity_id", "category_id", "partner_id", "period_id", "currency", "amount"],
+    )
+    schemas["BudgetCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "title": {"type": "string", "minLength": 1},
+                    "approval_route": {"type": "array", "minItems": 1, "items": UUID},
+                    "rate_assumptions": {"type": "array", "items": {"type": "object"}},
+                    "lines": {"type": "array", "minItems": 1, "items": budget_line},
+                },
+                ["title", "approval_route", "rate_assumptions", "lines"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["BudgetRevise"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "budget_id": UUID,
+                    "rate_assumptions": {"type": "array", "items": {"type": "object"}},
+                    "lines": {"type": "array", "minItems": 1, "items": budget_line},
+                },
+                ["budget_id", "rate_assumptions", "lines"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["BudgetApprove"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {"budget_id": UUID, "expected_revision": UUID}, ["budget_id", "expected_revision"]
             ),
         },
         ["operation_id", "data"],
@@ -2334,6 +2386,21 @@ def augment(spec, policy):
         ("findings", "FindingCreate", "create_triangulated_finding"),
         ("finding-revisions", "FindingRevise", "revise_finding_interpretation"),
         ("finding-publications", "FindingPublish", "publish_triangulated_finding"),
+    ]:
+        entry = deepcopy(analysis_create)
+        entry.update(
+            operationId=operation,
+            summary=operation.replace("_", " ").title(),
+            **{"x-contract-version": VERSION},
+        )
+        entry["requestBody"]["content"]["application/json"]["schema"] = {
+            "$ref": f"#/components/schemas/{schema_name}"
+        }
+        paths[prefix + route] = {"post": entry}
+    for route, schema_name, operation in [
+        ("budgets", "BudgetCreate", "create_budget_version"),
+        ("budget-revisions", "BudgetRevise", "revise_budget_version"),
+        ("budget-approvals", "BudgetApprove", "approve_budget_version"),
     ]:
         entry = deepcopy(analysis_create)
         entry.update(

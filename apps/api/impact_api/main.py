@@ -48,6 +48,7 @@ from .management_responses import ManagementResponses
 from .qualitative_evidence import QualitativeEvidence
 from .transcription import Transcription
 from .findings import Findings
+from .finance_governance import FinanceGovernance
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
@@ -255,6 +256,7 @@ def create_app():
     qualitative_evidence = QualitativeEvidence(service)
     transcription = Transcription(service)
     findings = Findings(service)
+    finance_governance = FinanceGovernance(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
@@ -2190,6 +2192,42 @@ def create_app():
         validate("FindingPublish", body)
         return await run_in_threadpool(
             findings.publish, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/budgets", status_code=201)
+    async def budget_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("BudgetCreate", body)
+        return await run_in_threadpool(
+            finance_governance.create_budget,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/budget-revisions", status_code=201)
+    async def budget_revise(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("BudgetRevise", body)
+        return await run_in_threadpool(
+            finance_governance.revise_budget,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/budget-approvals", status_code=201)
+    async def budget_approve(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("BudgetApprove", body)
+        return await run_in_threadpool(
+            finance_governance.approve_budget,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
         )
 
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy", status_code=201)

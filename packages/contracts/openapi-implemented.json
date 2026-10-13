@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.126.0",
+    "version": "1.127.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -8575,7 +8575,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -31849,7 +31849,7 @@
             }
           }
         },
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "parameters": [
           {
             "name": "limit",
@@ -31991,7 +31991,7 @@
             }
           }
         },
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "parameters": [
           {
             "name": "limit",
@@ -32124,7 +32124,7 @@
             }
           }
         },
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "parameters": [
           {
             "name": "limit",
@@ -32266,7 +32266,7 @@
             }
           }
         },
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "parameters": [
           {
             "name": "limit",
@@ -32406,7 +32406,7 @@
             }
           }
         },
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "parameters": [
           {
             "name": "viewport",
@@ -32542,7 +32542,7 @@
             }
           }
         },
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "parameters": [
           {
             "name": "widget_id",
@@ -32683,7 +32683,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -32795,7 +32795,7 @@
             }
           }
         },
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "parameters": [
           {
             "name": "recipient_id",
@@ -32936,7 +32936,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -33057,7 +33057,7 @@
             }
           }
         },
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "parameters": []
       }
     },
@@ -33168,7 +33168,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -33299,7 +33299,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -33410,7 +33410,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -33541,7 +33541,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -33672,7 +33672,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -33783,7 +33783,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -33914,7 +33914,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -34045,7 +34045,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -34156,7 +34156,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -34287,7 +34287,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -34418,7 +34418,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -34549,7 +34549,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -34660,7 +34660,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -34772,7 +34772,7 @@
             }
           }
         },
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "parameters": []
       }
     },
@@ -34903,7 +34903,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -35014,7 +35014,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -35145,7 +35145,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -35276,7 +35276,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -35407,7 +35407,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -35519,7 +35519,7 @@
             }
           }
         },
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "parameters": [
           {
             "name": "disclosure_id",
@@ -35660,7 +35660,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -35791,7 +35791,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -35922,7 +35922,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -36033,7 +36033,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -36144,7 +36144,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -36255,7 +36255,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -36366,7 +36366,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -36477,7 +36477,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -36588,7 +36588,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -36699,7 +36699,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -36810,7 +36810,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -36921,7 +36921,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -37032,7 +37032,340 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/budgets": {
+      "post": {
+        "operationId": "create_budget_version",
+        "summary": "Create Budget Version",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BudgetCreate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.31.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/budget-revisions": {
+      "post": {
+        "operationId": "revise_budget_version",
+        "summary": "Revise Budget Version",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BudgetRevise"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.31.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/budget-approvals": {
+      "post": {
+        "operationId": "approve_budget_version",
+        "summary": "Approve Budget Version",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BudgetApprove"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -37163,7 +37496,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -37294,7 +37627,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "x-audit-required": true
       }
     },
@@ -37415,7 +37748,7 @@
             }
           }
         },
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "parameters": []
       }
     },
@@ -37536,7 +37869,7 @@
             }
           }
         },
-        "x-contract-version": "1.30.0",
+        "x-contract-version": "1.31.0",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -86560,6 +86893,201 @@
               "finding_id",
               "preserve_contradictory_evidence",
               "disclosed_limitation"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "BudgetCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "approval_route": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "rate_assumptions": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "lines": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "activity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "category_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "partner_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "period_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "pattern": "^[A-Z]{3}$"
+                    },
+                    "amount": {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    }
+                  },
+                  "required": [
+                    "activity_id",
+                    "category_id",
+                    "partner_id",
+                    "period_id",
+                    "currency",
+                    "amount"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "title",
+              "approval_route",
+              "rate_assumptions",
+              "lines"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "BudgetRevise": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "budget_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "rate_assumptions": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "lines": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "activity_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "category_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "partner_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "period_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "pattern": "^[A-Z]{3}$"
+                    },
+                    "amount": {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    }
+                  },
+                  "required": [
+                    "activity_id",
+                    "category_id",
+                    "partner_id",
+                    "period_id",
+                    "currency",
+                    "amount"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "budget_id",
+              "rate_assumptions",
+              "lines"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "BudgetApprove": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "budget_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expected_revision": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "budget_id",
+              "expected_revision"
             ]
           }
         },

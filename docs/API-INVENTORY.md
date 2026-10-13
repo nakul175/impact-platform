@@ -172,6 +172,9 @@
 | GET | `/v1/tenants/{tenant_id}/audit-events/{object_id}` | `audit-events.read` |
 | POST | `/v1/tenants/{tenant_id}/audit-exports` | `audit.export` |
 | POST | `/v1/tenants/{tenant_id}/billing-profile` | `subscription.admin` |
+| POST | `/v1/tenants/{tenant_id}/budget-approvals` | `dashboards.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/budget-revisions` | `dashboards.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/budgets` | `dashboards.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}` | `calculated-results.read` |
 | GET | `/v1/tenants/{tenant_id}/calculated-results/{object_id}/comparison/{later_result_id}` | `lineage-manifests.read` |

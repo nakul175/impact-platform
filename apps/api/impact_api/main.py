@@ -42,6 +42,7 @@ from .external_analytics import ExternalAnalytics
 from .anomaly_assistance import AnomalyAssistance
 from .evaluation_registry import EvaluationRegistry
 from .evaluation_methodology import EvaluationMethodology
+from .analysis_packages import AnalysisPackages
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
@@ -243,6 +244,7 @@ def create_app():
     anomaly_assistance = AnomalyAssistance(service)
     evaluation_registry = EvaluationRegistry(service)
     evaluation_methodology = EvaluationMethodology(service)
+    analysis_packages = AnalysisPackages(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
@@ -1965,6 +1967,35 @@ def create_app():
             uuid(tenant),
             uuid(obj),
             body,
+        )
+
+    @app.post("/v1/tenants/{tenant}/analysis-packages", status_code=201)
+    async def analysis_package_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AnalysisPackageCreate", body)
+        return await run_in_threadpool(
+            analysis_packages.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/analysis-packages/{obj}/export")
+    def analysis_package_export(request: Request, tenant: str, obj: str):
+        return analysis_packages.export(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.post("/v1/tenants/{tenant}/analysis-packages/{obj}/results", status_code=201)
+    async def analysis_package_result(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AnalysisResultRegister", body)
+        return await run_in_threadpool(
+            analysis_packages.register_result,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
         )
 
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy", status_code=201)

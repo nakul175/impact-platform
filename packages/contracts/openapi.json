@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.120.0",
+    "version": "1.121.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -13523,7 +13523,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -45171,7 +45171,7 @@
             }
           }
         },
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "parameters": [
           {
             "name": "limit",
@@ -45313,7 +45313,7 @@
             }
           }
         },
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "parameters": [
           {
             "name": "limit",
@@ -45446,7 +45446,7 @@
             }
           }
         },
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "parameters": [
           {
             "name": "limit",
@@ -45588,7 +45588,7 @@
             }
           }
         },
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "parameters": [
           {
             "name": "limit",
@@ -45728,7 +45728,7 @@
             }
           }
         },
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "parameters": [
           {
             "name": "viewport",
@@ -45864,7 +45864,7 @@
             }
           }
         },
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "parameters": [
           {
             "name": "widget_id",
@@ -46005,7 +46005,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -46117,7 +46117,7 @@
             }
           }
         },
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "parameters": [
           {
             "name": "recipient_id",
@@ -46258,7 +46258,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -46379,7 +46379,7 @@
             }
           }
         },
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "parameters": []
       }
     },
@@ -46490,7 +46490,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -46621,7 +46621,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -46732,7 +46732,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -46863,7 +46863,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -46994,7 +46994,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -47105,7 +47105,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -47236,7 +47236,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -47367,7 +47367,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -47478,7 +47478,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -47609,7 +47609,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -47740,7 +47740,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -47871,7 +47871,361 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/analysis-packages": {
+      "post": {
+        "operationId": "create_analysis_package",
+        "summary": "Freeze exact approved analysis sources and integrity metadata",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalysisPackageCreate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.25.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/analysis-packages/{object_id}/export": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "export_analysis_package",
+        "summary": "Export a frozen analysis package under separate export authority",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "report.export",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisPackageExport"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.25.0",
+        "parameters": []
+      }
+    },
+    "/v1/tenants/{tenant_id}/analysis-packages/{object_id}/results": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "register_analysis_result",
+        "summary": "Register a result against an exact package and methodology revision",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.edit",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalysisResultRegister"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -48002,7 +48356,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -48133,7 +48487,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "x-audit-required": true
       }
     },
@@ -48254,7 +48608,7 @@
             }
           }
         },
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "parameters": []
       }
     },
@@ -48375,7 +48729,7 @@
             }
           }
         },
-        "x-contract-version": "1.24.0",
+        "x-contract-version": "1.25.0",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -96145,6 +96499,274 @@
           "population_estimate",
           "strata",
           "nonresponse_rules"
+        ]
+      },
+      "AnalysisPackageCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "evaluation_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "methodology_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "methodology_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "sources": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 500,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "Observation",
+                        "CalculatedResult"
+                      ]
+                    },
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "object_id",
+                    "revision_id"
+                  ]
+                }
+              },
+              "variables": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "value_state",
+                    "value",
+                    "displayed_value",
+                    "numerator",
+                    "denominator",
+                    "event_at",
+                    "approval_state",
+                    "mode",
+                    "freshness",
+                    "indicator_id",
+                    "period_id"
+                  ]
+                }
+              },
+              "filters": {
+                "type": "array",
+                "maxItems": 20,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "field": {
+                      "enum": [
+                        "value_state",
+                        "value",
+                        "displayed_value",
+                        "numerator",
+                        "denominator",
+                        "event_at",
+                        "approval_state",
+                        "mode",
+                        "freshness",
+                        "indicator_id",
+                        "period_id"
+                      ]
+                    },
+                    "operator": {
+                      "enum": [
+                        "EQ",
+                        "IN",
+                        "GTE",
+                        "LTE"
+                      ]
+                    },
+                    "values": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 100,
+                      "items": {
+                        "type": [
+                          "string",
+                          "number",
+                          "boolean",
+                          "null"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "operator",
+                    "values"
+                  ]
+                }
+              },
+              "dictionary": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 50,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "variable": {
+                      "enum": [
+                        "value_state",
+                        "value",
+                        "displayed_value",
+                        "numerator",
+                        "denominator",
+                        "event_at",
+                        "approval_state",
+                        "mode",
+                        "freshness",
+                        "indicator_id",
+                        "period_id"
+                      ]
+                    },
+                    "definition": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000
+                    },
+                    "unit": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "maxLength": 2000
+                    }
+                  },
+                  "required": [
+                    "variable",
+                    "definition",
+                    "unit"
+                  ]
+                }
+              },
+              "reviewed_code_evidence": {
+                "type": "array",
+                "maxItems": 20,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "object_id",
+                    "revision_id"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "evaluation_id",
+              "methodology_id",
+              "methodology_revision",
+              "sources",
+              "variables",
+              "filters",
+              "dictionary",
+              "reviewed_code_evidence"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "AnalysisPackageExport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "package_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "package_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "integrity_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "content": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "package_id",
+          "package_revision",
+          "integrity_sha256",
+          "content"
+        ]
+      },
+      "AnalysisResultRegister": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "result": {
+                "type": "object",
+                "maxProperties": 50
+              }
+            },
+            "required": [
+              "title",
+              "result"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
         ]
       },
       "DashboardPreview": {

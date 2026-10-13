@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.24.0"
+VERSION = "1.25.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -56,6 +56,9 @@ IMPLEMENTED = {
     ("post", "evaluation-methodologies/{object_id}/actions/amend"),
     ("post", "evaluation-methodologies/{object_id}/actions/review"),
     ("post", "evaluation-methodologies/{object_id}/sample-export"),
+    ("post", "analysis-packages"),
+    ("get", "analysis-packages/{object_id}/export"),
+    ("post", "analysis-packages/{object_id}/results"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -721,6 +724,123 @@ def augment(spec, policy):
             "strata",
             "nonresponse_rules",
         ],
+    )
+    analysis_variable = {
+        "enum": [
+            "value_state",
+            "value",
+            "displayed_value",
+            "numerator",
+            "denominator",
+            "event_at",
+            "approval_state",
+            "mode",
+            "freshness",
+            "indicator_id",
+            "period_id",
+        ]
+    }
+    schemas["AnalysisPackageCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "evaluation_id": UUID,
+                    "methodology_id": UUID,
+                    "methodology_revision": UUID,
+                    "sources": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 500,
+                        "items": closed(
+                            {
+                                "kind": {"enum": ["Observation", "CalculatedResult"]},
+                                "object_id": UUID,
+                                "revision_id": UUID,
+                            },
+                            ["kind", "object_id", "revision_id"],
+                        ),
+                    },
+                    "variables": {
+                        "type": "array",
+                        "minItems": 1,
+                        "uniqueItems": True,
+                        "items": analysis_variable,
+                    },
+                    "filters": {
+                        "type": "array",
+                        "maxItems": 20,
+                        "items": closed(
+                            {
+                                "field": analysis_variable,
+                                "operator": {"enum": ["EQ", "IN", "GTE", "LTE"]},
+                                "values": {
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "maxItems": 100,
+                                    "items": {"type": ["string", "number", "boolean", "null"]},
+                                },
+                            },
+                            ["field", "operator", "values"],
+                        ),
+                    },
+                    "dictionary": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 50,
+                        "items": closed(
+                            {
+                                "variable": analysis_variable,
+                                "definition": {"type": "string", "minLength": 1, "maxLength": 1000},
+                                "unit": NULLABLE_TEXT,
+                            },
+                            ["variable", "definition", "unit"],
+                        ),
+                    },
+                    "reviewed_code_evidence": {
+                        "type": "array",
+                        "maxItems": 20,
+                        "items": closed(
+                            {"object_id": UUID, "revision_id": UUID},
+                            ["object_id", "revision_id"],
+                        ),
+                    },
+                },
+                [
+                    "evaluation_id",
+                    "methodology_id",
+                    "methodology_revision",
+                    "sources",
+                    "variables",
+                    "filters",
+                    "dictionary",
+                    "reviewed_code_evidence",
+                ],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["AnalysisPackageExport"] = closed(
+        {
+            "package_id": UUID,
+            "package_revision": UUID,
+            "integrity_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "content": {"type": "object"},
+        },
+        ["package_id", "package_revision", "integrity_sha256", "content"],
+    )
+    schemas["AnalysisResultRegister"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "title": {"type": "string", "minLength": 1, "maxLength": 200},
+                    "result": {"type": "object", "maxProperties": 50},
+                },
+                ["title", "result"],
+            ),
+        },
+        ["operation_id", "data"],
     )
     preview_widget = closed(
         {
@@ -1714,6 +1834,43 @@ def augment(spec, policy):
     paths[prefix + "evaluation-methodologies/{object_id}/sample-export"] = {
         "parameters": deepcopy(dashboard_item["parameters"]),
         "post": sample_export_entry,
+    }
+    analysis_create = deepcopy(methodology_create)
+    analysis_create.update(
+        operationId="create_analysis_package",
+        summary="Freeze exact approved analysis sources and integrity metadata",
+        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+    )
+    analysis_create["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/AnalysisPackageCreate"
+    }
+    paths[prefix + "analysis-packages"] = {"post": analysis_create}
+    analysis_export = deepcopy(preview)
+    analysis_export.update(
+        operationId="export_analysis_package",
+        summary="Export a frozen analysis package under separate export authority",
+        **{"x-capability": "report.export", "x-contract-version": VERSION},
+    )
+    analysis_export["parameters"] = []
+    analysis_export["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/AnalysisPackageExport"
+    }
+    paths[prefix + "analysis-packages/{object_id}/export"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": analysis_export,
+    }
+    analysis_result = deepcopy(analysis_create)
+    analysis_result.update(
+        operationId="register_analysis_result",
+        summary="Register a result against an exact package and methodology revision",
+        **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+    )
+    analysis_result["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/AnalysisResultRegister"
+    }
+    paths[prefix + "analysis-packages/{object_id}/results"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": analysis_result,
     }
     pivot_preview = deepcopy(copy_entry)
     pivot_preview.update(

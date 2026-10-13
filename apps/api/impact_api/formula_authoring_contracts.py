@@ -1,9 +1,9 @@
-"""FR-CAL-012 closed typed formula AST and preview contracts."""
+"""FR-CAL-012/013 closed typed formula and governed composite contracts."""
 
 from copy import deepcopy
 from .measurement_contracts import closed, text_field
 
-VERSION = "1.63.0"
+VERSION = "1.64.0"
 UUID = {"type": "string", "format": "uuid"}
 NUMBER = {"type": "string", "pattern": r"^-?(0|[1-9][0-9]{0,25})(\.[0-9]{1,12})?$"}
 ROOT = "formula-definitions"
@@ -29,6 +29,17 @@ def _replace(value, old, new):
 def augment(spec, policy):
     schemas, paths = spec["components"]["schemas"], spec["paths"]
     node_ref = {"$ref": "#/components/schemas/FormulaNode"}
+    schemas["CompositeComponent"] = closed(
+        {
+            "code": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"},
+            "definition_revision": deepcopy(UUID),
+            "weight": NUMBER,
+            "input_min": NUMBER,
+            "input_max": NUMBER,
+            "required": {"type": "boolean"},
+        },
+        ["code", "definition_revision", "weight", "input_min", "input_max", "required"],
+    )
     schemas["FormulaNode"] = {
         "oneOf": [
             closed(
@@ -68,6 +79,20 @@ def augment(spec, policy):
                     "args": {"type": "array", "minItems": 1, "maxItems": 20, "items": node_ref},
                 },
                 ["kind", "function", "args"],
+            ),
+            closed(
+                {
+                    "kind": {"const": "COMPOSITE"},
+                    "components": {
+                        "type": "array",
+                        "minItems": 2,
+                        "maxItems": 20,
+                        "items": {"$ref": "#/components/schemas/CompositeComponent"},
+                    },
+                    "missing_policy": {"enum": ["BLOCK", "RENORMALIZE_OPTIONAL"]},
+                    "interpretation": text_field(2000),
+                },
+                ["kind", "components", "missing_policy", "interpretation"],
             ),
         ]
     }
@@ -134,6 +159,36 @@ def augment(spec, policy):
                 "uniqueItems": True,
                 "items": deepcopy(UUID),
             },
+            "component_contributions": {
+                "type": "array",
+                "maxItems": 20,
+                "items": closed(
+                    {
+                        "code": {"type": "string"},
+                        "definition_revision": deepcopy(UUID),
+                        "value_state": {"enum": ["PRESENT", "MISSING"]},
+                        "normalized_value": {"oneOf": [NUMBER, {"type": "null"}]},
+                        "effective_weight": {"oneOf": [NUMBER, {"type": "null"}]},
+                        "contribution": {"oneOf": [NUMBER, {"type": "null"}]},
+                    },
+                    [
+                        "code",
+                        "definition_revision",
+                        "value_state",
+                        "normalized_value",
+                        "effective_weight",
+                        "contribution",
+                    ],
+                ),
+            },
+            "sensitivity": {
+                "type": "array",
+                "maxItems": 20,
+                "items": closed(
+                    {"code": {"type": "string"}, "plus_ten_percent_weight_score": NUMBER},
+                    ["code", "plus_ten_percent_weight_score"],
+                ),
+            },
         },
         ["output_unit", "value_state", "value", "referenced_definition_revisions"],
     )
@@ -174,7 +229,7 @@ def augment(spec, policy):
     op = preview["post"]
     op.update(
         operationId="preview_formula_definition",
-        summary="Validate and preview a closed typed formula",
+        summary="Validate and preview a closed typed formula or governed weighted composite",
         **{"x-capability": "calculated-results.read", "x-contract-version": VERSION},
     )
     op["requestBody"]["content"]["application/json"]["schema"] = {
@@ -204,6 +259,6 @@ def augment(spec, policy):
                 "purpose_required": False,
                 "fresh_assurance_seconds": None,
                 "audit": method != "get",
-                "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles and incompatible units refused before review.",
+                "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review.",
             }
         )

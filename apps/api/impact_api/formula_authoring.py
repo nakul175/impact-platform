@@ -1,4 +1,4 @@
-"""FR-CAL-012 typed formula validation and Decimal-only sample preview."""
+"""FR-CAL-012/013 typed formula validation and governed composite preview."""
 
 from decimal import Decimal, localcontext
 from .contracts import validate
@@ -42,6 +42,24 @@ def _analyse(c, ctx, node, target_definition_id, references):
         if kind == "FILTER":
             _dimension(definition["payload"], node["dimension_code"], node["category_code"])
         return definition["payload"]["unit"]
+    if kind == "COMPOSITE":
+        components = node["components"]
+        if len({item["code"] for item in components}) != len(components):
+            raise DomainError("VALIDATION_FAILED", reason="DUPLICATE_COMPOSITE_COMPONENT")
+        weights = [decimal_value(item["weight"]) for item in components]
+        if any(weight < 0 for weight in weights) or sum(weights, Decimal(0)) != Decimal(1):
+            raise DomainError("VALIDATION_FAILED", reason="COMPOSITE_WEIGHTS_TOTAL")
+        for item in components:
+            low, high = decimal_value(item["input_min"]), decimal_value(item["input_max"])
+            if low >= high:
+                raise DomainError("VALIDATION_FAILED", reason="COMPOSITE_NORMALISATION_RANGE")
+            definition = _definition(c, ctx, item["definition_revision"])
+            if str(definition["object_id"]) == target_definition_id:
+                raise DomainError("VALIDATION_FAILED", reason="CIRCULAR_FORMULA_REFERENCE")
+            references[item["definition_revision"]] = definition
+        if node["missing_policy"] == "RENORMALIZE_OPTIONAL" and all(item["required"] for item in components):
+            raise DomainError("VALIDATION_FAILED", reason="COMPOSITE_RENORMALISATION_UNUSED")
+        return "score"
     function = node["function"]
     args = node["args"]
     units = [_analyse(c, ctx, arg, target_definition_id, references) for arg in args]
@@ -94,12 +112,100 @@ def _evaluate(node, samples):
         if node["kind"] == "FILTER":
             rows = [x for x in rows if x["dimensions"].get(node["dimension_code"]) == node["category_code"]]
         return [x for x in rows if x["eligible"]]
+    if node["kind"] == "COMPOSITE":
+        prepared = []
+        for item in node["components"]:
+            rows = [x for x in samples.get(item["definition_revision"], []) if x["eligible"]]
+            if not rows:
+                prepared.append((item, None))
+                continue
+            if len(rows) != 1:
+                raise DomainError("VALIDATION_FAILED", reason="COMPOSITE_ONE_VALUE_PER_COMPONENT")
+            value = decimal_value(rows[0]["value"])
+            low, high = decimal_value(item["input_min"]), decimal_value(item["input_max"])
+            if value < low or value > high:
+                raise DomainError("VALIDATION_FAILED", reason="COMPOSITE_INPUT_OUT_OF_RANGE")
+            prepared.append((item, (value - low) * Decimal(100) / (high - low)))
+        present_weight = sum(
+            (decimal_value(item["weight"]) for item, value in prepared if value is not None),
+            Decimal(0),
+        )
+        blocked = any(
+            value is None and (item["required"] or node["missing_policy"] == "BLOCK")
+            for item, value in prepared
+        )
+        contributions, score = [], Decimal(0)
+        for item, value in prepared:
+            if value is None:
+                contributions.append(
+                    {
+                        "code": item["code"],
+                        "definition_revision": item["definition_revision"],
+                        "value_state": "MISSING",
+                        "normalized_value": None,
+                        "effective_weight": None,
+                        "contribution": None,
+                    }
+                )
+                continue
+            if blocked or present_weight == 0:
+                contributions.append(
+                    {
+                        "code": item["code"],
+                        "definition_revision": item["definition_revision"],
+                        "value_state": "PRESENT",
+                        "normalized_value": stored(value),
+                        "effective_weight": None,
+                        "contribution": None,
+                    }
+                )
+                continue
+            weight = decimal_value(item["weight"]) / present_weight
+            contribution = value * weight
+            score += contribution
+            contributions.append(
+                {
+                    "code": item["code"],
+                    "definition_revision": item["definition_revision"],
+                    "value_state": "PRESENT",
+                    "normalized_value": stored(value),
+                    "effective_weight": stored(weight),
+                    "contribution": stored(contribution),
+                }
+            )
+        if blocked or present_weight == 0:
+            return {"state": "MISSING", "components": contributions, "sensitivity": []}
+        sensitivity = []
+        for focus, focus_value in prepared:
+            if focus_value is None:
+                continue
+            raised = decimal_value(focus["weight"]) * Decimal("1.1")
+            total = present_weight + raised - decimal_value(focus["weight"])
+            alternate = sum(
+                value * (raised if item["code"] == focus["code"] else decimal_value(item["weight"])) / total
+                for item, value in prepared
+                if value is not None
+            )
+            sensitivity.append(
+                {
+                    "code": focus["code"],
+                    "plus_ten_percent_weight_score": stored(alternate),
+                }
+            )
+        return {
+            "state": "PRESENT",
+            "value": score,
+            "components": contributions,
+            "sensitivity": sensitivity,
+        }
     function = node["function"]
     values = [_evaluate(arg, samples) for arg in node["args"]]
 
     def scalar(value):
         if isinstance(value, list):
             raise DomainError("VALIDATION_FAILED", reason="FORMULA_AGGREGATION_REQUIRED")
+        if isinstance(value, dict):
+            return value.get("value") if value["state"] == "PRESENT" else None
         return value
 
     if function in {"COUNT", "ELIGIBLE_DISTINCT", "SUM", "MIN", "MAX"}:
@@ -152,12 +258,31 @@ class FormulaAuthoring:
             with localcontext() as decimal_context:
                 decimal_context.prec = 100
                 value = _evaluate(body["data"]["ast"], supplied)
-            state = "UNDEFINED" if value == "UNDEFINED" else "MISSING" if value is None else "PRESENT"
+            composite = value if isinstance(value, dict) else None
+            if composite:
+                value = composite.get("value")
+            state = (
+                composite["state"]
+                if composite
+                else "UNDEFINED"
+                if value == "UNDEFINED"
+                else "MISSING"
+                if value is None
+                else "PRESENT"
+            )
             result = {
                 "output_unit": body["data"]["output_unit"],
                 "value_state": state,
                 "value": stored(value) if state == "PRESENT" else None,
                 "referenced_definition_revisions": sorted(references),
+                **(
+                    {
+                        "component_contributions": composite["components"],
+                        "sensitivity": composite["sensitivity"],
+                    }
+                    if composite
+                    else {}
+                ),
             }
             validate("FormulaPreview", result)
             observed = c.execute("SELECT statement_timestamp() AS now").fetchone()["now"]

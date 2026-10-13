@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.104.0",
+    "version": "1.105.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -37798,7 +37798,7 @@
             }
           }
         ],
-        "x-contract-version": "1.63.0"
+        "x-contract-version": "1.64.0"
       },
       "post": {
         "operationId": "create_formula_definitions",
@@ -37906,7 +37906,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.63.0",
+        "x-contract-version": "1.64.0",
         "x-audit-required": true
       }
     },
@@ -38018,7 +38018,7 @@
             }
           }
         },
-        "x-contract-version": "1.63.0"
+        "x-contract-version": "1.64.0"
       },
       "patch": {
         "operationId": "patch_formula_definitions",
@@ -38126,7 +38126,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.63.0",
+        "x-contract-version": "1.64.0",
         "x-audit-required": true
       }
     },
@@ -38257,7 +38257,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.63.0",
+        "x-contract-version": "1.64.0",
         "x-audit-required": true
       }
     },
@@ -38275,7 +38275,7 @@
       ],
       "post": {
         "operationId": "preview_formula_definition",
-        "summary": "Validate and preview a closed typed formula",
+        "summary": "Validate and preview a closed typed formula or governed weighted composite",
         "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
         "x-capability": "calculated-results.read",
         "responses": {
@@ -38379,7 +38379,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.63.0",
+        "x-contract-version": "1.64.0",
         "x-audit-required": true
       }
     },
@@ -82966,6 +82966,43 @@
           "suppressed_source_categories"
         ]
       },
+      "CompositeComponent": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+          },
+          "definition_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "weight": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "input_min": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "input_max": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "required": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "definition_revision",
+          "weight",
+          "input_min",
+          "input_max",
+          "required"
+        ]
+      },
       "FormulaNode": {
         "oneOf": [
           {
@@ -83074,6 +83111,41 @@
               "kind",
               "function",
               "args"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "COMPOSITE"
+              },
+              "components": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 20,
+                "items": {
+                  "$ref": "#/components/schemas/CompositeComponent"
+                }
+              },
+              "missing_policy": {
+                "enum": [
+                  "BLOCK",
+                  "RENORMALIZE_OPTIONAL"
+                ]
+              },
+              "interpretation": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "kind",
+              "components",
+              "missing_policy",
+              "interpretation"
             ]
           }
         ]
@@ -83391,6 +83463,91 @@
             "items": {
               "type": "string",
               "format": "uuid"
+            }
+          },
+          "component_contributions": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "definition_revision": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "value_state": {
+                  "enum": [
+                    "PRESENT",
+                    "MISSING"
+                  ]
+                },
+                "normalized_value": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "effective_weight": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "contribution": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "code",
+                "definition_revision",
+                "value_state",
+                "normalized_value",
+                "effective_weight",
+                "contribution"
+              ]
+            }
+          },
+          "sensitivity": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "plus_ten_percent_weight_score": {
+                  "type": "string",
+                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                }
+              },
+              "required": [
+                "code",
+                "plus_ten_percent_weight_score"
+              ]
             }
           }
         },

@@ -1,5 +1,5 @@
 {
-  "version": "1.104.0",
+  "version": "1.105.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -5187,7 +5187,7 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false,
-      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles and incompatible units refused before review."
+      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review."
     },
     {
       "operation_id": "create_formula_definitions",
@@ -5202,7 +5202,7 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true,
-      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles and incompatible units refused before review."
+      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review."
     },
     {
       "operation_id": "get_formula_definitions",
@@ -5217,7 +5217,7 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false,
-      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles and incompatible units refused before review."
+      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review."
     },
     {
       "operation_id": "patch_formula_definitions",
@@ -5232,7 +5232,7 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true,
-      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles and incompatible units refused before review."
+      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review."
     },
     {
       "operation_id": "submit_formula_definition",
@@ -5247,7 +5247,7 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true,
-      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles and incompatible units refused before review."
+      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review."
     },
     {
       "operation_id": "preview_formula_definition",
@@ -5262,7 +5262,7 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true,
-      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles and incompatible units refused before review."
+      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review."
     },
     {
       "operation_id": "list_portfolio_allocation_views",

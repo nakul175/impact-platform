@@ -1519,6 +1519,23 @@ class Service:
             r["payload"].get("approval_state") == "APPROVED" and r["payload"].get("value_state") == "PRESENT"
             for r in rows
         )
+        coverage_payload = measured or {
+            "expected_count": 0,
+            "received_count": len(rows),
+            "approved_count": approved,
+            "excluded_count": len(rows) - approved,
+            "complete": False,
+        }
+        coverage_payload["coverage_state"] = (
+            "COMPLETE" if measured and measured["complete"] else "PARTIAL" if measured else "NOT_CONFIGURED"
+        )
+        coverage_payload["coverage_reason"] = (
+            "All required obligations have approved valid values."
+            if measured and measured["complete"]
+            else "One or more required obligations are pending, missing or excluded."
+            if measured
+            else "No approved collection plan defines the expected contributor set."
+        )
         result.update(
             indicator_version=indicator["payload"]["definition_version"],
             period_id=data["period_id"],
@@ -1529,14 +1546,7 @@ class Service:
             **({"disaggregation": breakdown} if definition["payload"].get("disaggregation") else {}),
             run_id=run,
             mode="PROVISIONAL",
-            coverage=measured
-            or {
-                "expected_count": 0,
-                "received_count": len(rows),
-                "approved_count": approved,
-                "excluded_count": len(rows) - approved,
-                "complete": False,
-            },
+            coverage=coverage_payload,
             freshness={"calculated_at": now, "source_cutoff_at": now, "stale": False},
             limitations=[
                 {
@@ -1546,6 +1556,16 @@ class Service:
                     else "Expected coverage is not configured; this result remains provisional.",
                 }
             ]
+            + (
+                [
+                    {
+                        "code": "PARTIAL_COVERAGE",
+                        "message": "The result uses approved eligible values, but mandatory contributor coverage is incomplete.",
+                    }
+                ]
+                if measured and not measured["complete"]
+                else []
+            )
             + method_limitations(definition["payload"]),
             lineage_manifest_id=lineage["object_id"],
         )

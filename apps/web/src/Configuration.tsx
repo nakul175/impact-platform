@@ -81,6 +81,12 @@ export function CoverageSummary({ data }: { data: Record<string, any> }) {
         </strong>{" "}
         · {data.complete ? "Complete collection" : "Incomplete collection"}
       </p>
+      {data.coverage_state && (
+        <p className="muted">
+          <strong>{data.coverage_state.replaceAll("_", " ")}</strong> ·{" "}
+          {data.coverage_reason}
+        </p>
+      )}
       {data.plan_revision && (
         <p className="muted">
           Approved plan revision {data.plan_revision.slice(0, 8)} · Counts and

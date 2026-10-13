@@ -213,6 +213,8 @@ def augment(spec, policy):
     schemas["Coverage"]["properties"].update(
         plan_revision=UUID,
         approval_percent={"type": "string"},
+        coverage_state={"enum": ["COMPLETE", "PARTIAL", "NOT_CONFIGURED"]},
+        coverage_reason={"type": "string", "minLength": 1, "maxLength": 200},
         obligations={
             "type": "array",
             "maxItems": 500,

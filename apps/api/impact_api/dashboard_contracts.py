@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.25.0"
+VERSION = "1.26.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -59,6 +59,11 @@ IMPLEMENTED = {
     ("post", "analysis-packages"),
     ("get", "analysis-packages/{object_id}/export"),
     ("post", "analysis-packages/{object_id}/results"),
+    ("post", "learning-questions"),
+    ("post", "learning-questions/{object_id}/actions/close"),
+    ("post", "learning-questions/{object_id}/actions/reopen"),
+    ("get", "learning-questions/{object_id}/summary"),
+    ("post", "learning-questions/{object_id}/actions/consider-context"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -842,6 +847,83 @@ def augment(spec, policy):
         },
         ["operation_id", "data"],
     )
+    evidence_pin = closed({"object_id": UUID, "revision_id": UUID}, ["object_id", "revision_id"])
+    schemas["LearningQuestionCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "decision_id": UUID,
+                    "question": {"type": "string", "minLength": 1, "maxLength": 2000},
+                    "context": {"type": "string", "minLength": 1, "maxLength": 1000},
+                    "evidence_gaps": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 20,
+                        "items": {"type": "string", "minLength": 1, "maxLength": 1000},
+                    },
+                    "planned_inquiry": {"type": "string", "minLength": 1, "maxLength": 2000},
+                    "owner_id": UUID,
+                    "review_date": {"type": "string", "format": "date"},
+                    "evidence": {"type": "array", "minItems": 3, "maxItems": 50, "items": evidence_pin},
+                    "unresolved_assumptions": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 20,
+                        "items": closed(
+                            {
+                                "assumption": {"type": "string", "minLength": 1, "maxLength": 1000},
+                                "follow_up_study_required": {"const": True},
+                            },
+                            ["assumption", "follow_up_study_required"],
+                        ),
+                    },
+                },
+                [
+                    "decision_id",
+                    "question",
+                    "context",
+                    "evidence_gaps",
+                    "planned_inquiry",
+                    "owner_id",
+                    "review_date",
+                    "evidence",
+                    "unresolved_assumptions",
+                ],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["LearningQuestionClose"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "conclusion": {"type": "string", "minLength": 1, "maxLength": 4000},
+                    "remaining_uncertainty": {"type": "string", "minLength": 1, "maxLength": 4000},
+                },
+                ["conclusion", "remaining_uncertainty"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["LearningQuestionReopen"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed({"reason": {"type": "string", "minLength": 1, "maxLength": 2000}}, ["reason"]),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["LearningContextConsider"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {"target_context": {"type": "string", "minLength": 1, "maxLength": 1000}}, ["target_context"]
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["LearningQuestionSummary"] = {"type": "object"}
     preview_widget = closed(
         {
             **deepcopy(widget["properties"]),
@@ -1871,6 +1953,50 @@ def augment(spec, policy):
     paths[prefix + "analysis-packages/{object_id}/results"] = {
         "parameters": deepcopy(dashboard_item["parameters"]),
         "post": analysis_result,
+    }
+    learning_create = deepcopy(analysis_create)
+    learning_create.update(
+        operationId="create_learning_question",
+        summary="Create a contextual versioned learning question",
+        **{"x-contract-version": VERSION},
+    )
+    learning_create["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/LearningQuestionCreate"
+    }
+    paths[prefix + "learning-questions"] = {"post": learning_create}
+    for action, schema_name, operation in [
+        ("close", "LearningQuestionClose", "close_learning_question"),
+        ("reopen", "LearningQuestionReopen", "reopen_learning_question"),
+        ("consider-context", "LearningContextConsider", "consider_learning_context"),
+    ]:
+        entry = deepcopy(analysis_result)
+        entry.update(
+            operationId=operation,
+            summary=operation.replace("_", " ").title(),
+            **{"x-contract-version": VERSION},
+        )
+        entry["requestBody"]["content"]["application/json"]["schema"] = {
+            "$ref": f"#/components/schemas/{schema_name}"
+        }
+        paths[prefix + f"learning-questions/{{object_id}}/actions/{action}"] = {
+            "parameters": deepcopy(dashboard_item["parameters"]),
+            "post": entry,
+        }
+    learning_summary = deepcopy(preview)
+    learning_summary.update(
+        operationId="get_learning_question_summary",
+        summary="Read a disclosure-reviewed learning summary",
+        **{"x-contract-version": VERSION},
+    )
+    learning_summary["parameters"] = [
+        {"name": "disclosure_id", "in": "query", "required": False, "schema": UUID}
+    ]
+    learning_summary["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/LearningQuestionSummary"
+    }
+    paths[prefix + "learning-questions/{object_id}/summary"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": learning_summary,
     }
     pivot_preview = deepcopy(copy_entry)
     pivot_preview.update(

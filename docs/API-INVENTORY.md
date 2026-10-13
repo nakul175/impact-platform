@@ -298,6 +298,11 @@
 | GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-series` | `dashboards.read` |
 | GET | `/v1/tenants/{tenant_id}/indicator-instances/{object_id}/dashboard-sources` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/invitation-acceptances` | `invitation.accept` |
+| POST | `/v1/tenants/{tenant_id}/learning-questions` | `dashboards.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/learning-questions/{object_id}/actions/close` | `dashboards.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/learning-questions/{object_id}/actions/consider-context` | `dashboards.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/learning-questions/{object_id}/actions/reopen` | `dashboards.draft.edit` |
+| GET | `/v1/tenants/{tenant_id}/learning-questions/{object_id}/summary` | `dashboards.read` |
 | GET | `/v1/tenants/{tenant_id}/lineage-manifests` | `lineage-manifests.read` |
 | GET | `/v1/tenants/{tenant_id}/lineage-manifests/{object_id}` | `lineage-manifests.read` |
 | GET | `/v1/tenants/{tenant_id}/measurement-changes` | `measurement-changes.read` |

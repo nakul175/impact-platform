@@ -43,6 +43,7 @@ from .anomaly_assistance import AnomalyAssistance
 from .evaluation_registry import EvaluationRegistry
 from .evaluation_methodology import EvaluationMethodology
 from .analysis_packages import AnalysisPackages
+from .learning_agenda import LearningAgenda
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
@@ -245,6 +246,7 @@ def create_app():
     evaluation_registry = EvaluationRegistry(service)
     evaluation_methodology = EvaluationMethodology(service)
     analysis_packages = AnalysisPackages(service)
+    learning_agenda = LearningAgenda(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
@@ -1984,6 +1986,59 @@ def create_app():
     @app.get("/v1/tenants/{tenant}/analysis-packages/{obj}/export")
     def analysis_package_export(request: Request, tenant: str, obj: str):
         return analysis_packages.export(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.post("/v1/tenants/{tenant}/learning-questions", status_code=201)
+    async def learning_question_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("LearningQuestionCreate", body)
+        return await run_in_threadpool(
+            learning_agenda.create, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/learning-questions/{obj}/actions/close")
+    async def learning_question_close(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("LearningQuestionClose", body)
+        return await run_in_threadpool(
+            learning_agenda.close,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/learning-questions/{obj}/actions/reopen")
+    async def learning_question_reopen(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("LearningQuestionReopen", body)
+        return await run_in_threadpool(
+            learning_agenda.reopen,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/learning-questions/{obj}/summary")
+    def learning_question_summary(request: Request, tenant: str, obj: str, disclosure_id: str | None = None):
+        return learning_agenda.summary(
+            auth.resolve(request), uuid(tenant), uuid(obj), uuid(disclosure_id) if disclosure_id else None
+        )
+
+    @app.post("/v1/tenants/{tenant}/learning-questions/{obj}/actions/consider-context", status_code=201)
+    async def learning_question_context(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("LearningContextConsider", body)
+        return await run_in_threadpool(
+            learning_agenda.consider_context,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
 
     @app.post("/v1/tenants/{tenant}/analysis-packages/{obj}/results", status_code=201)
     async def analysis_package_result(request: Request, tenant: str, obj: str):

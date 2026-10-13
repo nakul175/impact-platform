@@ -36,6 +36,7 @@ from .retention_policies import RetentionPolicies
 from . import security_events
 from .dashboards import Dashboards
 from .dashboard_authoring import DashboardAuthoring
+from .dashboard_alerts import DashboardAlerts
 from .dashboard_publication import DashboardPublication
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
@@ -232,6 +233,7 @@ def create_app():
     worker_status = WorkerStatus(lifecycle)
     dashboards = Dashboards(service)
     dashboard_authoring = DashboardAuthoring(service)
+    dashboard_alerts = DashboardAlerts(service)
     dashboard_publication = DashboardPublication(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
@@ -1792,6 +1794,31 @@ def create_app():
     ):
         return dashboard_authoring.preview(
             auth.resolve(request), uuid(tenant), uuid(obj), viewport, drill_level
+        )
+
+    @app.post("/v1/tenants/{tenant}/dashboard-alert-rules", status_code=201)
+    async def dashboard_alert_rule_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("DashboardAlertRuleCreate", body)
+        return await run_in_threadpool(
+            dashboard_alerts.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/dashboard-alert-rules/{obj}/actions/evaluate")
+    async def dashboard_alert_rule_evaluate(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardAlertEvaluate", body)
+        return await run_in_threadpool(
+            dashboard_alerts.run,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
         )
 
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy", status_code=201)

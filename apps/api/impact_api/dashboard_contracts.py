@@ -43,6 +43,8 @@ IMPLEMENTED = {
     ("get", "dashboards/{object_id}/sharing-preview"),
     ("post", "dashboards/{object_id}/actions/publish"),
     ("get", "dashboards/{object_id}/publications/{publication_id}"),
+    ("post", "dashboard-alert-rules"),
+    ("post", "dashboard-alert-rules/{object_id}/actions/evaluate"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -227,6 +229,55 @@ def augment(spec, policy):
             "status",
             "reason_code",
         ],
+    )
+    alert_rule_data = closed(
+        {
+            "measure_id": UUID,
+            "operator": {"enum": ["LT", "GT"]},
+            "threshold": {"type": "string", "pattern": DECIMAL},
+            "minimum_coverage": {"type": "integer", "minimum": 0, "maximum": 100},
+            "max_freshness_seconds": {"type": "integer", "minimum": 60, "maximum": 31536000},
+            "evaluation_cadence": {"enum": ["DAILY", "WEEKLY", "MONTHLY"]},
+            "recipient_ids": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 50,
+                "uniqueItems": True,
+                "items": deepcopy(UUID),
+            },
+            "cooldown_seconds": {"type": "integer", "minimum": 60, "maximum": 2592000},
+        },
+        [
+            "measure_id",
+            "operator",
+            "threshold",
+            "minimum_coverage",
+            "max_freshness_seconds",
+            "evaluation_cadence",
+            "recipient_ids",
+            "cooldown_seconds",
+        ],
+    )
+    schemas["DashboardAlertRuleCreate"] = closed(
+        {"operation_id": UUID, "data": alert_rule_data}, ["operation_id", "data"]
+    )
+    schemas["DashboardAlertEvaluate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed({"result_id": NULLABLE_UUID}, []),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["DashboardAlertOutcome"] = closed(
+        {
+            "rule_id": UUID,
+            "outcome": {"enum": ["MISSINGNESS", "STALE_INPUT", "THRESHOLD", "NO_TRIGGER"]},
+            "reason_code": {"type": "string", "maxLength": 64},
+            "incident_id": NULLABLE_UUID,
+            "result_revision": NULLABLE_UUID,
+            "coalesced": {"type": "boolean"},
+        },
+        ["rule_id", "outcome", "reason_code", "incident_id", "result_revision", "coalesced"],
     )
     preview_widget = closed(
         {
@@ -1026,6 +1077,36 @@ def augment(spec, policy):
     paths[prefix + "dashboards/{object_id}/publications/{publication_id}"] = {
         "parameters": publication_parameters,
         "get": publication_status,
+    }
+    alert_create = deepcopy(paths[prefix + "dashboards"]["post"])
+    alert_create.update(
+        operationId="create_dashboard_alert_rule",
+        summary="Create a governed dashboard alert rule",
+        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+    )
+    alert_create["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardAlertRuleCreate"
+    }
+    alert_create["responses"]["201"] = alert_create["responses"].pop("200")
+    alert_create["responses"]["201"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/Receipt"
+    }
+    paths[prefix + "dashboard-alert-rules"] = {"post": alert_create}
+    alert_evaluate = deepcopy(copy_entry)
+    alert_evaluate.update(
+        operationId="evaluate_dashboard_alert_rule",
+        summary="Evaluate a rule without treating missing values as zero",
+        **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+    )
+    alert_evaluate["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardAlertEvaluate"
+    }
+    alert_evaluate["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardAlertOutcome"
+    }
+    paths[prefix + "dashboard-alert-rules/{object_id}/actions/evaluate"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": alert_evaluate,
     }
     pivot_preview = deepcopy(copy_entry)
     pivot_preview.update(

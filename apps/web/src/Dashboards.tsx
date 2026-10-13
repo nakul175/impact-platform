@@ -335,6 +335,8 @@ export function DashboardsPanel({
     [geographicPreview, setGeographicPreview] = useState<any>(null),
     [recipientId, setRecipientId] = useState(""),
     [sharingPreview, setSharingPreview] = useState<any>(null),
+    [alertRule, setAlertRule] = useState(""),
+    [alertOutcome, setAlertOutcome] = useState<any>(null),
     [sourcesFor, setSourcesFor] = useState(""),
     [sources, setSources] = useState<any>(null),
     [error, setError] = useState(""),
@@ -638,6 +640,49 @@ export function DashboardsPanel({
       setError(explain(e));
     }
   }
+  async function createAlertRule() {
+    if (!indicator || !recipientId) return;
+    try {
+      const receipt = await request(base + "dashboard-alert-rules", {
+        method: "POST",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          data: {
+            measure_id: indicator,
+            operator: "LT",
+            threshold: "0",
+            minimum_coverage: 75,
+            max_freshness_seconds: 2678400,
+            evaluation_cadence: "MONTHLY",
+            recipient_ids: [recipientId],
+            cooldown_seconds: 86400,
+          },
+        }),
+      });
+      setAlertRule(receipt.object_id);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function evaluateMissingAlert() {
+    if (!alertRule) return;
+    try {
+      setAlertOutcome(
+        await request(
+          base + "dashboard-alert-rules/" + alertRule + "/actions/evaluate",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              operation_id: crypto.randomUUID(),
+              data: {},
+            }),
+          },
+        ),
+      );
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
   async function applyDashboardFilter() {
     const dashboard = savedDashboards.find(
       (row) => row.object_id === savedDashboard,
@@ -859,6 +904,21 @@ export function DashboardsPanel({
             <button type="button" onClick={publishDashboard}>
               Publish internally for 30 days
             </button>
+            <button
+              type="button"
+              className="secondary"
+              onClick={createAlertRule}
+            >
+              Create monthly alert
+            </button>
+            <button
+              type="button"
+              className="secondary"
+              disabled={!alertRule}
+              onClick={evaluateMissingAlert}
+            >
+              Evaluate missed result
+            </button>
           </div>
           {sharingPreview ? (
             <p role="status" className="muted">
@@ -868,6 +928,13 @@ export function DashboardsPanel({
                 : sharingPreview.unavailable_binding_count +
                   " bindings unavailable"}
               . No grants were created.
+            </p>
+          ) : null}
+          {alertOutcome ? (
+            <p role="status" className="muted">
+              Alert outcome: {words(alertOutcome.outcome)} ·{" "}
+              {words(alertOutcome.reason_code)}
+              {alertOutcome.coalesced ? " · cooldown incident updated" : ""}
             </p>
           ) : null}
           <div className="planning-toolbar" aria-label="Pivot analysis">

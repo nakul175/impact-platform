@@ -38,6 +38,7 @@ from .dashboards import Dashboards
 from .dashboard_authoring import DashboardAuthoring
 from .dashboard_alerts import DashboardAlerts
 from .dashboard_publication import DashboardPublication
+from .external_analytics import ExternalAnalytics
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
@@ -235,6 +236,7 @@ def create_app():
     dashboard_authoring = DashboardAuthoring(service)
     dashboard_alerts = DashboardAlerts(service)
     dashboard_publication = DashboardPublication(service)
+    external_analytics = ExternalAnalytics(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
@@ -1821,6 +1823,44 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.post("/v1/tenants/{tenant}/external-analytics-connections", status_code=201)
+    async def external_analytics_connection_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("ExternalAnalyticsConnectionCreate", body)
+        return await run_in_threadpool(
+            external_analytics.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/external-analytics-connections/{obj}/actions/refresh")
+    async def external_analytics_connection_refresh(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("ExternalAnalyticsRefresh", body)
+        return await run_in_threadpool(
+            external_analytics.refresh,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/external-analytics-connections/{obj}/actions/revoke")
+    async def external_analytics_connection_revoke(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("ExternalAnalyticsRevoke", body)
+        return await run_in_threadpool(
+            external_analytics.revoke,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy", status_code=201)
     async def dashboard_copy(request: Request, tenant: str, obj: str):
         body = await strict_body(request)
@@ -1854,9 +1894,7 @@ def create_app():
         )
 
     @app.get("/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}")
-    def dashboard_publication_status(
-        request: Request, tenant: str, obj: str, publication_id: str
-    ):
+    def dashboard_publication_status(request: Request, tenant: str, obj: str, publication_id: str):
         return dashboard_publication.status(
             auth.resolve(request), uuid(tenant), uuid(obj), uuid(publication_id)
         )

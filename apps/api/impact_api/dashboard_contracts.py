@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.20.0"
+VERSION = "1.21.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -45,6 +45,9 @@ IMPLEMENTED = {
     ("get", "dashboards/{object_id}/publications/{publication_id}"),
     ("post", "dashboard-alert-rules"),
     ("post", "dashboard-alert-rules/{object_id}/actions/evaluate"),
+    ("post", "external-analytics-connections"),
+    ("post", "external-analytics-connections/{object_id}/actions/refresh"),
+    ("post", "external-analytics-connections/{object_id}/actions/revoke"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -216,9 +219,7 @@ def augment(spec, policy):
             "audience": {"enum": ["INTERNAL", "PUBLIC"]},
             "expires_at": {"type": "string", "format": "date-time"},
             "status": {"enum": ["ACTIVE", "SUSPENDED"]},
-            "reason_code": {
-                "enum": [None, "EXPIRED", "SOURCE_AUTHORITY_OR_SENSITIVITY_CHANGED"]
-            },
+            "reason_code": {"enum": [None, "EXPIRED", "SOURCE_AUTHORITY_OR_SENSITIVITY_CHANGED"]},
         },
         [
             "publication_id",
@@ -278,6 +279,105 @@ def augment(spec, policy):
             "coalesced": {"type": "boolean"},
         },
         ["rule_id", "outcome", "reason_code", "incident_id", "result_revision", "coalesced"],
+    )
+    external_dataset = closed(
+        {
+            "kind": {"enum": ["CalculatedResult", "Evidence"]},
+            "object_id": UUID,
+            "revision_id": UUID,
+            "fields": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 12,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 64},
+            },
+        },
+        ["kind", "object_id", "revision_id", "fields"],
+    )
+    schemas["ExternalAnalyticsConnectionCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "datasets": {"type": "array", "minItems": 1, "maxItems": 50, "items": external_dataset},
+                    "destination": {"type": "string", "minLength": 1, "maxLength": 500},
+                    "reuse_terms": {"type": "string", "minLength": 1, "maxLength": 2000},
+                },
+                ["datasets", "destination", "reuse_terms"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["ExternalAnalyticsRefresh"] = closed(
+        {
+            "operation_id": UUID,
+            "credential": {"type": "string", "minLength": 32, "maxLength": 200},
+        },
+        ["operation_id", "credential"],
+    )
+    schemas["ExternalAnalyticsRevoke"] = closed({"operation_id": UUID}, ["operation_id"])
+    receipt_properties = deepcopy(schemas["Receipt"]["properties"])
+    schemas["ExternalAnalyticsConnectionReceipt"] = closed(
+        {
+            **receipt_properties,
+            "service_identity_id": {"type": "string", "minLength": 32, "maxLength": 64},
+            "credential": {"type": "string", "minLength": 32, "maxLength": 200},
+        },
+        list(schemas["Receipt"]["required"]) + ["service_identity_id", "credential"],
+    )
+    external_package_item = closed(
+        {
+            "object_id": UUID,
+            "revision_id": UUID,
+            "kind": {"enum": ["CalculatedResult", "Evidence"]},
+            "fields": {"type": "object", "additionalProperties": True, "maxProperties": 12},
+            "definition_revision": NULLABLE_UUID,
+            "definition": {
+                "oneOf": [
+                    {"type": "null"},
+                    closed(
+                        {
+                            "name": NULLABLE_TEXT,
+                            "unit": NULLABLE_TEXT,
+                            "measurement_type": NULLABLE_TEXT,
+                        },
+                        ["name", "unit", "measurement_type"],
+                    ),
+                ]
+            },
+            "unit": NULLABLE_TEXT,
+            "value_state": {"enum": VALUE_STATES + [None]},
+            "freshness": {"type": ["object", "null"]},
+        },
+        [
+            "object_id",
+            "revision_id",
+            "kind",
+            "fields",
+            "definition_revision",
+            "definition",
+            "unit",
+            "value_state",
+            "freshness",
+        ],
+    )
+    schemas["ExternalAnalyticsExtract"] = closed(
+        {
+            "connection_id": UUID,
+            "extract_id": UUID,
+            "extracted_at": {"type": "string", "format": "date-time"},
+            "package": {"type": "array", "maxItems": 50, "items": external_package_item},
+        },
+        ["connection_id", "extract_id", "extracted_at", "package"],
+    )
+    schemas["ExternalAnalyticsRevocation"] = closed(
+        {
+            **receipt_properties,
+            "last_successful_extract": {"type": ["object", "null"]},
+            "remote_copy_status": {"const": "TRACKED_NOT_REMOTELY_ERASED"},
+        },
+        list(schemas["Receipt"]["required"]) + ["last_successful_extract", "remote_copy_status"],
     )
     preview_widget = closed(
         {
@@ -905,7 +1005,13 @@ def augment(spec, policy):
                         ),
                     },
                 },
-                ["coverage_threshold", "visible_scope", "hidden_members_disclosed", "raw_cross_group_ranking", "groups"],
+                [
+                    "coverage_threshold",
+                    "visible_scope",
+                    "hidden_members_disclosed",
+                    "raw_cross_group_ranking",
+                    "groups",
+                ],
             ),
             "versions": {
                 "type": "array",
@@ -1107,6 +1213,50 @@ def augment(spec, policy):
     paths[prefix + "dashboard-alert-rules/{object_id}/actions/evaluate"] = {
         "parameters": deepcopy(dashboard_item["parameters"]),
         "post": alert_evaluate,
+    }
+    external_create = deepcopy(alert_create)
+    external_create.update(
+        operationId="create_external_analytics_connection",
+        summary="Create a dataset-scoped external analytics identity",
+        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+    )
+    external_create["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExternalAnalyticsConnectionCreate"
+    }
+    external_create["responses"]["201"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExternalAnalyticsConnectionReceipt"
+    }
+    paths[prefix + "external-analytics-connections"] = {"post": external_create}
+    external_refresh = deepcopy(alert_evaluate)
+    external_refresh.update(
+        operationId="refresh_external_analytics_connection",
+        summary="Refresh an exact governed external data package",
+        **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+    )
+    external_refresh["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExternalAnalyticsRefresh"
+    }
+    external_refresh["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExternalAnalyticsExtract"
+    }
+    paths[prefix + "external-analytics-connections/{object_id}/actions/refresh"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": external_refresh,
+    }
+    external_revoke = deepcopy(external_refresh)
+    external_revoke.update(
+        operationId="revoke_external_analytics_connection",
+        summary="Revoke an external analytics identity while retaining extract history",
+    )
+    external_revoke["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExternalAnalyticsRevoke"
+    }
+    external_revoke["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExternalAnalyticsRevocation"
+    }
+    paths[prefix + "external-analytics-connections/{object_id}/actions/revoke"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": external_revoke,
     }
     pivot_preview = deepcopy(copy_entry)
     pivot_preview.update(

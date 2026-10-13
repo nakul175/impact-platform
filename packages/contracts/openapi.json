@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.109.0",
+    "version": "1.110.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -45291,7 +45291,7 @@
             }
           }
         },
-        "x-contract-version": "1.15.0",
+        "x-contract-version": "1.16.0",
         "parameters": [
           {
             "name": "limit",
@@ -45433,7 +45433,7 @@
             }
           }
         },
-        "x-contract-version": "1.15.0",
+        "x-contract-version": "1.16.0",
         "parameters": [
           {
             "name": "limit",
@@ -45566,7 +45566,7 @@
             }
           }
         },
-        "x-contract-version": "1.15.0",
+        "x-contract-version": "1.16.0",
         "parameters": [
           {
             "name": "limit",
@@ -45708,7 +45708,7 @@
             }
           }
         },
-        "x-contract-version": "1.15.0",
+        "x-contract-version": "1.16.0",
         "parameters": [
           {
             "name": "limit",
@@ -45848,7 +45848,7 @@
             }
           }
         },
-        "x-contract-version": "1.15.0",
+        "x-contract-version": "1.16.0",
         "parameters": [
           {
             "name": "viewport",
@@ -46003,7 +46003,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.15.0",
+        "x-contract-version": "1.16.0",
         "x-audit-required": true
       }
     },
@@ -92250,6 +92250,60 @@
               "null"
             ],
             "maxLength": 2000
+          },
+          "version_label": {
+            "enum": [
+              "Original target",
+              "Revised target",
+              "Baseline"
+            ]
+          },
+          "applicable_period": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "period_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uuid"
+              },
+              "period_code": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 2000
+              },
+              "starts_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 2000
+              },
+              "ends_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "period_id",
+              "period_code",
+              "starts_at",
+              "ends_at"
+            ]
+          },
+          "time_semantic": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
           }
         },
         "required": [
@@ -92685,6 +92739,59 @@
                             "PROVISIONAL",
                             null
                           ]
+                        },
+                        "direction": {
+                          "enum": [
+                            "HIGHER",
+                            "LOWER",
+                            "RANGE",
+                            "MILESTONE"
+                          ]
+                        },
+                        "deviation_formula": {
+                          "const": "actual - target"
+                        },
+                        "attainment_formula": {
+                          "enum": [
+                            "actual / target \u00d7 100",
+                            "target / actual \u00d7 100"
+                          ]
+                        },
+                        "baseline_change_formula": {
+                          "const": "(actual - baseline) / baseline \u00d7 100; undefined when baseline is zero or negative"
+                        },
+                        "time_semantic": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "maxLength": 2000
+                        },
+                        "time_semantic_compatibility": {
+                          "enum": [
+                            "COMPATIBLE",
+                            "BLOCKED"
+                          ]
+                        },
+                        "change_from_baseline": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "change_from_baseline_percent": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "change_from_baseline_reason": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "maxLength": 2000
                         }
                       },
                       "required": [
@@ -92692,7 +92799,16 @@
                         "attainment_percent",
                         "deviation",
                         "reason_code",
-                        "compared_with"
+                        "compared_with",
+                        "direction",
+                        "deviation_formula",
+                        "attainment_formula",
+                        "baseline_change_formula",
+                        "time_semantic",
+                        "time_semantic_compatibility",
+                        "change_from_baseline",
+                        "change_from_baseline_percent",
+                        "change_from_baseline_reason"
                       ]
                     }
                   ]
@@ -92922,6 +93038,59 @@
                             "PROVISIONAL",
                             null
                           ]
+                        },
+                        "direction": {
+                          "enum": [
+                            "HIGHER",
+                            "LOWER",
+                            "RANGE",
+                            "MILESTONE"
+                          ]
+                        },
+                        "deviation_formula": {
+                          "const": "actual - target"
+                        },
+                        "attainment_formula": {
+                          "enum": [
+                            "actual / target \u00d7 100",
+                            "target / actual \u00d7 100"
+                          ]
+                        },
+                        "baseline_change_formula": {
+                          "const": "(actual - baseline) / baseline \u00d7 100; undefined when baseline is zero or negative"
+                        },
+                        "time_semantic": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "maxLength": 2000
+                        },
+                        "time_semantic_compatibility": {
+                          "enum": [
+                            "COMPATIBLE",
+                            "BLOCKED"
+                          ]
+                        },
+                        "change_from_baseline": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "change_from_baseline_percent": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "change_from_baseline_reason": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "maxLength": 2000
                         }
                       },
                       "required": [
@@ -92929,7 +93098,16 @@
                         "attainment_percent",
                         "deviation",
                         "reason_code",
-                        "compared_with"
+                        "compared_with",
+                        "direction",
+                        "deviation_formula",
+                        "attainment_formula",
+                        "baseline_change_formula",
+                        "time_semantic",
+                        "time_semantic_compatibility",
+                        "change_from_baseline",
+                        "change_from_baseline_percent",
+                        "change_from_baseline_reason"
                       ]
                     }
                   ]
@@ -107071,6 +107249,59 @@
                           "PROVISIONAL",
                           null
                         ]
+                      },
+                      "direction": {
+                        "enum": [
+                          "HIGHER",
+                          "LOWER",
+                          "RANGE",
+                          "MILESTONE"
+                        ]
+                      },
+                      "deviation_formula": {
+                        "const": "actual - target"
+                      },
+                      "attainment_formula": {
+                        "enum": [
+                          "actual / target \u00d7 100",
+                          "target / actual \u00d7 100"
+                        ]
+                      },
+                      "baseline_change_formula": {
+                        "const": "(actual - baseline) / baseline \u00d7 100; undefined when baseline is zero or negative"
+                      },
+                      "time_semantic": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 2000
+                      },
+                      "time_semantic_compatibility": {
+                        "enum": [
+                          "COMPATIBLE",
+                          "BLOCKED"
+                        ]
+                      },
+                      "change_from_baseline": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                      },
+                      "change_from_baseline_percent": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "change_from_baseline_reason": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 2000
                       }
                     },
                     "required": [
@@ -107078,7 +107309,16 @@
                       "attainment_percent",
                       "deviation",
                       "reason_code",
-                      "compared_with"
+                      "compared_with",
+                      "direction",
+                      "deviation_formula",
+                      "attainment_formula",
+                      "baseline_change_formula",
+                      "time_semantic",
+                      "time_semantic_compatibility",
+                      "change_from_baseline",
+                      "change_from_baseline_percent",
+                      "change_from_baseline_reason"
                     ]
                   }
                 ]

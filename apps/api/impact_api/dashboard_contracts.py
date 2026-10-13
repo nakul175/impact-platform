@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.15.0"
+VERSION = "1.16.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -229,6 +229,17 @@ def augment(spec, policy):
             "displayed_value": NULLABLE_TEXT,
             "displayed_low": NULLABLE_TEXT,
             "displayed_high": NULLABLE_TEXT,
+            "version_label": {"enum": ["Original target", "Revised target", "Baseline"]},
+            "applicable_period": closed(
+                {
+                    "period_id": NULLABLE_UUID,
+                    "period_code": NULLABLE_TEXT,
+                    "starts_at": NULLABLE_TEXT,
+                    "ends_at": NULLABLE_TEXT,
+                },
+                ["period_id", "period_code", "starts_at", "ends_at"],
+            ),
+            "time_semantic": NULLABLE_TEXT,
         },
         ["target_id", "revision_id", "target_kind", "target_basis", "direction", "value_state", "value"],
     )
@@ -244,8 +255,17 @@ def augment(spec, policy):
                     "displayed_deviation": NULLABLE_TEXT,
                     "reason_code": NULLABLE_TEXT,
                     "compared_with": {"enum": ["OFFICIAL", "PROVISIONAL", None]},
+                    "direction": {"enum": ["HIGHER", "LOWER", "RANGE", "MILESTONE"]},
+                    "deviation_formula": {"const": "actual - target"},
+                    "attainment_formula": {"enum": ["actual / target × 100", "target / actual × 100"]},
+                    "baseline_change_formula": {"const": "(actual - baseline) / baseline × 100; undefined when baseline is zero or negative"},
+                    "time_semantic": NULLABLE_TEXT,
+                    "time_semantic_compatibility": {"enum": ["COMPATIBLE", "BLOCKED"]},
+                    "change_from_baseline": NULLABLE_DECIMAL,
+                    "change_from_baseline_percent": {"type": ["string", "null"]},
+                    "change_from_baseline_reason": NULLABLE_TEXT,
                 },
-                ["status", "attainment_percent", "deviation", "reason_code", "compared_with"],
+                ["status", "attainment_percent", "deviation", "reason_code", "compared_with", "direction", "deviation_formula", "attainment_formula", "baseline_change_formula", "time_semantic", "time_semantic_compatibility", "change_from_baseline", "change_from_baseline_percent", "change_from_baseline_reason"],
             ),
         ]
     }

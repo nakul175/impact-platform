@@ -419,6 +419,13 @@ def progress(actual, target, baseline, places):
                     result["reason_code"] = "ZERO_TARGET" if goal == 0 else "NON_POSITIVE_TARGET"
             else:
                 status = "ACHIEVED" if value <= goal else "ABOVE_TARGET"
+                # Lower-is-better attainment uses the inverse ratio. It is intentionally
+                # uncapped so overachievement remains visible (target 10, actual 8 = 125%).
+                if value > 0:
+                    result["attainment_percent"] = display(goal / value * 100, 2)
+                else:
+                    result["attainment_percent"] = "Undefined"
+                    result["reason_code"] = "ZERO_ACTUAL" if value == 0 else "NON_POSITIVE_ACTUAL"
         band, band_reason = performance_band(value, target, stale=bool(actual.get("stale")))
         result.update(
             status=status,

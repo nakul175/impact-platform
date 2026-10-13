@@ -85,6 +85,21 @@ function targetText(t: any) {
   return t.displayed_value;
 }
 
+function targetContext(t: any) {
+  if (!t) return null;
+  const period = t.applicable_period;
+  return [
+    t.version_label,
+    period?.period_code || period?.period_id?.slice(0, 8),
+    period?.starts_at && period?.ends_at
+      ? `${period.starts_at.slice(0, 10)} to ${period.ends_at.slice(0, 10)}`
+      : null,
+    t.time_semantic ? words(t.time_semantic) : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+}
+
 function Coverage({ c }: { c: any }) {
   if (c.applicability === "UNAVAILABLE")
     return (
@@ -850,12 +865,20 @@ export function DashboardsPanel({
                         <small className="muted">
                           {" "}
                           · {words(c.target.direction)} ·{" "}
-                          {words(c.target.target_basis)}
+                          {targetContext(c.target)}
                         </small>
                       ) : null}
                     </dd>
                     <dt>Baseline</dt>
-                    <dd>{c.baseline ? targetText(c.baseline) : "None"}</dd>
+                    <dd>
+                      {c.baseline ? targetText(c.baseline) : "None"}
+                      {c.baseline ? (
+                        <small className="muted">
+                          {" "}
+                          · {targetContext(c.baseline)}
+                        </small>
+                      ) : null}
+                    </dd>
                     {c.status ? (
                       <>
                         <dt>Status</dt>
@@ -870,6 +893,28 @@ export function DashboardsPanel({
                               · against {words(c.status.compared_with)}
                             </small>
                           ) : null}
+                          <small className="muted">
+                            <br />
+                            Deviation{" "}
+                            {c.status.displayed_deviation ?? "undefined"} ·
+                            formula: {c.status.deviation_formula}
+                            <br />
+                            Attainment formula: {c.status.attainment_formula} ·
+                            scale is uncapped
+                            <br />
+                            Baseline change{" "}
+                            {c.status.change_from_baseline_percent === null
+                              ? "not available"
+                              : c.status.change_from_baseline_percent ===
+                                  "Undefined"
+                                ? "undefined"
+                                : c.status.change_from_baseline_percent +
+                                  "%"}{" "}
+                            · {c.status.baseline_change_formula}
+                            <br />
+                            Time semantic: {words(c.status.time_semantic)} (
+                            {words(c.status.time_semantic_compatibility)})
+                          </small>
                         </dd>
                       </>
                     ) : null}

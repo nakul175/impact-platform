@@ -118,7 +118,7 @@ def value_block(row, places):
     }
 
 
-def target_block(view, places):
+def target_block(view, places, period=None, time_semantic=None):
     if view is None:
         return None
     return {
@@ -140,6 +140,14 @@ def target_block(view, places):
         "displayed_value": shown(view.get("value"), places) if view.get("value_state") == "PRESENT" else None,
         "displayed_low": shown(view.get("low"), places),
         "displayed_high": shown(view.get("high"), places),
+        "version_label": "Revised target" if view.get("target_basis") == "REVISED" else "Original target" if view.get("target_basis") == "ORIGINAL" else "Baseline",
+        "applicable_period": {
+            "period_id": str(period["object_id"]) if period else None,
+            "period_code": (period.get("payload") or {}).get("code") if period else None,
+            "starts_at": (period.get("payload") or {}).get("starts_at") if period else None,
+            "ends_at": (period.get("payload") or {}).get("ends_at") if period else None,
+        },
+        "time_semantic": time_semantic,
     }
 
 
@@ -277,20 +285,43 @@ class Dashboards:
         status = None
         if target is not None:
             actual = compared or {"mode": "NONE", "value_state": "MISSING", "value": None}
+            actual_semantic = definition.get("time_semantic")
+            target_semantic = target.get("time_semantic", actual_semantic)
+            if actual_semantic != target_semantic and not target.get("approved_conversion"):
+                comparison = {
+                    "status": "NOT_COMPUTABLE",
+                    "attainment_percent": None,
+                    "deviation": None,
+                    "displayed_deviation": None,
+                    "change_from_baseline": None,
+                    "change_from_baseline_percent": None,
+                    "change_from_baseline_reason": "INCOMPATIBLE_TIME_SEMANTIC",
+                    "reason_code": "INCOMPATIBLE_TIME_SEMANTIC",
+                }
+                compatibility = "BLOCKED"
+            else:
+                comparison = safe_progress(actual, target, baseline, places)
+                compatibility = "COMPATIBLE"
             status = {
                 **{
                     k: v
-                    for k, v in safe_progress(actual, target, baseline, places).items()
+                    for k, v in comparison.items()
                     if k
-                    in {"status", "attainment_percent", "deviation", "displayed_deviation", "reason_code"}
+                    in {"status", "attainment_percent", "deviation", "displayed_deviation", "reason_code", "change_from_baseline", "change_from_baseline_percent", "change_from_baseline_reason"}
                 },
                 "compared_with": compared["mode"] if compared else None,
+                "direction": target.get("direction"),
+                "deviation_formula": "actual - target",
+                "attainment_formula": "target / actual × 100" if target.get("direction") == "LOWER" else "actual / target × 100",
+                "baseline_change_formula": "(actual - baseline) / baseline × 100; undefined when baseline is zero or negative",
+                "time_semantic": actual_semantic,
+                "time_semantic_compatibility": compatibility,
             }
         cell = {
             "official": official_block,
             "provisional": provisional_block,
-            "target": target_block(target, places),
-            "baseline": target_block(baseline, places),
+            "target": target_block(target, places, period_row, definition.get("time_semantic")),
+            "baseline": target_block(baseline, places, period_row, definition.get("time_semantic")),
             "status": status,
         }
         if not detail:

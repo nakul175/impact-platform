@@ -66,6 +66,8 @@ RATIO_TYPES = {"RATIO", "PERCENTAGE"}
 # The one reserved category a result uses for contributions without a code on a non-exhaustive dimension.
 UNSPECIFIED = "UNSPECIFIED"
 PRECISION = 100
+INPUT_SCALE = 12
+MAX_CALCULATION_CONTRIBUTORS = 10000
 
 
 def method_supported(definition):
@@ -168,6 +170,8 @@ def calculate(definition, observations):
     if not method_supported(definition):
         raise DomainError("INCOMPATIBLE_MEASURE", reason="CONFIGURATION_NOT_IMPLEMENTED")
     values = [o for o in observations if o["approval_state"] == "APPROVED" and o["value_state"] == "PRESENT"]
+    if len(values) > MAX_CALCULATION_CONTRIBUTORS:
+        raise DomainError("VALIDATION_FAILED", reason="CALCULATION_INPUT_LIMIT")
     base = {
         "value_state": "UNDEFINED",
         "value": None,

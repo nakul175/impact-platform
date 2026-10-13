@@ -11,6 +11,8 @@ from psycopg.types.json import Jsonb
 from .contracts import ENTITIES, OPERATIONS, SPEC, validate
 from .domain import (
     RATIO_TYPES,
+    INPUT_SCALE,
+    MAX_CALCULATION_CONTRIBUTORS,
     aware,
     DomainError,
     calculate,
@@ -1433,6 +1435,10 @@ class Service:
             "unit": definition["payload"]["unit"],
             "display_decimals": definition["payload"].get("display_decimals", 2),
             "rounding_rule": "HALF_UP",
+            "input_scale_digits": INPUT_SCALE,
+            "stored_scale_digits": 12,
+            "rounding_boundary": "OUTPUT_ONLY",
+            "max_contributors": MAX_CALCULATION_CONTRIBUTORS,
             **method_disclosure(definition["payload"]),
         }
         excepted_keys = {

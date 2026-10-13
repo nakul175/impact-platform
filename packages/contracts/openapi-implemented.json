@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.101.0",
+    "version": "1.102.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -50742,6 +50742,21 @@
               },
               "rounding_rule": {
                 "const": "HALF_UP"
+              },
+              "input_scale_digits": {
+                "type": "integer",
+                "const": 12
+              },
+              "stored_scale_digits": {
+                "type": "integer",
+                "const": 12
+              },
+              "rounding_boundary": {
+                "const": "OUTPUT_ONLY"
+              },
+              "max_contributors": {
+                "type": "integer",
+                "const": 10000
               },
               "statistic_label": {
                 "enum": [

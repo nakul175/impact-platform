@@ -92,6 +92,10 @@ def augment(spec, policy):
                 "unit": {"type": "string", "maxLength": 64},
                 "display_decimals": {"type": "integer", "minimum": 0, "maximum": 6},
                 "rounding_rule": {"const": "HALF_UP"},
+                "input_scale_digits": {"type": "integer", "const": 12},
+                "stored_scale_digits": {"type": "integer", "const": 12},
+                "rounding_boundary": {"const": "OUTPUT_ONLY"},
+                "max_contributors": {"type": "integer", "const": 10000},
                 "statistic_label": {"enum": METHODS + ["UNWEIGHTED_MEAN"]},
                 "weighting_basis": {
                     "enum": ["DENOMINATOR_WEIGHTED", "EQUAL_CONTRIBUTOR_WEIGHT", "NOT_APPLICABLE"]

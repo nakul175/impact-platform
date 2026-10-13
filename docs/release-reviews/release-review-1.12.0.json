@@ -1,0 +1,20 @@
+{
+  "release": "1.12.0",
+  "story": "FR-CAL-009",
+  "linear_issue": "APL-411",
+  "state": "CODING_CANDIDATE_ONLY",
+  "scope": "Frozen decimal precision, output-only rounding and explicit contributor limit",
+  "input_fractional_digits": 12,
+  "intermediate_precision_digits": 100,
+  "stored_fractional_digits": 12,
+  "rounding_rule": "HALF_UP",
+  "rounding_boundary": "OUTPUT_ONLY",
+  "max_contributors": 10000,
+  "over_limit_reason": "CALCULATION_INPUT_LIMIT",
+  "database_migration": "NONE_REQUIRED",
+  "tests": "NOT_RUN_BY_OWNER_REQUEST",
+  "ci": "NOT_RUN_BY_OWNER_REQUEST",
+  "merge": "NOT_MERGED",
+  "staging": "NOT_DEPLOYED",
+  "acceptance": "PENDING"
+}

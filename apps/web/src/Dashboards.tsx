@@ -329,6 +329,9 @@ export function DashboardsPanel({
     [drillLevel, setDrillLevel] = useState(""),
     [filterField, setFilterField] = useState("programme"),
     [filterValue, setFilterValue] = useState(""),
+    [pivotDimension, setPivotDimension] = useState("service_type"),
+    [pivotStatistic, setPivotStatistic] = useState("DISTINCT_COUNT"),
+    [pivotResult, setPivotResult] = useState<any>(null),
     [sourcesFor, setSourcesFor] = useState(""),
     [sources, setSources] = useState<any>(null),
     [error, setError] = useState(""),
@@ -566,6 +569,49 @@ export function DashboardsPanel({
       setError(explain(e));
     }
   }
+  async function runPivot(preview: boolean) {
+    const dashboard = savedDashboards.find(
+      (row) => row.object_id === savedDashboard,
+    );
+    const widget = dashboard?.data.widgets[0];
+    if (!dashboard || !widget)
+      return setError("A dashboard result widget is required.");
+    const data = {
+      widget_id: widget.widget_id,
+      row_dimension: pivotDimension,
+      statistic: pivotStatistic,
+    };
+    try {
+      const result = await request(
+        `${base}dashboards/${dashboard.object_id}/${preview ? "pivot-preview" : "actions/run-pivot"}`,
+        {
+          method: "POST",
+          body: JSON.stringify(
+            preview ? data : { operation_id: crypto.randomUUID(), data },
+          ),
+        },
+      );
+      setPivotResult(result);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function cancelPivot() {
+    if (!savedDashboard || !pivotResult?.job_id) return;
+    try {
+      setPivotResult(
+        await request(
+          `${base}dashboards/${savedDashboard}/pivot-jobs/${pivotResult.job_id}/actions/cancel`,
+          {
+            method: "POST",
+            body: JSON.stringify({ operation_id: crypto.randomUUID() }),
+          },
+        ),
+      );
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
   async function more() {
     try {
       const next = await request(
@@ -690,6 +736,97 @@ export function DashboardsPanel({
               Copy privately
             </button>
           </div>
+          <div className="planning-toolbar" aria-label="Pivot analysis">
+            <label>
+              Pivot dimension
+              <input
+                value={pivotDimension}
+                onChange={(event) => setPivotDimension(event.target.value)}
+              />
+            </label>
+            <label>
+              Statistic
+              <select
+                value={pivotStatistic}
+                onChange={(event) => setPivotStatistic(event.target.value)}
+              >
+                <option>DISTINCT_COUNT</option>
+                <option>SUM</option>
+                <option>MEAN</option>
+              </select>
+            </label>
+            <button
+              type="button"
+              className="secondary"
+              onClick={() => runPivot(true)}
+            >
+              Preview pivot
+            </button>
+            <button
+              type="button"
+              className="secondary"
+              onClick={() => runPivot(false)}
+            >
+              Run pivot
+            </button>
+          </div>
+          {pivotResult ? (
+            <section className="dashboard-card" aria-label="Pivot result">
+              <h3>Pivot result</h3>
+              <p role="status">
+                {words(pivotResult.execution)} · estimated{" "}
+                {pivotResult.estimated_cardinality} cells
+              </p>
+              <p>{pivotResult.explanation}</p>
+              {pivotResult.job_id ? (
+                <p>
+                  Queued cancellable job {pivotResult.job_id}{" "}
+                  <button
+                    type="button"
+                    className="secondary"
+                    onClick={cancelPivot}
+                  >
+                    Cancel queued pivot
+                  </button>
+                </p>
+              ) : null}
+              {!pivotResult.job_id ? (
+                <div className="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Category</th>
+                        <th>Value</th>
+                        <th>Disclosure</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pivotResult.cells.map((cell: any, index: number) => (
+                        <tr key={`${cell.category}-${index}`}>
+                          <td>{cell.category ?? "—"}</td>
+                          <td>
+                            {cell.displayed_value ??
+                              cell.value ??
+                              words(cell.value_state)}
+                          </td>
+                          <td>
+                            {words(cell.disclosure)} · {words(cell.additivity)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>Grand total</th>
+                        <td>{pivotResult.grand_total ?? "—"}</td>
+                        <td>{words(pivotResult.grand_total_basis)}</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              ) : null}
+            </section>
+          ) : null}
           <div className="planning-toolbar">
             <label>
               Filter field

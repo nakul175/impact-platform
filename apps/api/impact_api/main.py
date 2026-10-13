@@ -36,6 +36,7 @@ from .retention_policies import RetentionPolicies
 from . import security_events
 from .dashboards import Dashboards
 from .dashboard_authoring import DashboardAuthoring
+from .dashboard_pivots import DashboardPivots
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
 from .ai_enablement import AIEnablement
 from .ai_jobs import AIJobs
@@ -229,6 +230,7 @@ def create_app():
     worker_status = WorkerStatus(lifecycle)
     dashboards = Dashboards(service)
     dashboard_authoring = DashboardAuthoring(service)
+    dashboard_pivots = DashboardPivots(service)
     ai_impact = AIImpactReferences(service, dashboards)
     audit_exports = AuditExports(service)
     retention_policies = RetentionPolicies(service)
@@ -1797,6 +1799,45 @@ def create_app():
             auth.resolve(request),
             uuid(tenant),
             uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/pivot-preview")
+    async def dashboard_pivot_preview(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardPivotData", body)
+        return await run_in_threadpool(
+            dashboard_pivots.preview, auth.resolve(request), uuid(tenant), uuid(obj), body
+        )
+
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/run-pivot")
+    async def dashboard_pivot_run(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardPivotRun", body)
+        return await run_in_threadpool(
+            dashboard_pivots.run,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/dashboards/{obj}/pivot-jobs/{job}")
+    def dashboard_pivot_job(request: Request, tenant: str, obj: str, job: str):
+        return dashboard_pivots.status(auth.resolve(request), uuid(tenant), uuid(obj), uuid(job))
+
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/pivot-jobs/{job}/actions/cancel")
+    async def dashboard_pivot_cancel(request: Request, tenant: str, obj: str, job: str):
+        body = await strict_body(request)
+        validate("DashboardPivotCancel", body)
+        return await run_in_threadpool(
+            dashboard_pivots.cancel,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(job),
             body,
             request.state.correlation,
         )

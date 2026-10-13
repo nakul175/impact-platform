@@ -1,5 +1,7 @@
 # Current data dictionary and schema evolution
 
+Local proposed build 1.22.0, schema 94 (FR-ANA-005 / APL-613; coding candidate only): governed dashboard pivots bind one exact currently readable CalculatedResult revision, allow only compatible distinct-count, sum or mean statistics, retain suppressed and nonadditive cell state and derive grand totals from governed unrounded source semantics. Cardinality above 100 routes to a tenant-bounded cancellable DASHBOARD_PIVOT job. Migration 0094 exposes due tenant identifiers/counts to the existing worker without widening tenant data access. Tests and CI are deferred.
+
 Local proposed build 1.21.0, schema 93 (FR-ANA-004 / APL-437; coding candidate only): each programme result card now carries an explicit snapshot, live-approved, provisional or unavailable state plus last valid source data, approval cutoff, calculation time, coverage and stale reasons. Dashboard fetch time is separate and cannot make failed source state fresh. Browser print/save retains the visible material context and provisional labels. This release adds no migration or database privilege change. Tests and CI are deferred.
 
 Local proposed build 1.20.0, schema 93 (FR-ANA-003 / APL-435; coding candidate only): programme dashboard comparisons expose the exact approved target/baseline revision, original or revised label, applicable period, direction, time semantic and explicit formulas. Lower-is-better uses inverse uncapped attainment; zero or negative baseline change is undefined; incompatible time semantics without an approved conversion are blocked. This release adds no migration or database privilege change. Tests and CI are deferred.
@@ -7152,3 +7154,12 @@ COMMIT;
 | Migration | SHA256 |
 |---|---|
 | 0093_recalculation_dependencies.sql | 0f3a5594bb7a8f4fa5e194122386efad6f26a1c86ffdfe99bbf3e48b11d9ea9a |
+
+
+## Migration0094 — cancellable dashboard pivot jobs (local1.22 coding candidate)
+
+`0094_dashboard_pivot_jobs.sql` SHA256 `efab89e3c3533acd1618d5f90e1d6e9c0850cdc81a3ca09f067112a4f69b9744`. Schema94 adds only a SECURITY DEFINER directory returning active tenant identifiers and due pivot counts to `impact_worker`; pivot inputs and outputs use the existing tenant-fenced job tables. All0001–0093 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0094_dashboard_pivot_jobs.sql | efab89e3c3533acd1618d5f90e1d6e9c0850cdc81a3ca09f067112a4f69b9744 |

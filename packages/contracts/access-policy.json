@@ -1,5 +1,5 @@
 {
-  "version": "1.111.0",
+  "version": "1.112.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -6603,6 +6603,78 @@
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/copy",
       "capability": "dashboards.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "preview_dashboard_pivot",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/pivot-preview",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "action_dashboard_pivot_run",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/run-pivot",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "read_dashboard_pivot_job",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/pivot-jobs/{job_id}",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "cancel_dashboard_pivot_job",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/pivot-jobs/{job_id}/actions/cancel",
+      "capability": "dashboards.read",
       "role_templates": [
         "MEL_ADMIN",
         "PROGRAMME_MANAGER",

@@ -40,6 +40,10 @@ ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DAT
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
     ("post", "dashboards/{object_id}/actions/copy"),
+    ("post", "dashboards/{object_id}/pivot-preview"),
+    ("post", "dashboards/{object_id}/actions/run-pivot"),
+    ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
+    ("post", "dashboards/{object_id}/pivot-jobs/{job_id}/actions/cancel"),
 }
 
 
@@ -179,6 +183,82 @@ def augment(spec, policy):
             "current_filters",
             "widgets",
         ],
+    )
+    pivot_data = closed(
+        {
+            "widget_id": UUID,
+            "row_dimension": {"type": "string", "minLength": 1, "maxLength": 64},
+            "statistic": {"enum": ["DISTINCT_COUNT", "SUM", "MEAN"]},
+        },
+        ["widget_id", "row_dimension", "statistic"],
+    )
+    schemas["DashboardPivotData"] = pivot_data
+    schemas["DashboardPivotRun"] = closed(
+        {"operation_id": UUID, "data": {"$ref": "#/components/schemas/DashboardPivotData"}},
+        ["operation_id", "data"],
+    )
+    schemas["DashboardPivotCancel"] = closed({"operation_id": UUID}, ["operation_id"])
+    pivot_cell = closed(
+        {
+            "category": NULLABLE_TEXT,
+            "value_state": {"enum": VALUE_STATES + [None]},
+            "value": NULLABLE_DECIMAL,
+            "displayed_value": NULLABLE_TEXT,
+            "disclosure": {"enum": ["VISIBLE", "SUPPRESSED"]},
+            "additivity": {"type": "string", "maxLength": 64},
+        },
+        ["category", "value_state", "value", "displayed_value", "disclosure", "additivity"],
+    )
+    schemas["DashboardPivotResult"] = closed(
+        {
+            "execution": {"enum": ["SYNC", "ASYNC_CANCELLABLE_JOB"]},
+            "job_id": NULLABLE_UUID,
+            "result_id": UUID,
+            "result_revision": UUID,
+            "statistic": {"enum": ["DISTINCT_COUNT", "SUM", "MEAN"]},
+            "row_dimension": {"type": "string"},
+            "estimated_cardinality": {"type": "integer", "minimum": 0},
+            "cells": {"type": "array", "maxItems": 10000, "items": pivot_cell},
+            "grand_total": NULLABLE_DECIMAL,
+            "grand_total_basis": {"enum": ["ELIGIBLE_SOURCE_RESULT", "UNROUNDED_ELIGIBLE_VALUES"]},
+            "cells_may_exceed_grand_total": {"type": "boolean"},
+            "explanation": {"type": "string", "maxLength": 500},
+        },
+        [
+            "execution",
+            "job_id",
+            "result_id",
+            "result_revision",
+            "statistic",
+            "row_dimension",
+            "estimated_cardinality",
+            "cells",
+            "grand_total",
+            "grand_total_basis",
+            "cells_may_exceed_grand_total",
+            "explanation",
+        ],
+    )
+    schemas["DashboardPivotJob"] = closed(
+        {
+            "job_id": UUID,
+            "state": {
+                "enum": [
+                    "Requested",
+                    "Validating",
+                    "Queued",
+                    "Running",
+                    "Cancelling",
+                    "Succeeded",
+                    "SucceededWithIssues",
+                    "Failed",
+                    "Cancelled",
+                ]
+            },
+            "cancellation_requested": {"type": "boolean"},
+            "result": {"oneOf": [{"type": "null"}, {"$ref": "#/components/schemas/DashboardPivotResult"}]},
+        },
+        ["job_id", "state", "cancellation_requested", "result"],
     )
 
     category = closed(
@@ -621,6 +701,57 @@ def augment(spec, policy):
         "parameters": deepcopy(dashboard_item["parameters"]),
         "post": copy_entry,
     }
+    pivot_preview = deepcopy(copy_entry)
+    pivot_preview.update(
+        operationId="preview_dashboard_pivot",
+        summary="Preview a governed dashboard pivot",
+        **{"x-capability": "dashboards.read", "x-contract-version": VERSION},
+    )
+    pivot_preview["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardPivotData"
+    }
+    pivot_preview["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardPivotResult"
+    }
+    paths[prefix + "dashboards/{object_id}/pivot-preview"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": pivot_preview,
+    }
+    pivot_run = deepcopy(pivot_preview)
+    pivot_run.update(operationId="action_dashboard_pivot_run", summary="Run a governed dashboard pivot")
+    pivot_run["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardPivotRun"
+    }
+    paths[prefix + "dashboards/{object_id}/actions/run-pivot"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": pivot_run,
+    }
+    job_parameters = deepcopy(dashboard_item["parameters"]) + [
+        {"name": "job_id", "in": "path", "required": True, "schema": UUID}
+    ]
+    job_get = deepcopy(preview)
+    job_get.update(operationId="read_dashboard_pivot_job", summary="Read a dashboard pivot job")
+    job_get["parameters"] = []
+    job_get["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardPivotJob"
+    }
+    paths[prefix + "dashboards/{object_id}/pivot-jobs/{job_id}"] = {
+        "parameters": job_parameters,
+        "get": job_get,
+    }
+    job_cancel = deepcopy(job_get)
+    job_cancel.update(operationId="cancel_dashboard_pivot_job", summary="Cancel a queued dashboard pivot")
+    job_cancel["requestBody"] = deepcopy(copy_entry["requestBody"])
+    job_cancel["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardPivotCancel"
+    }
+    job_cancel["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardPivotJob"
+    }
+    paths[prefix + "dashboards/{object_id}/pivot-jobs/{job_id}/actions/cancel"] = {
+        "parameters": job_parameters,
+        "post": job_cancel,
+    }
     for op, method, path, cap, audit_event in [
         ("preview_dashboards", "GET", prefix + "dashboards/{object_id}/preview", "dashboards.read", False),
         (
@@ -628,6 +759,34 @@ def augment(spec, policy):
             "POST",
             prefix + "dashboards/{object_id}/actions/copy",
             "dashboards.draft.create",
+            True,
+        ),
+        (
+            "preview_dashboard_pivot",
+            "POST",
+            prefix + "dashboards/{object_id}/pivot-preview",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "action_dashboard_pivot_run",
+            "POST",
+            prefix + "dashboards/{object_id}/actions/run-pivot",
+            "dashboards.read",
+            True,
+        ),
+        (
+            "read_dashboard_pivot_job",
+            "GET",
+            prefix + "dashboards/{object_id}/pivot-jobs/{job_id}",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "cancel_dashboard_pivot_job",
+            "POST",
+            prefix + "dashboards/{object_id}/pivot-jobs/{job_id}/actions/cancel",
+            "dashboards.read",
             True,
         ),
     ]:

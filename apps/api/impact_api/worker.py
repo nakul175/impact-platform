@@ -423,6 +423,7 @@ def empty_summary():
         0,
     )
     summary.update(dict.fromkeys(["ai_claimed", "ai_succeeded", "ai_incomplete", "ai_failed"], 0))
+    summary.update(dict.fromkeys(["pivots_claimed", "pivots_succeeded"], 0))
     return summary
 
 
@@ -521,6 +522,10 @@ class Worker:
                 str(row["tenant_id"]): row["due_jobs"]
                 for row in c.execute("SELECT * FROM impact.worker_ai_tenants(%s)", (at,)).fetchall()
             }
+            pivot_jobs = {
+                str(row["tenant_id"]): row["due_pivots"]
+                for row in c.execute("SELECT * FROM impact.worker_pivot_tenants(%s)", (at,)).fetchall()
+            }
         scan = self.last_scan is None or (at - self.last_scan).total_seconds() >= self.s.scan_seconds
         for row in tenants:
             if self.stopping:
@@ -539,6 +544,8 @@ class Worker:
                     and not self.stopping
                 ):
                     self.run_ai_jobs(tenant, summary)
+                if pivot_jobs.get(tenant) and row["lifecycle_state"] == "Active" and not self.stopping:
+                    self.run_pivots(tenant, summary)
                 if scan and row["lifecycle_state"] == "Active" and not self.stopping:
                     self.remind(tenant, summary)
                     self.cancel_jobs(tenant, summary)
@@ -556,6 +563,42 @@ class Worker:
         self.totals["failures"] += summary["tenant_failures"]
         self.heartbeat("STOPPING" if self.stopping else "RUNNING")
         return summary
+
+    def run_pivots(self, tenant, summary):
+        """Complete bounded pivot jobs from their already authority-checked, revision-pinned input.
+
+        The transaction claims and completes each small CPU-only manifest atomically. A cancellation
+        request therefore wins before claim or is recorded as too late by the ordinary job scanner.
+        """
+        with self.transaction(tenant, lock=True) as c:
+            jobs = c.execute(
+                "SELECT job_id,input_manifest FROM impact.job WHERE tenant_id=%s "
+                "AND job_class='DASHBOARD_PIVOT' AND state='Queued' "
+                "AND cancellation_requested_at IS NULL ORDER BY job_id LIMIT %s FOR UPDATE SKIP LOCKED",
+                (tenant, self.s.batch_size),
+            ).fetchall()
+            for job in jobs:
+                summary["pivots_claimed"] += 1
+                pivot = job["input_manifest"].get("pivot")
+                if not isinstance(pivot, dict):
+                    c.execute(
+                        "UPDATE impact.job SET state='Failed',lease_generation=lease_generation+1,"
+                        "output_manifest=%s WHERE tenant_id=%s AND job_id=%s",
+                        (Jsonb({"error_class": "PIVOT_MANIFEST_INVALID"}), tenant, job["job_id"]),
+                    )
+                    continue
+                result = {**pivot, "execution": "ASYNC_CANCELLABLE_JOB", "job_id": str(job["job_id"])}
+                c.execute(
+                    "UPDATE impact.job SET state='Succeeded',lease_generation=lease_generation+1,"
+                    "lease_expires_at=NULL,output_manifest=%s WHERE tenant_id=%s AND job_id=%s",
+                    (Jsonb(result), tenant, job["job_id"]),
+                )
+                c.execute(
+                    "INSERT INTO impact.job_item(tenant_id,job_id,item_key,outcome) "
+                    "VALUES(%s,%s,'pivot','SUCCEEDED') ON CONFLICT DO NOTHING",
+                    (tenant, job["job_id"]),
+                )
+                summary["pivots_succeeded"] += 1
 
     def heartbeat(self, state):
         with self.transaction() as c:

@@ -333,6 +333,8 @@ export function DashboardsPanel({
     [pivotStatistic, setPivotStatistic] = useState("DISTINCT_COUNT"),
     [pivotResult, setPivotResult] = useState<any>(null),
     [geographicPreview, setGeographicPreview] = useState<any>(null),
+    [recipientId, setRecipientId] = useState(""),
+    [sharingPreview, setSharingPreview] = useState<any>(null),
     [sourcesFor, setSourcesFor] = useState(""),
     [sources, setSources] = useState<any>(null),
     [error, setError] = useState(""),
@@ -601,6 +603,41 @@ export function DashboardsPanel({
       setError(explain(e));
     }
   }
+  async function previewSharing() {
+    if (!savedDashboard || !recipientId) return;
+    try {
+      setSharingPreview(
+        await request(
+          base +
+            "dashboards/" +
+            savedDashboard +
+            "/sharing-preview?recipient_id=" +
+            encodeURIComponent(recipientId),
+        ),
+      );
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function publishDashboard() {
+    if (!savedDashboard) return;
+    const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    try {
+      await request(
+        base + "dashboards/" + savedDashboard + "/actions/publish",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            operation_id: crypto.randomUUID(),
+            data: { audience: "INTERNAL", expires_at: expires.toISOString() },
+          }),
+        },
+      );
+      setError("");
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
   async function applyDashboardFilter() {
     const dashboard = savedDashboards.find(
       (row) => row.object_id === savedDashboard,
@@ -804,7 +841,35 @@ export function DashboardsPanel({
             <button type="button" className="secondary" onClick={copyDashboard}>
               Copy privately
             </button>
+            <label>
+              Recipient principal ID
+              <input
+                value={recipientId}
+                onChange={(event) => setRecipientId(event.target.value)}
+                placeholder="UUID"
+              />
+            </label>
+            <button
+              type="button"
+              className="secondary"
+              onClick={previewSharing}
+            >
+              Preview recipient view
+            </button>
+            <button type="button" onClick={publishDashboard}>
+              Publish internally for 30 days
+            </button>
           </div>
+          {sharingPreview ? (
+            <p role="status" className="muted">
+              Recipient preview:{" "}
+              {sharingPreview.unavailable_binding_count === 0
+                ? "all bindings available"
+                : sharingPreview.unavailable_binding_count +
+                  " bindings unavailable"}
+              . No grants were created.
+            </p>
+          ) : null}
           <div className="planning-toolbar" aria-label="Pivot analysis">
             <label>
               Pivot dimension

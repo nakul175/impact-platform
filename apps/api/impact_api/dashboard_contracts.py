@@ -35,11 +35,14 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.19.0"
+VERSION = "1.20.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
     ("post", "dashboards/{object_id}/actions/copy"),
+    ("get", "dashboards/{object_id}/sharing-preview"),
+    ("post", "dashboards/{object_id}/actions/publish"),
+    ("get", "dashboards/{object_id}/publications/{publication_id}"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -164,6 +167,66 @@ def augment(spec, policy):
     schemas["DashboardCopy"] = closed(
         {"operation_id": UUID, "data": {"$ref": "#/components/schemas/DashboardCopyData"}},
         ["operation_id", "data"],
+    )
+    schemas["DashboardPublishData"] = closed(
+        {
+            "audience": {"enum": ["INTERNAL", "PUBLIC"]},
+            "expires_at": {"type": "string", "format": "date-time"},
+        },
+        ["audience", "expires_at"],
+    )
+    schemas["DashboardPublish"] = closed(
+        {"operation_id": UUID, "data": {"$ref": "#/components/schemas/DashboardPublishData"}},
+        ["operation_id", "data"],
+    )
+    publication_binding = closed(
+        {
+            "widget_id": UUID,
+            "binding": deepcopy(binding),
+            "classification": {"type": ["string", "null"], "maxLength": 32},
+            "availability": {"enum": ["AVAILABLE", "UNAVAILABLE"]},
+        },
+        ["widget_id", "binding", "classification", "availability"],
+    )
+    schemas["DashboardSharingPreview"] = closed(
+        {
+            "dashboard_id": UUID,
+            "dashboard_revision": UUID,
+            "recipient_id": UUID,
+            "grants_created": {"const": False},
+            "widgets": {"type": "array", "maxItems": 10, "items": publication_binding},
+            "unavailable_binding_count": {"type": "integer", "minimum": 0, "maximum": 10},
+        },
+        [
+            "dashboard_id",
+            "dashboard_revision",
+            "recipient_id",
+            "grants_created",
+            "widgets",
+            "unavailable_binding_count",
+        ],
+    )
+    schemas["DashboardPublicationStatus"] = closed(
+        {
+            "publication_id": UUID,
+            "dashboard_id": UUID,
+            "dashboard_revision": UUID,
+            "audience": {"enum": ["INTERNAL", "PUBLIC"]},
+            "expires_at": {"type": "string", "format": "date-time"},
+            "status": {"enum": ["ACTIVE", "SUSPENDED"]},
+            "reason_code": {
+                "enum": [None, "EXPIRED", "SOURCE_AUTHORITY_OR_SENSITIVITY_CHANGED"]
+            },
+        },
+        [
+            "publication_id",
+            "dashboard_id",
+            "dashboard_revision",
+            "audience",
+            "expires_at",
+            "status",
+            "reason_code",
+        ],
     )
     preview_widget = closed(
         {
@@ -908,6 +971,61 @@ def augment(spec, policy):
     paths[prefix + "dashboards/{object_id}/actions/copy"] = {
         "parameters": deepcopy(dashboard_item["parameters"]),
         "post": copy_entry,
+    }
+    sharing_preview = deepcopy(preview)
+    sharing_preview.update(
+        operationId="preview_dashboard_sharing",
+        summary="Preview dashboard bindings for a recipient without granting access",
+        **{"x-capability": "dashboards.read", "x-contract-version": VERSION},
+    )
+    sharing_preview["parameters"] = [
+        {
+            "name": "recipient_id",
+            "in": "query",
+            "required": True,
+            "schema": deepcopy(UUID),
+        }
+    ]
+    sharing_preview["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardSharingPreview"
+    }
+    paths[prefix + "dashboards/{object_id}/sharing-preview"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": sharing_preview,
+    }
+    publish_entry = deepcopy(copy_entry)
+    publish_entry.update(
+        operationId="action_dashboards_publish",
+        summary="Publish an immutable pinned dashboard configuration",
+        **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+    )
+    publish_entry["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardPublish"
+    }
+    publish_entry["responses"]["201"] = publish_entry["responses"].pop("200")
+    publish_entry["responses"]["201"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/Receipt"
+    }
+    paths[prefix + "dashboards/{object_id}/actions/publish"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": publish_entry,
+    }
+    publication_parameters = deepcopy(dashboard_item["parameters"]) + [
+        {"name": "publication_id", "in": "path", "required": True, "schema": deepcopy(UUID)}
+    ]
+    publication_status = deepcopy(preview)
+    publication_status.update(
+        operationId="read_dashboard_publication",
+        summary="Read a dashboard publication with current sensitivity revalidation",
+        **{"x-capability": "dashboards.read", "x-contract-version": VERSION},
+    )
+    publication_status["parameters"] = []
+    publication_status["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardPublicationStatus"
+    }
+    paths[prefix + "dashboards/{object_id}/publications/{publication_id}"] = {
+        "parameters": publication_parameters,
+        "get": publication_status,
     }
     pivot_preview = deepcopy(copy_entry)
     pivot_preview.update(

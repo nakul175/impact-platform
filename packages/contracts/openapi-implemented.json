@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.114.0",
+    "version": "1.115.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -31738,7 +31738,7 @@
             }
           }
         },
-        "x-contract-version": "1.19.0",
+        "x-contract-version": "1.20.0",
         "parameters": [
           {
             "name": "limit",
@@ -31880,7 +31880,7 @@
             }
           }
         },
-        "x-contract-version": "1.19.0",
+        "x-contract-version": "1.20.0",
         "parameters": [
           {
             "name": "limit",
@@ -32013,7 +32013,7 @@
             }
           }
         },
-        "x-contract-version": "1.19.0",
+        "x-contract-version": "1.20.0",
         "parameters": [
           {
             "name": "limit",
@@ -32155,7 +32155,7 @@
             }
           }
         },
-        "x-contract-version": "1.19.0",
+        "x-contract-version": "1.20.0",
         "parameters": [
           {
             "name": "limit",
@@ -32295,7 +32295,7 @@
             }
           }
         },
-        "x-contract-version": "1.19.0",
+        "x-contract-version": "1.20.0",
         "parameters": [
           {
             "name": "viewport",
@@ -32431,7 +32431,7 @@
             }
           }
         },
-        "x-contract-version": "1.19.0",
+        "x-contract-version": "1.20.0",
         "parameters": [
           {
             "name": "widget_id",
@@ -32572,8 +32572,382 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.19.0",
+        "x-contract-version": "1.20.0",
         "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/dashboards/{object_id}/sharing-preview": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "preview_dashboard_sharing",
+        "summary": "Preview dashboard bindings for a recipient without granting access",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "dashboards.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardSharingPreview"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.20.0",
+        "parameters": [
+          {
+            "name": "recipient_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/publish": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "action_dashboards_publish",
+        "summary": "Publish an immutable pinned dashboard configuration",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.edit",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DashboardPublish"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.20.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/dashboards/{object_id}/publications/{publication_id}": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "publication_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "read_dashboard_publication",
+        "summary": "Read a dashboard publication with current sensitivity revalidation",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "dashboards.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardPublicationStatus"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.20.0",
+        "parameters": []
       }
     },
     "/v1/tenants/{tenant_id}/dashboards/{object_id}/pivot-preview": {
@@ -32703,7 +33077,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.19.0",
+        "x-contract-version": "1.20.0",
         "x-audit-required": true
       }
     },
@@ -32834,7 +33208,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.19.0",
+        "x-contract-version": "1.20.0",
         "x-audit-required": true
       }
     },
@@ -32955,7 +33329,7 @@
             }
           }
         },
-        "x-contract-version": "1.19.0",
+        "x-contract-version": "1.20.0",
         "parameters": []
       }
     },
@@ -33076,7 +33450,7 @@
             }
           }
         },
-        "x-contract-version": "1.19.0",
+        "x-contract-version": "1.20.0",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -79188,6 +79562,185 @@
         "required": [
           "operation_id",
           "data"
+        ]
+      },
+      "DashboardPublishData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "audience": {
+            "enum": [
+              "INTERNAL",
+              "PUBLIC"
+            ]
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "audience",
+          "expires_at"
+        ]
+      },
+      "DashboardPublish": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "$ref": "#/components/schemas/DashboardPublishData"
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "DashboardSharingPreview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "dashboard_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dashboard_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recipient_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "grants_created": {
+            "const": false
+          },
+          "widgets": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "widget_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "binding": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "resource_type": {
+                      "enum": [
+                        "CALCULATED_RESULT",
+                        "EVIDENCE"
+                      ]
+                    },
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "resource_type",
+                    "object_id",
+                    "revision_id"
+                  ]
+                },
+                "classification": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 32
+                },
+                "availability": {
+                  "enum": [
+                    "AVAILABLE",
+                    "UNAVAILABLE"
+                  ]
+                }
+              },
+              "required": [
+                "widget_id",
+                "binding",
+                "classification",
+                "availability"
+              ]
+            }
+          },
+          "unavailable_binding_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          }
+        },
+        "required": [
+          "dashboard_id",
+          "dashboard_revision",
+          "recipient_id",
+          "grants_created",
+          "widgets",
+          "unavailable_binding_count"
+        ]
+      },
+      "DashboardPublicationStatus": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "publication_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dashboard_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dashboard_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "audience": {
+            "enum": [
+              "INTERNAL",
+              "PUBLIC"
+            ]
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "SUSPENDED"
+            ]
+          },
+          "reason_code": {
+            "enum": [
+              null,
+              "EXPIRED",
+              "SOURCE_AUTHORITY_OR_SENSITIVITY_CHANGED"
+            ]
+          }
+        },
+        "required": [
+          "publication_id",
+          "dashboard_id",
+          "dashboard_revision",
+          "audience",
+          "expires_at",
+          "status",
+          "reason_code"
         ]
       },
       "DashboardPreview": {

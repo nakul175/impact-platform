@@ -36,6 +36,7 @@ from .retention_policies import RetentionPolicies
 from . import security_events
 from .dashboards import Dashboards
 from .dashboard_authoring import DashboardAuthoring
+from .dashboard_publication import DashboardPublication
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
@@ -231,6 +232,7 @@ def create_app():
     worker_status = WorkerStatus(lifecycle)
     dashboards = Dashboards(service)
     dashboard_authoring = DashboardAuthoring(service)
+    dashboard_publication = DashboardPublication(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
@@ -1803,6 +1805,33 @@ def create_app():
             uuid(obj),
             body,
             request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/dashboards/{obj}/sharing-preview")
+    def dashboard_sharing_preview(request: Request, tenant: str, obj: str, recipient_id: str):
+        return dashboard_publication.sharing_preview(
+            auth.resolve(request), uuid(tenant), uuid(obj), uuid(recipient_id)
+        )
+
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/publish", status_code=201)
+    async def dashboard_publish(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardPublish", body)
+        return await run_in_threadpool(
+            dashboard_publication.publish,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}")
+    def dashboard_publication_status(
+        request: Request, tenant: str, obj: str, publication_id: str
+    ):
+        return dashboard_publication.status(
+            auth.resolve(request), uuid(tenant), uuid(obj), uuid(publication_id)
         )
 
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/pivot-preview")

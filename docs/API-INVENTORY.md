@@ -240,6 +240,7 @@
 | PATCH | `/v1/tenants/{tenant_id}/evidence/{object_id}` | `evidence.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/evidence/{object_id}/actions/attach` | `evidence.attach` |
 | GET | `/v1/tenants/{tenant_id}/evidence/{object_id}/content` | `evidence.download` |
+| POST | `/v1/tenants/{tenant_id}/expenditure-imports` | `dashboards.draft.create` |
 | POST | `/v1/tenants/{tenant_id}/external-analytics-connections` | `dashboards.draft.create` |
 | POST | `/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}/actions/refresh` | `dashboards.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}/actions/revoke` | `dashboards.draft.edit` |

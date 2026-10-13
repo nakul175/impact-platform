@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.31.0"
+VERSION = "1.32.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -80,6 +80,7 @@ IMPLEMENTED = {
     ("post", "budgets"),
     ("post", "budget-revisions"),
     ("post", "budget-approvals"),
+    ("post", "expenditure-imports"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -1250,6 +1251,49 @@ def augment(spec, policy):
         },
         ["operation_id", "data"],
     )
+    expenditure_transaction = closed(
+        {
+            "source_transaction_key": {"type": "string", "minLength": 1},
+            "posting_date": {"type": "string", "format": "date"},
+            "event_date": {"type": "string", "format": "date"},
+            "amount": {"type": "string", "pattern": DECIMAL},
+            "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+            "category_id": UUID,
+            "funding_allocation_id": UUID,
+            "adjustment_semantic": {"enum": ["ORIGINAL", "REVERSAL", "REPLACEMENT"]},
+        },
+        [
+            "source_transaction_key",
+            "posting_date",
+            "event_date",
+            "amount",
+            "currency",
+            "category_id",
+            "funding_allocation_id",
+            "adjustment_semantic",
+        ],
+    )
+    schemas["ExpenditureImport"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "source_system": {"type": "string", "minLength": 1},
+                    "file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+                    "control_total": {"type": "string", "pattern": DECIMAL},
+                    "permitted_exception": NULLABLE_TEXT,
+                    "transactions": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 10000,
+                        "items": expenditure_transaction,
+                    },
+                },
+                ["source_system", "file_sha256", "control_total", "permitted_exception", "transactions"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
     preview_widget = closed(
         {
             **deepcopy(widget["properties"]),
@@ -2412,6 +2456,16 @@ def augment(spec, policy):
             "$ref": f"#/components/schemas/{schema_name}"
         }
         paths[prefix + route] = {"post": entry}
+    expenditure_entry = deepcopy(analysis_create)
+    expenditure_entry.update(
+        operationId="import_expenditure",
+        summary="Import and reconcile expenditure",
+        **{"x-contract-version": VERSION},
+    )
+    expenditure_entry["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExpenditureImport"
+    }
+    paths[prefix + "expenditure-imports"] = {"post": expenditure_entry}
     pivot_preview = deepcopy(copy_entry)
     pivot_preview.update(
         operationId="preview_dashboard_pivot",

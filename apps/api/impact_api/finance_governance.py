@@ -96,3 +96,60 @@ class FinanceGovernance:
             return write(c, ctx, "BudgetVersion", payload, state="Approved", previous=row)
 
         return self._run(identity, tenant, "approve_budget_version", body, correlation, apply)
+
+    def import_expenditure(self, identity, tenant, body, correlation):
+        def apply(c, ctx):
+            data = body["data"]
+            calculated = sum((Decimal(row["amount"]) for row in data["transactions"]), Decimal(0))
+            if calculated != Decimal(data["control_total"]) and not data["permitted_exception"]:
+                raise DomainError("CONTROL_TOTAL_UNBALANCED", 409)
+            prior_batch = c.execute(
+                "SELECT r.*,v.payload FROM impact.object_registry r JOIN impact.object_revision v "
+                "ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision "
+                "WHERE r.tenant_id=%s AND r.object_type='ExpenditureImport' AND v.payload->>'file_sha256'=%s",
+                (tenant, data["file_sha256"]),
+            ).fetchone()
+            if prior_batch:
+                return {
+                    "object_id": str(prior_batch["object_id"]),
+                    "revision_id": str(prior_batch["head_revision"]),
+                    "business_state": "Reconciled",
+                    "saved_at": datetime.now(timezone.utc).isoformat(),
+                    "repeated_file": True,
+                }
+            imported, reconciled = [], []
+            for transaction in data["transactions"]:
+                current = c.execute(
+                    "SELECT r.*,v.payload FROM impact.object_registry r JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision "
+                    "WHERE r.tenant_id=%s AND r.object_type='ExpenditureTransaction' AND v.payload->>'source_system'=%s AND v.payload->>'source_transaction_key'=%s ORDER BY r.updated_at DESC LIMIT 1",
+                    (tenant, data["source_system"], transaction["source_transaction_key"]),
+                ).fetchone()
+                candidate = {**transaction, "source_system": data["source_system"]}
+                if current and {key: current["payload"].get(key) for key in candidate} == candidate:
+                    reconciled.append(str(current["object_id"]))
+                    continue
+                if current and transaction["adjustment_semantic"] == "ORIGINAL":
+                    raise DomainError("EXPLICIT_CORRECTION_SEMANTIC_REQUIRED", 409)
+                candidate["supersedes_revision"] = str(current["head_revision"]) if current else None
+                imported.append(
+                    write(
+                        c, ctx, "ExpenditureTransaction", candidate, state=transaction["adjustment_semantic"]
+                    )
+                )
+            return write(
+                c,
+                ctx,
+                "ExpenditureImport",
+                {
+                    **data,
+                    "calculated_total": format(calculated, "f"),
+                    "imported_transaction_ids": [x["object_id"] for x in imported],
+                    "reconciled_transaction_ids": reconciled,
+                    "approval_state": "APPROVED"
+                    if calculated == Decimal(data["control_total"]) or data["permitted_exception"]
+                    else "BLOCKED",
+                },
+                state="Reconciled",
+            )
+
+        return self._run(identity, tenant, "import_expenditure", body, correlation, apply)

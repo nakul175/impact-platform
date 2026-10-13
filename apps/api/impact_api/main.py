@@ -2230,6 +2230,18 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.post("/v1/tenants/{tenant}/expenditure-imports", status_code=201)
+    async def expenditure_import(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("ExpenditureImport", body)
+        return await run_in_threadpool(
+            finance_governance.import_expenditure,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy", status_code=201)
     async def dashboard_copy(request: Request, tenant: str, obj: str):
         body = await strict_body(request)

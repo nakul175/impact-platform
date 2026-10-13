@@ -41,6 +41,7 @@ from .dashboard_publication import DashboardPublication
 from .external_analytics import ExternalAnalytics
 from .anomaly_assistance import AnomalyAssistance
 from .evaluation_registry import EvaluationRegistry
+from .evaluation_methodology import EvaluationMethodology
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
@@ -241,6 +242,7 @@ def create_app():
     external_analytics = ExternalAnalytics(service)
     anomaly_assistance = AnomalyAssistance(service)
     evaluation_registry = EvaluationRegistry(service)
+    evaluation_methodology = EvaluationMethodology(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
@@ -1913,6 +1915,56 @@ def create_app():
             uuid(obj),
             body,
             request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluation-methodologies", status_code=201)
+    async def evaluation_methodology_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("EvaluationMethodologyCreate", body)
+        return await run_in_threadpool(
+            evaluation_methodology.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluation-methodologies/{obj}/actions/amend")
+    async def evaluation_methodology_amend(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("EvaluationMethodologyAmend", body)
+        return await run_in_threadpool(
+            evaluation_methodology.amend,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluation-methodologies/{obj}/actions/review")
+    async def evaluation_methodology_review(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("EvaluationMethodologyReview", body)
+        return await run_in_threadpool(
+            evaluation_methodology.review,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluation-methodologies/{obj}/sample-export")
+    async def evaluation_methodology_export(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("EvaluationSampleExportRequest", body)
+        return await run_in_threadpool(
+            evaluation_methodology.export,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
         )
 
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy", status_code=201)

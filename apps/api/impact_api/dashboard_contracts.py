@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.23.0"
+VERSION = "1.24.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -52,6 +52,10 @@ IMPLEMENTED = {
     ("post", "anomaly-findings/{object_id}/actions/review"),
     ("post", "evaluations"),
     ("post", "evaluations/{object_id}/actions/stage-gate"),
+    ("post", "evaluation-methodologies"),
+    ("post", "evaluation-methodologies/{object_id}/actions/amend"),
+    ("post", "evaluation-methodologies/{object_id}/actions/review"),
+    ("post", "evaluation-methodologies/{object_id}/sample-export"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -615,6 +619,107 @@ def augment(spec, policy):
             "missing_document_kinds",
             "pinned_documents",
             "sensitive_processing_approved",
+        ],
+    )
+    stratum = closed(
+        {
+            "code": {"type": "string", "minLength": 1, "maxLength": 100},
+            "eligible_count": {"type": "integer", "minimum": 0},
+            "sampled_count": {"type": "integer", "minimum": 0},
+            "weight": NULLABLE_DECIMAL,
+            "nonresponse_count": {"type": "integer", "minimum": 0},
+        },
+        ["code", "eligible_count", "sampled_count", "weight", "nonresponse_count"],
+    )
+    methodology_fields = {
+        "sampling_frame": {"type": "string", "minLength": 1, "maxLength": 4000},
+        "eligibility_rules": {"type": "string", "minLength": 1, "maxLength": 4000},
+        "assignment_method": {"type": "string", "minLength": 1, "maxLength": 4000},
+        "strata": {"type": "array", "minItems": 1, "maxItems": 100, "items": stratum},
+        "nonresponse_rules": {"type": "string", "minLength": 1, "maxLength": 4000},
+        "analysis_plan": {"type": "string", "minLength": 1, "maxLength": 8000},
+        "expansion_method": {"enum": [None, "HORVITZ_THOMPSON", "POST_STRATIFIED_WEIGHTED_SUM"]},
+    }
+    schemas["EvaluationMethodologyCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {"evaluation_id": UUID, **methodology_fields},
+                [
+                    "evaluation_id",
+                    "sampling_frame",
+                    "eligibility_rules",
+                    "assignment_method",
+                    "strata",
+                    "nonresponse_rules",
+                    "analysis_plan",
+                    "expansion_method",
+                ],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["EvaluationMethodologyAmend"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "reason": {"type": "string", "minLength": 1, "maxLength": 1000},
+                    "relative_to_data_inspection": {"enum": ["BEFORE_INSPECTION", "AFTER_INSPECTION"]},
+                    "changes": closed(methodology_fields, []),
+                },
+                ["reason", "relative_to_data_inspection", "changes"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["EvaluationMethodologyReview"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "decision": {"enum": ["APPROVE", "REJECT"]},
+                    "reason": {"type": "string", "minLength": 1, "maxLength": 1000},
+                },
+                ["decision", "reason"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["EvaluationSampleExportRequest"] = closed(
+        {
+            "weighted": {"type": "boolean"},
+            "population_estimate": {"type": "boolean"},
+        },
+        ["weighted", "population_estimate"],
+    )
+    schemas["EvaluationSampleExport"] = closed(
+        {
+            "methodology_revision": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+            "eligible_denominator": {"type": "integer", "minimum": 0},
+            "sample_count": {"type": "integer", "minimum": 0},
+            "sample_count_label": {"const": "SAMPLE_COUNT_NOT_ALL_BENEFICIARIES"},
+            "weighted": {"type": "boolean"},
+            "missing_weight_strata": {
+                "type": "array",
+                "items": {"type": "string", "maxLength": 100},
+            },
+            "expansion_method": methodology_fields["expansion_method"],
+            "population_estimate": NULLABLE_DECIMAL,
+            "strata": methodology_fields["strata"],
+            "nonresponse_rules": methodology_fields["nonresponse_rules"],
+        },
+        [
+            "methodology_revision",
+            "eligible_denominator",
+            "sample_count",
+            "sample_count_label",
+            "weighted",
+            "missing_weight_strata",
+            "expansion_method",
+            "population_estimate",
+            "strata",
+            "nonresponse_rules",
         ],
     )
     preview_widget = closed(
@@ -1553,6 +1658,62 @@ def augment(spec, policy):
     paths[prefix + "evaluations/{object_id}/actions/stage-gate"] = {
         "parameters": deepcopy(dashboard_item["parameters"]),
         "post": evaluation_gate,
+    }
+    methodology_create = deepcopy(evaluation_create)
+    methodology_create.update(
+        operationId="create_evaluation_methodology",
+        summary="Create a reviewed versioned evaluation methodology",
+        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+    )
+    methodology_create["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationMethodologyCreate"
+    }
+    paths[prefix + "evaluation-methodologies"] = {"post": methodology_create}
+    for action, schema, operation, summary in [
+        (
+            "amend",
+            "EvaluationMethodologyAmend",
+            "amend_evaluation_methodology",
+            "Amend methodology with inspection-relative timing",
+        ),
+        (
+            "review",
+            "EvaluationMethodologyReview",
+            "review_evaluation_methodology",
+            "Review a pending methodology amendment",
+        ),
+    ]:
+        entry = deepcopy(anomaly_review)
+        entry.update(
+            operationId=operation,
+            summary=summary,
+            **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+        )
+        entry["requestBody"]["content"]["application/json"]["schema"] = {
+            "$ref": "#/components/schemas/" + schema
+        }
+        entry["responses"]["200"]["content"]["application/json"]["schema"] = {
+            "$ref": "#/components/schemas/Receipt"
+        }
+        paths[prefix + "evaluation-methodologies/{object_id}/actions/" + action] = {
+            "parameters": deepcopy(dashboard_item["parameters"]),
+            "post": entry,
+        }
+    sample_export_entry = deepcopy(anomaly_review)
+    sample_export_entry.update(
+        operationId="export_evaluation_sample",
+        summary="Export a reviewed sample without silently inventing weights",
+        **{"x-capability": "dashboards.read", "x-contract-version": VERSION},
+    )
+    sample_export_entry["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationSampleExportRequest"
+    }
+    sample_export_entry["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationSampleExport"
+    }
+    paths[prefix + "evaluation-methodologies/{object_id}/sample-export"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": sample_export_entry,
     }
     pivot_preview = deepcopy(copy_entry)
     pivot_preview.update(

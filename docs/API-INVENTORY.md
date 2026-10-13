@@ -221,6 +221,10 @@
 | GET | `/v1/tenants/{tenant_id}/disclosures` | `disclosures.read` |
 | GET | `/v1/tenants/{tenant_id}/disclosures/{object_id}` | `disclosures.read` |
 | GET | `/v1/tenants/{tenant_id}/effective-entitlements` | `subscriptions.read` |
+| POST | `/v1/tenants/{tenant_id}/evaluation-methodologies` | `dashboards.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/amend` | `dashboards.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/review` | `dashboards.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/sample-export` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/evaluations` | `dashboards.draft.create` |
 | POST | `/v1/tenants/{tenant_id}/evaluations/{object_id}/actions/stage-gate` | `dashboards.draft.edit` |
 | GET | `/v1/tenants/{tenant_id}/evidence` | `evidence.read` |

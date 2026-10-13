@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.119.0",
+    "version": "1.120.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -8575,7 +8575,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -31849,7 +31849,7 @@
             }
           }
         },
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "parameters": [
           {
             "name": "limit",
@@ -31991,7 +31991,7 @@
             }
           }
         },
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "parameters": [
           {
             "name": "limit",
@@ -32124,7 +32124,7 @@
             }
           }
         },
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "parameters": [
           {
             "name": "limit",
@@ -32266,7 +32266,7 @@
             }
           }
         },
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "parameters": [
           {
             "name": "limit",
@@ -32406,7 +32406,7 @@
             }
           }
         },
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "parameters": [
           {
             "name": "viewport",
@@ -32542,7 +32542,7 @@
             }
           }
         },
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "parameters": [
           {
             "name": "widget_id",
@@ -32683,7 +32683,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -32795,7 +32795,7 @@
             }
           }
         },
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "parameters": [
           {
             "name": "recipient_id",
@@ -32936,7 +32936,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -33057,7 +33057,7 @@
             }
           }
         },
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "parameters": []
       }
     },
@@ -33168,7 +33168,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -33299,7 +33299,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -33410,7 +33410,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -33541,7 +33541,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -33672,7 +33672,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -33783,7 +33783,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -33914,7 +33914,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -34045,7 +34045,511 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/evaluation-methodologies": {
+      "post": {
+        "operationId": "create_evaluation_methodology",
+        "summary": "Create a reviewed versioned evaluation methodology",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationMethodologyCreate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.24.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/amend": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "amend_evaluation_methodology",
+        "summary": "Amend methodology with inspection-relative timing",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.edit",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationMethodologyAmend"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.24.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/review": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "review_evaluation_methodology",
+        "summary": "Review a pending methodology amendment",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.edit",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationMethodologyReview"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.24.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/sample-export": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "export_evaluation_sample",
+        "summary": "Export a reviewed sample without silently inventing weights",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationSampleExport"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationSampleExportRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -34176,7 +34680,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -34307,7 +34811,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "x-audit-required": true
       }
     },
@@ -34428,7 +34932,7 @@
             }
           }
         },
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "parameters": []
       }
     },
@@ -34549,7 +35053,7 @@
             }
           }
         },
-        "x-contract-version": "1.23.0",
+        "x-contract-version": "1.24.0",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -81939,6 +82443,386 @@
           "missing_document_kinds",
           "pinned_documents",
           "sensitive_processing_approved"
+        ]
+      },
+      "EvaluationMethodologyCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "evaluation_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "sampling_frame": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "eligibility_rules": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "assignment_method": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "strata": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "eligible_count": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "sampled_count": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "weight": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    "nonresponse_count": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "eligible_count",
+                    "sampled_count",
+                    "weight",
+                    "nonresponse_count"
+                  ]
+                }
+              },
+              "nonresponse_rules": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "analysis_plan": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000
+              },
+              "expansion_method": {
+                "enum": [
+                  null,
+                  "HORVITZ_THOMPSON",
+                  "POST_STRATIFIED_WEIGHTED_SUM"
+                ]
+              }
+            },
+            "required": [
+              "evaluation_id",
+              "sampling_frame",
+              "eligibility_rules",
+              "assignment_method",
+              "strata",
+              "nonresponse_rules",
+              "analysis_plan",
+              "expansion_method"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "EvaluationMethodologyAmend": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "relative_to_data_inspection": {
+                "enum": [
+                  "BEFORE_INSPECTION",
+                  "AFTER_INSPECTION"
+                ]
+              },
+              "changes": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "sampling_frame": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000
+                  },
+                  "eligibility_rules": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000
+                  },
+                  "assignment_method": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000
+                  },
+                  "strata": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100
+                        },
+                        "eligible_count": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "sampled_count": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "weight": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                        },
+                        "nonresponse_count": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "eligible_count",
+                        "sampled_count",
+                        "weight",
+                        "nonresponse_count"
+                      ]
+                    }
+                  },
+                  "nonresponse_rules": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000
+                  },
+                  "analysis_plan": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 8000
+                  },
+                  "expansion_method": {
+                    "enum": [
+                      null,
+                      "HORVITZ_THOMPSON",
+                      "POST_STRATIFIED_WEIGHTED_SUM"
+                    ]
+                  }
+                },
+                "required": []
+              }
+            },
+            "required": [
+              "reason",
+              "relative_to_data_inspection",
+              "changes"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "EvaluationMethodologyReview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "decision": {
+                "enum": [
+                  "APPROVE",
+                  "REJECT"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "decision",
+              "reason"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "EvaluationSampleExportRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "weighted": {
+            "type": "boolean"
+          },
+          "population_estimate": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "weighted",
+          "population_estimate"
+        ]
+      },
+      "EvaluationSampleExport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "methodology_revision": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$"
+          },
+          "eligible_denominator": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sample_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sample_count_label": {
+            "const": "SAMPLE_COUNT_NOT_ALL_BENEFICIARIES"
+          },
+          "weighted": {
+            "type": "boolean"
+          },
+          "missing_weight_strata": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          "expansion_method": {
+            "enum": [
+              null,
+              "HORVITZ_THOMPSON",
+              "POST_STRATIFIED_WEIGHTED_SUM"
+            ]
+          },
+          "population_estimate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+          },
+          "strata": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "eligible_count": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "sampled_count": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "weight": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                },
+                "nonresponse_count": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "code",
+                "eligible_count",
+                "sampled_count",
+                "weight",
+                "nonresponse_count"
+              ]
+            }
+          },
+          "nonresponse_rules": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          }
+        },
+        "required": [
+          "methodology_revision",
+          "eligible_denominator",
+          "sample_count",
+          "sample_count_label",
+          "weighted",
+          "missing_weight_strata",
+          "expansion_method",
+          "population_estimate",
+          "strata",
+          "nonresponse_rules"
         ]
       },
       "DashboardPreview": {

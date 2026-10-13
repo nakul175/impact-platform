@@ -353,31 +353,57 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
     drain(live)
     receipts = [invitation(live)[1] for _ in range(6)]
     events = {str(deliveries(live, r["object_id"])[0]["event_id"]) for r in receipts}
+    # Each send is shorter than the lease, so the row in flight is renewed and stays with worker A.
+    # Rows still waiting keep the original batch expiry and become due during that send. Worker B
+    # claims them in this process at the moment the database clock says so. A second subprocess
+    # cannot: its first pass walks every tenant (several seconds) and either arrives while the
+    # lease is still valid, or the first worker re-claims the rows itself. A send longer than
+    # stop()'s wait also cannot be interrupted — time.sleep returns before SIGTERM is handled.
+    delay = 8
     slow = start(
         live,
         "native-batch-a-" + uuid4().hex[:6],
         batch_size=6,
-        synthetic_delay=2,
-        lease_seconds=5,
+        synthetic_delay=delay,
+        lease_seconds=delay + 2,
         smtp_timeout=1,
     )
+    fast = Worker(
+        settings(live, batch_size=6, lease_seconds=30, synthetic_delay=0),
+        worker_id="native-batch-b-" + uuid4().hex[:6],
+    )
+    fast.sink = Path(fast.s.synthetic_sink)
+    taken = {}
+
+    def take_expired():
+        with live.db() as c:
+            now = c.execute("SELECT statement_timestamp() AS now").fetchone()["now"]
+        rows = [deliveries(live, receipt["object_id"])[0] for receipt in receipts]
+        if not any(row["state"] == "LEASED" and row["lease_expires_at"] <= now for row in rows):
+            return False
+        summary = empty_summary()
+        fast.dispatch(live.fixture["tenant_a"], summary)
+        taken["summary"] = summary
+        return True
+
     try:
         wait_for(
             lambda: all(deliveries(live, r["object_id"])[0]["state"] != "PENDING" for r in receipts),
-            # The first pass walks every tenant of the shared database before it reaches this one; a
-            # loaded runner needs far longer than the 2 s per-row send, so the wait is not the claim.
+            # The first pass walks every tenant of the shared database before it reaches this one.
+            # A loaded runner needs far longer than one send, so this wait is not the claim itself.
             timeout=90,
         )
-        fast = start(live, "native-batch-b-" + uuid4().hex[:6], batch_size=6, lease_seconds=30)
-        try:
-            wait_for(
-                lambda: all(deliveries(live, r["object_id"])[0]["state"] == "SENT" for r in receipts),
-                timeout=120,
-            )
-        finally:
-            assert stop(fast) == 0
+        wait_for(take_expired, timeout=delay + 30)
+        assert taken["summary"]["sent"] >= 1
+        wait_for(
+            lambda: (
+                all(deliveries(live, r["object_id"])[0]["state"] == "SENT" for r in receipts)
+                and "skipped: lease expired" in slow.log.read_text()
+            ),
+            timeout=delay + 30,
+        )
     finally:
-        assert stop(slow) == 0
+        assert stop(slow, timeout=delay + 15) == 0
     sent = [m["event_id"] for w in [slow, fast] for m in sink(w) if m["event_id"] in events]
     assert sorted(sent) == sorted(events), sent
     generations = [deliveries(live, r["object_id"])[0]["lease_generation"] for r in receipts]

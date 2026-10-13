@@ -39,34 +39,7 @@ def wait_for(condition, timeout=30, interval=0.2):
     raise AssertionError("Condition not met within " + str(timeout) + " s")
 
 
-BETWEEN_MESSAGE_DRIVER = r"""
-import json,os,time
-from pathlib import Path
-from impact_api.worker import Worker,main
-config=Path(os.environ['IMPACT_WORKER_CONFIG_FILE'])
-assert json.loads(config.read_text())['environment']=='test'
-gate=json.loads(Path(os.environ['IMPACT_TEST_BETWEEN_MESSAGE_GATE']).read_text())
-assert set(gate)=={'events','ready','release'}
-original=Worker.process
-paused=False
-def process(self,tenant,row,summary):
-    global paused
-    sent_before=summary['sent']
-    original(self,tenant,row,summary)
-    if not paused and str(row['event_id']) in gate['events'] and summary['sent']==sent_before+1:
-        paused=True
-        Path(gate['ready']).touch(mode=0o600)
-        deadline=time.monotonic()+180
-        while not Path(gate['release']).exists():
-            if time.monotonic()>=deadline:
-                raise RuntimeError('Test-only between-message gate timed out')
-            time.sleep(0.05)
-Worker.process=process
-raise SystemExit(main())
-"""
-
-
-def start(live, name, *, between_message_gate=None, **overrides):
+def start(live, name, **overrides):
     """One `python -m impact_api.worker` process: its configuration file, a few overrides, and no
     other IMPACT_* variable, connection string or libpq variable from the test environment."""
     env = {k: v for k, v in os.environ.items() if not k.startswith(("IMPACT_", "PG"))}
@@ -78,14 +51,8 @@ def start(live, name, *, between_message_gate=None, **overrides):
     )
     env.update({"IMPACT_" + key.upper(): str(value) for key, value in overrides.items()})
     log = live.local / (name + ".log")
-    command = [sys.executable, "-m", "impact_api.worker", "--worker-id", name]
-    if between_message_gate is not None:
-        # Only this disposable test driver pauses BETWEEN completed deliveries;
-        # the production handler and real role/lease transactions remain unchanged.
-        env["IMPACT_TEST_BETWEEN_MESSAGE_GATE"] = str(between_message_gate)
-        command = [sys.executable, "-c", BETWEEN_MESSAGE_DRIVER, "--worker-id", name]
     process = subprocess.Popen(
-        command,
+        [sys.executable, "-m", "impact_api.worker", "--worker-id", name],
         cwd=ROOT,
         env=env,
         stdout=open(log, "w"),
@@ -380,105 +347,66 @@ def test_native_worker_login_cannot_touch_tables_revoked_by_migration_0025(live)
 
 
 def test_native_batch_outliving_its_lease_sends_every_row_once(live):
-    """The reviewer's scenario: worker A claims a batch whose controlled between-message pause exceeds the real lease;
+    """The reviewer's scenario: worker A claims a batch whose total send time exceeds the lease;
     worker B takes over the rows whose lease ran out. Before the per-row lease renewal every row was
     sent twice; now each row is sent exactly once, by whichever worker holds it at send time."""
     drain(live)
-    tenant = live.fixture["tenant_a"]
-    unrelated = [invitation(live)[1] for _ in range(2)]
-
-    # run_once dispatches before it schedules reminders. Dispatch-only preparation
-    # empties those real due deliveries without creating another reminder pass.
-    # It never deletes rows or moves retry/lease timestamps to manufacture eligibility.
-    def eligible_events():
-        with live.db() as c:
-            return {
-                str(row["event_id"])
-                for row in c.execute(
-                    "SELECT event_id FROM impact.outbox_delivery WHERE tenant_id=%s "
-                    "AND channel IS NOT NULL AND held_at IS NULL AND "
-                    "((state='PENDING' AND next_attempt_at<=statement_timestamp()) OR "
-                    "(state='LEASED' AND lease_expires_at<=statement_timestamp()))",
-                    (tenant,),
-                ).fetchall()
-            }
-
-    preparation = Worker(settings(live), worker_id="native-batch-drain-" + uuid4().hex[:8])
-    for _ in range(10):
-        if not eligible_events():
-            break
-        preparation.dispatch(tenant, empty_summary())
-    assert not eligible_events(), "Bounded dispatch preparation left eligible deliveries"
-    assert all(deliveries(live, r["object_id"])[0]["state"] == "SENT" for r in unrelated)
     receipts = [invitation(live)[1] for _ in range(6)]
     events = {str(deliveries(live, r["object_id"])[0]["event_id"]) for r in receipts}
-    assert eligible_events() == events, "The six-row claim must contain exactly this scenario's events"
-    name = "native-batch-a-" + uuid4().hex[:6]
-    ready, release = live.local / (name + "-ready"), live.local / (name + "-release")
-    gate = live.local / (name + "-gate.json")
-    gate.write_text(json.dumps({"events": sorted(events), "ready": str(ready), "release": str(release)}))
-    gate.chmod(0o600)
+    # Each send is shorter than the lease, so the row in flight is renewed and stays with worker A.
+    # Rows still waiting keep the original batch expiry and become due during that send. Worker B
+    # claims them in this process at the moment the database clock says so. A second subprocess
+    # cannot: its first pass walks every tenant (several seconds) and either arrives while the
+    # lease is still valid, or the first worker re-claims the rows itself. A send longer than
+    # stop()'s wait also cannot be interrupted — time.sleep returns before SIGTERM is handled.
+    delay = 8
     slow = start(
         live,
-        name,
-        between_message_gate=gate,
+        "native-batch-a-" + uuid4().hex[:6],
         batch_size=6,
-        synthetic_delay=2,
-        lease_seconds=30,
+        synthetic_delay=delay,
+        lease_seconds=delay + 2,
         smtp_timeout=1,
     )
+    fast = Worker(
+        settings(live, batch_size=6, lease_seconds=30, synthetic_delay=0),
+        worker_id="native-batch-b-" + uuid4().hex[:6],
+    )
+    fast.sink = Path(fast.s.synthetic_sink)
+    taken = {}
+
+    def take_expired():
+        with live.db() as c:
+            now = c.execute("SELECT statement_timestamp() AS now").fetchone()["now"]
+        rows = [deliveries(live, receipt["object_id"])[0] for receipt in receipts]
+        if not any(row["state"] == "LEASED" and row["lease_expires_at"] <= now for row in rows):
+            return False
+        summary = empty_summary()
+        fast.dispatch(live.fixture["tenant_a"], summary)
+        taken["summary"] = summary
+        return True
+
     try:
-        wait_for(ready.exists, timeout=90)
-        rows = [deliveries(live, r["object_id"])[0] for r in receipts]
-        assert sum(row["state"] == "SENT" for row in rows) == 1
-        assert sum(row["state"] == "LEASED" for row in rows) == 5
-        assert all(row["lease_owner"] == slow.name for row in rows if row["state"] == "LEASED")
-        # The original process is paused after a committed send, outside every
-        # transaction. Leases expire on the real database clock while the normal
-        # second process walks all tenants and takes over the remaining rows.
-        fast = start(live, "native-batch-b-" + uuid4().hex[:6], batch_size=6, lease_seconds=30)
-        try:
-            wait_for(
-                lambda: all(deliveries(live, r["object_id"])[0]["state"] == "SENT" for r in receipts),
-                timeout=120,
-            )
-        finally:
-            assert stop(fast) == 0
-        release.touch(mode=0o600)
-        wait_for(lambda: "skipped: lease expired" in slow.log.read_text(), timeout=30)
+        wait_for(
+            lambda: all(deliveries(live, r["object_id"])[0]["state"] != "PENDING" for r in receipts),
+            # The first pass walks every tenant of the shared database before it reaches this one.
+            # A loaded runner needs far longer than one send, so this wait is not the claim itself.
+            timeout=90,
+        )
+        wait_for(take_expired, timeout=delay + 30)
+        assert taken["summary"]["sent"] >= 1
+        wait_for(
+            lambda: (
+                all(deliveries(live, r["object_id"])[0]["state"] == "SENT" for r in receipts)
+                and "skipped: lease expired" in slow.log.read_text()
+            ),
+            timeout=delay + 30,
+        )
     finally:
-        release.touch(mode=0o600)
-        assert stop(slow) == 0
+        assert stop(slow, timeout=delay + 15) == 0
     sent = [m["event_id"] for w in [slow, fast] for m in sink(w) if m["event_id"] in events]
     assert sorted(sent) == sorted(events), sent
     generations = [deliveries(live, r["object_id"])[0]["lease_generation"] for r in receipts]
     # The scenario really happened: some rows were taken over from the first worker.
     assert max(generations) >= 2 and [m["event_id"] for m in sink(fast) if m["event_id"] in events]
     assert "skipped: lease expired" in slow.log.read_text()
-    (live.local / "native-batch-takeover.json").write_text(
-        json.dumps(
-            {
-                "scenario": "Actual native lease expiry during a test-only between-message pause",
-                "dispatch_only_preparation": True,
-                "unrelated_synthetic_deliveries_dispatched_before_targets": len(unrelated),
-                "exact_six_eligible_target_events_before_claim": True,
-                "ready_requires_committed_send": True,
-                "slow_lease_seconds": 30,
-                "before_fast_states": [row["state"] for row in rows],
-                "before_fast_leased_by_slow": sum(
-                    row["state"] == "LEASED" and row["lease_owner"] == slow.name for row in rows
-                ),
-                "final_states": [deliveries(live, r["object_id"])[0]["state"] for r in receipts],
-                "lease_generations": generations,
-                "slow_sends": len([m for m in sink(slow) if m["event_id"] in events]),
-                "fast_sends": len([m for m in sink(fast) if m["event_id"] in events]),
-                "unique_sends": len(set(sent)),
-                "total_sends": len(sent),
-                "slow_stale_lease_refusal": True,
-                "timestamps_or_lease_SQL_modified": False,
-                "production_worker_changed": False,
-            },
-            indent=2,
-        )
-        + "\n"
-    )

@@ -12,7 +12,7 @@
 - [ ] Product owner accepted at sprint review
 
 ## Kind of change
-- [ ] Documentation only (`docs/**` or `**.md`; starts no CI)
+- [ ] Documentation only (`docs/**` or `**.md`; starts the small `checks` job only, not the four paid qualification jobs)
 - [ ] Code (affected checks listed below)
 - [ ] Migration (next number is 0041; applied migrations are never edited)
 - [ ] Contract or capability change (regenerated contracts and onboarding profile)
@@ -29,4 +29,4 @@
 ## Risks and open owner decisions
 
 ## Merge
-Not to be merged without all four CI jobs green and the owner's confirmation.
+Not to be merged without all four CI jobs green (`local-reference-and-browser`, `live-identity-provider`, `native-postgresql-gate`, `container-stack`) and the owner's confirmation. An ordinary push runs only `checks` and `lint-and-unit`. Add the `full-ci` label on the commit you intend to merge, and wait until those four are green. A skipped job is not a pass. Leave the label off while you are still pushing.

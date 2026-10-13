@@ -81,7 +81,12 @@ def heartbeat(live, worker_id):
 
 def drain(live):
     """Deliver whatever earlier tests left due, so a test's own rows are the only due rows."""
-    Worker(settings(live), worker_id="native-drain-" + uuid4().hex[:8]).run_once()
+    worker = Worker(settings(live), worker_id="native-drain-" + uuid4().hex[:8])
+    for _ in range(100):
+        summary = worker.run_once()
+        if summary["claimed"] == 0:
+            return
+    raise AssertionError("Native delivery backlog did not drain within 100 passes")
 
 
 def test_native_worker_process_sends_over_smtp_with_no_transaction_open(live):

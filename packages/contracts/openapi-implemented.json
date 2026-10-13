@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.113.0",
+    "version": "1.114.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -31738,7 +31738,7 @@
             }
           }
         },
-        "x-contract-version": "1.18.0",
+        "x-contract-version": "1.19.0",
         "parameters": [
           {
             "name": "limit",
@@ -31880,7 +31880,7 @@
             }
           }
         },
-        "x-contract-version": "1.18.0",
+        "x-contract-version": "1.19.0",
         "parameters": [
           {
             "name": "limit",
@@ -32013,7 +32013,7 @@
             }
           }
         },
-        "x-contract-version": "1.18.0",
+        "x-contract-version": "1.19.0",
         "parameters": [
           {
             "name": "limit",
@@ -32155,7 +32155,7 @@
             }
           }
         },
-        "x-contract-version": "1.18.0",
+        "x-contract-version": "1.19.0",
         "parameters": [
           {
             "name": "limit",
@@ -32295,7 +32295,7 @@
             }
           }
         },
-        "x-contract-version": "1.18.0",
+        "x-contract-version": "1.19.0",
         "parameters": [
           {
             "name": "viewport",
@@ -32431,7 +32431,7 @@
             }
           }
         },
-        "x-contract-version": "1.18.0",
+        "x-contract-version": "1.19.0",
         "parameters": [
           {
             "name": "widget_id",
@@ -32572,7 +32572,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.18.0",
+        "x-contract-version": "1.19.0",
         "x-audit-required": true
       }
     },
@@ -32703,7 +32703,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.18.0",
+        "x-contract-version": "1.19.0",
         "x-audit-required": true
       }
     },
@@ -32834,7 +32834,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.18.0",
+        "x-contract-version": "1.19.0",
         "x-audit-required": true
       }
     },
@@ -32955,7 +32955,7 @@
             }
           }
         },
-        "x-contract-version": "1.18.0",
+        "x-contract-version": "1.19.0",
         "parameters": []
       }
     },
@@ -33076,7 +33076,7 @@
             }
           }
         },
-        "x-contract-version": "1.18.0",
+        "x-contract-version": "1.19.0",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -81618,6 +81618,234 @@
               "PARTIAL"
             ]
           },
+          "comparison": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "coverage_threshold": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "visible_scope": {
+                "enum": [
+                  "ALL_AUTHORISED_MEMBERS",
+                  "PARTIAL_AUTHORISED_SCOPE"
+                ]
+              },
+              "hidden_members_disclosed": {
+                "const": false
+              },
+              "raw_cross_group_ranking": {
+                "const": "REFUSED"
+              },
+              "groups": {
+                "type": "array",
+                "maxItems": 500,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "compatibility_key": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "definition_revision": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "uuid"
+                        },
+                        "period_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "starts_at": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "maxLength": 2000
+                        },
+                        "ends_at": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "maxLength": 2000
+                        }
+                      },
+                      "required": [
+                        "definition_revision",
+                        "period_id",
+                        "starts_at",
+                        "ends_at"
+                      ]
+                    },
+                    "compatible": {
+                      "type": "boolean"
+                    },
+                    "mismatch_flags": {
+                      "type": "array",
+                      "maxItems": 8,
+                      "items": {
+                        "enum": [
+                          "DEFINITION_REVISION"
+                        ]
+                      }
+                    },
+                    "ranking": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "status": {
+                          "enum": [
+                            "QUALIFIED",
+                            "UNAVAILABLE"
+                          ]
+                        },
+                        "method": {
+                          "const": "DESCENDING_OFFICIAL_VALUE_WITHIN_EXACT_DEFINITION_VERSION"
+                        },
+                        "unqualified_league_table": {
+                          "const": false
+                        },
+                        "review_status": {
+                          "const": "REQUIRED_FOR_UNQUALIFIED_RANKING"
+                        },
+                        "items": {
+                          "type": "array",
+                          "maxItems": 500,
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "indicator_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "programme_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "programme_title": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "maxLength": 2000
+                              },
+                              "displayed_value": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "maxLength": 2000
+                              },
+                              "denominator": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                              },
+                              "rank": {
+                                "type": "integer",
+                                "minimum": 1
+                              }
+                            },
+                            "required": [
+                              "indicator_id",
+                              "programme_id",
+                              "programme_title",
+                              "displayed_value",
+                              "denominator",
+                              "rank"
+                            ]
+                          }
+                        },
+                        "excluded": {
+                          "type": "array",
+                          "maxItems": 500,
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "indicator_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "programme_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "programme_title": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "maxLength": 2000
+                              },
+                              "displayed_value": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "maxLength": 2000
+                              },
+                              "denominator": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                              },
+                              "reason_code": {
+                                "enum": [
+                                  "OFFICIAL_VALUE_UNAVAILABLE",
+                                  "BELOW_COVERAGE_THRESHOLD",
+                                  "VALUE_NOT_NUMERIC"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "indicator_id",
+                              "programme_id",
+                              "programme_title",
+                              "displayed_value",
+                              "denominator",
+                              "reason_code"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "method",
+                        "unqualified_league_table",
+                        "review_status",
+                        "items",
+                        "excluded"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "compatibility_key",
+                    "compatible",
+                    "mismatch_flags",
+                    "ranking"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "coverage_threshold",
+              "visible_scope",
+              "hidden_members_disclosed",
+              "raw_cross_group_ranking",
+              "groups"
+            ]
+          },
           "versions": {
             "type": "array",
             "maxItems": 500,
@@ -81847,6 +82075,7 @@
           "definition_id",
           "period",
           "scope",
+          "comparison",
           "versions",
           "programmes",
           "next_cursor"

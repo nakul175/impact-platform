@@ -75,6 +75,7 @@ export function PortfolioPanel({
 }: Props) {
   const [items, setItems] = useState<Row[]>([]),
     [definition, setDefinition] = useState(""),
+    [coverageThreshold, setCoverageThreshold] = useState(0),
     [view, setView] = useState<any>(null),
     [error, setError] = useState(""),
     [loading, setLoading] = useState(false);
@@ -96,7 +97,9 @@ export function PortfolioPanel({
         "indicator-definitions/" +
         definition +
         "/portfolio?limit=100&period_id=" +
-        period,
+        period +
+        "&coverage_threshold=" +
+        coverageThreshold,
     )
       .then((v) => live && setView(v))
       .catch((e) => live && setError(explain(e)))
@@ -104,7 +107,7 @@ export function PortfolioPanel({
     return () => {
       live = false;
     };
-  }, [definition, period, base]);
+  }, [definition, period, coverageThreshold, base]);
   return (
     <section className="portfolio" aria-label="Portfolio">
       <div className="planning-toolbar">
@@ -138,6 +141,20 @@ export function PortfolioPanel({
             ))}
           </select>
         </label>
+        <label>
+          Minimum approved coverage
+          <select
+            aria-label="Minimum approved coverage"
+            value={coverageThreshold}
+            onChange={(e) => setCoverageThreshold(Number(e.target.value))}
+          >
+            {[0, 50, 75, 90, 100].map((value) => (
+              <option key={value} value={value}>
+                {value}%
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
       {error && (
         <div className="error" role="alert">
@@ -154,6 +171,46 @@ export function PortfolioPanel({
               ? "every instance in the workspace is listed"
               : "some instances are withheld by your access: totals are not shown"}
           </p>
+          <section aria-labelledby="portfolio-comparison-title">
+            <h2 id="portfolio-comparison-title">Fair comparison</h2>
+            <p className="muted">
+              {view.comparison.visible_scope === "ALL_AUTHORISED_MEMBERS"
+                ? "All authorised members are included."
+                : "This comparison uses only the members you may view; hidden members are not identified or counted."}{" "}
+              Cross-group raw ranking is refused. Rankings below are qualified
+              by exact definition version and period.
+            </p>
+            {view.comparison.groups.map((group: any) => (
+              <div
+                key={group.compatibility_key.definition_revision || "unknown"}
+              >
+                <h3>
+                  Definition version{" "}
+                  {group.compatibility_key.definition_revision?.slice(0, 8) ||
+                    "unknown"}
+                </h3>
+                {group.mismatch_flags.length ? (
+                  <p className="muted">
+                    Mismatch: {group.mismatch_flags.map(words).join(", ")}
+                  </p>
+                ) : null}
+                <ol aria-label="Qualified portfolio ranking">
+                  {group.ranking.items.map((item: any) => (
+                    <li key={item.indicator_id}>
+                      {item.programme_title || item.programme_id.slice(0, 8)}:{" "}
+                      {item.displayed_value}
+                      {item.denominator !== null
+                        ? " (denominator " + item.denominator + ")"
+                        : ""}
+                    </li>
+                  ))}
+                </ol>
+                {!group.ranking.items.length ? (
+                  <p className="muted">No eligible official values.</p>
+                ) : null}
+              </div>
+            ))}
+          </section>
           <h2 className="sr-only">Pooled totals</h2>
           <dl className="portfolio-totals">
             {view.versions.map((v: any) => (

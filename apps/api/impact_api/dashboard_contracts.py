@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.18.0"
+VERSION = "1.19.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -692,6 +692,107 @@ def augment(spec, policy):
                 {k: v for k, v in deepcopy(period).items() if k != "period_state"}, ["period_id"]
             ),
             "scope": {"enum": ["COMPLETE", "PARTIAL"]},
+            "comparison": closed(
+                {
+                    "coverage_threshold": {"type": "string", "pattern": DECIMAL},
+                    "visible_scope": {"enum": ["ALL_AUTHORISED_MEMBERS", "PARTIAL_AUTHORISED_SCOPE"]},
+                    "hidden_members_disclosed": {"const": False},
+                    "raw_cross_group_ranking": {"const": "REFUSED"},
+                    "groups": {
+                        "type": "array",
+                        "maxItems": 500,
+                        "items": closed(
+                            {
+                                "compatibility_key": closed(
+                                    {
+                                        "definition_revision": NULLABLE_UUID,
+                                        "period_id": UUID,
+                                        "starts_at": NULLABLE_TEXT,
+                                        "ends_at": NULLABLE_TEXT,
+                                    },
+                                    ["definition_revision", "period_id", "starts_at", "ends_at"],
+                                ),
+                                "compatible": {"type": "boolean"},
+                                "mismatch_flags": {
+                                    "type": "array",
+                                    "maxItems": 8,
+                                    "items": {"enum": ["DEFINITION_REVISION"]},
+                                },
+                                "ranking": closed(
+                                    {
+                                        "status": {"enum": ["QUALIFIED", "UNAVAILABLE"]},
+                                        "method": {
+                                            "const": "DESCENDING_OFFICIAL_VALUE_WITHIN_EXACT_DEFINITION_VERSION"
+                                        },
+                                        "unqualified_league_table": {"const": False},
+                                        "review_status": {"const": "REQUIRED_FOR_UNQUALIFIED_RANKING"},
+                                        "items": {
+                                            "type": "array",
+                                            "maxItems": 500,
+                                            "items": closed(
+                                                {
+                                                    "indicator_id": UUID,
+                                                    "programme_id": UUID,
+                                                    "programme_title": NULLABLE_TEXT,
+                                                    "displayed_value": NULLABLE_TEXT,
+                                                    "denominator": NULLABLE_DECIMAL,
+                                                    "rank": {"type": "integer", "minimum": 1},
+                                                },
+                                                [
+                                                    "indicator_id",
+                                                    "programme_id",
+                                                    "programme_title",
+                                                    "displayed_value",
+                                                    "denominator",
+                                                    "rank",
+                                                ],
+                                            ),
+                                        },
+                                        "excluded": {
+                                            "type": "array",
+                                            "maxItems": 500,
+                                            "items": closed(
+                                                {
+                                                    "indicator_id": UUID,
+                                                    "programme_id": UUID,
+                                                    "programme_title": NULLABLE_TEXT,
+                                                    "displayed_value": NULLABLE_TEXT,
+                                                    "denominator": NULLABLE_DECIMAL,
+                                                    "reason_code": {
+                                                        "enum": [
+                                                            "OFFICIAL_VALUE_UNAVAILABLE",
+                                                            "BELOW_COVERAGE_THRESHOLD",
+                                                            "VALUE_NOT_NUMERIC",
+                                                        ]
+                                                    },
+                                                },
+                                                [
+                                                    "indicator_id",
+                                                    "programme_id",
+                                                    "programme_title",
+                                                    "displayed_value",
+                                                    "denominator",
+                                                    "reason_code",
+                                                ],
+                                            ),
+                                        },
+                                    },
+                                    [
+                                        "status",
+                                        "method",
+                                        "unqualified_league_table",
+                                        "review_status",
+                                        "items",
+                                        "excluded",
+                                    ],
+                                ),
+                            },
+                            ["compatibility_key", "compatible", "mismatch_flags", "ranking"],
+                        ),
+                    },
+                },
+                ["coverage_threshold", "visible_scope", "hidden_members_disclosed", "raw_cross_group_ranking", "groups"],
+            ),
             "versions": {
                 "type": "array",
                 "maxItems": 500,
@@ -709,7 +810,7 @@ def augment(spec, policy):
             "programmes": {"type": "array", "maxItems": 100, "items": programme_row},
             "next_cursor": {"type": ["string", "null"], "maxLength": 4096},
         },
-        ["definition_id", "period", "scope", "versions", "programmes", "next_cursor"],
+        ["definition_id", "period", "scope", "comparison", "versions", "programmes", "next_cursor"],
     )
 
     page = [

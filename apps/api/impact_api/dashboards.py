@@ -164,7 +164,7 @@ class Dashboards:
         self.service = service
 
     # Entry -------------------------------------------------------------------------------------
-    def read(self, identity, tenant, op, obj, limit=50, cursor=None, period_id=None):
+    def read(self, identity, tenant, op, obj, limit=50, cursor=None, period_id=None, coverage_threshold=0):
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
             if not any(g["capability"] == "dashboards.read" and g["purpose"] is None for g in ctx.grants):
@@ -172,6 +172,11 @@ class Dashboards:
             authorize(c, ctx, op, obj, hidden=True)
             if not 1 <= limit <= 100:
                 raise DomainError("VALIDATION_FAILED")
+            if not 0 <= coverage_threshold <= 100:
+                raise DomainError(
+                    "VALIDATION_FAILED",
+                    fields=[{"path": "coverage_threshold", "message": "Must be between 0 and 100."}],
+                )
             if op in {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}:
                 if not period_id:
                     raise DomainError(
@@ -182,7 +187,7 @@ class Dashboards:
             if op == "indicator_dashboard_sources":
                 return self.drilldown(c, ctx, obj, period_id, limit, cursor)
             if op == "indicator_definition_portfolio":
-                return self.portfolio(c, ctx, obj, period_id, limit, cursor)
+                return self.portfolio(c, ctx, obj, period_id, limit, cursor, coverage_threshold)
             return self.series(c, ctx, obj, limit, cursor)
 
     # Shared lookups ----------------------------------------------------------------------------
@@ -693,7 +698,7 @@ class Dashboards:
         }
 
     # Portfolio: one indicator definition across every programme (v0.27) -------------------------
-    def portfolio(self, c, ctx, obj, period_id, limit, cursor):
+    def portfolio(self, c, ctx, obj, period_id, limit, cursor, coverage_threshold=0):
         """For one indicator definition and period: the official value of every instance of it in
         the tenant (one row per programme instance, keyset on the instance identifier), grouped by
         definition version, with a pooled total per version only where the version's method pools
@@ -752,8 +757,8 @@ class Dashboards:
         page = [i for i in visible if not key or str(i["object_id"]) > key[0]][: limit + 1]
         more = len(page) > limit
         page = page[:limit]
-        programmes = []
-        for instance in page:
+        comparison_programmes = []
+        for instance in visible:
             pid = str(instance["programme_id"])
             pin = instance["payload"].get("definition_version")
             definition = definitions[pin]
@@ -766,7 +771,7 @@ class Dashboards:
             snapshot = snapshots.get(pid)
             official = cells[str(instance["object_id"])]
             state = self.service.periods.state(c, ctx, pid, str(period["object_id"]))
-            programmes.append(
+            comparison_programmes.append(
                 {
                     **self.indicator_head(instance, definition),
                     "programme_id": pid,
@@ -782,8 +787,10 @@ class Dashboards:
                     ),
                 }
             )
+        comparison_by_indicator = {row["indicator_id"]: row for row in comparison_programmes}
+        programmes = [comparison_by_indicator[str(instance["object_id"])] for instance in page]
         p = period["payload"]
-        return {
+        response = {
             "definition_id": did,
             "definition_name": head["payload"].get("name"),
             "unit": head["payload"].get("unit"),
@@ -801,6 +808,12 @@ class Dashboards:
             "programmes": programmes,
             "next_cursor": self.service.next_cursor(bound, [str(page[-1]["object_id"])]) if more else None,
         }
+        from .portfolio_comparison import build_comparison
+
+        response["comparison"] = build_comparison(
+            versions, comparison_programmes, response["period"], scope, decimal_value(coverage_threshold)
+        )
+        return response
 
 
 PORTFOLIO_LIMIT = 500

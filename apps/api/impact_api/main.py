@@ -1886,6 +1886,7 @@ def create_app():
         tenant: str,
         obj: str,
         period_id: str | None = None,
+        coverage_threshold: int = 0,
         limit: int = 50,
         cursor: str | None = None,
     ):
@@ -1897,6 +1898,7 @@ def create_app():
             limit=limit,
             cursor=cursor,
             period_id=uuid(period_id) if period_id else None,
+            coverage_threshold=coverage_threshold,
         )
 
     @app.get("/v1/tenants/{tenant}/publication-recipients")

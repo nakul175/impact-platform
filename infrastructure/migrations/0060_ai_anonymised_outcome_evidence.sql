@@ -33,9 +33,9 @@ CREATE TABLE impact.ai_outcome_evidence_publication(
  state text NOT NULL CHECK(state IN ('PREPARED','APPROVED','PUBLISHED')),
  operation_id uuid NOT NULL, rule_version varchar(100) NOT NULL, policy_version varchar(100) NOT NULL,
  artifact jsonb NOT NULL CHECK(jsonb_typeof(artifact)='object'), manifest_hash bytea NOT NULL CHECK(octet_length(manifest_hash)=32),
- prepared_by_identity uuid NOT NULL REFERENCES impact.auth_identity, prepared_by_natural uuid NOT NULL REFERENCES impact.natural_person,
+ prepared_by_identity uuid NOT NULL REFERENCES impact.auth_identity, prepared_by_natural uuid NOT NULL,
  prepared_at timestamptz NOT NULL, approved_by_identity uuid REFERENCES impact.auth_identity,
- approved_by_natural uuid REFERENCES impact.natural_person, approved_at timestamptz,
+ approved_by_natural uuid, approved_at timestamptz,
  published_by_identity uuid REFERENCES impact.auth_identity, published_at timestamptz,
  UNIQUE(prepared_by_identity,operation_id),
  CHECK((state='PREPARED' AND approved_at IS NULL AND published_at IS NULL) OR
@@ -55,7 +55,7 @@ CREATE TABLE impact.ai_outcome_evidence_source(
 CREATE TABLE impact.ai_outcome_evidence_event(
  event_id uuid PRIMARY KEY, publication_id uuid NOT NULL REFERENCES impact.ai_outcome_evidence_publication,
  kind text NOT NULL CHECK(kind IN ('APPROVE','PUBLISH')), actor_identity uuid NOT NULL REFERENCES impact.auth_identity,
- actor_natural uuid NOT NULL REFERENCES impact.natural_person, operation_id uuid NOT NULL,
+ actor_natural uuid NOT NULL, operation_id uuid NOT NULL,
  response jsonb NOT NULL CHECK(jsonb_typeof(response)='object'), recorded_at timestamptz NOT NULL,
  UNIQUE(actor_identity,operation_id)
 );
@@ -114,14 +114,14 @@ $$;
 
 CREATE FUNCTION impact.prepare_ai_outcome_evidence(viewer uuid,op uuid,rule text,policy text) RETURNS jsonb
 LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
-DECLARE pub uuid; rev uuid; natural uuid; old uuid; art jsonb; manifest_digest bytea; now_at timestamptz:=statement_timestamp();
+DECLARE pub uuid; rev uuid; natural_id uuid; old uuid; art jsonb; manifest_digest bytea; now_at timestamptz:=statement_timestamp();
 BEGIN
  IF NOT impact.lock_platform_operator(viewer) THEN RAISE EXCEPTION 'platform operator required' USING ERRCODE='42501'; END IF;
  SELECT publication_id INTO old FROM impact.ai_outcome_evidence_publication WHERE prepared_by_identity=viewer AND operation_id=op;
  IF old IS NOT NULL THEN RETURN impact.present_ai_outcome_evidence(old); END IF;
- SELECT natural_identity_id INTO STRICT natural FROM impact.auth_identity WHERE identity_id=viewer;
+ SELECT natural_identity_id INTO STRICT natural_id FROM impact.auth_identity WHERE identity_id=viewer;
  pub:=gen_random_uuid(); rev:=gen_random_uuid();
- INSERT INTO impact.ai_outcome_evidence_publication VALUES(pub,rev,'PREPARED',op,rule,policy,'{}'::jsonb,sha256('pending'::bytea),viewer,natural,now_at,NULL,NULL,NULL,NULL,NULL);
+ INSERT INTO impact.ai_outcome_evidence_publication VALUES(pub,rev,'PREPARED',op,rule,policy,'{}'::jsonb,sha256('pending'::bytea),viewer,natural_id,now_at,NULL,NULL,NULL,NULL,NULL);
  WITH latest AS (
   SELECT DISTINCT ON (tenant_id,outcome_observation_id) * FROM impact.ai_outcome_sharing_consent
   ORDER BY tenant_id,outcome_observation_id,recorded_at DESC,consent_event_id DESC
@@ -158,25 +158,25 @@ $$;
 
 CREATE FUNCTION impact.act_ai_outcome_evidence(viewer uuid,pub uuid,act text,op uuid,expected uuid) RETURNS jsonb
 LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,impact AS $$
-DECLARE r impact.ai_outcome_evidence_publication; natural uuid; answer jsonb; now_at timestamptz:=statement_timestamp();
+DECLARE r impact.ai_outcome_evidence_publication; natural_id uuid; answer jsonb; now_at timestamptz:=statement_timestamp();
 BEGIN
  IF NOT impact.lock_platform_operator(viewer) THEN RAISE EXCEPTION 'platform operator required' USING ERRCODE='42501'; END IF;
  SELECT response INTO answer FROM impact.ai_outcome_evidence_event WHERE actor_identity=viewer AND operation_id=op;
  IF answer IS NOT NULL THEN RETURN answer; END IF;
- SELECT natural_identity_id INTO STRICT natural FROM impact.auth_identity WHERE identity_id=viewer;
+ SELECT natural_identity_id INTO STRICT natural_id FROM impact.auth_identity WHERE identity_id=viewer;
  SELECT * INTO r FROM impact.ai_outcome_evidence_publication WHERE publication_id=pub FOR UPDATE;
  IF NOT FOUND THEN RAISE EXCEPTION 'publication unavailable' USING ERRCODE='P0002'; END IF;
  IF r.revision_id<>expected THEN RAISE EXCEPTION 'publication changed' USING ERRCODE='40001'; END IF;
  IF NOT impact.ai_outcome_evidence_sources_current(pub) THEN RAISE EXCEPTION 'consent or source changed' USING ERRCODE='40001'; END IF;
  IF act='approve' THEN
-  IF r.state<>'PREPARED' OR r.prepared_by_natural=natural THEN RAISE EXCEPTION 'independent approval required' USING ERRCODE='42501'; END IF;
-  UPDATE impact.ai_outcome_evidence_publication SET state='APPROVED',revision_id=gen_random_uuid(),approved_by_identity=viewer,approved_by_natural=natural,approved_at=now_at WHERE publication_id=pub;
+  IF r.state<>'PREPARED' OR r.prepared_by_natural=natural_id THEN RAISE EXCEPTION 'independent approval required' USING ERRCODE='42501'; END IF;
+  UPDATE impact.ai_outcome_evidence_publication SET state='APPROVED',revision_id=gen_random_uuid(),approved_by_identity=viewer,approved_by_natural=natural_id,approved_at=now_at WHERE publication_id=pub;
  ELSIF act='publish' THEN
   IF r.state<>'APPROVED' THEN RAISE EXCEPTION 'approval required' USING ERRCODE='42501'; END IF;
   UPDATE impact.ai_outcome_evidence_publication SET state='PUBLISHED',revision_id=gen_random_uuid(),published_by_identity=viewer,published_at=now_at WHERE publication_id=pub;
  ELSE RAISE EXCEPTION 'invalid action' USING ERRCODE='22023'; END IF;
  answer:=impact.present_ai_outcome_evidence(pub);
- INSERT INTO impact.ai_outcome_evidence_event VALUES(gen_random_uuid(),pub,upper(act),viewer,natural,op,answer,now_at);
+ INSERT INTO impact.ai_outcome_evidence_event VALUES(gen_random_uuid(),pub,upper(act),viewer,natural_id,op,answer,now_at);
  RETURN answer;
 END;
 $$;

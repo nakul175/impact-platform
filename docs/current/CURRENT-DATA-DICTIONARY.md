@@ -6505,7 +6505,7 @@ Registered candidate migration `0047_diagnosis_evidence_privacy.sql`, SHA256 `57
 
 ## Migration0048 — immutable diagnosis problem baselines (local0.41 coding candidate)
 
-`0048_ai_problem_baselines.sql` SHA256 `38f31daa80efa0e171bf52f8e24f12ab9df6ec9c1cbb95f1d6528f42b7ee8941`.
+`0048_ai_problem_baselines.sql` SHA256 `09305957c1565c455ab8f5f4037d379f9a026b863697330129d0dc8ce06f8e13`.
 Schema48 derives from48 contiguous additive migrations; all0001–0047 remain byte-exact. The
 `problem_baseline_lock` register is forced-RLS and tenant-fenced. It binds one
 `AIProblemBaseline` locked revision to the exact `AIDiagnosis` revision and stable problem ID,
@@ -6516,12 +6516,12 @@ or an official MEL result. It is untested, unreviewed, unmerged and undeployed.
 
 | Migration | SHA-256 |
 | --- | --- |
-| 0048_ai_problem_baselines.sql | 38f31daa80efa0e171bf52f8e24f12ab9df6ec9c1cbb95f1d6528f42b7ee8941 |
+| 0048_ai_problem_baselines.sql | 09305957c1565c455ab8f5f4037d379f9a026b863697330129d0dc8ce06f8e13 |
 
 
 ## Migration0049 — governed diagnosis collaboration (local0.43 coding candidate)
 
-`0049_ai_diagnosis_contributions.sql` SHA256 `a6f13a45f1ad8089679ef78a9e1acf0beabc502966b87b468004420003803d81`. Schema49 adds immutable,
+`0049_ai_diagnosis_contributions.sql` SHA256 `a885f58ac705643b5252677fa5c44ef16ffebcc3d4b56927ec2e1cfc2798b18d`. Schema49 adds immutable,
 forced-RLS tenant-fenced contributor assignments, scoped proposals and lead decisions for one
 existing AIDiagnosis. The app receives SELECT/INSERT only. The registered access profile applies
 to governed future/bootstrap upgrades and does not activate authority for existing tenants. Role
@@ -6530,7 +6530,7 @@ undeployed. All0001–0048 remain byte-exact.
 
 | Migration | SHA-256 |
 | --- | --- |
-| 0049_ai_diagnosis_contributions.sql | a6f13a45f1ad8089679ef78a9e1acf0beabc502966b87b468004420003803d81 |
+| 0049_ai_diagnosis_contributions.sql | a885f58ac705643b5252677fa5c44ef16ffebcc3d4b56927ec2e1cfc2798b18d |
 
 ```sql
 -- Governed, scoped contributions to one existing diagnosis.
@@ -6700,7 +6700,7 @@ COMMIT;
 
 ## Migration0050 — exact diagnosis advisor review (local0.44 coding candidate)
 
-`0050_ai_diagnosis_reviews.sql` SHA256 `a58c1759bc9af4fb2d7c7191736f77fd8480345b49b0ea700c5e9c98bba13259`. Schema50 adds forced-RLS, tenant-fenced,
+`0050_ai_diagnosis_reviews.sql` SHA256 `405c0704a332ca2f102dc242458e54425e6b802c99bb1d17da270926678b629f`. Schema50 adds forced-RLS, tenant-fenced,
 insert-only exact-revision review assignments and public review events. Runtime app authority is
 SELECT/INSERT only. The generated future/bootstrap profile adds the provisional REVIEWER capability
 without widening existing tenants. All0001–0049 stay byte-exact. Candidate is untested, unreviewed,
@@ -6708,7 +6708,7 @@ unmerged and undeployed.
 
 | Migration | SHA-256 |
 | --- | --- |
-| 0050_ai_diagnosis_reviews.sql | a58c1759bc9af4fb2d7c7191736f77fd8480345b49b0ea700c5e9c98bba13259 |
+| 0050_ai_diagnosis_reviews.sql | 405c0704a332ca2f102dc242458e54425e6b802c99bb1d17da270926678b629f |
 
 ```sql
 -- Assigned, immutable human review of exact completed diagnosis revisions.
@@ -6775,11 +6775,11 @@ COMMIT;
 
 ## Migration0051 — advisor-scored option fit (local0.46 coding candidate)
 
-`0051_ai_solution_fit_scores.sql` SHA256 `ff10a6775363c9661505b5694598acbeedb3b71c07d8a6131f89927d1a1ad800`. Schema51 adds immutable, forced-RLS, tenant-fenced advisor-authored pilot fit scores. Every accepted record has all six required dimensions, a 1–5 value and a nonblank advisor explanation; incomplete payloads are refused and therefore never presented as complete. The record pins its catalogue content and rubric versions plus current advisor principal, membership and natural-person identity. Runtime authority is SELECT/INSERT only; existing tenants are unchanged until the reviewed access-profile upgrade. All0001–0050 remain byte-exact. Candidate is untested, unreviewed, unmerged and undeployed.
+`0051_ai_solution_fit_scores.sql` SHA256 `90e576526903025052fbda2e9cedfd70c6c497c649d201c16ca851249be20a40`. Schema51 adds immutable, forced-RLS, tenant-fenced advisor-authored pilot fit scores. Every accepted record has all six required dimensions, a 1–5 value and a nonblank advisor explanation; incomplete payloads are refused and therefore never presented as complete. The record pins its catalogue content and rubric versions plus current advisor principal, membership and natural-person identity. Runtime authority is SELECT/INSERT only; existing tenants are unchanged until the reviewed access-profile upgrade. All0001–0050 remain byte-exact. Candidate is untested, unreviewed, unmerged and undeployed.
 
 | Migration | SHA-256 |
 | --- | --- |
-| 0051_ai_solution_fit_scores.sql | ff10a6775363c9661505b5694598acbeedb3b71c07d8a6131f89927d1a1ad800 |
+| 0051_ai_solution_fit_scores.sql | 90e576526903025052fbda2e9cedfd70c6c497c649d201c16ca851249be20a40 |
 
 ```sql
 -- Immutable advisor-authored six-dimensional fit scores for source-backed options.
@@ -6900,11 +6900,11 @@ COMMIT;
 
 ## Migration0060 — anonymised outcome evidence (local0.66 coding candidate)
 
-`0060_ai_anonymised_outcome_evidence.sql` SHA256 `a5f6b23f7e0612490127991b875961a840138c0b4be148097ddcc10f01e63df2`. Schema60 adds immutable tenant-fenced consent decisions, safe platform-visible publication metadata, owner-only fixed source sets, and immutable approval/publish events. Fixed metric/unit/quarter cells reduce to one contribution per organisation. Cells with fewer than five organisations or unsafe small changes against prior publications expose neither value nor count. Shared artifacts exclude tenant identities, source-set fingerprints, notes and actor identifiers. Platform preparation and transitions use security-definer functions with current operator authority, exact retry, natural-person-independent approval, and source-current rechecks. Workers and tenant application roles receive no cross-organisation source authority. All0001–0059 remain byte-exact. Candidate is untested, unmerged and undeployed.
+`0060_ai_anonymised_outcome_evidence.sql` SHA256 `95639887b5a90083e46358af82d1820c33319616179c53d9c4d1877a870be30b`. Schema60 adds immutable tenant-fenced consent decisions, safe platform-visible publication metadata, owner-only fixed source sets, and immutable approval/publish events. Fixed metric/unit/quarter cells reduce to one contribution per organisation. Cells with fewer than five organisations or unsafe small changes against prior publications expose neither value nor count. Shared artifacts exclude tenant identities, source-set fingerprints, notes and actor identifiers. Platform preparation and transitions use security-definer functions with current operator authority, exact retry, natural-person-independent approval, and source-current rechecks. Workers and tenant application roles receive no cross-organisation source authority. All0001–0059 remain byte-exact. Candidate is untested, unmerged and undeployed.
 
 | Migration | SHA-256 |
 | --- | --- |
-| 0060_ai_anonymised_outcome_evidence.sql | a5f6b23f7e0612490127991b875961a840138c0b4be148097ddcc10f01e63df2 |
+| 0060_ai_anonymised_outcome_evidence.sql | 95639887b5a90083e46358af82d1820c33319616179c53d9c4d1877a870be30b |
 
 ## Migration0061 — personal saved-view kind (local0.68 coding candidate)
 
@@ -6999,11 +6999,11 @@ COMMIT;
 
 ## Migration0072 — advisor-led option trials (local0.80 coding candidate)
 
-`0072_ai_option_trials.sql` SHA256 `cdf1e2936d220d8f612d30f823425ddab05a9dc2622085915f653e1422b12ebf`. Schema72 adds immutable tenant-fenced advisor-led trials tied to an exact opportunity/solution catalogue edition. A trial lasts1–28days and uses either one exact governed Evidence revision or the fixed synthetic sample; database checks reject any other data shape and application disclosure rechecks current source authority. No update grant exists, so a trial cannot be extended. All0001–0071 remain byte-exact. Candidate is untested, unmerged and undeployed.
+`0072_ai_option_trials.sql` SHA256 `a8c2d4eebedba3a452609279a1e726bc77e1b387515dcd4673f4e7baeb68585d`. Schema72 adds immutable tenant-fenced advisor-led trials tied to an exact opportunity/solution catalogue edition. A trial lasts1–28days and uses either one exact governed Evidence revision or the fixed synthetic sample; database checks reject any other data shape and application disclosure rechecks current source authority. No update grant exists, so a trial cannot be extended. All0001–0071 remain byte-exact. Candidate is untested, unmerged and undeployed.
 
 | Migration | SHA-256 |
 | --- | --- |
-| 0072_ai_option_trials.sql | cdf1e2936d220d8f612d30f823425ddab05a9dc2622085915f653e1422b12ebf |
+| 0072_ai_option_trials.sql | a8c2d4eebedba3a452609279a1e726bc77e1b387515dcd4673f4e7baeb68585d |
 
 
 ## Migration0073 — opportunity-bound trial results (local0.81 coding candidate)
@@ -7053,11 +7053,11 @@ COMMIT;
 
 ## Migration0081 — bounded AI advisory-job execution (local0.97 coding candidate)
 
-`0081_ai_advisory_job_execution.sql` SHA256 `ef5e0f1f6ea9ff666d5659ddb40e4c388d15c865e1dffce69b9d63b8514d42b4`. Schema81 adds worker-owned attempt/deadline metadata, immutable terminal outputs and a restricted due-tenant enumerator. A successful output is complete and labelled `Advisory draft`; every timed-out, cancelled or failed output is incomplete, labelled `Incomplete draft`, and cannot be represented as publishable final. Budget reservations settle with non-negative actual units. All0001–0080 remain byte-exact. Candidate is untested, unmerged and undeployed.
+`0081_ai_advisory_job_execution.sql` SHA256 `d29371b82ca36860edbe34d0905d22da44c756563c43c40b9ef34c573b64dbd9`. Schema81 adds worker-owned attempt/deadline metadata, immutable terminal outputs and a restricted due-tenant enumerator. A successful output is complete and labelled `Advisory draft`; every timed-out, cancelled or failed output is incomplete, labelled `Incomplete draft`, and cannot be represented as publishable final. Budget reservations settle with non-negative actual units. All0001–0080 remain byte-exact. Candidate is untested, unmerged and undeployed.
 
 | Migration | SHA-256 |
 | --- | --- |
-| 0081_ai_advisory_job_execution.sql | ef5e0f1f6ea9ff666d5659ddb40e4c388d15c865e1dffce69b9d63b8514d42b4 |
+| 0081_ai_advisory_job_execution.sql | d29371b82ca36860edbe34d0905d22da44c756563c43c40b9ef34c573b64dbd9 |
 
 
 ## Migration0082 — versioned forecast scenarios (local0.98 coding candidate)
@@ -7165,3 +7165,22 @@ COMMIT;
 | Migration | SHA256 |
 |---|---|
 | 0094_dashboard_pivot_jobs.sql | efab89e3c3533acd1618d5f90e1d6e9c0850cdc81a3ca09f067112a4f69b9744 |
+
+
+## Migration0095 — exact current access profile registration (qualification repair)
+
+`0095_current_access_profile.sql` SHA256 `7994aff3f895cb39dc4fad137b17edda8c25919ca6db4744c5644c0e8c40fce5`. Schema95 registers the exact generated current access-profile manifest and fingerprint for governed bootstrap and upgrade selection. Registration does not activate the profile or widen an existing tenant automatically. All0001–0047 remain byte-exact; the previously unqualified0048–0051 profile registrations were converted to the required static, independently verifiable seed shape. Candidate is under local qualification, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0095_current_access_profile.sql | 7994aff3f895cb39dc4fad137b17edda8c25919ca6db4744c5644c0e8c40fce5 |
+
+## Restored migration ledger entries discovered during qualification
+
+These already-present coding candidates were missing from the checksum table. Recording them does not claim qualification, merge or deployment.
+
+| Migration | SHA256 |
+|---|---|
+| 0075_permission_safe_derivatives.sql | 74b8179d26a627d61207d0bae98d4708e94b1358264978fe8fd4677cdb588f68 |
+| 0076_versioned_external_shares.sql | 74ebd669443a17ef62414c8750e91d725b1eff3a4a7157779a420f8197724890 |
+| 0077_access_change_propagation.sql | 153559e2abe337b5990c46807cc5891192716b6de9d1d8f7f3f0fd551475c0da |

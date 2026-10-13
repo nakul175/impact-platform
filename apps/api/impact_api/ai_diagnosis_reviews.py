@@ -41,7 +41,15 @@ def operation(c, ctx, name, body, fingerprint, now):
 def save_operation(c, ctx, name, body, fingerprint, outcome, now):
     c.execute(
         "INSERT INTO impact.operation_receipt VALUES(%s,%s,%s,%s,%s,'SUCCEEDED',%s,%s)",
-        (ctx.tenant_id, ctx.principal_id, name, body["operation_id"], fingerprint, Jsonb(outcome), now + timedelta(days=7)),
+        (
+            ctx.tenant_id,
+            ctx.principal_id,
+            name,
+            body["operation_id"],
+            fingerprint,
+            Jsonb(outcome),
+            now + timedelta(days=7),
+        ),
     )
 
 
@@ -77,11 +85,41 @@ class AIDiagnosisReviews:
     def result(row):
         events = row.get("events") or []
         validated = any(item["kind"] == "VALIDATED" for item in events)
-        status = "PREVIOUS_REVISION_VALIDATED" if validated and str(row["head_revision"]) != str(row["diagnosis_revision"]) else "VALIDATED" if validated else "IN_REVIEW" if events else "QUEUED"
-        return {"review_id": str(row["review_id"]), "diagnosis_id": str(row["diagnosis_id"]), "diagnosis_revision": str(row["diagnosis_revision"]), "advisor_membership_id": str(row["advisor_membership_id"]), "requested_at": row["requested_at"].isoformat(), "status": status, "events": [{**item, "event_id": str(item["event_id"]), "actor_id": str(item["actor_id"]), "recorded_at": item["recorded_at"].isoformat() if hasattr(item["recorded_at"], "isoformat") else item["recorded_at"]} for item in events]}
+        status = (
+            "PREVIOUS_REVISION_VALIDATED"
+            if validated and str(row["head_revision"]) != str(row["diagnosis_revision"])
+            else "VALIDATED"
+            if validated
+            else "IN_REVIEW"
+            if events
+            else "QUEUED"
+        )
+        return {
+            "review_id": str(row["review_id"]),
+            "diagnosis_id": str(row["diagnosis_id"]),
+            "diagnosis_revision": str(row["diagnosis_revision"]),
+            "advisor_membership_id": str(row["advisor_membership_id"]),
+            "requested_at": row["requested_at"].isoformat(),
+            "status": status,
+            "events": [
+                {
+                    **item,
+                    "event_id": str(item["event_id"]),
+                    "actor_id": str(item["actor_id"]),
+                    "recorded_at": item["recorded_at"].isoformat()
+                    if hasattr(item["recorded_at"], "isoformat")
+                    else item["recorded_at"],
+                }
+                for item in events
+            ],
+        }
 
     def request(self, identity, tenant, diagnosis_id, body, correlation):
-        if not isinstance(body, dict) or set(body) != {"operation_id", "expected_diagnosis_revision", "advisor_membership_id"}:
+        if not isinstance(body, dict) or set(body) != {
+            "operation_id",
+            "expected_diagnosis_revision",
+            "advisor_membership_id",
+        }:
             invalid()
         for key in body:
             uid(body[key])
@@ -111,16 +149,40 @@ class AIDiagnosisReviews:
                 "UNION SELECT DISTINCT impact.member_natural_identity(%s,x.contributor_principal_id) FROM impact.ai_diagnosis_contribution x JOIN impact.ai_diagnosis_contribution_decision d ON d.tenant_id=x.tenant_id AND d.contribution_id=x.contribution_id WHERE x.tenant_id=%s AND x.diagnosis_id=%s AND d.decision='ACCEPTED'",
                 (tenant, tenant, diagnosis_id, tenant, tenant, diagnosis_id),
             ).fetchall()
-            if str(advisor["natural_id"]) in {str(row["natural_id"]) for row in material if row["natural_id"]}:
+            if str(advisor["natural_id"]) in {
+                str(row["natural_id"]) for row in material if row["natural_id"]
+            }:
                 raise DomainError("POLICY_DENIED", 403, reason="ADVISOR_INDEPENDENCE_REQUIRED")
             review_id = str(uuid4())
             c.execute(
                 "INSERT INTO impact.ai_diagnosis_review_request(tenant_id,review_id,diagnosis_id,diagnosis_revision,requester_principal_id,requester_membership_id,advisor_principal_id,advisor_membership_id,advisor_natural_identity_id,requested_at) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                (tenant, review_id, diagnosis_id, diagnosis["head_revision"], ctx.principal_id, ctx.membership_id, advisor["principal_id"], advisor["membership_id"], advisor["natural_id"], now),
+                (
+                    tenant,
+                    review_id,
+                    diagnosis_id,
+                    diagnosis["head_revision"],
+                    ctx.principal_id,
+                    ctx.membership_id,
+                    advisor["principal_id"],
+                    advisor["membership_id"],
+                    advisor["natural_id"],
+                    now,
+                ),
             )
             row = self.rows(c, tenant, "r.review_id=%s", [review_id])[0]
             result = self.result(row)
-            audit(c, ctx, name, {"object_id": diagnosis_id, "revision_id": str(diagnosis["head_revision"]), "business_state": "Completed", "saved_at": now.isoformat()}, correlation)
+            audit(
+                c,
+                ctx,
+                name,
+                {
+                    "object_id": diagnosis_id,
+                    "revision_id": str(diagnosis["head_revision"]),
+                    "business_state": "Completed",
+                    "saved_at": now.isoformat(),
+                },
+                correlation,
+            )
             save_operation(c, ctx, name, body, fingerprint, result, now)
             return result
 
@@ -131,7 +193,11 @@ class AIDiagnosisReviews:
             authorize(c, ctx, "list_ai_diagnosis_reviews", hidden=True)
             diagnosis = load(c, ctx, diagnosis_id, KIND, "ai.diagnosis.read")
             self.diagnoses.check_evidence(c, identity, tenant, diagnosis["payload"])
-            return {"items": [self.result(row) for row in self.rows(c, tenant, "r.diagnosis_id=%s", [diagnosis_id])]}
+            return {
+                "items": [
+                    self.result(row) for row in self.rows(c, tenant, "r.diagnosis_id=%s", [diagnosis_id])
+                ]
+            }
 
     def queue(self, identity, tenant):
         with self.service.db.transaction(tenant) as c:
@@ -140,7 +206,9 @@ class AIDiagnosisReviews:
             rows = self.rows(c, tenant, "r.advisor_principal_id=%s", [ctx.principal_id])
             visible = []
             for row in rows:
-                payload = self.diagnoses.revision(c, tenant, str(row["diagnosis_id"]), str(row["diagnosis_revision"]))
+                payload = self.diagnoses.revision(
+                    c, tenant, str(row["diagnosis_id"]), str(row["diagnosis_revision"])
+                )
                 self.diagnoses.check_evidence(c, identity, tenant, payload)
                 visible.append(self.result(row))
             return {"items": visible}
@@ -150,19 +218,31 @@ class AIDiagnosisReviews:
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
             authorize(c, ctx, "get_ai_diagnosis_review", hidden=True)
-            rows = self.rows(c, tenant, "r.review_id=%s AND r.advisor_principal_id=%s", [review_id, ctx.principal_id])
+            rows = self.rows(
+                c, tenant, "r.review_id=%s AND r.advisor_principal_id=%s", [review_id, ctx.principal_id]
+            )
             if not rows:
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
             return self.result(rows[0])
 
     def act(self, identity, tenant, review_id, body, correlation, kind):
-        required = {"operation_id", "expected_diagnosis_revision"} | ({"comment"} if kind == "COMMENTED" else set())
+        required = {"operation_id", "expected_diagnosis_revision"} | (
+            {"comment"} if kind == "COMMENTED" else set()
+        )
         if not isinstance(body, dict) or set(body) != required:
             invalid()
-        uid(review_id); uid(body["operation_id"]); uid(body["expected_diagnosis_revision"])
-        if kind == "COMMENTED" and (not isinstance(body["comment"], str) or not body["comment"].strip() or len(body["comment"]) > 4000):
+        uid(review_id)
+        uid(body["operation_id"])
+        uid(body["expected_diagnosis_revision"])
+        if kind == "COMMENTED" and (
+            not isinstance(body["comment"], str) or not body["comment"].strip() or len(body["comment"]) > 4000
+        ):
             invalid()
-        name = {"STARTED": "start_ai_diagnosis_review", "COMMENTED": "comment_ai_diagnosis_review", "VALIDATED": "validate_ai_diagnosis_review"}[kind]
+        name = {
+            "STARTED": "start_ai_diagnosis_review",
+            "COMMENTED": "comment_ai_diagnosis_review",
+            "VALIDATED": "validate_ai_diagnosis_review",
+        }[kind]
         fingerprint = hash_data([name, review_id, body])
         with self.service.db.transaction(tenant) as c:
             c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
@@ -171,14 +251,23 @@ class AIDiagnosisReviews:
             c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,1))", (body["operation_id"],))
             now = c.execute("SELECT statement_timestamp() AS now").fetchone()["now"]
             old = operation(c, ctx, name, body, fingerprint, now)
-            rows = self.rows(c, tenant, "r.review_id=%s AND r.advisor_principal_id=%s", [review_id, ctx.principal_id])
+            rows = self.rows(
+                c, tenant, "r.review_id=%s AND r.advisor_principal_id=%s", [review_id, ctx.principal_id]
+            )
             if not rows:
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
             row = rows[0]
             advisor = self.advisor(c, tenant, str(row["advisor_membership_id"]))
-            if not advisor or str(advisor["principal_id"]) != str(ctx.principal_id) or str(advisor["natural_id"]) != str(row["advisor_natural_identity_id"]):
+            if (
+                not advisor
+                or str(advisor["principal_id"]) != str(ctx.principal_id)
+                or str(advisor["natural_id"]) != str(row["advisor_natural_identity_id"])
+            ):
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
-            if str(row["diagnosis_revision"]) != body["expected_diagnosis_revision"] or str(row["head_revision"]) != body["expected_diagnosis_revision"]:
+            if (
+                str(row["diagnosis_revision"]) != body["expected_diagnosis_revision"]
+                or str(row["head_revision"]) != body["expected_diagnosis_revision"]
+            ):
                 raise DomainError("CONFLICT_VERSION", 409)
             if old:
                 return old
@@ -187,8 +276,32 @@ class AIDiagnosisReviews:
                 raise DomainError("STATE_TRANSITION_DENIED", 409)
             if kind == "VALIDATED" and not any(item["kind"] == "STARTED" for item in existing):
                 raise DomainError("POLICY_DENIED", 403, reason="ADVISOR_REVIEW_REQUIRED")
-            c.execute("INSERT INTO impact.ai_diagnosis_review_event VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", (tenant, str(uuid4()), review_id, kind, body.get("comment"), ctx.principal_id, ctx.membership_id, row["advisor_natural_identity_id"], now))
+            c.execute(
+                "INSERT INTO impact.ai_diagnosis_review_event VALUES(%s,%s,%s,%s,%s,%s,%s,%s)",
+                (
+                    tenant,
+                    str(uuid4()),
+                    review_id,
+                    kind,
+                    body.get("comment"),
+                    ctx.principal_id,
+                    ctx.membership_id,
+                    row["advisor_natural_identity_id"],
+                    now,
+                ),
+            )
             result = self.result(self.rows(c, tenant, "r.review_id=%s", [review_id])[0])
-            audit(c, ctx, name, {"object_id": str(row["diagnosis_id"]), "revision_id": str(row["diagnosis_revision"]), "business_state": result["status"], "saved_at": now.isoformat()}, correlation)
+            audit(
+                c,
+                ctx,
+                name,
+                {
+                    "object_id": str(row["diagnosis_id"]),
+                    "revision_id": str(row["diagnosis_revision"]),
+                    "business_state": result["status"],
+                    "saved_at": now.isoformat(),
+                },
+                correlation,
+            )
             save_operation(c, ctx, name, body, fingerprint, result, now)
             return result

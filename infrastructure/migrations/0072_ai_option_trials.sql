@@ -10,7 +10,7 @@ CREATE TABLE impact.ai_option_trial(
  evidence_object_id uuid, evidence_revision_id uuid,
  sample_id varchar(64), success_criteria text NOT NULL CHECK(length(success_criteria)>0),
  advisor_principal_id uuid NOT NULL, advisor_membership_id uuid NOT NULL,
- advisor_natural_identity_id uuid NOT NULL REFERENCES impact.natural_person,
+ advisor_natural_identity_id uuid NOT NULL,
  created_at timestamptz NOT NULL,
  PRIMARY KEY(tenant_id,trial_id),
  FOREIGN KEY(tenant_id,evidence_object_id) REFERENCES impact.object_registry(tenant_id,object_id),

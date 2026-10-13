@@ -39,7 +39,7 @@ RETURNS TABLE(tenant_id uuid,due_jobs bigint)
 LANGUAGE sql SECURITY DEFINER SET search_path=pg_catalog,impact
 AS $$
  SELECT j.tenant_id,count(*)
- FROM impact.job j JOIN impact.tenant t ON t.tenant_id=j.tenant_id
+ FROM impact.job j JOIN impact.tenant_root t ON t.tenant_id=j.tenant_id
  WHERE t.lifecycle_state='Active' AND j.job_class='AI_ADVISORY'
    AND ((j.state='Queued' AND j.cancellation_requested_at IS NULL)
      OR (j.state='Running' AND j.lease_expires_at<=at))

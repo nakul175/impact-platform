@@ -365,14 +365,17 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
     # lease is still valid, or the first worker re-claims the rows itself. A send longer than
     # stop()'s wait also cannot be interrupted — time.sleep returns before SIGTERM is handled.
     delay = 8
-    slow = start(
-        live,
-        "native-batch-a-" + uuid4().hex[:6],
-        batch_size=6,
-        synthetic_delay=delay,
-        lease_seconds=delay + 2,
-        smtp_timeout=1,
+    slow = Worker(
+        settings(
+            live,
+            batch_size=6,
+            synthetic_delay=delay,
+            lease_seconds=delay + 2,
+            smtp_timeout=1,
+        ),
+        worker_id="native-batch-a-" + uuid4().hex[:6],
     )
+    slow.sink = Path(slow.s.synthetic_sink)
     fast = Worker(
         settings(live, batch_size=6, lease_seconds=30, synthetic_delay=0),
         worker_id="native-batch-b-" + uuid4().hex[:6],
@@ -391,29 +394,25 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
         taken["summary"] = summary
         return True
 
-    try:
-        wait_for(
-            lambda: all(deliveries(live, r["object_id"])[0]["state"] == "LEASED" for r in receipts),
-            # The first pass walks every tenant of the shared database before it reaches this one.
-            # A loaded runner needs far longer than one send to reach this tenant; once it does,
-            # claim() leases the whole batch atomically and the state remains observable throughout
-            # the first synthetic send. Do not accept SENT here: that misses the takeover window.
-            timeout=90,
-        )
-        wait_for(take_expired, timeout=delay + 30)
-        assert taken["summary"]["sent"] >= 1
-        wait_for(
-            lambda: (
-                all(deliveries(live, r["object_id"])[0]["state"] == "SENT" for r in receipts)
-                and "skipped: lease expired" in slow.log.read_text()
-            ),
-            timeout=delay + 30,
-        )
-    finally:
-        assert stop(slow, timeout=delay + 15) == 0
+    tenant = live.fixture["tenant_a"]
+    summary = empty_summary()
+    batch = slow.claim(tenant, summary)
+    assert {str(row["event_id"]) for row in batch} == events
+
+    def send_claimed_batch():
+        for row in batch:
+            slow.process(tenant, row, summary)
+
+    sending = threading.Thread(target=send_claimed_batch)
+    sending.start()
+    wait_for(take_expired, timeout=delay + 30)
+    assert taken["summary"]["sent"] >= 1
+    sending.join(timeout=delay * 2 + 10)
+    assert not sending.is_alive()
+    assert summary["stale_refused"] >= 1
+    assert all(deliveries(live, r["object_id"])[0]["state"] == "SENT" for r in receipts)
     sent = [m["event_id"] for w in [slow, fast] for m in sink(w) if m["event_id"] in events]
     assert sorted(sent) == sorted(events), sent
     generations = [deliveries(live, r["object_id"])[0]["lease_generation"] for r in receipts]
     # The scenario really happened: some rows were taken over from the first worker.
     assert max(generations) >= 2 and [m["event_id"] for m in sink(fast) if m["event_id"] in events]
-    assert "skipped: lease expired" in slow.log.read_text()

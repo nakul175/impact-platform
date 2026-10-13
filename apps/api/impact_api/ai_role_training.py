@@ -176,9 +176,7 @@ class AIRoleTraining:
                 return old["outcome"]
             if str(plan["head_revision"]) != body["expected_plan_revision"]:
                 raise DomainError("CONFLICT_VERSION", 409)
-            completed = _completed(
-                c, ctx, plan_id, attestation["attestation_id"], body["solution_id"]
-            )
+            completed = _completed(c, ctx, plan_id, attestation["attestation_id"], body["solution_id"])
             if module_key in completed:
                 outcome = _result(plan_id, plan["head_revision"], attestation, completed)
             else:
@@ -202,9 +200,7 @@ class AIRoleTraining:
                 )
                 receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
                 audit(c, ctx, operation, receipt, correlation)
-                completed = _completed(
-                    c, ctx, plan_id, attestation["attestation_id"], body["solution_id"]
-                )
+                completed = _completed(c, ctx, plan_id, attestation["attestation_id"], body["solution_id"])
                 outcome = _result(plan_id, plan["head_revision"], attestation, completed)
             c.execute(
                 "INSERT INTO impact.operation_receipt VALUES(%s,%s,%s,%s,%s,'SUCCEEDED',%s,%s)",

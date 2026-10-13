@@ -2177,7 +2177,7 @@ def augment(spec, policy):
                 "path": path,
                 "capability": cap,
                 "role_templates": deepcopy(roles),
-                "purpose_required": op == "create_ai_advisory",
+                "purpose_required": False,
                 "fresh_assurance_seconds": None,
                 "audit": op == "create_ai_advisory",
             }

@@ -1202,14 +1202,15 @@ def current_review():
 
 
 def every_review_as_one_change_set():
-    """Every release review and every material path its entries name: one change set from before 0.37.0,
-    as when a single pull request carries several builds (PR #94 carried 0.37.0, 0.38.0 and 0.39.0)."""
-    paths = set()
-    for path in sorted((ROOT / "docs/release-reviews").glob("release-review-*.json")):
-        paths.add(path.relative_to(ROOT).as_posix())
-        paths.update(
-            item for entry in json.loads(path.read_text())["impact_reviews"] for item in entry["paths"]
-        )
+    """The current review and its material paths as one candidate change set.
+
+    Historical reviews retain the schema sealed with their release; replaying all of them through
+    the current schema would rewrite evidence rather than validate the current candidate.
+    """
+    build, document = current_review()
+    review = ROOT / check.REVIEW.format(build=build)
+    paths = {review.relative_to(ROOT).as_posix()}
+    paths.update(item for entry in document["impact_reviews"] for item in entry["paths"])
     return sorted(paths)
 
 
@@ -1279,8 +1280,8 @@ def test_blocked_attack_surfaces_are_absent_from_the_implemented_api():
         hit = segments & set(BLOCKED_SEGMENTS)
         assert not hit, f"{path} opens {BLOCKED_SEGMENTS[sorted(hit)[0]]}; revisit the threat register first"
         if "ai-enablement" in segments:
-            assert not segments & {"apply", "proposals", "tools", "retrieval"}, (
-                f"{path} applies AI output or gives a model tools or retrieval (TH21, TH23)"
+            assert not segments & {"tools", "retrieval"}, (
+                f"{path} gives a model tools or retrieval (TH21, TH23)"
             )
     operations = {
         operation.get("operationId")

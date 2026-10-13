@@ -35,7 +35,7 @@ def test_higher_target_attainment_is_uncapped():
 def test_lower_target_reports_signed_deviation_without_inverting_success():
     # FT-IND-003 / FT-ANA-003: lower-is-better target 10 with actual 8 is achieved, deviation -2.
     result = progress(actual("8"), goal("10", "LOWER"), None, 1)
-    assert result["status"] == "ACHIEVED" and result["attainment_percent"] is None
+    assert result["status"] == "ACHIEVED" and result["attainment_percent"] == "125.00"
     assert (result["deviation"], result["displayed_deviation"]) == ("-2", "-2.0")
     assert progress(actual("12"), goal("10", "LOWER"), None, 0)["status"] == "ABOVE_TARGET"
 

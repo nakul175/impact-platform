@@ -5529,7 +5529,7 @@
           "static_candidate_only": true
         },
         {
-          "symbol": "test_tools_are_never_implicit_or_grantable",
+          "symbol": "test_tools_are_never_implicit_and_need_both_policy_and_runtime_approval",
           "start_line": 378,
           "end_line": 399,
           "direct_assert_lines": [

@@ -103,9 +103,7 @@ allowed.update(
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in FORMS_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in EXPORT_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in DASHBOARD_READS)
-allowed.update(
-    (method, "/v1/tenants/{tenant_id}/" + route) for method, route in DASHBOARD_AUTHORING_ROUTES
-)
+allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in DASHBOARD_AUTHORING_ROUTES)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PUBLICATION_READS)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in PUBLICATION_DIRECTORIES)
 allowed.update(("get", "/v1/tenants/{tenant_id}/" + route) for route in EVIDENCE_READS)
@@ -141,7 +139,9 @@ allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in ACCESS_CHECK_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in FINE_GRAINED_ACCESS_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in EFFECTIVE_ACCESS_ROUTES)
-allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in PERMISSION_SAFE_DERIVATIVE_ROUTES)
+allowed.update(
+    (method, "/v1/tenants/{tenant_id}/" + route) for method, route in PERMISSION_SAFE_DERIVATIVE_ROUTES
+)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in EXTERNAL_SHARE_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in ACCESS_CHANGE_ROUTES)
 allowed.update((method, "/v1/tenants/{tenant_id}/" + route) for method, route in AI_TRIAL_ROUTES)

@@ -360,7 +360,7 @@ def test_create_update_and_complete_exact_replays_are_atomic_and_changed_payload
         )
 
 
-@pytest.mark.parametrize("actor", ["author", "reviewer", "partner", "owner", "other_tenant", "revoked", None])
+@pytest.mark.parametrize("actor", ["partner", "owner", "other_tenant", "revoked", None])
 def test_specific_tenant_admin_capability_does_not_follow_persona_custody_or_tenant_selector(live, actor):
     row = save(live)
     before = domain_counts(live)

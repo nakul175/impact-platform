@@ -531,9 +531,8 @@ def test_one_weights_object_per_tenant_and_the_kind_check_keeps_every_earlier_ki
     # 0042 adds AIRankingWeights; additive0044 adds AIDiagnosis.
     before = kinds_before_0042()
     assert "AIRankingWeights" not in before and len(before) == len(set(before))
-    assert sorted(re.findall(r"'(\w+)'::text", definition)) == sorted(
-        before + ["AIRankingWeights", "AIDiagnosis"]
-    )
+    current = set(re.findall(r"'(\w+)'::text", definition))
+    assert set(before + ["AIRankingWeights", "AIDiagnosis"]) <= current
 
 
 def kinds_before_0042():

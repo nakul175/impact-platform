@@ -137,7 +137,9 @@ class AIDiagnosisContributions:
             authorize(c, ctx, "list_ai_diagnosis_contributor_invitations", hidden=True)
             diagnosis = load(c, ctx, diagnosis_id, KIND, "ai.diagnosis.read")
             self.diagnoses.check_evidence(c, identity, tenant, diagnosis["payload"])
-            return {"items": [_assignment_result(row) for row in self._invitation_rows(c, tenant, diagnosis_id)]}
+            return {
+                "items": [_assignment_result(row) for row in self._invitation_rows(c, tenant, diagnosis_id)]
+            }
 
     def list_contributions(self, identity, tenant, diagnosis_id):
         _uuid(diagnosis_id)
@@ -157,7 +159,14 @@ class AIDiagnosisContributions:
             return {"items": [_contribution_result(row) for row in rows]}
 
     def create_invitation(self, identity, tenant, diagnosis_id, body, correlation):
-        required = {"operation_id", "expected_diagnosis_revision", "member_invitation_id", "contribution_role", "problem_ids", "sections"}
+        required = {
+            "operation_id",
+            "expected_diagnosis_revision",
+            "member_invitation_id",
+            "contribution_role",
+            "problem_ids",
+            "sections",
+        }
         if not isinstance(body, dict) or set(body) != required:
             _invalid()
         for field in ("operation_id", "expected_diagnosis_revision", "member_invitation_id"):
@@ -173,7 +182,11 @@ class AIDiagnosisContributions:
             or set(sections) - ROLES[role]
         ):
             _invalid("DIAGNOSIS_CONTRIBUTION_SCOPE_INVALID")
-        if not isinstance(problems, list) or not 1 <= len(problems) <= 20 or len(set(problems)) != len(problems):
+        if (
+            not isinstance(problems, list)
+            or not 1 <= len(problems) <= 20
+            or len(set(problems)) != len(problems)
+        ):
             _invalid()
         for value in problems:
             _uuid(value)
@@ -211,21 +224,45 @@ class AIDiagnosisContributions:
                 "(tenant_id,assignment_id,diagnosis_id,diagnosis_revision,member_invitation_id,"
                 "contribution_role,problem_ids,sections,inviter_id,created_at) "
                 "VALUES(%s,%s,%s,%s,%s,%s,%s::uuid[],%s::text[],%s,%s)",
-                (tenant, assignment, diagnosis_id, diagnosis["head_revision"], body["member_invitation_id"], role, problems, sections, ctx.principal_id, now),
+                (
+                    tenant,
+                    assignment,
+                    diagnosis_id,
+                    diagnosis["head_revision"],
+                    body["member_invitation_id"],
+                    role,
+                    problems,
+                    sections,
+                    ctx.principal_id,
+                    now,
+                ),
             )
-            result = _assignment_result({
-                "assignment_id": assignment,
-                "diagnosis_id": diagnosis_id,
-                "diagnosis_revision": diagnosis["head_revision"],
-                "member_invitation_id": body["member_invitation_id"],
-                "contribution_role": role,
-                "problem_ids": problems,
-                "sections": sections,
-                "created_at": now,
-                **invitation,
-                "delivery": None,
-            })
-            audit(c, ctx, operation, {"object_id": diagnosis_id, "revision_id": str(diagnosis["head_revision"]), "business_state": "Draft", "saved_at": now.isoformat()}, correlation)
+            result = _assignment_result(
+                {
+                    "assignment_id": assignment,
+                    "diagnosis_id": diagnosis_id,
+                    "diagnosis_revision": diagnosis["head_revision"],
+                    "member_invitation_id": body["member_invitation_id"],
+                    "contribution_role": role,
+                    "problem_ids": problems,
+                    "sections": sections,
+                    "created_at": now,
+                    **invitation,
+                    "delivery": None,
+                }
+            )
+            audit(
+                c,
+                ctx,
+                operation,
+                {
+                    "object_id": diagnosis_id,
+                    "revision_id": str(diagnosis["head_revision"]),
+                    "business_state": "Draft",
+                    "saved_at": now.isoformat(),
+                },
+                correlation,
+            )
             _record_operation(c, ctx, operation, body, fingerprint, result, now)
             return result
 
@@ -244,13 +281,24 @@ class AIDiagnosisContributions:
                 _invalid()
             problem_id = _uuid(update["problem_id"])
             fields = update["fields"]
-            if problem_id not in allowed_problems or problem_id in seen or not isinstance(fields, dict) or not fields:
+            if (
+                problem_id not in allowed_problems
+                or problem_id in seen
+                or not isinstance(fields, dict)
+                or not fields
+            ):
                 _invalid("DIAGNOSIS_CONTRIBUTION_SCOPE_INVALID")
-            if set(fields) - set(FIELD_SECTION) or any(FIELD_SECTION[field] not in sections for field in fields):
+            if set(fields) - set(FIELD_SECTION) or any(
+                FIELD_SECTION[field] not in sections for field in fields
+            ):
                 _invalid("DIAGNOSIS_CONTRIBUTION_SCOPE_INVALID")
             seen.add(problem_id)
         if order is not None:
-            if "PRIORITY_ORDER" not in sections or not isinstance(order, list) or len(set(order)) != len(order):
+            if (
+                "PRIORITY_ORDER" not in sections
+                or not isinstance(order, list)
+                or len(set(order)) != len(order)
+            ):
                 _invalid("DIAGNOSIS_CONTRIBUTION_SCOPE_INVALID")
             if set(order) != {item["problem_id"] for item in diagnosis["problems"]}:
                 _invalid("DIAGNOSIS_CONTRIBUTION_SCOPE_INVALID")
@@ -287,7 +335,12 @@ class AIDiagnosisContributions:
                 "WHERE a.tenant_id=%s AND a.assignment_id=%s AND a.diagnosis_id=%s",
                 (tenant, body["assignment_id"], diagnosis_id),
             ).fetchone()
-            if not assignment or not assignment["consumed_at"] or assignment["revoked_at"] or str(assignment["accepted_membership_id"]) != ctx.membership_id:
+            if (
+                not assignment
+                or not assignment["consumed_at"]
+                or assignment["revoked_at"]
+                or str(assignment["accepted_membership_id"]) != ctx.membership_id
+            ):
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
             self._validate_patch(body["patch"], assignment, diagnosis["payload"])
             proposed = deepcopy(diagnosis["payload"])
@@ -300,19 +353,42 @@ class AIDiagnosisContributions:
                 "(tenant_id,contribution_id,assignment_id,diagnosis_id,base_revision,"
                 "contributor_principal_id,contributor_membership_id,patch,submitted_at) "
                 "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                (tenant, contribution_id, body["assignment_id"], diagnosis_id, diagnosis["head_revision"], ctx.principal_id, ctx.membership_id, Jsonb(body["patch"]), now),
+                (
+                    tenant,
+                    contribution_id,
+                    body["assignment_id"],
+                    diagnosis_id,
+                    diagnosis["head_revision"],
+                    ctx.principal_id,
+                    ctx.membership_id,
+                    Jsonb(body["patch"]),
+                    now,
+                ),
             )
-            result = _contribution_result({
-                "contribution_id": contribution_id,
-                "assignment_id": body["assignment_id"],
-                "diagnosis_id": diagnosis_id,
-                "base_revision": diagnosis["head_revision"],
-                "contribution_role": assignment["contribution_role"],
-                "patch": body["patch"],
-                "submitted_at": now,
-                "decision": None,
-            })
-            audit(c, ctx, operation, {"object_id": diagnosis_id, "revision_id": str(diagnosis["head_revision"]), "business_state": "Draft", "saved_at": now.isoformat()}, correlation)
+            result = _contribution_result(
+                {
+                    "contribution_id": contribution_id,
+                    "assignment_id": body["assignment_id"],
+                    "diagnosis_id": diagnosis_id,
+                    "base_revision": diagnosis["head_revision"],
+                    "contribution_role": assignment["contribution_role"],
+                    "patch": body["patch"],
+                    "submitted_at": now,
+                    "decision": None,
+                }
+            )
+            audit(
+                c,
+                ctx,
+                operation,
+                {
+                    "object_id": diagnosis_id,
+                    "revision_id": str(diagnosis["head_revision"]),
+                    "business_state": "Draft",
+                    "saved_at": now.isoformat(),
+                },
+                correlation,
+            )
             _record_operation(c, ctx, operation, body, fingerprint, result, now)
             return result
 
@@ -325,13 +401,17 @@ class AIDiagnosisContributions:
             payload["priority_order"] = list(patch["priority_order"])
 
     def decide(self, identity, tenant, diagnosis_id, contribution_id, body, correlation, decision):
-        required = {"operation_id", "expected_diagnosis_revision"} | ({"reason"} if decision == "REJECTED" else set())
+        required = {"operation_id", "expected_diagnosis_revision"} | (
+            {"reason"} if decision == "REJECTED" else set()
+        )
         if not isinstance(body, dict) or set(body) != required:
             _invalid()
         for field in ("operation_id", "expected_diagnosis_revision"):
             _uuid(body[field])
         _uuid(contribution_id)
-        if decision == "REJECTED" and (not isinstance(body["reason"], str) or not body["reason"].strip() or len(body["reason"]) > 1000):
+        if decision == "REJECTED" and (
+            not isinstance(body["reason"], str) or not body["reason"].strip() or len(body["reason"]) > 1000
+        ):
             _invalid()
         operation = ("accept" if decision == "ACCEPTED" else "reject") + "_ai_diagnosis_contribution"
         fingerprint = hash_data([operation, diagnosis_id, contribution_id, body])
@@ -374,7 +454,17 @@ class AIDiagnosisContributions:
                 "INSERT INTO impact.ai_diagnosis_contribution_decision "
                 "(tenant_id,contribution_id,decision,reason,diagnosis_id,diagnosis_before_revision,"
                 "diagnosis_after_revision,decided_by,decided_at) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                (tenant, contribution_id, decision, body.get("reason"), diagnosis_id, diagnosis["head_revision"], after, ctx.principal_id, now),
+                (
+                    tenant,
+                    contribution_id,
+                    decision,
+                    body.get("reason"),
+                    diagnosis_id,
+                    diagnosis["head_revision"],
+                    after,
+                    ctx.principal_id,
+                    now,
+                ),
             )
             result = {
                 "operation_id": body["operation_id"],
@@ -384,6 +474,17 @@ class AIDiagnosisContributions:
                 "diagnosis_revision": str(after),
                 "saved_at": now.isoformat(),
             }
-            audit(c, ctx, operation, {"object_id": diagnosis_id, "revision_id": str(after), "business_state": "Draft", "saved_at": now.isoformat()}, correlation)
+            audit(
+                c,
+                ctx,
+                operation,
+                {
+                    "object_id": diagnosis_id,
+                    "revision_id": str(after),
+                    "business_state": "Draft",
+                    "saved_at": now.isoformat(),
+                },
+                correlation,
+            )
             _record_operation(c, ctx, operation, body, fingerprint, result, now)
             return result

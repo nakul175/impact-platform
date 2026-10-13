@@ -58004,7 +58004,7 @@
       "get": {
         "operationId": "get_ai_role_training",
         "summary": "get learner role training",
-        "x-capability": "ai.enablement.read",
+        "x-capability": "ai.training.read",
         "x-contract-version": "1.72.0",
         "parameters": [
           {
@@ -58124,7 +58124,7 @@
       "post": {
         "operationId": "complete_ai_role_training_module",
         "summary": "record learner module completion",
-        "x-capability": "ai.enablement.read",
+        "x-capability": "ai.training.manage",
         "x-contract-version": "1.72.0",
         "parameters": [
           {
@@ -62626,7 +62626,7 @@
       "get": {
         "operationId": "get_ai_outcome_dashboard",
         "summary": "Compare current outcomes with the exact locked baseline",
-        "x-capability": "ai.enablement.read",
+        "x-capability": "ai.outcomes.read",
         "x-contract-version": "1.53.0",
         "responses": {
           "200": {
@@ -63303,7 +63303,7 @@
       "post": {
         "operationId": "rank_mapped_ai_opportunities",
         "summary": "Rank exact mapped opportunities with the organisation weights",
-        "x-capability": "ai.enablement.read",
+        "x-capability": "ai.opportunity-mapping.read",
         "requestBody": {
           "required": true,
           "content": {

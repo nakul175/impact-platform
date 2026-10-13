@@ -79,7 +79,8 @@ export function AIRoleTrainingPanel({
   }, [base, contextKey, canRead, planId, solutionId, request, explain]);
 
   async function complete(key: string, version: string) {
-    if (!training || busy || (pending.current && pending.current.key !== key)) return;
+    if (!training || busy || (pending.current && pending.current.key !== key))
+      return;
     if (!pending.current) {
       pending.current = {
         key,
@@ -145,20 +146,43 @@ export function AIRoleTrainingPanel({
         excluded. Completion is personal progress, not certification.
       </p>
       {!training && !error && <p role="status">Loading role training…</p>}
-      {error && <p className="error" role="alert">{error}</p>}
+      {error && (
+        <p className="error" role="alert">
+          {error}
+        </p>
+      )}
       {pending.current && !busy && (
-        <p role="status">Retry the pending completion before recording another module.</p>
+        <p role="status">
+          Retry the pending completion before recording another module.
+        </p>
       )}
       {training?.modules.map((module) => (
         <article className="ai-learning-step" key={module.key}>
           <h6>{module.title}</h6>
           <p>{module.lesson}</p>
-          <p><strong>Practice:</strong> {module.exercise}</p>
+          <p>
+            <strong>Practice:</strong> {module.exercise}
+          </p>
           {module.completed ? (
-            <p role="status">Completed {module.completed_at ? new Date(module.completed_at).toLocaleString() : ""}</p>
+            <p role="status">
+              Completed{" "}
+              {module.completed_at
+                ? new Date(module.completed_at).toLocaleString()
+                : ""}
+            </p>
           ) : (
-            <button type="button" className="secondary" disabled={Boolean(busy) || Boolean(pending.current && pending.current.key !== module.key)} onClick={() => void complete(module.key, module.version)}>
-              {pending.current?.key === module.key ? "Retry pending completion" : "Record my completion"}
+            <button
+              type="button"
+              className="secondary"
+              disabled={
+                Boolean(busy) ||
+                Boolean(pending.current && pending.current.key !== module.key)
+              }
+              onClick={() => void complete(module.key, module.version)}
+            >
+              {pending.current?.key === module.key
+                ? "Retry pending completion"
+                : "Record my completion"}
             </button>
           )}
         </article>

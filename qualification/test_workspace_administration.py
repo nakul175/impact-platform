@@ -103,7 +103,9 @@ def test_custom_roles_delegate_only_implemented_capabilities(live):
     design_only = {
         p["capability"]
         for p in OPERATIONS.values()
-        if not p.get("purpose_required") and p["capability"] not in DELEGABLE_CAPABILITIES
+        if not p.get("purpose_required")
+        and p["capability"] not in DELEGABLE_CAPABILITIES
+        and p["capability"] != "platform.operator"
     }
     assert design_only and all(
         p["operation_id"] not in IMPLEMENTED_OPERATIONS

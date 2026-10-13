@@ -2109,7 +2109,7 @@
         "C-RETRIEVAL-SCOPING"
       ],
       "test_refs": [
-        "qualification/test_ai_policy.py::test_tools_are_never_implicit_or_grantable",
+        "qualification/test_ai_policy.py::test_tools_are_never_implicit_and_need_both_policy_and_runtime_approval",
         "qualification/test_ai_enablement.py::test_requested_tool_is_refused_before_reservation",
         "qualification/test_ai_policy.py::test_policy_rows_are_insert_only_and_checked_by_the_database",
         "qualification/test_ai_advisory_provider.py::test_request_contains_only_brief_assessment_and_fixed_instructions",
@@ -2118,7 +2118,7 @@
       ],
       "coverage": {
         "C-AI-NO-TOOLS-GATE": [
-          "qualification/test_ai_policy.py::test_tools_are_never_implicit_or_grantable",
+          "qualification/test_ai_policy.py::test_tools_are_never_implicit_and_need_both_policy_and_runtime_approval",
           "qualification/test_ai_enablement.py::test_requested_tool_is_refused_before_reservation"
         ],
         "C-AI-NO-TOOLS-DB": [
@@ -2734,7 +2734,7 @@
         "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
         "qualification/test_ai_advisory_provider.py::test_request_contains_only_brief_assessment_and_fixed_instructions",
         "qualification/test_ai_enablement.py::test_requested_tool_is_refused_before_reservation",
-        "qualification/test_ai_policy.py::test_tools_are_never_implicit_or_grantable",
+        "qualification/test_ai_policy.py::test_tools_are_never_implicit_and_need_both_policy_and_runtime_approval",
         "qualification/test_ai_policy_unit.py::test_invalid_reserved_or_tool_granting_policies_are_refused",
         "qualification/test_ai_policy.py::test_policy_rows_are_insert_only_and_checked_by_the_database"
       ],
@@ -2750,7 +2750,7 @@
         "C-AI-NO-TOOLS-GATE": [
           "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority",
           "qualification/test_ai_enablement.py::test_requested_tool_is_refused_before_reservation",
-          "qualification/test_ai_policy.py::test_tools_are_never_implicit_or_grantable",
+          "qualification/test_ai_policy.py::test_tools_are_never_implicit_and_need_both_policy_and_runtime_approval",
           "qualification/test_ai_policy_unit.py::test_invalid_reserved_or_tool_granting_policies_are_refused"
         ],
         "C-AI-NO-TOOLS-DB": [
@@ -3024,7 +3024,7 @@
           "breaks": "TH21",
           "evidence": [
             "qualification/test_ai_enablement.py::test_requested_tool_is_refused_before_reservation",
-            "qualification/test_ai_policy.py::test_tools_are_never_implicit_or_grantable",
+            "qualification/test_ai_policy.py::test_tools_are_never_implicit_and_need_both_policy_and_runtime_approval",
             "qualification/test_threat_chains_unit.py::test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forged_authority"
           ]
         },

@@ -14,6 +14,8 @@
       "ai.enablement.export",
       "ai.enablement.manage",
       "ai.enablement.read",
+      "ai.opportunity-mapping.read",
+      "ai.outcomes.read",
       "ai.policy.manage",
       "ai.problem-baseline.manage",
       "ai.problem-baseline.read",
@@ -152,6 +154,8 @@
     "AUTHOR": [
       "ai.diagnosis.contribute",
       "ai.enablement.read",
+      "ai.training.manage",
+      "ai.training.read",
       "assignments.read",
       "calculated-results.read",
       "collection-plan.submit",
@@ -496,7 +500,6 @@
     ]
   },
   "purpose_bound": [
-    "ai.advisory.request",
     "audit.export",
     "privacy-cases.draft.create",
     "privacy-cases.draft.edit",

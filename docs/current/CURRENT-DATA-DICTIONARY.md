@@ -6836,11 +6836,11 @@ COMMIT;
 
 ## Migration0052 — deterministic calculation provenance (local0.57 coding candidate)
 
-`0052_calculation_provenance.sql` SHA256 `142930422fd39e5a3648654b77eebe82ed3e3a252081a43ceaa95cfb72f34684`. Schema52 adds only three optional projection columns to `calculated_result_current`: the fixed 100-digit calculation precision, a closed formula record and a closed filter record. The immutable generic `LineageManifest` revision carries execution, approved definition, period, formula and per-source inclusion/exclusion metadata; it has no mutable projection table. Existing typed `rule_version` and `input_snapshot_id` columns remain reserved for actual `CalculationRule` and `Snapshot` objects. All0001–0051 remain byte-exact. Candidate is untested, unmerged and undeployed.
+`0052_calculation_provenance.sql` SHA256 `72d78a08b8e85b6dc6ae8cc07bc576b4819dde45d6adb062b3cd1a71b4881d27`. Schema52 adds three optional projection columns to `calculated_result_current` and the reviewed negative-adjustment switch and basis to `indicator_definition_current`. The immutable generic `LineageManifest` revision carries execution, approved definition, period, formula and per-source inclusion/exclusion metadata; it has no mutable projection table. Existing typed `rule_version` and `input_snapshot_id` columns remain reserved for actual `CalculationRule` and `Snapshot` objects. All0001–0047 remain byte-exact. Candidate is under local qualification, unmerged and undeployed.
 
 | Migration | SHA-256 |
 | --- | --- |
-| 0052_calculation_provenance.sql | 142930422fd39e5a3648654b77eebe82ed3e3a252081a43ceaa95cfb72f34684 |
+| 0052_calculation_provenance.sql | 72d78a08b8e85b6dc6ae8cc07bc576b4819dde45d6adb062b3cd1a71b4881d27 |
 
 ## Migration0053 — durable calculation failures (local0.57 coding candidate)
 
@@ -7169,11 +7169,11 @@ COMMIT;
 
 ## Migration0095 — exact current access profile registration (qualification repair)
 
-`0095_current_access_profile.sql` SHA256 `7994aff3f895cb39dc4fad137b17edda8c25919ca6db4744c5644c0e8c40fce5`. Schema95 registers the exact generated current access-profile manifest and fingerprint for governed bootstrap and upgrade selection. Registration does not activate the profile or widen an existing tenant automatically. All0001–0047 remain byte-exact; the previously unqualified0048–0051 profile registrations were converted to the required static, independently verifiable seed shape. Candidate is under local qualification, unmerged and undeployed.
+`0095_current_access_profile.sql` SHA256 `efda30171156ad49a117bb68ca7941098725ec434435698919e85609ef38647c`. Schema95 registers the exact generated current access-profile manifest and fingerprint for governed bootstrap and upgrade selection. Registration does not activate the profile or widen an existing tenant automatically. All0001–0047 remain byte-exact; the previously unqualified0048–0051 profile registrations were converted to the required static, independently verifiable seed shape. Candidate is under local qualification, unmerged and undeployed.
 
 | Migration | SHA256 |
 |---|---|
-| 0095_current_access_profile.sql | 7994aff3f895cb39dc4fad137b17edda8c25919ca6db4744c5644c0e8c40fce5 |
+| 0095_current_access_profile.sql | efda30171156ad49a117bb68ca7941098725ec434435698919e85609ef38647c |
 
 ## Restored migration ledger entries discovered during qualification
 
@@ -7184,3 +7184,19 @@ These already-present coding candidates were missing from the checksum table. Re
 | 0075_permission_safe_derivatives.sql | 74b8179d26a627d61207d0bae98d4708e94b1358264978fe8fd4677cdb588f68 |
 | 0076_versioned_external_shares.sql | 74ebd669443a17ef62414c8750e91d725b1eff3a4a7157779a420f8197724890 |
 | 0077_access_change_propagation.sql | 153559e2abe337b5990c46807cc5891192716b6de9d1d8f7f3f0fd551475c0da |
+
+## Migration0096 — explicit programme setup defaults (qualification repair)
+
+`0096_programme_setup_defaults.sql` SHA256 `233f1cd3177a9d0f7f0255c7aa3a6558d78c33fbf63960060774c956e8f34a34`. Schema96 adds the `template_code` and closed JSON `setup_defaults` columns required by the SIMPLE programme contract. A SIMPLE programme must pin a reporting calendar and explicit setup defaults; existing programmes remain valid without inferred defaults. All0001–0095 remain byte-exact. Candidate is under local qualification, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0096_programme_setup_defaults.sql | 233f1cd3177a9d0f7f0255c7aa3a6558d78c33fbf63960060774c956e8f34a34 |
+
+## Migration0097 — indicator statistical interpretation (qualification repair)
+
+`0097_indicator_statistical_interpretation.sql` SHA256 `b71e7826a12642b58407d43b2d612707f1bd675a706848cc97418fe7730000b5`. Schema97 adds the closed JSON `statistical_interpretation` column required by the indicator-definition contract and calculation domain. Existing definitions remain valid with no inferred interpretation. All0001–0096 remain byte-exact. Candidate is under local qualification, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0097_indicator_statistical_interpretation.sql | b71e7826a12642b58407d43b2d612707f1bd675a706848cc97418fe7730000b5 |

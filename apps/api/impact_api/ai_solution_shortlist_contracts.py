@@ -40,17 +40,77 @@ def augment(spec, policy):
             "x-capability": "ai.enablement.read",
             "x-contract-version": VERSION,
             "parameters": [
-                {"name": "tenant_id", "in": "path", "required": True, "schema": {"type": "string", "format": "uuid"}},
-                {"name": "opportunity_id", "in": "query", "required": True, "schema": {"type": "string", "minLength": 1, "maxLength": 120}},
-                {"name": "expanded", "in": "query", "required": False, "schema": {"type": "boolean", "default": False}},
+                {
+                    "name": "tenant_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                },
+                {
+                    "name": "opportunity_id",
+                    "in": "query",
+                    "required": True,
+                    "schema": {"type": "string", "minLength": 1, "maxLength": 120},
+                },
+                {
+                    "name": "expanded",
+                    "in": "query",
+                    "required": False,
+                    "schema": {"type": "boolean", "default": False},
+                },
             ],
             "responses": {
-                "200": {"description": "At most three by default; all source-backed matches only after explicit expansion", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AISolutionShortlist"}}}},
-                "400": {"description": "Invalid opportunity", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AIDiagnosisError"}}}},
-                "401": {"description": "Authentication required", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AIDiagnosisError"}}}},
-                "403": {"description": "Policy denied", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AIDiagnosisError"}}}},
-                "503": {"description": "Catalogue unavailable", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AIDiagnosisError"}}}},
+                "200": {
+                    "description": "At most three by default; all source-backed matches only after explicit expansion",
+                    "content": {
+                        "application/json": {"schema": {"$ref": "#/components/schemas/AISolutionShortlist"}}
+                    },
+                },
+                "400": {
+                    "description": "Invalid opportunity",
+                    "content": {
+                        "application/json": {"schema": {"$ref": "#/components/schemas/AIDiagnosisError"}}
+                    },
+                },
+                "401": {
+                    "description": "Authentication required",
+                    "content": {
+                        "application/json": {"schema": {"$ref": "#/components/schemas/AIDiagnosisError"}}
+                    },
+                },
+                "403": {
+                    "description": "Policy denied",
+                    "content": {
+                        "application/json": {"schema": {"$ref": "#/components/schemas/AIDiagnosisError"}}
+                    },
+                },
+                "503": {
+                    "description": "Catalogue unavailable",
+                    "content": {
+                        "application/json": {"schema": {"$ref": "#/components/schemas/AIDiagnosisError"}}
+                    },
+                },
             },
         }
     }
-    policy["operations"].append({"operation_id": "get_ai_solution_shortlist", "method": "GET", "path": path, "capability": "ai.enablement.read", "role_templates": ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "FINANCE"], "purpose_required": False, "fresh_assurance_seconds": None, "audit": False})
+    policy["operations"].append(
+        {
+            "operation_id": "get_ai_solution_shortlist",
+            "method": "GET",
+            "path": path,
+            "capability": "ai.enablement.read",
+            "role_templates": [
+                "TENANT_ADMIN",
+                "MEL_ADMIN",
+                "PROGRAMME_MANAGER",
+                "AUTHOR",
+                "REVIEWER",
+                "ANALYST",
+                "DATA_STEWARD",
+                "FINANCE",
+            ],
+            "purpose_required": False,
+            "fresh_assurance_seconds": None,
+            "audit": False,
+        }
+    )

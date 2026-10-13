@@ -145,7 +145,7 @@ def augment(spec, policy):
         "get": {
             "operationId": "get_ai_outcome_dashboard",
             "summary": "Compare current outcomes with the exact locked baseline",
-            "x-capability": "ai.enablement.read",
+            "x-capability": "ai.outcomes.read",
             "x-contract-version": VERSION,
             "responses": {
                 "200": {
@@ -159,7 +159,7 @@ def augment(spec, policy):
     }
     for operation, method, suffix, capability, audit_flag in [
         ("create_ai_outcome_observation", "POST", "/outcome-observations", "ai.enablement.manage", True),
-        ("get_ai_outcome_dashboard", "GET", "/outcomes-dashboard", "ai.enablement.read", False),
+        ("get_ai_outcome_dashboard", "GET", "/outcomes-dashboard", "ai.outcomes.read", False),
     ]:
         policy["operations"].append(
             {

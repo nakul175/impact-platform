@@ -26,6 +26,12 @@ fs.writeFileSync(
   fs.readFileSync(stylePath),
 );
 fs.writeFileSync(path.join(work, "style.d.ts"), 'declare module "*.css";\n');
+for (const name of ["AIDiagnosisReviewQueue", "AIOpportunityMap"]) {
+  fs.writeFileSync(
+    path.join(work, name + ".tsx"),
+    `import React from "react"; export function ${name === "AIDiagnosisReviewQueue" ? "AIDiagnosisReviewStatus" : name}(_props: any) { return null; }\n`,
+  );
+}
 fs.symlinkSync(
   path.join(root, "apps/web/node_modules"),
   path.join(work, "node_modules"),
@@ -83,7 +89,15 @@ function makeHarness(errorCode, options = {}) {
   );
   candidate.filename = path.join(work, "component-adapter.cjs");
   candidate.require = (name) =>
-    name === "react" ? hooks : name.endsWith(".css") ? {} : requireWeb(name);
+    name === "react"
+      ? hooks
+      : name.endsWith(".css")
+        ? {}
+        : name === "./AIDiagnosisReviewQueue"
+          ? { AIDiagnosisReviewStatus: () => null }
+          : name === "./AIOpportunityMap"
+            ? { AIOpportunityMap: () => null }
+            : requireWeb(name);
   candidate._compile(
     emitted +
       "\nexports.__adapter = { DiagnosisWorkspace, validReferences, draftOf, isDraft };\n",

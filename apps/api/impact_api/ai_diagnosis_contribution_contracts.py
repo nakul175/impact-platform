@@ -7,12 +7,42 @@ from .measurement_contracts import closed
 VERSION = "1.34.0"
 ROOT = "ai-enablement/diagnoses/{object_id}"
 ROUTES = [
-    ("get", "/contributor-invitations", "list_ai_diagnosis_contributor_invitations", None, "AIDiagnosisContributorInvitationList"),
-    ("post", "/contributor-invitations", "create_ai_diagnosis_contributor_invitation", "AIDiagnosisContributorInvitationCreate", "AIDiagnosisContributorInvitation"),
+    (
+        "get",
+        "/contributor-invitations",
+        "list_ai_diagnosis_contributor_invitations",
+        None,
+        "AIDiagnosisContributorInvitationList",
+    ),
+    (
+        "post",
+        "/contributor-invitations",
+        "create_ai_diagnosis_contributor_invitation",
+        "AIDiagnosisContributorInvitationCreate",
+        "AIDiagnosisContributorInvitation",
+    ),
     ("get", "/contributions", "list_ai_diagnosis_contributions", None, "AIDiagnosisContributionList"),
-    ("post", "/contributions", "submit_ai_diagnosis_contribution", "AIDiagnosisContributionSubmit", "AIDiagnosisContribution"),
-    ("post", "/contributions/{contribution_id}/actions/accept", "accept_ai_diagnosis_contribution", "AIDiagnosisContributionDecision", "AIDiagnosisContributionDecisionReceipt"),
-    ("post", "/contributions/{contribution_id}/actions/reject", "reject_ai_diagnosis_contribution", "AIDiagnosisContributionRejection", "AIDiagnosisContributionDecisionReceipt"),
+    (
+        "post",
+        "/contributions",
+        "submit_ai_diagnosis_contribution",
+        "AIDiagnosisContributionSubmit",
+        "AIDiagnosisContribution",
+    ),
+    (
+        "post",
+        "/contributions/{contribution_id}/actions/accept",
+        "accept_ai_diagnosis_contribution",
+        "AIDiagnosisContributionDecision",
+        "AIDiagnosisContributionDecisionReceipt",
+    ),
+    (
+        "post",
+        "/contributions/{contribution_id}/actions/reject",
+        "reject_ai_diagnosis_contribution",
+        "AIDiagnosisContributionRejection",
+        "AIDiagnosisContributionDecisionReceipt",
+    ),
 ]
 IMPLEMENTED = [(method, ROOT + suffix) for method, suffix, *_ in ROUTES]
 
@@ -29,8 +59,20 @@ def augment(spec, policy):
         "diagnosis_revision": deepcopy(uid),
         "member_invitation_id": deepcopy(uid),
         "contribution_role": {"enum": roles},
-        "problem_ids": {"type": "array", "minItems": 1, "maxItems": 20, "uniqueItems": True, "items": deepcopy(uid)},
-        "sections": {"type": "array", "minItems": 1, "maxItems": 4, "uniqueItems": True, "items": {"enum": sections}},
+        "problem_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "uniqueItems": True,
+            "items": deepcopy(uid),
+        },
+        "sections": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "uniqueItems": True,
+            "items": {"enum": sections},
+        },
         "delivery_state": {"enum": ["QUEUED", "DELIVERED", "FAILED", "EXPIRED", "REVOKED", "ACCEPTED"]},
         "created_at": {"type": "string", "format": "date-time"},
     }
@@ -45,7 +87,13 @@ def augment(spec, policy):
     }
     schemas["AIDiagnosisContributorInvitationCreate"] = closed(invitation_create, list(invitation_create))
     schemas["AIDiagnosisContributorInvitationList"] = closed(
-        {"items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/components/schemas/AIDiagnosisContributorInvitation"}}},
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/AIDiagnosisContributorInvitation"},
+            }
+        },
         ["items"],
     )
     evidence_ref = {"object_id": deepcopy(uid), "revision_id": deepcopy(uid)}
@@ -53,15 +101,29 @@ def augment(spec, policy):
         "description": {"type": "string", "maxLength": 1000},
         "affected_area": {"type": "string", "maxLength": 150},
         "supporting_evidence": {"type": "string", "maxLength": 4000},
-        "evidence_references": {"type": "array", "maxItems": 5, "uniqueItems": True, "items": closed(evidence_ref, list(evidence_ref))},
+        "evidence_references": {
+            "type": "array",
+            "maxItems": 5,
+            "uniqueItems": True,
+            "items": closed(evidence_ref, list(evidence_ref)),
+        },
     }
     schemas["AIDiagnosisContributionProblemPatch"] = closed(
         {"problem_id": deepcopy(uid), "fields": closed(patch_fields, [])},
         ["problem_id", "fields"],
     )
     patch = {
-        "problem_updates": {"type": "array", "maxItems": 20, "items": {"$ref": "#/components/schemas/AIDiagnosisContributionProblemPatch"}},
-        "priority_order": {"type": ["array", "null"], "maxItems": 20, "uniqueItems": True, "items": deepcopy(uid)},
+        "problem_updates": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {"$ref": "#/components/schemas/AIDiagnosisContributionProblemPatch"},
+        },
+        "priority_order": {
+            "type": ["array", "null"],
+            "maxItems": 20,
+            "uniqueItems": True,
+            "items": deepcopy(uid),
+        },
     }
     schemas["AIDiagnosisContributionPatch"] = closed(patch, list(patch))
     submit = {
@@ -83,7 +145,13 @@ def augment(spec, policy):
     }
     schemas["AIDiagnosisContribution"] = closed(contribution, list(contribution))
     schemas["AIDiagnosisContributionList"] = closed(
-        {"items": {"type": "array", "maxItems": 100, "items": {"$ref": "#/components/schemas/AIDiagnosisContribution"}}},
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/AIDiagnosisContribution"},
+            }
+        },
         ["items"],
     )
     decision = {**deepcopy(operation), "expected_diagnosis_revision": deepcopy(uid)}
@@ -108,7 +176,9 @@ def augment(spec, policy):
             {"name": "object_id", "in": "path", "required": True, "schema": deepcopy(uid)},
         ]
         if "{contribution_id}" in suffix:
-            parameters.append({"name": "contribution_id", "in": "path", "required": True, "schema": deepcopy(uid)})
+            parameters.append(
+                {"name": "contribution_id", "in": "path", "required": True, "schema": deepcopy(uid)}
+            )
         contribute = operation_id == "submit_ai_diagnosis_contribution"
         capability = "ai.diagnosis.contribute" if contribute else "ai.diagnosis.contributors.manage"
         entry = {
@@ -125,9 +195,17 @@ def augment(spec, policy):
             },
         }
         if request:
-            entry["requestBody"] = {"required": True, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}}}
+            entry["requestBody"] = {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            }
         for refusal in ("400", "401", "403", "404", "409", "422", "429", "503"):
-            entry["responses"][refusal] = {"description": "Request refused", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AIDiagnosisError"}}}}
+            entry["responses"][refusal] = {
+                "description": "Request refused",
+                "content": {
+                    "application/json": {"schema": {"$ref": "#/components/schemas/AIDiagnosisError"}}
+                },
+            }
         spec["paths"].setdefault(path, {})[method] = entry
         policy["operations"].append(
             {
@@ -135,9 +213,13 @@ def augment(spec, policy):
                 "method": method.upper(),
                 "path": path,
                 "capability": capability,
-                "role_templates": ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"] if not contribute else ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER"],
+                "role_templates": ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"]
+                if not contribute
+                else ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER"],
                 "purpose_required": False,
-                "fresh_assurance_seconds": 300 if operation_id in ("accept_ai_diagnosis_contribution", "reject_ai_diagnosis_contribution") else None,
+                "fresh_assurance_seconds": 300
+                if operation_id in ("accept_ai_diagnosis_contribution", "reject_ai_diagnosis_contribution")
+                else None,
                 "audit": method == "post",
             }
         )

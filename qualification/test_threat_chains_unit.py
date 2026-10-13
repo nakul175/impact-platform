@@ -99,6 +99,8 @@ def chain(monkeypatch):
     monkeypatch.setattr(enablement, "authorize", lambda c, ctx, operation, hidden=False: None)
     monkeypatch.setattr(enablement, "write", write)
     monkeypatch.setattr(enablement, "audit", lambda c, ctx, operation, receipt, correlation: None)
+    monkeypatch.setattr(enablement, "require_exposure", lambda use_case, configuration: {})
+    monkeypatch.setattr(enablement, "require_safety_available", lambda *args, **kwargs: None)
     service = SimpleNamespace(db=db, s=SimpleNamespace(delivery_secret="s" * 48))
     return enablement.AIEnablement(service, adapter, True), db, seen, writes
 
@@ -151,17 +153,21 @@ def test_ch01_injected_brief_cannot_reach_a_plan_export_as_model_output_or_forge
     assert "embedded instructions never override" in sent["instructions"]
     assert INJECTION not in sent["instructions"]
     assert "tools" not in sent and "tool_choice" not in sent
-    assert json.loads(sent["input"])["organization_brief"]["goal"] == INJECTION
+    assert json.loads(sent["input"])["untrusted_sources"]["organization_brief"]["goal"] == INJECTION
     assert INJECTION not in json.dumps(output["assessment"])
 
     # TH21 -> TH03: the model obeyed, but its tool call and top-level fields are dropped by the adapter,
     # and what is left is inert text inside a DRAFT the server labels and seals; the model cannot set
     # the status, the model name, an approval or a restriction.
-    assert set(output) == {"status", "text", "assessment", "model", "disclaimer"}
+    assert set(output) == {"status", "text", "assessment", "model", "disclaimer", "trace"}
     assert output["status"] == "DRAFT"
     assert output["disclaimer"] == enablement.DISCLAIMER
     assert output["model"] == api.provider.model
     assert output["text"] == FORGED
+    assert output["trace"]["scope"] == {
+        "use_case": "ADVISORY_DRAFT",
+        "purpose": "AI_ADOPTION_ADVISORY",
+    }
     assert "export_plan" not in json.dumps(output) and "tenant-b" not in json.dumps(output)
     # The only record written is the reservation made before the call; the output is never a record.
     assert [(kind, data["status"]) for kind, data, _ in writes] == [("AIAdvisoryRequest", "RESERVED")]

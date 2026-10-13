@@ -79,9 +79,7 @@ class DashboardPublication:
                 "recipient_id": str(recipient_id),
                 "grants_created": False,
                 "widgets": widgets,
-                "unavailable_binding_count": sum(
-                    item["availability"] == "UNAVAILABLE" for item in widgets
-                ),
+                "unavailable_binding_count": sum(item["availability"] == "UNAVAILABLE" for item in widgets),
             }
 
     def publish(self, identity, tenant, dashboard_id, body, correlation):

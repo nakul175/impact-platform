@@ -811,7 +811,11 @@ class Dashboards:
         from .portfolio_comparison import build_comparison
 
         response["comparison"] = build_comparison(
-            versions, comparison_programmes, response["period"], scope, decimal_value(coverage_threshold)
+            versions,
+            comparison_programmes,
+            response["period"],
+            scope,
+            decimal_value(str(coverage_threshold)),
         )
         return response
 

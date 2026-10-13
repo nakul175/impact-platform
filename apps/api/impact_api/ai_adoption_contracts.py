@@ -489,7 +489,7 @@ def augment(spec, policy):
         "get": {
             "operationId": "get_ai_role_training",
             "summary": "get learner role training",
-            "x-capability": "ai.enablement.read",
+            "x-capability": "ai.training.read",
             "x-contract-version": VERSION,
             "parameters": common
             + [
@@ -515,7 +515,7 @@ def augment(spec, policy):
         "post": {
             "operationId": "complete_ai_role_training_module",
             "summary": "record learner module completion",
-            "x-capability": "ai.enablement.read",
+            "x-capability": "ai.training.manage",
             "x-contract-version": VERSION,
             "parameters": common
             + [
@@ -545,8 +545,8 @@ def augment(spec, policy):
     }
     for operation_id, method, path, capability, roles, audit_enabled in [
         ("attest_ai_solution_deployment", "POST", attest_path, "ai.enablement.manage", MANAGERS, True),
-        ("get_ai_role_training", "GET", training_path, "ai.enablement.read", ["AUTHOR"], False),
-        ("complete_ai_role_training_module", "POST", complete_path, "ai.enablement.read", ["AUTHOR"], True),
+        ("get_ai_role_training", "GET", training_path, "ai.training.read", ["AUTHOR"], False),
+        ("complete_ai_role_training_module", "POST", complete_path, "ai.training.manage", ["AUTHOR"], True),
     ]:
         policy["operations"].append(
             {

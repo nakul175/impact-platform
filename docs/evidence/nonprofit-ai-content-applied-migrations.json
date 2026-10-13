@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-10-05T11:22:00.413911+00:00",
+  "recorded_at": "2026-10-13T04:23:49.707946+00:00",
   "environment": "PGLITE",
   "scope": "Applied migration ledger observed by this qualification process; other qualification outcomes are separate",
   "migrations": [
@@ -236,6 +236,354 @@
       "file": "0039_human_advice_anchor_availability.sql",
       "applied_sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0",
       "current_source_sha256": "12fb7073f1f841965f6e8c5874444b48ae2da0c39f0e93dae820e7fbedd5b0f0"
+    },
+    {
+      "version": 40,
+      "file": "0040_ai_plan_portability.sql",
+      "applied_sha256": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89",
+      "current_source_sha256": "a4fa49f75b8734a4bb2ea3e9fa35572345714a74a8275381c1a0355756d00a89"
+    },
+    {
+      "version": 41,
+      "file": "0041_ai_policy.sql",
+      "applied_sha256": "46da4315e5bd13fede31dae08cb186f6588774046108e2d2779324c36f8822c2",
+      "current_source_sha256": "46da4315e5bd13fede31dae08cb186f6588774046108e2d2779324c36f8822c2"
+    },
+    {
+      "version": 42,
+      "file": "0042_ai_ranking_weights.sql",
+      "applied_sha256": "67b308dc30d41ddbf8f33db0e802299e4196478c172ceaa63539fb2e27782636",
+      "current_source_sha256": "67b308dc30d41ddbf8f33db0e802299e4196478c172ceaa63539fb2e27782636"
+    },
+    {
+      "version": 43,
+      "file": "0043_ai_guidance_v2.sql",
+      "applied_sha256": "b720055ac8e9c3f005b8a0e505b53221d9ac443d8c881b4924ab5ecbc7169095",
+      "current_source_sha256": "b720055ac8e9c3f005b8a0e505b53221d9ac443d8c881b4924ab5ecbc7169095"
+    },
+    {
+      "version": 44,
+      "file": "0044_ai_diagnoses.sql",
+      "applied_sha256": "9f9f136ad38f2ae9e3f280fed0fc10d497716e3875a96e2095e72f24a8b0bd65",
+      "current_source_sha256": "9f9f136ad38f2ae9e3f280fed0fc10d497716e3875a96e2095e72f24a8b0bd65"
+    },
+    {
+      "version": 45,
+      "file": "0045_diagnosis_worker_fence.sql",
+      "applied_sha256": "603f4a2914b21a1686a28baa0d7f7b8a0e5228c0f0615fc63ef64561817d87f2",
+      "current_source_sha256": "603f4a2914b21a1686a28baa0d7f7b8a0e5228c0f0615fc63ef64561817d87f2"
+    },
+    {
+      "version": 46,
+      "file": "0046_diagnosis_problem_order.sql",
+      "applied_sha256": "953337b70fa70138bbd19c2ad445d6d666f10beb3a85d42bfffd1cd5fde4b80f",
+      "current_source_sha256": "953337b70fa70138bbd19c2ad445d6d666f10beb3a85d42bfffd1cd5fde4b80f"
+    },
+    {
+      "version": 47,
+      "file": "0047_diagnosis_evidence_privacy.sql",
+      "applied_sha256": "57c137c15f124a6aab7936074779c4ea3634091f9c20d6b2392ff9fe85eca6d7",
+      "current_source_sha256": "57c137c15f124a6aab7936074779c4ea3634091f9c20d6b2392ff9fe85eca6d7"
+    },
+    {
+      "version": 48,
+      "file": "0048_ai_problem_baselines.sql",
+      "applied_sha256": "09305957c1565c455ab8f5f4037d379f9a026b863697330129d0dc8ce06f8e13",
+      "current_source_sha256": "09305957c1565c455ab8f5f4037d379f9a026b863697330129d0dc8ce06f8e13"
+    },
+    {
+      "version": 49,
+      "file": "0049_ai_diagnosis_contributions.sql",
+      "applied_sha256": "a885f58ac705643b5252677fa5c44ef16ffebcc3d4b56927ec2e1cfc2798b18d",
+      "current_source_sha256": "a885f58ac705643b5252677fa5c44ef16ffebcc3d4b56927ec2e1cfc2798b18d"
+    },
+    {
+      "version": 50,
+      "file": "0050_ai_diagnosis_reviews.sql",
+      "applied_sha256": "405c0704a332ca2f102dc242458e54425e6b802c99bb1d17da270926678b629f",
+      "current_source_sha256": "405c0704a332ca2f102dc242458e54425e6b802c99bb1d17da270926678b629f"
+    },
+    {
+      "version": 51,
+      "file": "0051_ai_solution_fit_scores.sql",
+      "applied_sha256": "90e576526903025052fbda2e9cedfd70c6c497c649d201c16ca851249be20a40",
+      "current_source_sha256": "90e576526903025052fbda2e9cedfd70c6c497c649d201c16ca851249be20a40"
+    },
+    {
+      "version": 52,
+      "file": "0052_calculation_provenance.sql",
+      "applied_sha256": "72d78a08b8e85b6dc6ae8cc07bc576b4819dde45d6adb062b3cd1a71b4881d27",
+      "current_source_sha256": "72d78a08b8e85b6dc6ae8cc07bc576b4819dde45d6adb062b3cd1a71b4881d27"
+    },
+    {
+      "version": 53,
+      "file": "0053_calculation_failures.sql",
+      "applied_sha256": "cea6f86bc18ecd90fd709695416ce9c16df3f266916fb989af0a1443c959f348",
+      "current_source_sha256": "cea6f86bc18ecd90fd709695416ce9c16df3f266916fb989af0a1443c959f348"
+    },
+    {
+      "version": 54,
+      "file": "0054_ai_training_completion_kind.sql",
+      "applied_sha256": "1a33ae4ecf7a1c257d2ae264540d0497c3181b6e7f3402d95308b01f929e3253",
+      "current_source_sha256": "1a33ae4ecf7a1c257d2ae264540d0497c3181b6e7f3402d95308b01f929e3253"
+    },
+    {
+      "version": 55,
+      "file": "0055_ai_champion_appointment_kind.sql",
+      "applied_sha256": "7d943816514b6948d6dd07dc2528e91a681fb4960e2ca5ba787a024e0845a003",
+      "current_source_sha256": "7d943816514b6948d6dd07dc2528e91a681fb4960e2ca5ba787a024e0845a003"
+    },
+    {
+      "version": 56,
+      "file": "0056_ai_current_outcome_observations.sql",
+      "applied_sha256": "a7a0344bfe0fdbd5d934ba9ec6b970bfaf09751f80cc1598924629283f16641a",
+      "current_source_sha256": "a7a0344bfe0fdbd5d934ba9ec6b970bfaf09751f80cc1598924629283f16641a"
+    },
+    {
+      "version": 57,
+      "file": "0057_ai_sponsor_value_report_kind.sql",
+      "applied_sha256": "75134f2d48434bf9b6a46ffa71f0dae05df7485504c6e5ea43ed6cc32cd36012",
+      "current_source_sha256": "75134f2d48434bf9b6a46ffa71f0dae05df7485504c6e5ea43ed6cc32cd36012"
+    },
+    {
+      "version": 58,
+      "file": "0058_ai_quarterly_value_reviews.sql",
+      "applied_sha256": "e9f6a5540d2ad4f6c5ea51ab58c88b5a99b1db5a58180c4367db7c3104379638",
+      "current_source_sha256": "e9f6a5540d2ad4f6c5ea51ab58c88b5a99b1db5a58180c4367db7c3104379638"
+    },
+    {
+      "version": 59,
+      "file": "0059_ai_improve_diagnosis_cycles.sql",
+      "applied_sha256": "1a1d5d837d61f1ca0e4bf2208da07740e6fdf834d28d44e33950da3b5b8473ca",
+      "current_source_sha256": "1a1d5d837d61f1ca0e4bf2208da07740e6fdf834d28d44e33950da3b5b8473ca"
+    },
+    {
+      "version": 60,
+      "file": "0060_ai_anonymised_outcome_evidence.sql",
+      "applied_sha256": "95639887b5a90083e46358af82d1820c33319616179c53d9c4d1877a870be30b",
+      "current_source_sha256": "95639887b5a90083e46358af82d1820c33319616179c53d9c4d1877a870be30b"
+    },
+    {
+      "version": 61,
+      "file": "0061_saved_view_kind.sql",
+      "applied_sha256": "28010472675e50438056c340e2599d634a6fad1ec8a8ed24be778e2a6e993a33",
+      "current_source_sha256": "28010472675e50438056c340e2599d634a6fad1ec8a8ed24be778e2a6e993a33"
+    },
+    {
+      "version": 62,
+      "file": "0062_population_overlap.sql",
+      "applied_sha256": "1e9c4db677d8df793ebefdb58e8a185737e2b1deaf8a8ef58cc2f05b24b3dcc2",
+      "current_source_sha256": "1e9c4db677d8df793ebefdb58e8a185737e2b1deaf8a8ef58cc2f05b24b3dcc2"
+    },
+    {
+      "version": 63,
+      "file": "0063_hierarchical_aggregation.sql",
+      "applied_sha256": "949c900ccbd6d713a37a47b4a7aa1d8038df3023a38e1973ed6b497aad9cd95d",
+      "current_source_sha256": "949c900ccbd6d713a37a47b4a7aa1d8038df3023a38e1973ed6b497aad9cd95d"
+    },
+    {
+      "version": 64,
+      "file": "0064_dimension_crosswalk.sql",
+      "applied_sha256": "eb9fa3b15a62ae5774a1570a4604ced355d12f649b09e0eee1269a6ec9768cb0",
+      "current_source_sha256": "eb9fa3b15a62ae5774a1570a4604ced355d12f649b09e0eee1269a6ec9768cb0"
+    },
+    {
+      "version": 65,
+      "file": "0065_formula_definitions.sql",
+      "applied_sha256": "f2568e02cb4539f394d51b7f6938c4c98a39b092715ca26efdcbdda785a0bc72",
+      "current_source_sha256": "f2568e02cb4539f394d51b7f6938c4c98a39b092715ca26efdcbdda785a0bc72"
+    },
+    {
+      "version": 66,
+      "file": "0066_portfolio_allocation_views.sql",
+      "applied_sha256": "9a6da429533465f48059985487be4341a5926dbb8012baa9499bbf5587ddb4fa",
+      "current_source_sha256": "9a6da429533465f48059985487be4341a5926dbb8012baa9499bbf5587ddb4fa"
+    },
+    {
+      "version": 67,
+      "file": "0067_sponsored_cohorts.sql",
+      "applied_sha256": "9a2d7b072bed94336a2240183e69487aad0cf052b285d239e6c75813f2032014",
+      "current_source_sha256": "9a2d7b072bed94336a2240183e69487aad0cf052b285d239e6c75813f2032014"
+    },
+    {
+      "version": 68,
+      "file": "0068_service_package_invoices.sql",
+      "applied_sha256": "726e5282cb343a8967574b7e917fdf5d2816b6ef01319de1d0207418a795f6b9",
+      "current_source_sha256": "726e5282cb343a8967574b7e917fdf5d2816b6ef01319de1d0207418a795f6b9"
+    },
+    {
+      "version": 69,
+      "file": "0069_partner_revenue_statements.sql",
+      "applied_sha256": "7ff97d70e50301d8950080a8a45d73c8a830524dae41e42eed8ae9b4274e12b2",
+      "current_source_sha256": "7ff97d70e50301d8950080a8a45d73c8a830524dae41e42eed8ae9b4274e12b2"
+    },
+    {
+      "version": 70,
+      "file": "0070_local_currency_tax_invoices.sql",
+      "applied_sha256": "dc41850907c2084bda7a30ca85713845c434107c53f8e02957b79f19b6263ca9",
+      "current_source_sha256": "dc41850907c2084bda7a30ca85713845c434107c53f8e02957b79f19b6263ca9"
+    },
+    {
+      "version": 71,
+      "file": "0071_organisation_agreement_coverage.sql",
+      "applied_sha256": "e8010ef732d0cda8348d75f8677d22f5fd729729c4d3a9b83fce3e863331fa69",
+      "current_source_sha256": "e8010ef732d0cda8348d75f8677d22f5fd729729c4d3a9b83fce3e863331fa69"
+    },
+    {
+      "version": 72,
+      "file": "0072_ai_option_trials.sql",
+      "applied_sha256": "a8c2d4eebedba3a452609279a1e726bc77e1b387515dcd4673f4e7baeb68585d",
+      "current_source_sha256": "a8c2d4eebedba3a452609279a1e726bc77e1b387515dcd4673f4e7baeb68585d"
+    },
+    {
+      "version": 73,
+      "file": "0073_ai_trial_results.sql",
+      "applied_sha256": "fc2a8481746ffe3a245a2a2974813aa02671322813b595aa8ea562f9b9a5e118",
+      "current_source_sha256": "fc2a8481746ffe3a245a2a2974813aa02671322813b595aa8ea562f9b9a5e118"
+    },
+    {
+      "version": 74,
+      "file": "0074_fine_grained_grant_facets.sql",
+      "applied_sha256": "bcb46a4230d8208d3a65b1c2b63cb37b94e6ef2660bfd24549a4da1edc3a14d6",
+      "current_source_sha256": "bcb46a4230d8208d3a65b1c2b63cb37b94e6ef2660bfd24549a4da1edc3a14d6"
+    },
+    {
+      "version": 75,
+      "file": "0075_permission_safe_derivatives.sql",
+      "applied_sha256": "74b8179d26a627d61207d0bae98d4708e94b1358264978fe8fd4677cdb588f68",
+      "current_source_sha256": "74b8179d26a627d61207d0bae98d4708e94b1358264978fe8fd4677cdb588f68"
+    },
+    {
+      "version": 76,
+      "file": "0076_versioned_external_shares.sql",
+      "applied_sha256": "74ebd669443a17ef62414c8750e91d725b1eff3a4a7157779a420f8197724890",
+      "current_source_sha256": "74ebd669443a17ef62414c8750e91d725b1eff3a4a7157779a420f8197724890"
+    },
+    {
+      "version": 77,
+      "file": "0077_access_change_propagation.sql",
+      "applied_sha256": "153559e2abe337b5990c46807cc5891192716b6de9d1d8f7f3f0fd551475c0da",
+      "current_source_sha256": "153559e2abe337b5990c46807cc5891192716b6de9d1d8f7f3f0fd551475c0da"
+    },
+    {
+      "version": 78,
+      "file": "0078_named_ai_use_cases_and_tools.sql",
+      "applied_sha256": "a80e69526e3c5484c2acbcd9ee34529243e0fc33542c27f94b5e02486721654c",
+      "current_source_sha256": "a80e69526e3c5484c2acbcd9ee34529243e0fc33542c27f94b5e02486721654c"
+    },
+    {
+      "version": 79,
+      "file": "0079_ai_advisory_sources.sql",
+      "applied_sha256": "5993b9623735ccbc4db80b259dd25ba3fd75fd9214a8bf5515623dd0e406ada5",
+      "current_source_sha256": "5993b9623735ccbc4db80b259dd25ba3fd75fd9214a8bf5515623dd0e406ada5"
+    },
+    {
+      "version": 80,
+      "file": "0080_ai_advisory_jobs.sql",
+      "applied_sha256": "b3e4796db9d40b55143a8e6292f0d77716450dc855dcc801f5c6296567bdc152",
+      "current_source_sha256": "b3e4796db9d40b55143a8e6292f0d77716450dc855dcc801f5c6296567bdc152"
+    },
+    {
+      "version": 81,
+      "file": "0081_ai_advisory_job_execution.sql",
+      "applied_sha256": "d29371b82ca36860edbe34d0905d22da44c756563c43c40b9ef34c573b64dbd9",
+      "current_source_sha256": "d29371b82ca36860edbe34d0905d22da44c756563c43c40b9ef34c573b64dbd9"
+    },
+    {
+      "version": 82,
+      "file": "0082_ai_forecast_scenarios.sql",
+      "applied_sha256": "77015adc122ae2cc7354d60430832106944fa582fc8f9d04eeed300e961636bd",
+      "current_source_sha256": "77015adc122ae2cc7354d60430832106944fa582fc8f9d04eeed300e961636bd"
+    },
+    {
+      "version": 83,
+      "file": "0083_ai_safety_shutdown.sql",
+      "applied_sha256": "2b207f95eb22d7df2be21f2568a7a1b72e25a1f8751c6256ec3c09c7a7bfefed",
+      "current_source_sha256": "2b207f95eb22d7df2be21f2568a7a1b72e25a1f8751c6256ec3c09c7a7bfefed"
+    },
+    {
+      "version": 84,
+      "file": "0084_ai_extraction_drafts.sql",
+      "applied_sha256": "0e117f7f457382fdb948a74d99fab53d5809ccc54a5685d6b807aab69af14b09",
+      "current_source_sha256": "0e117f7f457382fdb948a74d99fab53d5809ccc54a5685d6b807aab69af14b09"
+    },
+    {
+      "version": 85,
+      "file": "0085_ai_indicator_design_policy.sql",
+      "applied_sha256": "a773e22baf4c8a6c2bd0f34c4a14e1b6a536c201f646278c0e3325b9cef68834",
+      "current_source_sha256": "a773e22baf4c8a6c2bd0f34c4a14e1b6a536c201f646278c0e3325b9cef68834"
+    },
+    {
+      "version": 86,
+      "file": "0086_ai_import_cleaning_policy.sql",
+      "applied_sha256": "eb5ffacca2e658bc313b248af3ae6e68e2a3e5d17f9f360755373d575bc55bc4",
+      "current_source_sha256": "eb5ffacca2e658bc313b248af3ae6e68e2a3e5d17f9f360755373d575bc55bc4"
+    },
+    {
+      "version": 87,
+      "file": "0087_ai_evidence_question_policy.sql",
+      "applied_sha256": "27d00e7897a9b49ebfc97901105b9951a399b00182b523b1e68f3eb719981595",
+      "current_source_sha256": "27d00e7897a9b49ebfc97901105b9951a399b00182b523b1e68f3eb719981595"
+    },
+    {
+      "version": 88,
+      "file": "0088_ai_numeric_analysis_policy.sql",
+      "applied_sha256": "7edc6de3226bc105836a9a7b002a07c872f131ba8d0ae1566103386575abe3ea",
+      "current_source_sha256": "7edc6de3226bc105836a9a7b002a07c872f131ba8d0ae1566103386575abe3ea"
+    },
+    {
+      "version": 89,
+      "file": "0089_ai_report_drafts.sql",
+      "applied_sha256": "98c9e9563040d4e19bdab05e35b82b156ab37f8a46aec17dd64d7ff68bc30626",
+      "current_source_sha256": "98c9e9563040d4e19bdab05e35b82b156ab37f8a46aec17dd64d7ff68bc30626"
+    },
+    {
+      "version": 90,
+      "file": "0090_ai_qualitative_assistance.sql",
+      "applied_sha256": "26df65381b9b5721f284fb63423eab228c55f21c60c45e0fdfd8e577381a62f5",
+      "current_source_sha256": "26df65381b9b5721f284fb63423eab228c55f21c60c45e0fdfd8e577381a62f5"
+    },
+    {
+      "version": 91,
+      "file": "0091_ai_proactive_findings.sql",
+      "applied_sha256": "0c3a6d1c8570bff2e1c816baa97fc9d3aa0bcf3d6f8aba1a4afce8e82a5a38a9",
+      "current_source_sha256": "0c3a6d1c8570bff2e1c816baa97fc9d3aa0bcf3d6f8aba1a4afce8e82a5a38a9"
+    },
+    {
+      "version": 92,
+      "file": "0092_ai_action_proposals.sql",
+      "applied_sha256": "6252948898c956839a5f62705b7401fd0a9fdd4df1cc9be9b84a1a13af042732",
+      "current_source_sha256": "6252948898c956839a5f62705b7401fd0a9fdd4df1cc9be9b84a1a13af042732"
+    },
+    {
+      "version": 93,
+      "file": "0093_recalculation_dependencies.sql",
+      "applied_sha256": "0f3a5594bb7a8f4fa5e194122386efad6f26a1c86ffdfe99bbf3e48b11d9ea9a",
+      "current_source_sha256": "0f3a5594bb7a8f4fa5e194122386efad6f26a1c86ffdfe99bbf3e48b11d9ea9a"
+    },
+    {
+      "version": 94,
+      "file": "0094_dashboard_pivot_jobs.sql",
+      "applied_sha256": "efab89e3c3533acd1618d5f90e1d6e9c0850cdc81a3ca09f067112a4f69b9744",
+      "current_source_sha256": "efab89e3c3533acd1618d5f90e1d6e9c0850cdc81a3ca09f067112a4f69b9744"
+    },
+    {
+      "version": 95,
+      "file": "0095_current_access_profile.sql",
+      "applied_sha256": "efda30171156ad49a117bb68ca7941098725ec434435698919e85609ef38647c",
+      "current_source_sha256": "efda30171156ad49a117bb68ca7941098725ec434435698919e85609ef38647c"
+    },
+    {
+      "version": 96,
+      "file": "0096_programme_setup_defaults.sql",
+      "applied_sha256": "233f1cd3177a9d0f7f0255c7aa3a6558d78c33fbf63960060774c956e8f34a34",
+      "current_source_sha256": "233f1cd3177a9d0f7f0255c7aa3a6558d78c33fbf63960060774c956e8f34a34"
+    },
+    {
+      "version": 97,
+      "file": "0097_indicator_statistical_interpretation.sql",
+      "applied_sha256": "b71e7826a12642b58407d43b2d612707f1bd675a706848cc97418fe7730000b5",
+      "current_source_sha256": "b71e7826a12642b58407d43b2d612707f1bd675a706848cc97418fe7730000b5"
     }
   ]
 }

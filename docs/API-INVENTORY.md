@@ -53,7 +53,7 @@
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributor-invitations` | `ai.diagnosis.contributors.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributor-invitations` | `ai.diagnosis.contributors.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/opportunity-map` | `ai.diagnosis.read` |
-| POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/opportunity-ranking` | `ai.enablement.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/opportunity-ranking` | `ai.opportunity-mapping.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions` | `ai.diagnosis.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions/{revision_id}` | `ai.diagnosis.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnosis-review-queue` | `ai.diagnosis.review` |
@@ -90,7 +90,7 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/numeric-analysis` | `calculated-results.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/outcome-observations` | `ai.enablement.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/outcome-sharing-consents` | `ai.enablement.manage` |
-| GET | `/v1/tenants/{tenant_id}/ai-enablement/outcomes-dashboard` | `ai.enablement.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/outcomes-dashboard` | `ai.outcomes.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/pilot-evaluation` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans` | `ai.enablement.manage` |
@@ -108,8 +108,8 @@
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions/{revision_id}/exports` | `ai.enablement.export` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/revisions/{revision_id}/guidance` | `ai.enablement.read` |
-| GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training` | `ai.enablement.read` |
-| POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training/modules/{module_key}/actions/complete` | `ai.enablement.read` |
+| GET | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training` | `ai.training.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training/modules/{module_key}/actions/complete` | `ai.training.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/policy` | `ai.enablement.read` |
 | PUT | `/v1/tenants/{tenant_id}/ai-enablement/policy` | `ai.policy.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/policy/revisions` | `ai.enablement.read` |

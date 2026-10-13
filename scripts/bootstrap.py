@@ -142,8 +142,8 @@ def bootstrap(local, idp=None):
                 (tenant,),
             ).fetchone()["scope_id"]
             for cap in capabilities:
-                policy = next(p for p in OPERATIONS.values() if p["capability"] == cap)
-                if not set(actor["roles"]).intersection(policy["role_templates"]):
+                policies = [p for p in OPERATIONS.values() if p["capability"] == cap]
+                if not any(set(actor["roles"]).intersection(p["role_templates"]) for p in policies):
                     continue
                 obj = str(uuid5(NAMESPACE_URL, "impact-dev-grant:" + name + ":" + cap))
                 if c.execute(

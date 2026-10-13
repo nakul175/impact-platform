@@ -425,6 +425,8 @@ def test_finance_gets_a_read_only_bundle_and_no_write_capability():
         "rank_ai_opportunities",
         "compare_ai_procurement_costs",
         "evaluate_ai_pilot",
+        "calculate_ai_value_case",
+        "explain_own_effective_access",
     }
     for row in access["operations"]:
         if row["capability"] in {

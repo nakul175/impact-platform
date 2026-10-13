@@ -7403,7 +7403,7 @@
         "MEL_ADMIN",
         "PROGRAMME_MANAGER"
       ],
-      "purpose_required": true,
+      "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true
     },
@@ -7738,7 +7738,7 @@
       "operation_id": "get_ai_role_training",
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training",
-      "capability": "ai.enablement.read",
+      "capability": "ai.training.read",
       "role_templates": [
         "AUTHOR"
       ],
@@ -7751,7 +7751,7 @@
       "operation_id": "complete_ai_role_training_module",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training/modules/{module_key}/actions/complete",
-      "capability": "ai.enablement.read",
+      "capability": "ai.training.manage",
       "role_templates": [
         "AUTHOR"
       ],
@@ -8233,7 +8233,7 @@
       "operation_id": "get_ai_outcome_dashboard",
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/ai-enablement/outcomes-dashboard",
-      "capability": "ai.enablement.read",
+      "capability": "ai.outcomes.read",
       "role_templates": [
         "TENANT_ADMIN"
       ],
@@ -8425,7 +8425,7 @@
       "operation_id": "rank_mapped_ai_opportunities",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/opportunity-ranking",
-      "capability": "ai.enablement.read",
+      "capability": "ai.opportunity-mapping.read",
       "role_templates": [
         "TENANT_ADMIN"
       ],

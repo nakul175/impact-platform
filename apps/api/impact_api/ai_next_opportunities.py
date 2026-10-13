@@ -36,7 +36,11 @@ def _owner(c, ctx):
         "AND p.active AND (m.expires_at IS NULL OR m.expires_at>now())",
         (ctx.tenant_id,),
     ).fetchone()
-    if not owner or str(owner["principal_id"]) != str(ctx.principal_id) or str(owner["membership_id"]) != str(ctx.membership_id):
+    if (
+        not owner
+        or str(owner["principal_id"]) != str(ctx.principal_id)
+        or str(owner["membership_id"]) != str(ctx.membership_id)
+    ):
         raise DomainError("RESOURCE_UNAVAILABLE", 404)
     return owner
 
@@ -72,7 +76,9 @@ class AINextOpportunities:
             by_id = {p["problem_id"]: p for p in payload["problems"]}
             for rank, problem_id in enumerate(payload["priority_order"], 1):
                 problem = by_id[problem_id]
-                suggestion_id = _suggestion_id(tenant, str(row["object_id"]), str(row["head_revision"]), problem_id)
+                suggestion_id = _suggestion_id(
+                    tenant, str(row["object_id"]), str(row["head_revision"]), problem_id
+                )
                 taken = c.execute(
                     "SELECT 1 FROM impact.object_registry h JOIN impact.object_revision v ON v.tenant_id=h.tenant_id "
                     "AND v.revision_id=h.head_revision WHERE h.tenant_id=%s AND h.object_type=%s "
@@ -80,17 +86,19 @@ class AINextOpportunities:
                     (tenant, CYCLE_KIND, suggestion_id),
                 ).fetchone()
                 if not taken:
-                    result.append({
-                        "suggestion_id": suggestion_id,
-                        "title": problem["description"].strip()[:150],
-                        "affected_area": problem["affected_area"],
-                        "explanation": f"Priority {rank} in the current completed diagnosis; uptake starts a new Draft diagnosis.",
-                        "source_diagnosis_id": str(row["object_id"]),
-                        "source_diagnosis_revision": str(row["head_revision"]),
-                        "source_problem_id": problem_id,
-                        "source_review_id": str(row["review_id"]),
-                        "source_review_revision": str(row["review_revision"]),
-                    })
+                    result.append(
+                        {
+                            "suggestion_id": suggestion_id,
+                            "title": problem["description"].strip()[:150],
+                            "affected_area": problem["affected_area"],
+                            "explanation": f"Priority {rank} in the current completed diagnosis; uptake starts a new Draft diagnosis.",
+                            "source_diagnosis_id": str(row["object_id"]),
+                            "source_diagnosis_revision": str(row["head_revision"]),
+                            "source_problem_id": problem_id,
+                            "source_review_id": str(row["review_id"]),
+                            "source_review_revision": str(row["review_revision"]),
+                        }
+                    )
         return result[:20]
 
     def listing(self, identity, tenant):
@@ -121,10 +129,14 @@ class AINextOpportunities:
                 if bytes(durable["payload_hash"]) != fingerprint:
                     raise DomainError("CONFLICT_OPERATION", 409)
                 return {
-                    "operation_id": str(durable["operation_id"]), "correlation_id": str(durable["correlation_id"]),
-                    "cycle_id": str(durable["cycle_id"]), "cycle_revision": str(durable["cycle_revision"]),
-                    "cycle_state": "Diagnose", "diagnosis_id": str(durable["created_diagnosis_id"]),
-                    "diagnosis_revision": str(durable["created_diagnosis_revision"]), "diagnosis_state": "Draft",
+                    "operation_id": str(durable["operation_id"]),
+                    "correlation_id": str(durable["correlation_id"]),
+                    "cycle_id": str(durable["cycle_id"]),
+                    "cycle_revision": str(durable["cycle_revision"]),
+                    "cycle_state": "Diagnose",
+                    "diagnosis_id": str(durable["created_diagnosis_id"]),
+                    "diagnosis_revision": str(durable["created_diagnosis_revision"]),
+                    "diagnosis_state": "Draft",
                     "saved_at": durable["taken_up_at"].isoformat(),
                 }
             old = c.execute(
@@ -143,7 +155,10 @@ class AINextOpportunities:
             suggestion = suggestions.get(suggestion_id)
             if not suggestion:
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
-            if c.execute("SELECT 1 FROM impact.ai_improve_diagnosis_cycle WHERE tenant_id=%s AND suggestion_id=%s", (tenant, suggestion_id)).fetchone():
+            if c.execute(
+                "SELECT 1 FROM impact.ai_improve_diagnosis_cycle WHERE tenant_id=%s AND suggestion_id=%s",
+                (tenant, suggestion_id),
+            ).fetchone():
                 raise DomainError("STATE_TRANSITION_DENIED", 409, reason="SUGGESTION_ALREADY_TAKEN_UP")
             diagnosis_payload = {
                 "title": "Diagnose: " + suggestion["title"],
@@ -164,20 +179,50 @@ class AINextOpportunities:
             }
             cycle = write(c, ctx, CYCLE_KIND, cycle_payload, "Diagnose")
             outcome = {
-                "operation_id": body["operation_id"], "correlation_id": correlation,
-                "cycle_id": cycle["object_id"], "cycle_revision": cycle["revision_id"],
-                "cycle_state": "Diagnose", "diagnosis_id": diagnosis["object_id"],
-                "diagnosis_revision": diagnosis["revision_id"], "diagnosis_state": "Draft",
+                "operation_id": body["operation_id"],
+                "correlation_id": correlation,
+                "cycle_id": cycle["object_id"],
+                "cycle_revision": cycle["revision_id"],
+                "cycle_state": "Diagnose",
+                "diagnosis_id": diagnosis["object_id"],
+                "diagnosis_revision": diagnosis["revision_id"],
+                "diagnosis_state": "Draft",
                 "saved_at": cycle["saved_at"],
             }
             audit(c, ctx, operation, outcome, correlation)
             c.execute(
                 "INSERT INTO impact.ai_improve_diagnosis_cycle(tenant_id,cycle_id,cycle_revision,suggestion_id,source_review_id,source_review_revision,source_diagnosis_id,source_diagnosis_revision,source_problem_id,created_diagnosis_id,created_diagnosis_revision,taker_principal_id,taker_membership_id,taker_membership_revision,operation_id,payload_hash,correlation_id,taken_up_at) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                (tenant, cycle["object_id"], cycle["revision_id"], suggestion_id,
-                 suggestion["source_review_id"], suggestion["source_review_revision"], suggestion["source_diagnosis_id"],
-                 suggestion["source_diagnosis_revision"], suggestion["source_problem_id"], diagnosis["object_id"], diagnosis["revision_id"],
-                 ctx.principal_id, ctx.membership_id, owner["membership_revision"], body["operation_id"], fingerprint, correlation, now),
+                (
+                    tenant,
+                    cycle["object_id"],
+                    cycle["revision_id"],
+                    suggestion_id,
+                    suggestion["source_review_id"],
+                    suggestion["source_review_revision"],
+                    suggestion["source_diagnosis_id"],
+                    suggestion["source_diagnosis_revision"],
+                    suggestion["source_problem_id"],
+                    diagnosis["object_id"],
+                    diagnosis["revision_id"],
+                    ctx.principal_id,
+                    ctx.membership_id,
+                    owner["membership_revision"],
+                    body["operation_id"],
+                    fingerprint,
+                    correlation,
+                    now,
+                ),
             )
-            c.execute("INSERT INTO impact.operation_receipt VALUES(%s,%s,%s,%s,%s,'SUCCEEDED',%s,%s)",
-                      (tenant, ctx.principal_id, operation, body["operation_id"], fingerprint, Jsonb(outcome), now + timedelta(days=7)))
+            c.execute(
+                "INSERT INTO impact.operation_receipt VALUES(%s,%s,%s,%s,%s,'SUCCEEDED',%s,%s)",
+                (
+                    tenant,
+                    ctx.principal_id,
+                    operation,
+                    body["operation_id"],
+                    fingerprint,
+                    Jsonb(outcome),
+                    now + timedelta(days=7),
+                ),
+            )
             return outcome

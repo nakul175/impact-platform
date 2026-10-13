@@ -45,8 +45,7 @@ class AISolutionFitScores:
     @staticmethod
     def _result(row):
         dimensions = {
-            name: {"score": row[name], "explanation": row["explanations"][name]}
-            for name in DIMENSIONS
+            name: {"score": row[name], "explanation": row["explanations"][name]} for name in DIMENSIONS
         }
         complete = all(dimensions[name]["score"] is not None for name in DIMENSIONS)
         return {
@@ -81,7 +80,10 @@ class AISolutionFitScores:
         uid(body["operation_id"])
         if body["rubric_version"] != RUBRIC_VERSION:
             invalid("AI_SOLUTION_FIT_RUBRIC_UNSUPPORTED")
-        if any(not isinstance(body.get(key), str) or not body[key].strip() or len(body[key]) > 120 for key in ("opportunity_id", "solution_id")):
+        if any(
+            not isinstance(body.get(key), str) or not body[key].strip() or len(body[key]) > 120
+            for key in ("opportunity_id", "solution_id")
+        ):
             invalid()
         dimensions = body["dimensions"]
         if not isinstance(dimensions, dict) or set(dimensions) != set(DIMENSIONS):
@@ -91,7 +93,11 @@ class AISolutionFitScores:
                 invalid("AI_SOLUTION_FIT_INCOMPLETE")
             if type(value["score"]) is not int or not 1 <= value["score"] <= 5:
                 invalid()
-            if not isinstance(value["explanation"], str) or not value["explanation"].strip() or len(value["explanation"]) > 1000:
+            if (
+                not isinstance(value["explanation"], str)
+                or not value["explanation"].strip()
+                or len(value["explanation"]) > 1000
+            ):
                 invalid("AI_SOLUTION_FIT_INCOMPLETE")
         content_version = self._catalog_match(body["opportunity_id"], body["solution_id"])
         name = "create_ai_solution_fit_score"
@@ -125,13 +131,43 @@ class AISolutionFitScores:
             explanations = {name: dimensions[name]["explanation"].strip() for name in DIMENSIONS}
             c.execute(
                 "INSERT INTO impact.ai_solution_fit_score(tenant_id,score_id,opportunity_id,solution_id,catalogue_content_version,rubric_version,size,budget,context,language,data_sensitivity,existing_systems,explanations,advisor_principal_id,advisor_membership_id,advisor_natural_identity_id,scored_at) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                (tenant, score_id, body["opportunity_id"], body["solution_id"], content_version, RUBRIC_VERSION, *[dimensions[name]["score"] for name in DIMENSIONS], Jsonb(explanations), ctx.principal_id, ctx.membership_id, advisor["natural_id"], now),
+                (
+                    tenant,
+                    score_id,
+                    body["opportunity_id"],
+                    body["solution_id"],
+                    content_version,
+                    RUBRIC_VERSION,
+                    *[dimensions[name]["score"] for name in DIMENSIONS],
+                    Jsonb(explanations),
+                    ctx.principal_id,
+                    ctx.membership_id,
+                    advisor["natural_id"],
+                    now,
+                ),
             )
-            row = c.execute("SELECT * FROM impact.ai_solution_fit_score WHERE tenant_id=%s AND score_id=%s", (tenant, score_id)).fetchone()
+            row = c.execute(
+                "SELECT * FROM impact.ai_solution_fit_score WHERE tenant_id=%s AND score_id=%s",
+                (tenant, score_id),
+            ).fetchone()
             result = self._result(row)
-            audit(c, ctx, name, {"object_id": score_id, "business_state": "COMPLETE", "saved_at": now.isoformat()}, correlation)
+            audit(
+                c,
+                ctx,
+                name,
+                {"object_id": score_id, "business_state": "COMPLETE", "saved_at": now.isoformat()},
+                correlation,
+            )
             c.execute(
                 "INSERT INTO impact.operation_receipt VALUES(%s,%s,%s,%s,%s,'SUCCEEDED',%s,%s)",
-                (tenant, ctx.principal_id, name, body["operation_id"], fingerprint, Jsonb(result), now + timedelta(days=7)),
+                (
+                    tenant,
+                    ctx.principal_id,
+                    name,
+                    body["operation_id"],
+                    fingerprint,
+                    Jsonb(result),
+                    now + timedelta(days=7),
+                ),
             )
             return result

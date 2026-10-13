@@ -141,7 +141,7 @@ def augment(spec, policy):
         "post": {
             "operationId": "rank_mapped_ai_opportunities",
             "summary": "Rank exact mapped opportunities with the organisation weights",
-            "x-capability": "ai.enablement.read",
+            "x-capability": "ai.opportunity-mapping.read",
             "requestBody": {
                 "required": True,
                 "content": {
@@ -167,7 +167,7 @@ def augment(spec, policy):
             "operation_id": "rank_mapped_ai_opportunities",
             "method": "POST",
             "path": rank_path,
-            "capability": "ai.enablement.read",
+            "capability": "ai.opportunity-mapping.read",
             "role_templates": ["TENANT_ADMIN"],
             "purpose_required": False,
             "fresh_assurance_seconds": None,

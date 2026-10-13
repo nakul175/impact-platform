@@ -1721,6 +1721,17 @@ button.link {
   font-weight: 600;
   fill: #203c34;
 }
+@media print {
+  .dashboard-print-control,
+  .setup-tabs,
+  nav,
+  header {
+    display: none !important;
+  }
+  .dashboard-card {
+    break-inside: avoid;
+  }
+}
 /* v0.27: waiting page before any area is usable, and readable review stages. */
 .access-gate {
   max-width: 720px;

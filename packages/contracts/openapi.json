@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.110.0",
+    "version": "1.111.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -45291,7 +45291,7 @@
             }
           }
         },
-        "x-contract-version": "1.16.0",
+        "x-contract-version": "1.17.0",
         "parameters": [
           {
             "name": "limit",
@@ -45433,7 +45433,7 @@
             }
           }
         },
-        "x-contract-version": "1.16.0",
+        "x-contract-version": "1.17.0",
         "parameters": [
           {
             "name": "limit",
@@ -45566,7 +45566,7 @@
             }
           }
         },
-        "x-contract-version": "1.16.0",
+        "x-contract-version": "1.17.0",
         "parameters": [
           {
             "name": "limit",
@@ -45708,7 +45708,7 @@
             }
           }
         },
-        "x-contract-version": "1.16.0",
+        "x-contract-version": "1.17.0",
         "parameters": [
           {
             "name": "limit",
@@ -45848,7 +45848,7 @@
             }
           }
         },
-        "x-contract-version": "1.16.0",
+        "x-contract-version": "1.17.0",
         "parameters": [
           {
             "name": "viewport",
@@ -46003,7 +46003,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.16.0",
+        "x-contract-version": "1.17.0",
         "x-audit-required": true
       }
     },
@@ -92502,6 +92502,48 @@
             ],
             "maxLength": 2000
           },
+          "data_state": {
+            "enum": [
+              "LIVE_APPROVED",
+              "PROVISIONAL",
+              "SNAPSHOT",
+              "UNAVAILABLE"
+            ]
+          },
+          "last_source_success_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
+          },
+          "approval_cutoff_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
+          },
+          "calculation_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
+          },
+          "last_valid_data_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
+          },
+          "dashboard_fetched_at": {
+            "type": "string"
+          },
+          "freshness_basis": {
+            "const": "SOURCE_AND_CALCULATION_STATE"
+          },
           "checked_at": {
             "type": "string"
           }
@@ -92510,6 +92552,13 @@
           "stale",
           "stale_reasons",
           "source_check",
+          "data_state",
+          "last_source_success_at",
+          "approval_cutoff_at",
+          "calculation_at",
+          "last_valid_data_at",
+          "dashboard_fetched_at",
+          "freshness_basis",
           "checked_at"
         ]
       },

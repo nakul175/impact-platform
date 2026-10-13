@@ -143,6 +143,12 @@ function Freshness({ f }: { f: any }) {
       ) : null}
       <small className="muted">
         <br />
+        State {words(f.data_state)} · last valid data{" "}
+        {when(f.last_valid_data_at)}
+        <br />
+        Last source success {when(f.last_source_success_at)} · approval cutoff{" "}
+        {when(f.approval_cutoff_at)} · calculation {when(f.calculation_at)}
+        <br />
         {f.locked_at ? "Locked " + when(f.locked_at) + " · " : ""}
         {f.provisional_calculated_at
           ? "Calculated " + when(f.provisional_calculated_at) + " · "
@@ -151,6 +157,9 @@ function Freshness({ f }: { f: any }) {
         {f.source_check === "NOT_PERMITTED"
           ? " · some sources are outside your access"
           : ""}
+        <br />
+        Dashboard fetched {when(f.dashboard_fetched_at)}; fetch success does not
+        change freshness.
       </small>
     </span>
   );
@@ -833,6 +842,13 @@ export function DashboardsPanel({
             <summary>When is a value stale?</summary>
             <p>{view.stale_rule}</p>
           </details>
+          <button
+            type="button"
+            className="secondary dashboard-print-control"
+            onClick={() => window.print()}
+          >
+            Print or save dashboard with context
+          </button>
           {!view.indicators.length ? (
             <p className="muted">No indicators in this programme yet.</p>
           ) : (

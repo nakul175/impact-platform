@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.110.0",
+    "version": "1.111.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -31738,7 +31738,7 @@
             }
           }
         },
-        "x-contract-version": "1.16.0",
+        "x-contract-version": "1.17.0",
         "parameters": [
           {
             "name": "limit",
@@ -31880,7 +31880,7 @@
             }
           }
         },
-        "x-contract-version": "1.16.0",
+        "x-contract-version": "1.17.0",
         "parameters": [
           {
             "name": "limit",
@@ -32013,7 +32013,7 @@
             }
           }
         },
-        "x-contract-version": "1.16.0",
+        "x-contract-version": "1.17.0",
         "parameters": [
           {
             "name": "limit",
@@ -32155,7 +32155,7 @@
             }
           }
         },
-        "x-contract-version": "1.16.0",
+        "x-contract-version": "1.17.0",
         "parameters": [
           {
             "name": "limit",
@@ -32295,7 +32295,7 @@
             }
           }
         },
-        "x-contract-version": "1.16.0",
+        "x-contract-version": "1.17.0",
         "parameters": [
           {
             "name": "viewport",
@@ -32450,7 +32450,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.16.0",
+        "x-contract-version": "1.17.0",
         "x-audit-required": true
       }
     },
@@ -78949,6 +78949,48 @@
             ],
             "maxLength": 2000
           },
+          "data_state": {
+            "enum": [
+              "LIVE_APPROVED",
+              "PROVISIONAL",
+              "SNAPSHOT",
+              "UNAVAILABLE"
+            ]
+          },
+          "last_source_success_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
+          },
+          "approval_cutoff_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
+          },
+          "calculation_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
+          },
+          "last_valid_data_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 2000
+          },
+          "dashboard_fetched_at": {
+            "type": "string"
+          },
+          "freshness_basis": {
+            "const": "SOURCE_AND_CALCULATION_STATE"
+          },
           "checked_at": {
             "type": "string"
           }
@@ -78957,6 +78999,13 @@
           "stale",
           "stale_reasons",
           "source_check",
+          "data_state",
+          "last_source_success_at",
+          "approval_cutoff_at",
+          "calculation_at",
+          "last_valid_data_at",
+          "dashboard_fetched_at",
+          "freshness_basis",
           "checked_at"
         ]
       },

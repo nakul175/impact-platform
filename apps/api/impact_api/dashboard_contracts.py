@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.16.0"
+VERSION = "1.17.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -258,14 +258,31 @@ def augment(spec, policy):
                     "direction": {"enum": ["HIGHER", "LOWER", "RANGE", "MILESTONE"]},
                     "deviation_formula": {"const": "actual - target"},
                     "attainment_formula": {"enum": ["actual / target × 100", "target / actual × 100"]},
-                    "baseline_change_formula": {"const": "(actual - baseline) / baseline × 100; undefined when baseline is zero or negative"},
+                    "baseline_change_formula": {
+                        "const": "(actual - baseline) / baseline × 100; undefined when baseline is zero or negative"
+                    },
                     "time_semantic": NULLABLE_TEXT,
                     "time_semantic_compatibility": {"enum": ["COMPATIBLE", "BLOCKED"]},
                     "change_from_baseline": NULLABLE_DECIMAL,
                     "change_from_baseline_percent": {"type": ["string", "null"]},
                     "change_from_baseline_reason": NULLABLE_TEXT,
                 },
-                ["status", "attainment_percent", "deviation", "reason_code", "compared_with", "direction", "deviation_formula", "attainment_formula", "baseline_change_formula", "time_semantic", "time_semantic_compatibility", "change_from_baseline", "change_from_baseline_percent", "change_from_baseline_reason"],
+                [
+                    "status",
+                    "attainment_percent",
+                    "deviation",
+                    "reason_code",
+                    "compared_with",
+                    "direction",
+                    "deviation_formula",
+                    "attainment_formula",
+                    "baseline_change_formula",
+                    "time_semantic",
+                    "time_semantic_compatibility",
+                    "change_from_baseline",
+                    "change_from_baseline_percent",
+                    "change_from_baseline_reason",
+                ],
             ),
         ]
     }
@@ -318,9 +335,28 @@ def augment(spec, policy):
             "official_calculated_at": NULLABLE_TEXT,
             "provisional_calculated_at": NULLABLE_TEXT,
             "last_source_change_at": NULLABLE_TEXT,
+            "data_state": {"enum": ["LIVE_APPROVED", "PROVISIONAL", "SNAPSHOT", "UNAVAILABLE"]},
+            "last_source_success_at": NULLABLE_TEXT,
+            "approval_cutoff_at": NULLABLE_TEXT,
+            "calculation_at": NULLABLE_TEXT,
+            "last_valid_data_at": NULLABLE_TEXT,
+            "dashboard_fetched_at": {"type": "string"},
+            "freshness_basis": {"const": "SOURCE_AND_CALCULATION_STATE"},
             "checked_at": {"type": "string"},
         },
-        ["stale", "stale_reasons", "source_check", "checked_at"],
+        [
+            "stale",
+            "stale_reasons",
+            "source_check",
+            "data_state",
+            "last_source_success_at",
+            "approval_cutoff_at",
+            "calculation_at",
+            "last_valid_data_at",
+            "dashboard_fetched_at",
+            "freshness_basis",
+            "checked_at",
+        ],
     )
     head = {
         "indicator_id": UUID,

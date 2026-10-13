@@ -140,7 +140,11 @@ def target_block(view, places, period=None, time_semantic=None):
         "displayed_value": shown(view.get("value"), places) if view.get("value_state") == "PRESENT" else None,
         "displayed_low": shown(view.get("low"), places),
         "displayed_high": shown(view.get("high"), places),
-        "version_label": "Revised target" if view.get("target_basis") == "REVISED" else "Original target" if view.get("target_basis") == "ORIGINAL" else "Baseline",
+        "version_label": "Revised target"
+        if view.get("target_basis") == "REVISED"
+        else "Original target"
+        if view.get("target_basis") == "ORIGINAL"
+        else "Baseline",
         "applicable_period": {
             "period_id": str(period["object_id"]) if period else None,
             "period_code": (period.get("payload") or {}).get("code") if period else None,
@@ -307,12 +311,23 @@ class Dashboards:
                     k: v
                     for k, v in comparison.items()
                     if k
-                    in {"status", "attainment_percent", "deviation", "displayed_deviation", "reason_code", "change_from_baseline", "change_from_baseline_percent", "change_from_baseline_reason"}
+                    in {
+                        "status",
+                        "attainment_percent",
+                        "deviation",
+                        "displayed_deviation",
+                        "reason_code",
+                        "change_from_baseline",
+                        "change_from_baseline_percent",
+                        "change_from_baseline_reason",
+                    }
                 },
                 "compared_with": compared["mode"] if compared else None,
                 "direction": target.get("direction"),
                 "deviation_formula": "actual - target",
-                "attainment_formula": "target / actual × 100" if target.get("direction") == "LOWER" else "actual / target × 100",
+                "attainment_formula": "target / actual × 100"
+                if target.get("direction") == "LOWER"
+                else "actual / target × 100",
                 "baseline_change_formula": "(actual - baseline) / baseline × 100; undefined when baseline is zero or negative",
                 "time_semantic": actual_semantic,
                 "time_semantic_compatibility": compatibility,
@@ -394,6 +409,23 @@ class Dashboards:
         else:
             stale, check = bool(reasons), "CHECKED"
         last_change = max((r["updated_at"] for r in rows), default=None) if rows is not None else None
+        official_calculated = (
+            (official["payload"].get("freshness") or {}).get("calculated_at") if official else None
+        )
+        provisional_calculated = (
+            (latest["payload"].get("freshness") or {}).get("calculated_at") if latest else None
+        )
+        calculated = official_calculated or provisional_calculated
+        fetched_at = datetime.now(timezone.utc).isoformat()
+        data_state = (
+            "SNAPSHOT"
+            if official and snapshot
+            else "LIVE_APPROVED"
+            if official
+            else "PROVISIONAL"
+            if latest
+            else "UNAVAILABLE"
+        )
         return {
             "stale": stale,
             "stale_reasons": sorted(set(reasons)),
@@ -401,14 +433,18 @@ class Dashboards:
             "snapshot_id": str(snapshot["snapshot_id"]) if snapshot else None,
             "snapshot_version": snapshot["snapshot_version"] if snapshot else None,
             "locked_at": iso(snapshot["created_at"]) if snapshot else None,
-            "official_calculated_at": (official["payload"].get("freshness") or {}).get("calculated_at")
-            if official
-            else None,
-            "provisional_calculated_at": (latest["payload"].get("freshness") or {}).get("calculated_at")
-            if latest
-            else None,
+            "official_calculated_at": official_calculated,
+            "provisional_calculated_at": provisional_calculated,
             "last_source_change_at": iso(last_change),
-            "checked_at": datetime.now(timezone.utc).isoformat(),
+            "data_state": data_state,
+            "last_source_success_at": iso(last_change),
+            "approval_cutoff_at": iso(snapshot["created_at"]) if snapshot else None,
+            "calculation_at": calculated,
+            "last_valid_data_at": calculated or iso(last_change),
+            # Fetch time is disclosed separately and never participates in stale calculation.
+            "dashboard_fetched_at": fetched_at,
+            "freshness_basis": "SOURCE_AND_CALCULATION_STATE",
+            "checked_at": fetched_at,
         }
 
     def definition(self, c, ctx, pin):

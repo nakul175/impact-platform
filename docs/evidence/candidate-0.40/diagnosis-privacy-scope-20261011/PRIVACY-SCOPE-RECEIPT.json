@@ -1,0 +1,26 @@
+{
+  "state": "FIRST_NATIVE_RUN_PASS_FURTHER_CASES_IN_PREPARATION",
+  "tested_base_head": "ba3fbbf7fba14659179231d4f1406a356a9e3fcf",
+  "uncommitted_diff_bound_by_source_pins": true,
+  "registered_schema": 46,
+  "unregistered_scope_column_and_linkage": true,
+  "native_passed": 128,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "source_pins_stable": true,
+  "cluster_stop_exit_code": 0,
+  "scope": "4new independent diagnosis-erasure cases plus124retained diagnosis/linkage/privacy/worker cases",
+  "synthetic_fixture_objects_not_http_diagnosis_creation": true,
+  "new_grants_in_new_tests": false,
+  "independent_human_release_review": false,
+  "deployed_stories": 0,
+  "remaining": [
+    "foreigntenant selector",
+    "restrictedrevision scope",
+    "revisionbudget and legacyhash compatibility",
+    "candidate registration/checksum/upgrade/recovery",
+    "exacthead browser/provider/container/hostedchecks",
+    "actual human release/operational/financial/export gates"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "observed_at": "2026-10-11T18:42:57.847404+00:00",
+  "exit_code": 1,
+  "stage": "Source pin preparation before initdb/startup/tests",
+  "actual_error": "FileNotFoundError: scripts/identity_provider.py does not exist",
+  "tests_executed": 0,
+  "services_started": false,
+  "generated_private_bootstrap_password_removed": true,
+  "cleanup_guard": "Initial all-pattern count assertion refused because one older unrelated private file also exists; only exact newly owned file removed, older file untouched",
+  "cause": "Incorrect new wrapper helper path; actual file scripts/idp.py inspected before retry",
+  "source_head": "c7a55b18ee33d7df095c7a193b53e146c6c62fec"
+}

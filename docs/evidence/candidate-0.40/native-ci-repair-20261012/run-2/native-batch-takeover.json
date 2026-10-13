@@ -1,0 +1,35 @@
+{
+  "scenario": "Actual native lease expiry during a test-only between-message pause",
+  "before_fast_states": [
+    "LEASED",
+    "SENT",
+    "LEASED",
+    "LEASED",
+    "LEASED",
+    "LEASED"
+  ],
+  "before_fast_leased_by_slow": 5,
+  "final_states": [
+    "SENT",
+    "SENT",
+    "SENT",
+    "SENT",
+    "SENT",
+    "SENT"
+  ],
+  "lease_generations": [
+    2,
+    1,
+    2,
+    2,
+    2,
+    2
+  ],
+  "slow_sends": 1,
+  "fast_sends": 5,
+  "unique_sends": 6,
+  "total_sends": 6,
+  "slow_stale_lease_refusal": true,
+  "timestamps_or_lease_SQL_modified": false,
+  "production_worker_changed": false
+}

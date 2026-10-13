@@ -1,0 +1,64 @@
+{
+  "phase": "evidence review separate from source review",
+  "reviewer": "root agent; no human or independent reviewer approval claimed",
+  "observed_at": "2026-10-11T09:33:48.556211+00:00",
+  "counts": {
+    "tests": 2504,
+    "passed": 2403,
+    "skipped": 101,
+    "failures": 0,
+    "errors": 0
+  },
+  "export_cases_passed": 33,
+  "existing_runner_deselected": 1,
+  "existing_deselection": "-k not IT_018 retained verbatim in existing runner",
+  "warning": "StarletteDeprecationWarning: TestClient/httpx",
+  "tested_base_head": "27729ec3eb493603c869bb7ca7c60c29cb963acb",
+  "tested_uncommitted_patch": {
+    "path": "qualification/test_ai_plan_exports_live.py",
+    "sha256": "3f9c57b672a3712939885cc03da38853e2f50082280b3ae1cbe40fc87903b4af"
+  },
+  "source_changes_during_run": [],
+  "prior_evidence_restored": [
+    "docs/evidence/nonprofit-ai-content-applied-migrations.json",
+    "docs/evidence/golden-reconciliation.json",
+    "docs/evidence/nonprofit-ai-framework-old-pin-visibility-observation.json",
+    "docs/evidence/sprint-0.34-ai-plan-export-pglite-applied-migrations.json",
+    "docs/evidence/sprint-0.33-listing-visibility-pglite-applied-migrations.json",
+    "docs/evidence/sprint-0.33-retained-visibility-pglite-applied-migrations.json"
+  ],
+  "native_qualification": false,
+  "hosted_ci": false,
+  "human_approval": false,
+  "next_story_started": false,
+  "remaining": [
+    "native PostgreSQL role/concurrency/upgrade/restart/restore",
+    "live identity provider",
+    "container stack",
+    "required exact-head hosted CI",
+    "human security/accessibility and owner acceptance"
+  ],
+  "artifact_hashes": {
+    "full-regression-failed.log": "b6d71e2e6eca52a2a32c8ef01df5e160c3ebcb59be495562f3264147c61d1e48",
+    "full-regression-final.log": "79bf2b5d4a8a4ee1f9de2f618b8ee3cb60395494d84cb4ddce5375061e4454bd",
+    "tested-source-pins.json": "e9dfdfe76efad9f68c33e3e8eaf3deb422a1978f340bda3ce398692fea35db6e",
+    "failed-run-receipt.json": "9d73647bfb461ccfc959f91fe10543a65f8d0928ca18ca4880a4eb172138e045",
+    "source-review.json": "e87044a5e57278171a0c9a675574332d6cb26255804383a55e4d432177d19f02",
+    "startup-blocked-receipt.json": "d2b52f62a5b1e19f56e5260562e1f63a502254dcea4d846c88cc8dd0d620752d",
+    "startup-blocked-database.log": "da1012468f3ef81b3bbe1fe5d1814aac6dd2fc1ae66d5ee1c3b35ccdc07c8778",
+    "full-regression-failed.xml": "d7232d0931c5e3f9bc2926e755ae9b1fbf0d9b0913dac605a32689d5a0fc8663",
+    "full-regression-final.xml": "80ebd5a4f9ae79e1ca5c42fdef4377ce82e7bed4fb29c33cb8c84d7a53c5c89c",
+    "generated-observations/nonprofit-ai-content-applied-migrations.json": "d88c0f148ef309be7c5b58d4f3c5aca8a835c8e04965a104b937bba8e91b6c66",
+    "generated-observations/golden-reconciliation.json": "8e6468894be81f479a3b3c5c3b7c46b7fbdbaff208e1a7c6feeb7677b3e16b7c",
+    "generated-observations/nonprofit-ai-framework-old-pin-visibility-observation.json": "462661a1cc534f71df5355096c406fc5038da1c2a24509b90c04f7c24b7858c3",
+    "generated-observations/sprint-0.34-ai-plan-export-pglite-applied-migrations.json": "98c14ef27a918ad3d7a6a8aabbac5de229bb6e3b4d367a42e100f489cf5e89d5",
+    "generated-observations/sprint-0.33-listing-visibility-pglite-applied-migrations.json": "b7108f13eea595f364565bbeb0610ad29c8c689a7b1e986a4a47c40863315eed",
+    "generated-observations/sprint-0.33-retained-visibility-pglite-applied-migrations.json": "e7b5535a1f442c5db6045ad298f6734268cb46358323a0eb44428eaa3b06a651",
+    "failed-generated-observations/nonprofit-ai-content-applied-migrations.json": "df86fb512aab6bb5fbcc3c08914c695a882d5a3854a4597308d81ffc380d90c7",
+    "failed-generated-observations/golden-reconciliation.json": "e5afac9f16d3dbd5c0e107a28f287be1bb817c8ad18385a63bf5cbfcd3ec15f6",
+    "failed-generated-observations/nonprofit-ai-framework-old-pin-visibility-observation.json": "d545c3c5bf9c72eb050af2f3f793111c64cbc73a6f17de2a4581eb0c839b62b4",
+    "failed-generated-observations/sprint-0.34-ai-plan-export-pglite-applied-migrations.json": "9a60126f862f549798360a28be082ca510e9f454b203269742d8c509e1d1f019",
+    "failed-generated-observations/sprint-0.33-listing-visibility-pglite-applied-migrations.json": "317e934ab744664f0163a09e5627476b5120687a8a6ee2998b0f7d21c7acd485",
+    "failed-generated-observations/sprint-0.33-retained-visibility-pglite-applied-migrations.json": "ebc70ba60a582912e9675704511ab402b866d9be3074af5b747f5326e09d893f"
+  }
+}

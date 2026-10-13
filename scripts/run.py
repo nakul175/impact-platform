@@ -70,6 +70,7 @@ BROWSER_MODES = {
     "measurement-browser": "measurement-check.mjs",
     "planning-browser": "planning-check.mjs",
     "ai-enablement-browser": "ai-enablement-check.mjs",
+    "ai-diagnosis-browser": "ai-diagnosis-check.mjs",
     "ai-planning-browser": "ai-planning-check.mjs",
     "ai-saved-review-browser": "ai-saved-review-check.mjs",
     "ai-walkthrough-browser": "ai-walkthrough-check.mjs",
@@ -450,7 +451,7 @@ def main():
     parser.add_argument(
         "--pooler",
         choices=["pgbouncer"],
-        help="Native test mode: start a PgBouncer in transaction pooling mode and connect the API and "
+        help="Native test or ai-diagnosis-browser mode: start a PgBouncer in transaction pooling mode and connect the API and "
         "the worker through it (scripts/pooler.py); migrations and the fixture connection stay direct",
     )
     parser.add_argument(
@@ -463,8 +464,8 @@ def main():
         parser.error("--idp keycloak is available in test mode (PGlite or --native) and idp-browser mode")
     if args.mode in IDP_ONLY_MODES and not args.idp:
         parser.error(args.mode + " needs --idp keycloak")
-    if args.pooler and not (args.native and args.mode == "test"):
-        parser.error("--pooler pgbouncer is available in native test mode only")
+    if args.pooler and not (args.native and args.mode in {"test", "ai-diagnosis-browser"}):
+        parser.error("--pooler pgbouncer is available in native test or ai-diagnosis-browser mode only")
     preflight_fixture()
     local = ROOT / ".local" / ("dev" if args.mode == "dev" else "test-" + str(uuid.uuid4())[:8])
     local.mkdir(parents=True, exist_ok=True)
@@ -546,6 +547,13 @@ def main():
                 IMPACT_LOGIN_DSN_MIGRATOR=dsns["impact_migrator"],
                 IMPACT_LOGIN_DSN_WORKER=runtime["impact_worker_login"],
                 IMPACT_LOGIN_DSN_EXECUTOR=runtime["impact_executor_login"],
+                # Restored clone databases are outside the bounded pooler mapping.
+                # Test-only restricted direct logins never reach the application process.
+                IMPACT_DIRECT_LOGIN_DSN_APP=dsns["impact_app_login"],
+                IMPACT_DIRECT_LOGIN_DSN_IDENTITY=dsns["impact_identity_login"],
+                IMPACT_DIRECT_LOGIN_DSN_PLATFORM=dsns["impact_platform_login"],
+                IMPACT_DIRECT_LOGIN_DSN_WORKER=dsns["impact_worker_login"],
+                IMPACT_DIRECT_LOGIN_DSN_EXECUTOR=dsns["impact_executor_login"],
             )
             os.environ["IMPACT_ALLOW_FIXTURE_LOAD"] = "1"
             migration = migrate.run(env["IMPACT_MIGRATION_DSN"], fixture_dsn, fixture=True)
@@ -582,7 +590,7 @@ def main():
         api_env = {
             k: v
             for k, v in env.items()
-            if k not in PRIVILEGED_ENV and not k.startswith("IMPACT_LOGIN_") and not k.startswith("PG")
+            if k not in PRIVILEGED_ENV and not k.startswith(("IMPACT_LOGIN_", "IMPACT_DIRECT_LOGIN_", "PG"))
         }
         base = config["public_origin"]
         (local / "api.log").write_text("")
@@ -609,6 +617,7 @@ def main():
             )
         env.update(
             IMPACT_BASE_URL=base,
+            IMPACT_API_PID=str(api.pid),
             IMPACT_FIXTURE_FILE=str(ROOT / "specification/fixtures/api-fixture.json"),
             IMPACT_ALLOW_MUTATIONS="1",
             IMPACT_TEST_LOCAL=str(local),
@@ -641,6 +650,9 @@ def main():
                     return 1
             return 0
         if args.mode in BROWSER_MODES:
+            # Fixture helpers must share this runner's installed dependencies even
+            # when an isolated checkout reuses a virtualenv at another path.
+            env["IMPACT_QUALIFICATION_PYTHON"] = sys.executable
             return subprocess.call(["node", "tools/browser/" + BROWSER_MODES[args.mode]], cwd=ROOT, env=env)
         targets = args.pytest_path or (
             ["qualification/test_live_idp.py"]

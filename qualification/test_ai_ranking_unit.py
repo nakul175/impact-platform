@@ -17,7 +17,7 @@ import pytest
 from impact_api import ai_enablement_contracts as contracts
 from impact_api import ai_opportunity_scores as editorial
 from impact_api import ai_ranking as module
-from impact_api.access_bootstrap import PROFILE, PROFILE_HASH
+from impact_api.access_bootstrap import PROFILE
 from impact_api.access_upgrade import compatible
 from impact_api.bootstrap_contracts import ROLE_NAMES
 from impact_api.ai_enablement_catalog import (
@@ -425,6 +425,8 @@ def test_finance_gets_a_read_only_bundle_and_no_write_capability():
         "rank_ai_opportunities",
         "compare_ai_procurement_costs",
         "evaluate_ai_pilot",
+        "calculate_ai_value_case",
+        "explain_own_effective_access",
     }
     for row in access["operations"]:
         if row["capability"] in {
@@ -442,9 +444,11 @@ def test_finance_gets_a_read_only_bundle_and_no_write_capability():
     )
 
 
-def test_migration_0042_registers_the_current_profile_and_only_adds_the_finance_bundle():
+def test_migration_0042_registers_its_historical_profile_and_only_adds_the_finance_bundle():
     fingerprint, manifest = registered_profile("0042_ai_ranking_weights.sql")
-    assert fingerprint == PROFILE_HASH and manifest == PROFILE
+    # Migration0042 is immutable; later additive profiles cannot replace its seed.
+    # The current profile registration is independently checked in test_access_upgrade_unit.py.
+    assert fingerprint == "8664a1b707cb7d7b00ccd4d013bb55c54d161306cd12868d2a89686118324d2a"
     assert hash_data(manifest).hex() == fingerprint
     _, previous = registered_profile("0041_ai_policy.sql")
     assert set(manifest["roles"]) - set(previous["roles"]) == {"FINANCE"}

@@ -1,0 +1,136 @@
+{
+  "reviewer": "imprana_scope_audit",
+  "checked_at_utc": "2026-10-11T03:35:55.344296+00:00",
+  "result": "PASS",
+  "scope": "Independent code/policy review and offline rerun of frozen actual v1 native preservation evidence. Post-v1 checker reviewed and synthetic guards run; no v2 native publication was performed or inferred. This is not owner approval, story acceptance, Ready/Done, application qualification or release authority.",
+  "checks": {
+    "v1_actual_report_exact_c2a50b14": true,
+    "actual_global_report_pass_zero_errors": true,
+    "independent_offline_rerun_pass_zero_errors": true,
+    "global_full_raw_input_pins_exact": true,
+    "all_169_original_before_and_plan_pins_exact": true,
+    "all_40_protected_local_history_files_exact": true,
+    "first_global_red_preserved_exact": true,
+    "single_failed_primary_get_reconciliation_preserved_exact": true,
+    "sixteen_corruption_groups_independently_rerun_pass": true,
+    "five_post_v1_synthetic_guards_independently_rerun_pass": true,
+    "source_prefix_rule_raw_exact_before_any_transform": true,
+    "gherkin_original_fence_only_no_repeated_suffix_escape": true,
+    "captured_nonvolatile_metadata_and_full_relation_payloads_exact": true,
+    "fixed_suffix_rules_only_observed_ids_exact_lines_repetition_and_fences_refused": true,
+    "planned_resource_projection_requires_nonempty_strings_both_full_doc_ties_and_every_other_field_exact": true,
+    "post_v1_checker_requires_seven_immutable_v1_pins_exact_one_overview_append_and_no_other_project_change": true,
+    "v9_v1_files_exact_no_post_pointer_rewrite": true,
+    "latest_post_v1_separate_source_seal_exact": true,
+    "latest_post_v1_five_synthetic_guards_rerun_pass": true,
+    "latest_post_output_cannot_overwrite_frozen_or_observation_inputs": true
+  },
+  "errors": {
+    "sealed_files": [],
+    "raw_input_pins": [],
+    "source_pins": [],
+    "protected_history": [],
+    "post_seal": []
+  },
+  "counts": {
+    "issues_before": 1553,
+    "issues_after": 1553,
+    "issue_types": {
+      "epic": 54,
+      "story": 368,
+      "task": 1131
+    },
+    "original_scenarios": 1328,
+    "task_blocked_by_edges_before": 779,
+    "task_blocked_by_edges_after": 779,
+    "updated_documents": 10,
+    "protected_history_documents": 1,
+    "new_overview_documents": 1,
+    "milestones": 5,
+    "missing_given_supplements": 37,
+    "supplementary_assertion_classifications": 7,
+    "qualification_duty_supplements": 13,
+    "in_review_before": 4,
+    "in_review_after": 4,
+    "nonmissing_estimates_before": 10,
+    "nonmissing_estimates_after": 10
+  },
+  "reviewed_files": [
+    {
+      "path": "verification-author/verify_refinement_publication.py",
+      "sha256": "d25759cca892e152e8f443c6b17aa8fe1485418aff3ddb30796964a649a3a23a"
+    },
+    {
+      "path": "verification-author/DECLARED-ALL-OBJECT-FORMATTING-POLICY.json",
+      "sha256": "191be095c73728010e641fcd229f808384d905c7e1ff0181bbb51bb27b5dc3ce"
+    },
+    {
+      "path": "verification-author/test_verify_refinement_publication.py",
+      "sha256": "df147474940d81cf7b80113faa5c42f4fd18358f922bf3af5450aeb232d045c5"
+    },
+    {
+      "path": "verification-author/VERIFIER-AUTHORING-RECEIPT-V9.json",
+      "sha256": "b2e6ab0bb5f9610f17bd9a6fdab19b342c3d5a6abd63bab889ff9b358454b2ce"
+    },
+    {
+      "path": "verification-author/PUBLICATION-VERIFICATION-REPORT.json",
+      "sha256": "c2a50b143c97273242b92037563c9b80ff8cb35e3aabcff5cdeebb40cae2649d"
+    },
+    {
+      "path": "verification-author/verify_post_publication_overview.py",
+      "sha256": "d7a166d6bdbb06a7a3033a84cb6e932e07255db6b71f280dcca9f937b64c930a"
+    },
+    {
+      "path": "verification-author/test_verify_post_publication_overview.py",
+      "sha256": "df51ccc5b240e6f63e3ce7390a08b4afcb1280fb261e9564762f5c975aa193b6"
+    }
+  ],
+  "independent_outputs": [
+    {
+      "path": "independent-final-review/PUBLICATION-INDEPENDENT-RERUN.json",
+      "sha256": "9b4ce20742ad7a69a83ba5d96bd54b2e386afedb3b50fa73804283ae537ee0fe"
+    },
+    {
+      "path": "independent-final-review/CORRUPTION-GUARDS.log",
+      "sha256": "0a87b3303d403b7e74ac12c69837ef1bc1639ee6ba4eefef4372cd38b03a9d58"
+    },
+    {
+      "path": "independent-final-review/POST-V1-SYNTHETIC-GUARDS.log",
+      "sha256": "3292b0521f45e5d02e007d4e56976031165d00ca7359cbb9bde7a42e16164846"
+    }
+  ],
+  "observed_resource_projection": "Exactly10existing planned-document resources; changedFields=[updatedAt], nonempty string old/new timestamps tied byte exactly to old/new full document records, otherfields exact; history and links never projected.",
+  "limitations": [
+    "Only full native response fields actually captured are certified; absent backend fields are not separately queried.",
+    "A v2 overview delta later needs its own frozen seven-input plan and fresh overview/project readbacks; it does not requalify other live objects.",
+    "Reviewed common rich-text transforms are limited to the new suffix; fixed extra transforms require actual scoped observations and preserve every word, number, identifier and assertion."
+  ],
+  "supersedes_review_only": {
+    "path": "independent-final-review/INDEPENDENT-V1-AND-DELTA-CONTRACT-REVIEW.json",
+    "sha256": "9f7ba22acba9a51e3f04dd20ee1845980e459c9c9b78df0796d4ab95a3353e73",
+    "reason": "Earlier combined review correctly caught a changed future post-checker source pointer. Frozen actual v1 report/source/policy/data were unchanged. This separate review uses the subsequently sealed post-checker; historical V9 and first failed review remain intact."
+  },
+  "current_post_contract": [
+    {
+      "path": "verification-author/POST-V1-CHECKER-FINAL-SOURCE-RECEIPT.json",
+      "sha256": "64bb866f55d0128a1b9a062bb5b1f73eb5d5dfdae81f0055881cc60afd5ee2fb"
+    },
+    {
+      "path": "verification-author/verify_post_publication_overview.py",
+      "sha256": "d7a166d6bdbb06a7a3033a84cb6e932e07255db6b71f280dcca9f937b64c930a"
+    },
+    {
+      "path": "verification-author/test_verify_post_publication_overview.py",
+      "sha256": "df51ccc5b240e6f63e3ce7390a08b4afcb1280fb261e9564762f5c975aa193b6"
+    },
+    {
+      "path": "verification-author/POST-V1-CHECK-CONTRACT.md",
+      "sha256": "3db4a5c56bce42f4eabb3cbda4e888a9f94d04b36f5e0b189bbe5a5ced637a93"
+    }
+  ],
+  "post_guards_log": {
+    "path": "independent-final-review/POST-V1-LATEST-SYNTHETIC-GUARDS.log",
+    "sha256": "3292b0521f45e5d02e007d4e56976031165d00ca7359cbb9bde7a42e16164846"
+  },
+  "latest_post_checker_scope": "Reviewed fixed one-overview append, allseven immutable actual-v1 pins/raw hashes, actual full overview prefix and metadata, exact14resource IDs and allother13members/five milestones/project fields; only overview resource timestamp tied nonempty strings to before/after full overview. No Native v2 write or live verification performed in this reviewer lane."
+}

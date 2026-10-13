@@ -1,0 +1,59 @@
+{
+  "result": "PASS",
+  "scope": "Read-only check of one exact post-v1 overview receipt append and fresh captured overview/project preservation. Frozen v1 report and inputs remain unchanged. Other live objects are not re-read or requalified; no application tests, Ready/Done, owner acceptance or release clearance is established.",
+  "checked_at_utc": "2026-10-11T03:37:14.717495+00:00",
+  "overview_id": "61b8c340-13f3-4d51-8c6f-bfc23a6660a5",
+  "counts": {
+    "overview_appends": 1,
+    "project_resources": 14,
+    "milestones": 5,
+    "frozen_v1_inputs": 7
+  },
+  "baseline_pins": {
+    "report": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/PUBLICATION-VERIFICATION-REPORT.json",
+      "sha256": "c2a50b143c97273242b92037563c9b80ff8cb35e3aabcff5cdeebb40cae2649d"
+    },
+    "issues": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-after/full-issues.json",
+      "sha256": "fd2c1f7c03231e7e56727ce62a2a0db01ddeea294c40cabeef54b32dce080afe"
+    },
+    "documents": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-after/full-documents.json",
+      "sha256": "4216be9f8c2a4a0c9eecf248e8ba399ff134fcc02d604a572eb28b847e7571b6"
+    },
+    "project": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-after/project.json",
+      "sha256": "c9fc2e4e44d10c0833b8fc0158f2e0ee5e7a6837794717a7fabf986589390819"
+    },
+    "publication_plan": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-publication-plan.json",
+      "sha256": "4bd0adde457322c429a1471e70f99d0eadc78b12366c9280e51f0a932220567b"
+    },
+    "policy": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/DECLARED-ALL-OBJECT-FORMATTING-POLICY.json",
+      "sha256": "191be095c73728010e641fcd229f808384d905c7e1ff0181bbb51bb27b5dc3ce"
+    },
+    "verifier": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/verification-author/verify_refinement_publication.py",
+      "sha256": "d25759cca892e152e8f443c6b17aa8fe1485418aff3ddb30796964a649a3a23a"
+    }
+  },
+  "observed_suffix_normalizations": [],
+  "errors": [],
+  "input_pins": {
+    "delta_plan": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/post-v1-overview/DECLARED-V2-OVERVIEW-PLAN.json",
+      "sha256": "b31ec92c428cd843e975996451004d76f89aacf5804f45abffff5b67d6504a44"
+    },
+    "fresh_overview": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/post-v1-overview/after-overview.json",
+      "sha256": "6adbb80e9cd7883817254a2976702977665b6b8496b20850752e71d3c621fd04"
+    },
+    "fresh_project": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/post-v1-overview/after-project.json",
+      "sha256": "1bd7b82ca6dad41b3e81967818550227a7bac2d80a66f72818cff42607521a46"
+    }
+  },
+  "checker_sha256": "d7a166d6bdbb06a7a3033a84cb6e932e07255db6b71f280dcca9f937b64c930a"
+}

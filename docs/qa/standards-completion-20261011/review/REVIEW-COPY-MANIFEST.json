@@ -1,0 +1,68 @@
+{
+  "scope": "AI author/source/documentation reviews only; no human, runtime or approval certificate",
+  "members": [
+    {
+      "source": "cases/review/INDEPENDENT-PM-DRAFT-RECORD-REVIEW.json",
+      "destination": "docs/qa/standards-completion-20261011/review/INDEPENDENT-PM-DRAFT-RECORD-REVIEW.json",
+      "sha256": "f528ee57afa5504ef3e6e00fd2214f8d6cb9cbf65f3cdf9209cf203890c1b22f",
+      "bytes": 12274,
+      "exact_copy": true
+    },
+    {
+      "source": "cases/review/INDEPENDENT-PROPOSED-REGISTER-REVIEW.json",
+      "destination": "docs/qa/standards-completion-20261011/review/INDEPENDENT-PROPOSED-REGISTER-REVIEW.json",
+      "sha256": "6df5543c5c5369ab039db5eccb3ba13b6171c47622ccb23b9f13c3b9bd795051",
+      "bytes": 6780,
+      "exact_copy": true
+    },
+    {
+      "source": "source/review/INDEPENDENT-CASE-AND-STORY-APPEND-REVIEW.json",
+      "destination": "docs/qa/standards-completion-20261011/review/INDEPENDENT-CASE-AND-STORY-APPEND-REVIEW.json",
+      "sha256": "31d4d4895907968bbd10099f527ae6b04643f80ca5bdc70c87244d63a0616278",
+      "bytes": 59578,
+      "exact_copy": true
+    },
+    {
+      "source": "pm/review/QA-INDEPENDENT-REVIEW-RECEIPT.json",
+      "destination": "docs/qa/standards-completion-20261011/review/QA-INDEPENDENT-REVIEW-RECEIPT.json",
+      "sha256": "0620d6cf887b0b6b0ae1092928c59d4e1c6ed798e5b22d9d8a999ee3f8ff399c",
+      "bytes": 869,
+      "exact_copy": true
+    },
+    {
+      "source": "cases/review/INDEPENDENT-FIVE-NATIVE-QA-DOC-REVIEW.json",
+      "destination": "docs/qa/standards-completion-20261011/review/INDEPENDENT-FIVE-NATIVE-QA-DOC-REVIEW.json",
+      "sha256": "fc4b27602d481579944da6826af3b6ac2e2d8c3b6229df244618cc173b769b4b",
+      "bytes": 41635,
+      "exact_copy": true
+    },
+    {
+      "source": "cases/ACTUAL-CASE-DESIGN-VALIDATION.json",
+      "destination": "docs/qa/standards-completion-20261011/review/ACTUAL-CASE-DESIGN-VALIDATION.json",
+      "sha256": "2a90d77918173c4f781b181f4e6ffee743cf800e8ef8f3cdf51e466130945db9",
+      "bytes": 102537,
+      "exact_copy": true
+    },
+    {
+      "source": "source/SOURCE-FREEZE-RECEIPT.json",
+      "destination": "docs/qa/standards-completion-20261011/review/SOURCE-FREEZE-RECEIPT.json",
+      "sha256": "0aa40c76febec3ce79c7bc61502aa1856770c0e717484521b03b27b63a44e832",
+      "bytes": 5068,
+      "exact_copy": true
+    },
+    {
+      "source": "pm/PM-AUTHOR-FREEZE-RECEIPT.json",
+      "destination": "docs/qa/standards-completion-20261011/review/PM-AUTHOR-FREEZE-RECEIPT.json",
+      "sha256": "bc0c5ecf6a7377876f43e450a02b0d2b76c4cb27c6fe1361c1ee4e6a6ba61206",
+      "bytes": 1114,
+      "exact_copy": true
+    },
+    {
+      "source": "source/proposed-registers/FINAL-PROPOSED-REGISTER-FREEZE.json",
+      "destination": "docs/qa/standards-completion-20261011/review/FINAL-PROPOSED-REGISTER-FREEZE.json",
+      "sha256": "a8b7de3c515b61f01693be09c936213c7c1c2eac83d3fea3721066df757aa7d3",
+      "bytes": 103582,
+      "exact_copy": true
+    }
+  ]
+}

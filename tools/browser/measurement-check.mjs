@@ -166,6 +166,7 @@ try {
     await label("Programme type").fill("Health");
     await label("Reporting calendar").selectOption({ index: 1 });
     await label("Geography").selectOption({ index: 1 });
+    await button("Review complete").click();
     await button("Save draft").click();
     await button(programme).waitFor();
     await button(programme).click();

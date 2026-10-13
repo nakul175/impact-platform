@@ -1,0 +1,75 @@
+{
+  "at": "2026-10-11T16:44:30.020743+00:00",
+  "tested_head": "1a47253d52297e68e61de3124f809e59835b89ea",
+  "story": "US-DX-01a / APL-361",
+  "scope": "Full native application/reference suite at latest executable code; browser/live-provider/container/hosted checks remain separate. Candidate linkage installed/removed by its actual qualification fixtures, not registered schema47.",
+  "application": {
+    "passed": 2609,
+    "skipped": 28,
+    "deselected": 1,
+    "warnings": 1,
+    "failed": 0,
+    "errors": 0,
+    "configured_deselection": "Existing runner -k not IT_018, unchanged",
+    "skip_inventory": "SKIP-INVENTORY.json"
+  },
+  "native_recovery": {
+    "api_restart_phases_passed": 2,
+    "api_restart_outcome": "PASS",
+    "generic_actual_pg_dump_restore": "PASS",
+    "restore_tables_compared": 192,
+    "restore_rows_compared": 114470,
+    "upgrade_45_to46": "PASS",
+    "replacement_linked_api_case": "Actual new case passes in full suite, plus separate exact raw scopes retained"
+  },
+  "registered_schema": 46,
+  "candidate_registered": false,
+  "stable_source_pins": 283,
+  "historical_generated_artifacts_restored": [
+    "docs/evidence/sprint-0.33-listing-visibility-native-applied-migrations.json",
+    "docs/evidence/nonprofit-ai-content-applied-migrations.json",
+    "docs/evidence/golden-reconciliation.json",
+    "docs/evidence/sprint-0.34-ai-plan-export-native-applied-migrations.json",
+    "docs/evidence/native-application-tests.xml",
+    "docs/evidence/nonprofit-ai-framework-old-pin-visibility-observation.json",
+    "docs/evidence/sprint-0.33-retained-visibility-native-applied-migrations.json",
+    "docs/evidence/native-restore-drill.json",
+    "docs/evidence/native-qualification.json"
+  ],
+  "review_phases": [
+    {
+      "phase": "code",
+      "reviewer": "root integration self-review",
+      "human_signoff": false,
+      "finding": "No product/test source edited for full run. All283 executable pins and46 applied migration bytes stable; existing suite selector preserved. Scoped native qualification grants/candidate/temp triggers/copied-db authority probes do not change production roles or default profiles. Existing privacy target still omits diagnosis."
+    },
+    {
+      "phase": "evidence",
+      "reviewer": "root integration self-review",
+      "human_signoff": false,
+      "finding": "Actual JUnit2609pass/28skip0failure/error; existingIT018deselected and1warning retained. Native qualification restart2phasesPASS, real restorePASS and45-to46upgradePASS. All9 overwritten historical artifacts restored byte-exact. Skips retain reasons and no browser/live-provider/container/hosted or human acceptance claim."
+    }
+  ],
+  "remaining": [
+    "Supported diagnosis-erasure privacy contract and positive cleanup before linkage promotion",
+    "Candidate registration/checksum retry/recovery",
+    "Current-head browser/live-provider and container/hosted required CI plus export/financial/human/operational/owner gates"
+  ],
+  "deployed": false,
+  "delivered_stories": 0,
+  "raw_sha256": {
+    "RUN-RECEIPT.json": "60787bf6888247bb5bbff7222eee73babfe415184621c158fa4808d5463c53c0",
+    "cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "SKIP-INVENTORY.json": "6666655e38fff208bf0907777ecb9e7e308cf2156f716c2032daa12f22151b23",
+    "native-full.log": "a868ac009924e68315ba432f7e609ceea678ab4028df0482ff69a797268fb075",
+    "generated-evidence/sprint-0.33-listing-visibility-native-applied-migrations.json": "afd09d5f161e8ab8b230805c7f9d8313bc6c110e1ec15f742828d3bad079b65f",
+    "generated-evidence/nonprofit-ai-content-applied-migrations.json": "9d2fcb61eb5dd65897134006acbcbf05343ca304bef2fbb7ebf8e34c6c2690aa",
+    "generated-evidence/golden-reconciliation.json": "ab99a65ab2bcccb32a94f88a676f86b279b13bcfe153f0b6cebcd9f7bb3f5213",
+    "generated-evidence/sprint-0.34-ai-plan-export-native-applied-migrations.json": "44011d94077d48cd35a1938bfc4c93ad7e308d3b1df6b07e7237cd43f38c458d",
+    "generated-evidence/native-application-tests.xml": "654289c8d01a24aa7fccf8df4a9e17c4bdb4d7618ca8de30257e7a6e4ea12104",
+    "generated-evidence/nonprofit-ai-framework-old-pin-visibility-observation.json": "b4db7b58df0d644de4da58a9ea0825fb62a28cfceb41868d44c9d6a11d2a9578",
+    "generated-evidence/sprint-0.33-retained-visibility-native-applied-migrations.json": "c51a2b5c2bb134c4666f2cbd285787696d788b00350cc1f79acb30ead4b9d41a",
+    "generated-evidence/native-restore-drill.json": "93edc6d7446943557c56936faf62f03b60172b9e5329def7e32cae79ed248420",
+    "generated-evidence/native-qualification.json": "78c144380c7de5d708307bfbf4e2342843f1cb452facc270ae31e4044c5001be"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "preparedAtUtc": "2026-10-11T03:39:54.330603+00:00",
+  "product": "Imprana Commons",
+  "reason": "FullV3actual checker surfaced fourfalse placeholdermatches: bare bracketedJSON string with source titlepending/unknown resembles templateplaceholder. Newfactualprefix retains exact source-backedpredecessorJSON and genuine unresolved deliveredavailability. No criterion/gate/source/trust removed.",
+  "oldInput": {
+    "path": "outputs/imprana-product-refinement-20261011/bundle-review/ROOT-REVIEWED-PLANNING-ADAPTER-V3.json",
+    "sha256": "e179ca2e553e17c29927f5ca0340255075f197a39fc8efe7f30045433334f14d"
+  },
+  "newInput": {
+    "path": "outputs/imprana-product-refinement-20261011/bundle-review/ROOT-REVIEWED-PLANNING-ADAPTER-V4.json",
+    "sha256": "77e38c07a265f54a0c30bd18578cf94b40e2946dd90be8f5f2c019bd031e3685",
+    "bytes": 63235675,
+    "revision": 4
+  },
+  "exactFourFieldChanges": [
+    {
+      "elementId": "TASK-FR-IAM-003-02",
+      "fieldId": "technical_task.predecessors",
+      "beforeValue": "[{\"availability\":\"Not verified delivered; resume when reviewed output is available\",\"required_output_id\":\"OUT-TASK-FR-IAM-003-01\",\"required_output_title\":\"Factor enrollment and pending-action assurance contract\",\"source_relationship\":\"Existing task depends_on edge, retained\",\"task_id\":\"TASK-FR-IAM-003-01\"}]",
+      "afterValue": "Retained source predecessor contracts: [{\"availability\":\"Not verified delivered; resume when reviewed output is available\",\"required_output_id\":\"OUT-TASK-FR-IAM-003-01\",\"required_output_title\":\"Factor enrollment and pending-action assurance contract\",\"source_relationship\":\"Existing task depends_on edge, retained\",\"task_id\":\"TASK-FR-IAM-003-01\"}]",
+      "exactOriginalJsonSuffixPreserved": true,
+      "predecessorIds": [
+        "TASK-FR-IAM-003-01"
+      ]
+    },
+    {
+      "elementId": "TASK-FR-UX-003-02",
+      "fieldId": "technical_task.predecessors",
+      "beforeValue": "[{\"availability\":\"Not verified delivered; resume when reviewed output is available\",\"required_output_id\":\"OUT-TASK-FR-UX-003-01\",\"required_output_title\":\"Persisted pending-command and reconciliation state\",\"source_relationship\":\"Existing task depends_on edge, retained\",\"task_id\":\"TASK-FR-UX-003-01\"}]",
+      "afterValue": "Retained source predecessor contracts: [{\"availability\":\"Not verified delivered; resume when reviewed output is available\",\"required_output_id\":\"OUT-TASK-FR-UX-003-01\",\"required_output_title\":\"Persisted pending-command and reconciliation state\",\"source_relationship\":\"Existing task depends_on edge, retained\",\"task_id\":\"TASK-FR-UX-003-01\"}]",
+      "exactOriginalJsonSuffixPreserved": true,
+      "predecessorIds": [
+        "TASK-FR-UX-003-01"
+      ]
+    },
+    {
+      "elementId": "TASK-FR-CAL-007-03",
+      "fieldId": "technical_task.predecessors",
+      "beforeValue": "[{\"availability\":\"Not verified delivered; resume when reviewed output is available\",\"required_output_id\":\"OUT-TASK-FR-CAL-007-02\",\"required_output_title\":\"Bounded category transform and unknown preservation\",\"source_relationship\":\"Existing task depends_on edge, retained\",\"task_id\":\"TASK-FR-CAL-007-02\"}]",
+      "afterValue": "Retained source predecessor contracts: [{\"availability\":\"Not verified delivered; resume when reviewed output is available\",\"required_output_id\":\"OUT-TASK-FR-CAL-007-02\",\"required_output_title\":\"Bounded category transform and unknown preservation\",\"source_relationship\":\"Existing task depends_on edge, retained\",\"task_id\":\"TASK-FR-CAL-007-02\"}]",
+      "exactOriginalJsonSuffixPreserved": true,
+      "predecessorIds": [
+        "TASK-FR-CAL-007-02"
+      ]
+    },
+    {
+      "elementId": "TASK-FR-OFF-006-03",
+      "fieldId": "technical_task.predecessors",
+      "beforeValue": "[{\"availability\":\"Not verified delivered; resume when reviewed output is available\",\"required_output_id\":\"OUT-TASK-FR-OFF-006-02\",\"required_output_title\":\"Account-switch locking and pending-work handover\",\"source_relationship\":\"Existing task depends_on edge, retained\",\"task_id\":\"TASK-FR-OFF-006-02\"}]",
+      "afterValue": "Retained source predecessor contracts: [{\"availability\":\"Not verified delivered; resume when reviewed output is available\",\"required_output_id\":\"OUT-TASK-FR-OFF-006-02\",\"required_output_title\":\"Account-switch locking and pending-work handover\",\"source_relationship\":\"Existing task depends_on edge, retained\",\"task_id\":\"TASK-FR-OFF-006-02\"}]",
+      "exactOriginalJsonSuffixPreserved": true,
+      "predecessorIds": [
+        "TASK-FR-OFF-006-02"
+      ]
+    }
+  ],
+  "coverageChecks": {
+    "all2893Elements": true,
+    "all3253SourceSnapshots": true,
+    "allOtherFieldsAndRecordsExact": true,
+    "allSourcesSourcePinsScopeProfileAssessmentEvidenceReviewsAuthoritiesExact": true,
+    "all779TaskEdges": true,
+    "fourOriginalJsonSuffixesExact": true
+  },
+  "actualNewCheckerRun": "Not run; prepared separateinputrevision only. Do notinfer correctedqualityorReady/Done.",
+  "trustedCheckerChanged": false,
+  "repoOrNativeChanged": false
+}

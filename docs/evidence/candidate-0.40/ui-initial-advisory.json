@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-10-11T08:52:19.028547+00:00",
+  "project": "Imprana Commons",
+  "story": "US-DX-01a",
+  "criteria": [
+    "AC-US-DX-01a-001",
+    "AC-US-DX-01a-002"
+  ],
+  "candidate": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011",
+  "base_commit": "92341d6d81414be4627c5981363636580f7cbf52",
+  "source_pins": {
+    "apps/web/src/AIDiagnosis.tsx": {
+      "sha256": "b74cf77136ffb9df0bc5bb97486f4f51f7f1c6003b7fb872a64364b0e584668f",
+      "bytes": 39520
+    },
+    "apps/web/src/ai-diagnosis.css": {
+      "sha256": "af84ed95ea5a872bfeea3ef8f0c7b1dbf94e9062f28a130dba6bc734433b736b",
+      "bytes": 1580
+    },
+    "apps/web/src/main.tsx": {
+      "sha256": "8564c99e4ed32c042fca263c8a96839ea1dc56c00b43ada8fa666e2b426fa98b",
+      "bytes": 84456
+    },
+    "apps/api/impact_api/ai_diagnoses.py": {
+      "sha256": "f61f398e83983bbcfa3d6b6452c1f1b92d236820bf7579634cd65c2e558de220",
+      "bytes": 13622
+    },
+    "apps/api/impact_api/store.py": {
+      "sha256": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+      "bytes": 20595
+    },
+    "tools/browser/ai-diagnosis-check.mjs": {
+      "sha256": "1d8c91ed4df803c25e783a163906183d25581daf4a5a200b3c557c2d228cadb1",
+      "bytes": 49445
+    }
+  },
+  "review_mode": "independent read-only source and control-flow advisory",
+  "outcome": "TWO_ACTIONABLE_P2_UI_RECOVERY_FINDINGS_AT_EXACT_SOURCE_PIN",
+  "checks": [
+    {
+      "id": "DX-UI-R01",
+      "boundary": "Capability and scope remount",
+      "result": "SOURCE_REVIEW_PASS",
+      "evidence": "AIDiagnosisPanel lines171-189 keys base, principal, identity and both diagnosis capabilities; missing read and manage returns null; manage-only mounts read refusal without fetching."
+    },
+    {
+      "id": "DX-UI-R02",
+      "boundary": "Prior-scope late response",
+      "result": "SOURCE_REVIEW_PASS",
+      "evidence": "Cleanup lines304-313 marks alive false, increments list sequence and aborts all tracked requests. Await continuations check alive; different key creates distinct refs."
+    },
+    {
+      "id": "DX-UI-R03",
+      "boundary": "Same-scope denied authority invalidation",
+      "result": "FINDING",
+      "finding": "DX-UI-F01",
+      "evidence": "hideUnavailable lines245-259 does not abort/invalidate parallel requests; selectDiagnosis lines334-339 and mutation continuations451-468 check only alive. Outer section lines589-590 exposes head revision even when unavailable content gate at632 is closed."
+    },
+    {
+      "id": "DX-UI-R04",
+      "boundary": "Read denial and write denial distinction",
+      "result": "SOURCE_REVIEW_PASS_WITH_LIMIT",
+      "evidence": "Read/list/readback AUTH_REQUIRED/POLICY_DENIED/RESOURCE_UNAVAILABLE hide content. Write POLICY_DENIED with selected head performs independent GET lines493-512 and preserves local input only if readable. Create has no selected head; current backend hidden authorisation returns RESOURCE_UNAVAILABLE, which hides all existing content."
+    },
+    {
+      "id": "DX-UI-R05",
+      "boundary": "Unknown response exact retry",
+      "result": "SOURCE_REVIEW_PASS",
+      "evidence": "PendingCommand stores frozen path/method/body/data/objectId. send lines406-419 refuses alternate pending command; unknown/unreadable response retains pending and UI714 retains exact command object; editing, switching and new commands disabled."
+    },
+    {
+      "id": "DX-UI-R06",
+      "boundary": "Expired/conflicting replay outcome",
+      "result": "FINDING",
+      "finding": "DX-UI-F02",
+      "evidence": "refusalCodes lines72/74 includes CONFLICT_OPERATION and IDEMPOTENCY_EXPIRED; known refusal branch486-488 clears pending. These codes do not prove original create absent; backend243-245 expires only an existing durable receipt."
+    },
+    {
+      "id": "DX-UI-R07",
+      "boundary": "Receipt binding and readback",
+      "result": "SOURCE_REVIEW_PASS",
+      "evidence": "Receipt validator binds operation ID, UUID identifiers, state and timestamp; send422-425 checks existing target and action state. Fresh GET must match receipt target; next writes blocked until readback; different current revision enters conflict instead of silent rebase."
+    },
+    {
+      "id": "DX-UI-R08",
+      "boundary": "Stale optimistic revision",
+      "result": "SOURCE_REVIEW_PASS",
+      "evidence": "All existing commands carry selected expected_revision. Conflict/transition denial sets conflict; local input retained. Current-version review and explicitly labelled replacement at772-783 required to discard it."
+    },
+    {
+      "id": "DX-UI-R09",
+      "boundary": "Immutable completed presentation",
+      "result": "SOURCE_REVIEW_PASS",
+      "evidence": "Completed marks details read-only and hides edit actions. Reasoned revise submits POST actions/revise with expected revision; copy of draft retained while pending. Only server creates the new Draft."
+    },
+    {
+      "id": "DX-UI-R10",
+      "boundary": "Bounded draft and ordering",
+      "result": "SOURCE_REVIEW_PASS",
+      "evidence": "isDraft validates20 problem/order maximum, unique UUIDs, priority known subset, bounded fields; complete missing field errors name problems. All controlled edits bounded by maxLength and add capped20."
+    },
+    {
+      "id": "DX-UI-R11",
+      "boundary": "Private data persistence and XSS",
+      "result": "SOURCE_REVIEW_PASS",
+      "evidence": "Transient React state/ref only; no localStorage/sessionStorage/indexedDB/cookie write/HTML injection/eval or provider invocation. User text rendered via escaped React strings. Endpoint same tenant base; main api fetch same-origin credentials and CSRF."
+    },
+    {
+      "id": "DX-UI-R12",
+      "boundary": "Keyboard and ARIA code guard",
+      "result": "SOURCE_REVIEW_PASS_WITH_RUNTIME_PENDING",
+      "evidence": "Native buttons/select/labels, fieldsets/legends, alerts/status, descriptive control names. Reordering uses native buttons, announces position and focuses moved heading; adding focuses description. CSS focus-visible and minimum button/input heights. Actual browser/accessibility outcomes are separate."
+    },
+    {
+      "id": "DX-UI-R13",
+      "boundary": "Main sibling composition",
+      "result": "SOURCE_REVIEW_PASS",
+      "evidence": "Diagnosis route capability prefix integrated; panel sibling of existing enablement; existing catalogue panel rendered only ai.enablement.read or ai.policy.*; existing sibling tenant/principal/identity key retained."
+    },
+    {
+      "id": "DX-UI-R14",
+      "boundary": "No UI release authority inference",
+      "result": "HELD",
+      "evidence": "Completed describes authored diagnosis readiness; no independent approval, financial authorisation, accepted release, native certification or production authority acquired by this review."
+    }
+  ],
+  "findings": [
+    {
+      "id": "DX-UI-F01",
+      "severity": "P2",
+      "status": "OPEN_AT_REVIEW_PIN",
+      "title": "Denied read access does not invalidate concurrent authorised responses",
+      "file": "apps/web/src/AIDiagnosis.tsx",
+      "lines": [
+        245,
+        259,
+        334,
+        339,
+        450,
+        468,
+        589,
+        590,
+        632
+      ],
+      "trigger": "A list request and selected-object GET overlap; the list is refused after current read access is lost, then the earlier authorised GET response arrives late.",
+      "observed_source_result": "hideUnavailable clears head and hides the body; the late continuation can install head again because alive stays true. Its revision UUID is rendered in data-diagnosis-revision outside the unavailable content gate.",
+      "evidence_kind": "STATIC_CONTROL_FLOW_INFERENCE_NOT_BROWSER_REPRODUCED",
+      "recommendation": "On read-authority refusal make this workspace terminal-invalidated using a ref/epoch, abort outstanding controllers, increment reads, clear cursor and block every awaited continuation from installation after invalidation. Verify same-scope late responses cannot repopulate text, state or metadata."
+    },
+    {
+      "id": "DX-UI-F02",
+      "severity": "P2",
+      "status": "OPEN_AT_REVIEW_PIN",
+      "title": "Expired uncertain create replay can enable a duplicate replacement create",
+      "file": "apps/web/src/AIDiagnosis.tsx",
+      "lines": [
+        72,
+        74,
+        486,
+        488,
+        529,
+        555
+      ],
+      "trigger": "An actual create commits but its response is lost. The page retains its exact command, and replay happens after the durable receipt expires (or returns operation-body conflict).",
+      "observed_source_result": "These codes clear pending, leaving an unsaved object-less draft. A fresh Save can generate a new operation ID and create another object although the original effect may exist.",
+      "evidence_kind": "STATIC_CONTROL_FLOW_INFERENCE_NOT_BROWSER_REPRODUCED",
+      "recommendation": "Keep the frozen uncertain command and editing/switch lock on IDEMPOTENCY_EXPIRED and CONFLICT_OPERATION; explain that a current saved-version/recovery review is needed. Do not automatically enable a replacement create."
+    }
+  ],
+  "canonical_edits": 0,
+  "test_execution_by_reviewer": false,
+  "browser_test_status": "Authored browser suite inspected; actual browser execution and final result must be reported from independent runner evidence. This receipt makes no browser pass claim.",
+  "human_security_confirmation": null,
+  "release_certification": false,
+  "limits": [
+    "Dirty local candidate at stated source hashes; later source changes require independent refresh.",
+    "No real users, provider calls, remote CI, deployment or role writes.",
+    "Formal native bindings, adoption, Ready/Done and release/production gates remain held.",
+    "Root reported unit1520 pass62 skip and combined126 pass4 fail12 skip with adapter corrections pending; those reported outcomes are not independently qualified by this UI receipt."
+  ],
+  "prior_receipt": "UI-ORIGINAL-SOURCE-PINS.json"
+}

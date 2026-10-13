@@ -1,0 +1,18 @@
+from pathlib import Path
+import os,sys,json,subprocess
+import psycopg
+root=Path(__file__).resolve().parents[2]/"work/imprana-diagnosis-20261011"
+sys.path[:0]=[str(root/"deploy"),str(root/"scripts")]
+import migrate
+admin=os.environ["IMPACT_FIXTURE_DSN"]
+migrate.run(admin)
+with psycopg.connect(admin) as held:
+    held.execute("LOCK TABLE impact.schema_migration IN ACCESS EXCLUSIVE MODE")
+    code="import os,sys;sys.path.insert(0,os.environ['PROBE_DEPLOY']);import check_writer_quiescence as p;p.check(os.environ['IMPACT_FIXTURE_DSN'])"
+    env=dict(os.environ,PROBE_DEPLOY=str(root/"deploy"))
+    try:
+        done=subprocess.run([sys.executable,"-B","-c",code],env=env,capture_output=True,text=True,timeout=2)
+    except subprocess.TimeoutExpired:
+        print(json.dumps({"outcome":"DEFECT_REPRODUCED","known_surviving_client_refusal_blocked_on_schema_ledger":True,"probe_killed_after_seconds":2,"not_a_qualification_pass":True}))
+    else:
+        raise AssertionError("Expected old code to block, but it returned; inspect actual outcome")

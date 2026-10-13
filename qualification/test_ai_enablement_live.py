@@ -5,6 +5,7 @@ from uuid import uuid4
 import pytest
 from starlette.requests import Request
 
+from impact_api import ai_enablement as enablement_module
 from impact_api.ai_enablement import AIEnablement
 from impact_api.ai_policy import AIPolicy
 from impact_api.auth import Auth
@@ -13,6 +14,12 @@ from impact_api.domain import DomainError
 from impact_api.service import Service
 from impact_api.store import Database
 from test_live_application import expect
+
+
+@pytest.fixture(autouse=True)
+def passed_advisory_evaluation(monkeypatch):
+    """Replay scenarios isolate a synthetic exact candidate; evaluation fail-closed has its own suite."""
+    monkeypatch.setattr(enablement_module, "require_exposure", lambda use_case, configuration: {})
 
 
 def profile():
@@ -48,7 +55,13 @@ def test_readiness_api_and_separate_advisory_authority(live):
     )
     # FR-AI-001: every request names the policy version it was made against (the server switch is
     # off in this run, so the refusals below happen before the policy is consulted).
-    request = {"operation_id": str(uuid4()), "profile": profile(), "consent": True, "policy_version": 0}
+    request = {
+        "operation_id": str(uuid4()),
+        "profile": profile(),
+        "consent": True,
+        "policy_version": 0,
+        "purpose": "AI_ADOPTION_ADVISORY",
+    }
     # This fixture author is also a programme manager. Narrow the synthetic advisory grant
     # temporarily to prove that ordinary read access does not authorize provider requests.
     grant = None
@@ -99,6 +112,7 @@ def test_durable_sealed_replay_and_daily_budget_on_real_database(live):
         configured = True
         calls = 0
         destination = "openai-us"
+        evaluation_configuration = {}
 
         def generate(self, supplied, assessment):
             self.calls += 1
@@ -126,7 +140,7 @@ def test_durable_sealed_replay_and_daily_budget_on_real_database(live):
                         "enabled": True,
                         "data_classes": ["INTERNAL"],
                         "destinations": ["openai-us"],
-                        "purposes": ["planning advice"],
+                        "purposes": ["AI_ADOPTION_ADVISORY"],
                         "languages": ["en"],
                         "review_mode": "HUMAN_REVIEW",
                         "budget_units": 100,
@@ -142,6 +156,7 @@ def test_durable_sealed_replay_and_daily_budget_on_real_database(live):
         "profile": profile(),
         "consent": True,
         "policy_version": enabled["policy_version"],
+        "purpose": "AI_ADOPTION_ADVISORY",
     }
     correlation = str(uuid4())
     first = api.advisory(identity, tenant, request, correlation)

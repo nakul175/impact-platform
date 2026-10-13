@@ -1,0 +1,8 @@
+{
+  "observed_at": "2026-10-11T18:59:32.728216+00:00",
+  "exit_code": 1,
+  "error": "PermissionError: [Errno 1] Operation not permitted at socket.bind 127.0.0.1 port0",
+  "tests_run": 0,
+  "services_started": 0,
+  "raw_traceback_capture": "Tool output, not a recorded test log"
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="5" time="0.148" timestamp="2026-10-11T23:16:56.124746+05:30" hostname="Athenas-MacBook-Pro.local"><testcase classname="qualification.test_deployment_sequence_unit" name="test_actual_main_existing_healthy_commit_returns_without_writer_stop_or_migration" time="0.021"><failure message="AssertionError: /bin/bash: line 15: /dev/fd/62: Operation not permitted&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['/bin/bash', '-c', '\nset -euo pipefail\nsource &quot;$LIB&quot;\nsource &quot;$DEFINITIONS&quot;\nDEPLOY_DIR=&quot;$FAK...rted=false; no automatic previous-image restart\n', stderr='/bin/bash: line 15: /dev/fd/62: Operation not permitted\n').returncode">tmp_path = PosixPath('/private/var/folders/wm/vfx1992n25g3q8n5myd2gy0c0000gn/T/pytest-of-athena/pytest-83/test_actual_main_existing_heal0')
+
+    def test_actual_main_existing_healthy_commit_returns_without_writer_stop_or_migration(tmp_path):
+        result, calls, state = sequence(tmp_path, "unchanged")
+&gt;       assert result.returncode == 0, result.stderr
+E       AssertionError: /bin/bash: line 15: /dev/fd/62: Operation not permitted
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/bin/bash', '-c', '\nset -euo pipefail\nsource "$LIB"\nsource "$DEFINITIONS"\nDEPLOY_DIR="$FAK...rted=false; no automatic previous-image restart\n', stderr='/bin/bash: line 15: /dev/fd/62: Operation not permitted\n').returncode
+
+qualification/test_deployment_sequence_unit.py:117: AssertionError</failure></testcase><testcase classname="qualification.test_deployment_sequence_unit" name="test_actual_main_fresh_path_builds_then_stops_probes_migrates_starts_and_checks_health" time="0.019"><failure message="AssertionError: /bin/bash: line 15: /dev/fd/62: Operation not permitted&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['/bin/bash', '-c', '\nset -euo pipefail\nsource &quot;$LIB&quot;\nsource &quot;$DEFINITIONS&quot;\nDEPLOY_DIR=&quot;$FAK...rted=false; no automatic previous-image restart\n', stderr='/bin/bash: line 15: /dev/fd/62: Operation not permitted\n').returncode">tmp_path = PosixPath('/private/var/folders/wm/vfx1992n25g3q8n5myd2gy0c0000gn/T/pytest-of-athena/pytest-83/test_actual_main_fresh_path_bu0')
+
+    def test_actual_main_fresh_path_builds_then_stops_probes_migrates_starts_and_checks_health(tmp_path):
+        result, calls, state = sequence(tmp_path, "fresh")
+&gt;       assert result.returncode == 0, result.stderr
+E       AssertionError: /bin/bash: line 15: /dev/fd/62: Operation not permitted
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/bin/bash', '-c', '\nset -euo pipefail\nsource "$LIB"\nsource "$DEFINITIONS"\nDEPLOY_DIR="$FAK...rted=false; no automatic previous-image restart\n', stderr='/bin/bash: line 15: /dev/fd/62: Operation not permitted\n').returncode
+
+qualification/test_deployment_sequence_unit.py:127: AssertionError</failure></testcase><testcase classname="qualification.test_deployment_sequence_unit" name="test_actual_main_prestart_failures_leave_writers_stopped_and_no_success[probe_failure]" time="0.019"><failure message="AssertionError: assert ('quiesce' in ['require_root', 'flock', 'status failed step=start phase=not-started migration=false'])">tmp_path = PosixPath('/private/var/folders/wm/vfx1992n25g3q8n5myd2gy0c0000gn/T/pytest-of-athena/pytest-83/test_actual_main_prestart_fail0')
+scenario = 'probe_failure'
+
+    @pytest.mark.parametrize("scenario", ["probe_failure", "migration_failure"])
+    def test_actual_main_prestart_failures_leave_writers_stopped_and_no_success(tmp_path, scenario):
+        result, calls, state = sequence(tmp_path, scenario)
+        assert result.returncode != 0
+&gt;       assert "quiesce" in calls and "probe" in calls
+E       AssertionError: assert ('quiesce' in ['require_root', 'flock', 'status failed step=start phase=not-started migration=false'])
+
+qualification/test_deployment_sequence_unit.py:151: AssertionError</failure></testcase><testcase classname="qualification.test_deployment_sequence_unit" name="test_actual_main_prestart_failures_leave_writers_stopped_and_no_success[migration_failure]" time="0.018"><failure message="AssertionError: assert ('quiesce' in ['require_root', 'flock', 'status failed step=start phase=not-started migration=false'])">tmp_path = PosixPath('/private/var/folders/wm/vfx1992n25g3q8n5myd2gy0c0000gn/T/pytest-of-athena/pytest-83/test_actual_main_prestart_fail1')
+scenario = 'migration_failure'
+
+    @pytest.mark.parametrize("scenario", ["probe_failure", "migration_failure"])
+    def test_actual_main_prestart_failures_leave_writers_stopped_and_no_success(tmp_path, scenario):
+        result, calls, state = sequence(tmp_path, scenario)
+        assert result.returncode != 0
+&gt;       assert "quiesce" in calls and "probe" in calls
+E       AssertionError: assert ('quiesce' in ['require_root', 'flock', 'status failed step=start phase=not-started migration=false'])
+
+qualification/test_deployment_sequence_unit.py:151: AssertionError</failure></testcase><testcase classname="qualification.test_deployment_sequence_unit" name="test_actual_main_postmigration_readiness_failure_records_failure_not_success" time="0.020"><failure message="AssertionError: assert 'compose run --rm -T migrate' in ['require_root', 'flock', 'status failed step=start phase=not-started migration=false']">tmp_path = PosixPath('/private/var/folders/wm/vfx1992n25g3q8n5myd2gy0c0000gn/T/pytest-of-athena/pytest-83/test_actual_main_postmigration0')
+
+    def test_actual_main_postmigration_readiness_failure_records_failure_not_success(tmp_path):
+        result, calls, state = sequence(tmp_path, "health_failure")
+        assert result.returncode != 0
+&gt;       assert "compose run --rm -T migrate" in calls
+E       AssertionError: assert 'compose run --rm -T migrate' in ['require_root', 'flock', 'status failed step=start phase=not-started migration=false']
+
+qualification/test_deployment_sequence_unit.py:166: AssertionError</failure></testcase></testsuite></testsuites>

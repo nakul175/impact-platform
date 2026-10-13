@@ -280,3 +280,8 @@ The CI job `container-stack` rotates every family, runs the smoke check, retires
 
 Not covered: the identity provider's token-signing keys (rotate them in Keycloak: add a new `rsa-generated` key provider with a higher priority, keep the old one active until issued tokens expire, then disable it — the API verifies bearer tokens by `kid` through the realm JWKS without a restart; not yet exercised), database login passwords (edit `secrets.env` and run `update.sh`; no grace) and TLS certificates (Caddy renews them).
 
+
+
+## Local 0.40 writer-quiescence preparation (11 October 2026; not deployed)
+
+The candidate deployment script builds first, then stops API/worker/executor before migration, leaving PostgreSQL/Keycloak/edge/volumes intact. A read-only administrator probe refuses surviving application-database clients or prepared transactions. Private 0600 recovery metadata is retained; ordinary failures keep writers stopped and never automatically start the older image. External writers must remain disconnected throughout an accountable maintenance window: the probe alone cannot prevent a later reconnect. See the [bounded implementation, actual local checks and remaining container/operator gates](../engineering/delivery-system-20261011/DEPLOYMENT-WRITER-QUIESCENCE.md). Nothing in this preparation authorizes new account provisioning, spending or a release.

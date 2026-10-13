@@ -1,0 +1,35 @@
+{
+  "story": "US-DX-01a/APL-361",
+  "base_head": "9b7a7220cfbe2852dc8352e53caf4ba3a182ab39",
+  "tested_scope": "9b7a722 committed application plus new source-pinned post-erasure recovery test; local owned native synthetic fixture",
+  "counts": {
+    "tests": 131,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "new_recovery_cases": 1,
+  "retained_affected_cases": 130,
+  "source_pins_count": 292,
+  "new_test_sha256": "b0c8f1dec93b2c143591845e1fb13f51154485114f63ea0c0bfa6a2611088f4d",
+  "restore": {
+    "backup_phase": "AFTER_ACTUAL_ERASURE",
+    "tables": 193,
+    "rows": 8054,
+    "checksums": 47,
+    "official_and_security_checks": "PASS",
+    "replacement_api": "restrictedAPP/IDENTITY/PLATFORM config, sanitizedenvironment",
+    "read_refusals": "current/history/three_named_revisions404",
+    "retry": "exactprivacyexecutionreceipt; scopedregistry/revisions/source/case/ledger/actions/audit/receipts/bindingsunchanged",
+    "cleanup": "APIcleanstop,copiedDBdropped,clusterstopped"
+  },
+  "code_review": "Separate supporting read-only review found no concrete defect; not human signoff.",
+  "evidence_review": "Separate supporting review verified131JUnitpass/zeroerrorsfailuresskips,292currentexactpins, actual193table8054rowrestore/47checksums/securitygolden, restrictedAPIread/retry assertions, cleanAPI/copy/clustercleanup. Rawartifacts patternscan found no credentialURL/key/bearer/longassignment matches; no privateconfiguration/dump/cookies copied. Nestedkeep=True drill observation remainsfalse; finalexplicitcopycleanuptrue.",
+  "limits": [
+    "Post-erasure backup only; TH27 pre-erasure backup replay remains open",
+    "Not another API restart/list/original diagnosis command replay qualification",
+    "Fullapplication2626pass28skip remains at79b2316; not new full-head hosted CI",
+    "No publicGitHubexport/CI/container/deployment/humanacceptance",
+    "0/50deployed"
+  ]
+}

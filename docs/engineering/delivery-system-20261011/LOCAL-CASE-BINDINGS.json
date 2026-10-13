@@ -1,0 +1,39 @@
+{
+  "edition": "Local story-specific supplement; prior all-active planning edition stays frozen",
+  "source_register": "docs/qa/standards-completion-20261011/proposed-registers/case-register.csv",
+  "source_sha256": "01dd3b884e4ddb1ef6315520bce3ffc152baeebc48660355067898c500ce2e7d",
+  "original_gherkin_sha256": "6568f4b80844144e6398bde82db86533faaa15862a1d9e54e2dbf9df79b59d73",
+  "cases": [
+    {
+      "case_id": "TC-IMPRANA-US-DX-01a-001",
+      "case_version": "REV_4f85d88e01dae94d79c7ef07eaa4d10143cec16d2993de038b45c90d961a0c9e",
+      "scope_id": "SCOPE-IMPRANA-US-DX-01a-LOCAL-20261011",
+      "mode": "AUTO",
+      "procedure_ref": "procedures/US-DX-01a.md#AC-US-DX-01a-001",
+      "automation_locator": "qualification/test_ai_diagnosis_live.py#test_diagnosis_saves_exact_order_stable_ids_and_supporting_evidence",
+      "marker": "qa:TC-IMPRANA-US-DX-01a-001@REV_4f85d88e01dae94d79c7ef07eaa4d10143cec16d2993de038b45c90d961a0c9e",
+      "source_scope_id": "SCOPE-IMPRANA-ALL-ACTIVE-PLANNING-20261011",
+      "state": "PROPOSED_LOCAL_BINDING_NO_HUMAN_QUALIFICATION"
+    },
+    {
+      "case_id": "TC-IMPRANA-US-DX-01a-002",
+      "case_version": "REV_27f93f742b8a06852b47491b146ef5709d3068d7e9702d193418d5be563d3b21",
+      "scope_id": "SCOPE-IMPRANA-US-DX-01a-LOCAL-20261011",
+      "mode": "AUTO",
+      "procedure_ref": "procedures/US-DX-01a.md#AC-US-DX-01a-002",
+      "automation_locator": "qualification/test_ai_diagnosis_live.py#test_diagnosis_completion_names_each_incomplete_problem_without_writing",
+      "marker": "qa:TC-IMPRANA-US-DX-01a-002@REV_27f93f742b8a06852b47491b146ef5709d3068d7e9702d193418d5be563d3b21",
+      "source_scope_id": "SCOPE-IMPRANA-ALL-ACTIVE-PLANNING-20261011",
+      "state": "PROPOSED_LOCAL_BINDING_NO_HUMAN_QUALIFICATION"
+    }
+  ],
+  "release_acceptance": false,
+  "human_qualified_by": null,
+  "actual_observation": {
+    "junit": "docs/evidence/candidate-0.40/api-regression-final.xml",
+    "junit_sha256": "2b3f9b10e1fef65e583851e62f49210b7498658ba11c413ced53a8a7534bce21",
+    "both_original_case_oracles": "Observed PASS; original002 includes missingevidence/priority plus boundedadditionalfields",
+    "source_manifest": "docs/evidence/candidate-0.40/tested-source-manifest.json",
+    "human_qualified_by": null
+  }
+}

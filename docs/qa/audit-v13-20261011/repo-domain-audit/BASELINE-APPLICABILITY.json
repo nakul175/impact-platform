@@ -1,0 +1,297 @@
+{
+  "repository_head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+  "graded_baseline": "b01a628",
+  "reviewed_repo_sources": 48,
+  "all_match_original_head_bytes": true,
+  "new_root_docs_qa_addendum_excluded": true,
+  "files": [
+    {
+      "path": ".github/workflows/checks.yml",
+      "baseline_sha256": "16817f3fc91126a582cf8c0e6c9cb1dd9eb6d9bb66c2b2d8bed4d8e4a9e6c702",
+      "observed_sha256": "16817f3fc91126a582cf8c0e6c9cb1dd9eb6d9bb66c2b2d8bed4d8e4a9e6c702",
+      "baseline_exact": true
+    },
+    {
+      "path": ".github/workflows/qualification.yml",
+      "baseline_sha256": "a9bc90b3240eb52b125e5bef24a1a76f10647efad0970112d814afab708b1b1f",
+      "observed_sha256": "a9bc90b3240eb52b125e5bef24a1a76f10647efad0970112d814afab708b1b1f",
+      "baseline_exact": true
+    },
+    {
+      "path": "AGENTS.md",
+      "baseline_sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+      "observed_sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+      "baseline_exact": true
+    },
+    {
+      "path": "CLAUDE.md",
+      "baseline_sha256": "88ab571a7ff6a140092ef38e65a1dee75b8e92c4565185f563af7c8c84d80c3a",
+      "observed_sha256": "88ab571a7ff6a140092ef38e65a1dee75b8e92c4565185f563af7c8c84d80c3a",
+      "baseline_exact": true
+    },
+    {
+      "path": "Makefile",
+      "baseline_sha256": "c2ebc221b8263562069ae0ee84535866d94388a33053590394679658e3869a54",
+      "observed_sha256": "c2ebc221b8263562069ae0ee84535866d94388a33053590394679658e3869a54",
+      "baseline_exact": true
+    },
+    {
+      "path": "VERSION.json",
+      "baseline_sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+      "observed_sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/CODEOWNERS",
+      "baseline_sha256": "f02d2371127f001543067a76f938032e9b579d278d75250731f989b23d3ab68b",
+      "observed_sha256": "f02d2371127f001543067a76f938032e9b579d278d75250731f989b23d3ab68b",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/HANDOVER.md",
+      "baseline_sha256": "c69fe2fccf6fc8ad9de84534f9d4a00d4bdbfe35709dde9084da9c598e5de351",
+      "observed_sha256": "c69fe2fccf6fc8ad9de84534f9d4a00d4bdbfe35709dde9084da9c598e5de351",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/QA-DEGRADATION-2026-10.md",
+      "baseline_sha256": "9731aea9a5db5137b129d7563dece856f8207e68c47442912cb6b8ec0c6eb2a1",
+      "observed_sha256": "9731aea9a5db5137b129d7563dece856f8207e68c47442912cb6b8ec0c6eb2a1",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/QA-PERFORMANCE-2026-10.md",
+      "baseline_sha256": "fbaaf0b79cf5c392547fd0e8c64153bb994b2ae1bf9dda5b183c1cdbe0daf4ed",
+      "observed_sha256": "fbaaf0b79cf5c392547fd0e8c64153bb994b2ae1bf9dda5b183c1cdbe0daf4ed",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/QUALIFICATION.md",
+      "baseline_sha256": "7c1659b848a16966e5c0a10df4e8b0534a60809ccb95b3cb2ad72e84d25a7c44",
+      "observed_sha256": "7c1659b848a16966e5c0a10df4e8b0534a60809ccb95b3cb2ad72e84d25a7c44",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/agile/WORKING-AGREEMENT.md",
+      "baseline_sha256": "11c7c4e793f73f025975b20e2db9563a36bf3794ff44f2f966b3ce53e5d20332",
+      "observed_sha256": "11c7c4e793f73f025975b20e2db9563a36bf3794ff44f2f966b3ce53e5d20332",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/ACCESSIBILITY-STATEMENT.md",
+      "baseline_sha256": "d945919ef094f9b11bcb0d39ea3a90cb41ee755571cd5ebcd2f64642f94989ee",
+      "observed_sha256": "d945919ef094f9b11bcb0d39ea3a90cb41ee755571cd5ebcd2f64642f94989ee",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/DATA-GOVERNANCE.md",
+      "baseline_sha256": "5b0de1ca5a774e5e53d6f2fa08322bf7f9906e37cfcb4eac8ae367ccf472c0de",
+      "observed_sha256": "5b0de1ca5a774e5e53d6f2fa08322bf7f9906e37cfcb4eac8ae367ccf472c0de",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/DOCUMENTATION-INDEX.md",
+      "baseline_sha256": "598f414fdc982fe2003980902d1179b94ef7d69c3c2e531515f4308363edef98",
+      "observed_sha256": "598f414fdc982fe2003980902d1179b94ef7d69c3c2e531515f4308363edef98",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/EXECUTION-REGISTER.csv",
+      "baseline_sha256": "bd06ce8e2e43ab159208570643f99c52ea97367db6394c0ed7a5716ff0993f13",
+      "observed_sha256": "bd06ce8e2e43ab159208570643f99c52ea97367db6394c0ed7a5716ff0993f13",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+      "baseline_sha256": "9d74e071f779b110ebdb1eec9834f6418d285507da03147918307f0d207a4621",
+      "observed_sha256": "9d74e071f779b110ebdb1eec9834f6418d285507da03147918307f0d207a4621",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+      "baseline_sha256": "bf7a9bf3ade48366417168970dc6b3dcc6faccb2f24ac12feabeb05f009dd5e6",
+      "observed_sha256": "bf7a9bf3ade48366417168970dc6b3dcc6faccb2f24ac12feabeb05f009dd5e6",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/Impact-Management-Test-Catalogue-v1.1.xlsx",
+      "baseline_sha256": "1db2338f8577aaebc982367f1c6d19f11ee378821b8e3a9134224235864c1956",
+      "observed_sha256": "1db2338f8577aaebc982367f1c6d19f11ee378821b8e3a9134224235864c1956",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/Impact-Management-Test-Strategy-v1.1.docx",
+      "baseline_sha256": "73ee84a55a836fa4c651af1da5ce69af71ce4ac7ea3632de948da54953f0af81",
+      "observed_sha256": "73ee84a55a836fa4c651af1da5ce69af71ce4ac7ea3632de948da54953f0af81",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+      "baseline_sha256": "fe50fe631b15c06bc009b3f2f43b3713b75307944f1bc080d7c5da14ac32c9a9",
+      "observed_sha256": "fe50fe631b15c06bc009b3f2f43b3713b75307944f1bc080d7c5da14ac32c9a9",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/RELEASE-ACCEPTANCE.md",
+      "baseline_sha256": "c656dfbb89647d4c35d4506dd18c8b36fb3ca3f7f33c19ca3a8ec990afd3309d",
+      "observed_sha256": "c656dfbb89647d4c35d4506dd18c8b36fb3ca3f7f33c19ca3a8ec990afd3309d",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/TRACEABILITY.csv",
+      "baseline_sha256": "a93bfd9d4a13686df08aba831717ef89a04a36698c6de470fa61553b408d71db",
+      "observed_sha256": "a93bfd9d4a13686df08aba831717ef89a04a36698c6de470fa61553b408d71db",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/UAT-PACK.md",
+      "baseline_sha256": "d2767d3f8ff368d91e915c95eff3c45a9cc4026c13be5fa38a2783abf45446ee",
+      "observed_sha256": "d2767d3f8ff368d91e915c95eff3c45a9cc4026c13be5fa38a2783abf45446ee",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/current/threat-register.json",
+      "baseline_sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+      "observed_sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+      "baseline_sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+      "observed_sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/governance/AI-MODEL-CARD.md",
+      "baseline_sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+      "observed_sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/governance/BACKUP-DR.md",
+      "baseline_sha256": "4ffb07daa110b9eed7f8b043fffcc90b4b6f8be4f7f30ff6539ec8edb93614be",
+      "observed_sha256": "4ffb07daa110b9eed7f8b043fffcc90b4b6f8be4f7f30ff6539ec8edb93614be",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/governance/COMPLIANCE-CONTROL-MAPPING.md",
+      "baseline_sha256": "420f786eaa996db8c953646e493ce4af3626cc454289106d24d10e3baa83277a",
+      "observed_sha256": "420f786eaa996db8c953646e493ce4af3626cc454289106d24d10e3baa83277a",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+      "baseline_sha256": "aeadbc90835cdd91269905ada5119639ea5c1d6e026f6d1ae2b9491961c3be61",
+      "observed_sha256": "aeadbc90835cdd91269905ada5119639ea5c1d6e026f6d1ae2b9491961c3be61",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/governance/SLOS-AND-ALERTS.md",
+      "baseline_sha256": "8e256c8902813fc841fe9400acfc40775cd5d4e8f139fb0f35b2eb4a58f05f99",
+      "observed_sha256": "8e256c8902813fc841fe9400acfc40775cd5d4e8f139fb0f35b2eb4a58f05f99",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/handover/PARALLEL-WORK.md",
+      "baseline_sha256": "f7acb85f309636314dff027cfdd4169afd0e7cad02601c53b4960150c589c710",
+      "observed_sha256": "f7acb85f309636314dff027cfdd4169afd0e7cad02601c53b4960150c589c710",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+      "baseline_sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+      "observed_sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/test-cases.csv",
+      "baseline_sha256": "fbde4346b5829a36832c6a47ad0cade13c1fa6c41b5d9fba16f973177c1735af",
+      "observed_sha256": "fbde4346b5829a36832c6a47ad0cade13c1fa6c41b5d9fba16f973177c1735af",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/test-run-template.csv",
+      "baseline_sha256": "02d89451e5d89a33f7755a92e6f75a5668581a26f90ad199239f4c9db13d6419",
+      "observed_sha256": "02d89451e5d89a33f7755a92e6f75a5668581a26f90ad199239f4c9db13d6419",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/test-scenarios.csv",
+      "baseline_sha256": "4420e20a6bdf1dc121ea4f39ed54fd7d3c8090d51949cbb48fc84d67ad233b95",
+      "observed_sha256": "4420e20a6bdf1dc121ea4f39ed54fd7d3c8090d51949cbb48fc84d67ad233b95",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/START-HERE.md",
+      "baseline_sha256": "7d6bbf24b1653307657dcfa7b58793445cb1d0981d553dc4c84d73c5424ebdc3",
+      "observed_sha256": "7d6bbf24b1653307657dcfa7b58793445cb1d0981d553dc4c84d73c5424ebdc3",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/quality/README.md",
+      "baseline_sha256": "c3de4986aa3e20bf3e522563ce7202b467d597c99227ad4845d15451a181f976",
+      "observed_sha256": "c3de4986aa3e20bf3e522563ce7202b467d597c99227ad4845d15451a181f976",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/task-author/README.md",
+      "baseline_sha256": "f56b479bfdaa803b94e72341a7e58e2889b77a858d8f1c4830c6cf2df7344134",
+      "observed_sha256": "f56b479bfdaa803b94e72341a7e58e2889b77a858d8f1c4830c6cf2df7344134",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+      "baseline_sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+      "observed_sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/task-author/supplemental-verification-plans.proposed.json",
+      "baseline_sha256": "3e25d95e35156d337aefe4030fbce6c89e17b683343ebb0d294fc97819b3e3d4",
+      "observed_sha256": "3e25d95e35156d337aefe4030fbce6c89e17b683343ebb0d294fc97819b3e3d4",
+      "baseline_exact": true
+    },
+    {
+      "path": "docs/release-reviews/release-review-0.39.0.json",
+      "baseline_sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+      "observed_sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+      "baseline_exact": true
+    },
+    {
+      "path": "qualification/perf_harness.py",
+      "baseline_sha256": "98c1c885fb79cbe2af47ddffb086cf079e9803b5e3a228293a79e66b9e782acd",
+      "observed_sha256": "98c1c885fb79cbe2af47ddffb086cf079e9803b5e3a228293a79e66b9e782acd",
+      "baseline_exact": true
+    },
+    {
+      "path": "qualification/test_ai_advisory_provider.py",
+      "baseline_sha256": "dbb7b24416fcd1cd9dc5ac86e8c5267582933163c6ffb9e7d375b7672cf53cec",
+      "observed_sha256": "dbb7b24416fcd1cd9dc5ac86e8c5267582933163c6ffb9e7d375b7672cf53cec",
+      "baseline_exact": true
+    },
+    {
+      "path": "qualification/test_ai_enablement_live.py",
+      "baseline_sha256": "793436dc9023b611284f78af8b7a7273cc74ead45245d311489234fa1fac01f9",
+      "observed_sha256": "793436dc9023b611284f78af8b7a7273cc74ead45245d311489234fa1fac01f9",
+      "baseline_exact": true
+    },
+    {
+      "path": "qualification/test_ai_policy_live.py",
+      "baseline_sha256": "426128431b2b134561f721311310a690bdb05f07d25f49cbb0df5e912472d25b",
+      "observed_sha256": "426128431b2b134561f721311310a690bdb05f07d25f49cbb0df5e912472d25b",
+      "baseline_exact": true
+    },
+    {
+      "path": "scripts/perf.py",
+      "baseline_sha256": "683e0573f2e57a6708494bd92d85a2672f6dfd2ded65ee200dfdd5af08854871",
+      "observed_sha256": "683e0573f2e57a6708494bd92d85a2672f6dfd2ded65ee200dfdd5af08854871",
+      "baseline_exact": true
+    },
+    {
+      "path": "scripts/run.py",
+      "baseline_sha256": "b5a1e066af045722856dda37782567efb51d3b96d7449aed9bf326f1aba67e3b",
+      "observed_sha256": "b5a1e066af045722856dda37782567efb51d3b96d7449aed9bf326f1aba67e3b",
+      "baseline_exact": true
+    }
+  ]
+}

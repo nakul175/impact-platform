@@ -1,0 +1,13 @@
+{
+  "head": "27729ec3eb493603c869bb7ca7c60c29cb963acb",
+  "started_at": "2026-10-11T09:23:54.538493+00:00",
+  "finished_at": "2026-10-11T09:23:55.966405+00:00",
+  "exit_code": 1,
+  "mode": "full synthetic PGlite application regression; --perf only relocates JUnit, not a benchmark",
+  "run_dirs": [
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-3c5bb351"
+  ],
+  "generated_historical_observations_preserved_and_original_bytes_restored": [],
+  "native_qualified": false,
+  "production_accepted": false
+}

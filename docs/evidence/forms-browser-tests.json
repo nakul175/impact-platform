@@ -14,6 +14,10 @@
       "status": "passed"
     },
     {
+      "name": "Round, assignment and coverage are usable through the screen",
+      "status": "passed"
+    },
+    {
       "name": "Forms stay within a 390 px mobile width",
       "status": "passed"
     }

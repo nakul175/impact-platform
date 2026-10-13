@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "release": "0.55.0",
+  "register": "docs/current/threat-register.json",
+  "prepared_by": "Codex agent, unconfirmed coding-only candidate for Nakul Jain",
+  "prepared_on": "2026-10-12",
+  "passed": false,
+  "gates": {
+    "G11": {
+      "status": "Not passed",
+      "reason": "Review started; no independent assessment recorded."
+    },
+    "G12": {
+      "status": "Not run",
+      "reason": "No AI evaluation recorded for this build."
+    }
+  },
+  "open_critical": [
+    {"id": "TH04", "title": "Confused identity token", "impact": "Critical", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH05", "title": "Invitation and recovery takeover", "impact": "Critical", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH06", "title": "Stale grant after revocation", "impact": "Critical", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH09", "title": "Lost update or close race", "impact": "Critical", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH11", "title": "Unsafe expressions and imports", "impact": "Critical", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH13", "title": "Outbound request forgery", "impact": "Critical", "decision": "BLOCK", "verification": "PENDING", "reason": "BLOCKED"},
+    {"id": "TH17", "title": "Plaintext on a lost device", "impact": "Critical", "decision": "BLOCK", "verification": "PENDING", "reason": "BLOCKED"},
+    {"id": "TH21", "title": "Prompt injection in retrieved content", "impact": "Critical", "decision": "BLOCK", "verification": "PARTIAL", "reason": "BLOCKED"},
+    {"id": "TH25", "title": "Privileged support escalation", "impact": "Critical", "decision": "BLOCK", "verification": "PENDING", "reason": "BLOCKED"},
+    {"id": "TH26", "title": "Incomplete privacy deletion", "impact": "Critical", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH27", "title": "Backup resurrects deleted records", "impact": "Critical", "decision": "BLOCK", "verification": "PENDING", "reason": "BLOCKED"},
+    {"id": "TH28", "title": "Audit modification or truncation", "impact": "Critical", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH29", "title": "Compromised dependency or build", "impact": "Critical", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH34", "title": "AI data leaving the boundary contrary to policy", "impact": "Critical", "decision": "BLOCK", "verification": "PARTIAL", "reason": "BLOCKED"}
+  ],
+  "open_other": [
+    {"id": "TH12", "title": "Malicious evidence and previews", "impact": "High", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH16", "title": "Small cell and differencing inference", "impact": "High", "decision": "BLOCK", "verification": "PENDING", "reason": "BLOCKED"},
+    {"id": "TH18", "title": "Clock rollback extends offline authority", "impact": "High", "decision": "BLOCK", "verification": "PENDING", "reason": "BLOCKED"},
+    {"id": "TH19", "title": "Media chunk substitution", "impact": "High", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH20", "title": "Stale worker commits after takeover", "impact": "High", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH22", "title": "Unsupported official AI claims", "impact": "High", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH23", "title": "Stale AI proposal application", "impact": "High", "decision": "BLOCK", "verification": "PENDING", "reason": "BLOCKED"},
+    {"id": "TH24", "title": "AI budget or queue abuse", "impact": "High", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH30", "title": "Cross site and browser persistence attacks", "impact": "High", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH31", "title": "Noisy tenant starvation", "impact": "High", "decision": "MITIGATE", "verification": "PENDING", "reason": "VERIFICATION_PENDING"},
+    {"id": "TH32", "title": "Migration changes historic meaning", "impact": "High", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH33", "title": "Prompt injection through the advisory brief", "impact": "High", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"},
+    {"id": "TH36", "title": "Undisclosed commercial influence on tool listings", "impact": "High", "decision": "MITIGATE", "verification": "PARTIAL", "reason": "VERIFICATION_PARTIAL"}
+  ],
+  "open_chains": [
+    {"id": "CH01", "title": "Document injection to export", "decision": "BLOCK", "reason": "BLOCKED"},
+    {"id": "CH02", "title": "Support escalation", "decision": "BLOCK", "reason": "BLOCKED"}
+  ],
+  "impact_reviews": [
+    {
+      "id": "IR-0.55-01",
+      "change_id": "US-VC-03-value-case-export",
+      "paths": [
+        "apps/api/impact_api/ai_value_case_export.py",
+        "apps/api/impact_api/ai_value_case_export_contracts.py",
+        "apps/api/impact_api/ai_enablement.py",
+        "apps/api/impact_api/main.py",
+        "apps/web/src/AIValueCase.tsx",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": ["complete assumption projection", "server-side recalculation", "PDF/DOCX rendering", "separate export authority and fresh assurance", "artifact digest verification", "self-reported claim boundary"],
+      "threats": ["TH11", "TH17", "TH22", "TH30", "CH01"],
+      "summary": "Coding-only candidate renders PDF/DOCX from server-recalculated closed inputs and includes every submitted assumption; partial or assumption-free requests fail before artifact return. Export uses the existing separate ai.enablement.export capability with fresh assurance, and the browser verifies the returned digest and metadata. Persistent exact-revision issuance and durable receipts remain outside this narrowed slice.",
+      "confirmed_by": null
+    }
+  ],
+  "evidence": ["docs/current/threat-register.json"],
+  "notes": ["Coding-only candidate: tests, CI, independent review, merge and deployment were not run."]
+}

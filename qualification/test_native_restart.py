@@ -19,6 +19,7 @@ import httpx
 import pytest
 from process_environment import process_environment
 from test_administration import expect
+from test_ai_diagnosis_recovery import capture_diagnosis, verify_diagnosis
 from test_live_application import cmd, draft
 from test_native_sessions import sign_in
 
@@ -93,6 +94,7 @@ FORBIDDEN_API_ENVIRONMENT = [
     "IMPACT_MIGRATION_DSN",
     "IMPACT_ADMIN_DSN",
     "IMPACT_LOGIN_",
+    "IMPACT_DIRECT_LOGIN_",
     "PGPASSWORD",
     "PGPASSFILE",
     "PGSERVICE",
@@ -165,6 +167,7 @@ def test_phase_1(live):
         "manifest": manifest,
         "ready": ready,
     }
+    state["diagnosis"] = capture_diagnosis(live)
     state["counts"] = counts(live, state)
     assert state["counts"] == {
         "revisions": {"programme": 1, "observation": 2, "workflow": 1},
@@ -184,6 +187,7 @@ def test_phase_2(live):
     assert_api_process_holds_no_privileged_connection(live, int(os.environ["IMPACT_API_PID"]))
     assert expect(live.request("/health/ready", actor=None), 200) == state["ready"]
     assert expect(live.request("/v1/runtime-manifest"), 200) == state["manifest"]
+    verify_diagnosis(live, state["diagnosis"])
     # Exact retries replay the receipts recorded by the previous process, byte for byte.
     assert (
         expect(live.request(live.path("programmes"), method="POST", body=state["programme"]["body"]), 201)

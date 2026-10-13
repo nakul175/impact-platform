@@ -2,6 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { AIAdoptionWorkspace } from "./AIAdoptionWorkspace";
 import { AIPolicyInForce, type AIPolicyView } from "./AIPolicy";
 import { AIOpportunityRanking } from "./AIRanking";
+import { AIEvidenceQuestions } from "./AIEvidenceQuestions";
+import { AINumericAnalysis } from "./AINumericAnalysis";
+import { AIReportDrafting } from "./AIReportDrafting";
+import { AIQualitativeAssistance } from "./AIQualitativeAssistance";
+import { AIProactiveFindings } from "./AIProactiveFindings";
+import { AIActionProposals } from "./AIActionProposals";
 import "./ai-enablement.css";
 
 export type Profile = {
@@ -51,6 +57,24 @@ export type Catalog = {
   marketplace_status: { status: string; explanation: string };
 };
 type Assessment = {
+  maturity_framework: {
+    framework_id: string;
+    framework_version: string;
+    framework_status: "EDITORIAL_DRAFT";
+    method: "DETERMINISTIC_SELF_REPORT_RULES";
+    scores: {
+      dimension_id: string;
+      score: number;
+      level: string;
+      scale_min: number;
+      scale_max: number;
+      explanation: string;
+      rule_id: string;
+      input_fields: string[];
+      self_reported: true;
+    }[];
+    limitations: string[];
+  };
   readiness: { stage: string; reasons: string[] };
   recommendations: {
     use_case_id: string;
@@ -121,6 +145,87 @@ export function AIEnablementPanel({
     model: string;
     disclaimer: string;
   } | null>(null);
+  const [advisoryJob, setAdvisoryJob] = useState<{
+    job_id: string;
+    operation_id: string;
+    state: string;
+    estimated_units: number;
+    progress: number;
+    can_cancel: boolean;
+    cancellation_requested: boolean;
+    outcome: "SUCCEEDED" | "TIMED_OUT" | "CANCELLED" | "FAILED" | null;
+    complete: boolean | null;
+    label: "Advisory draft" | "Incomplete draft" | null;
+    can_publish_final: boolean;
+  } | null>(null);
+  const [safetyFeedback, setSafetyFeedback] = useState({
+    output_kind: "ADVISORY_JOB",
+    output_id: "",
+    category: "OTHER",
+    safe_detail: "",
+    reviewer_id: "",
+  });
+  const [safetyReceipt, setSafetyReceipt] = useState("");
+  const [shutdown, setShutdown] = useState({
+    scope_kind: "USE_CASE",
+    scope_value: "ADVISORY_DRAFT",
+    action: "DISABLE",
+    reason_category: "OTHER",
+    fix_evidence_object_id: "",
+    fix_evidence_revision_id: "",
+    disabled_event_id: "",
+  });
+  const [shutdownResult, setShutdownResult] = useState<{
+    state: string;
+    queued_jobs_stopped: string[];
+    running_jobs_cancellation_requested: string[];
+    affected_artifacts: unknown[];
+    manual_workflows_enabled: boolean;
+  } | null>(null);
+  const [recoveryApproval, setRecoveryApproval] = useState("");
+  const [extractionSource, setExtractionSource] = useState({
+    object_id: "",
+    revision_id: "",
+    language: "en",
+  });
+  const [extraction, setExtraction] = useState<{
+    draft_id: string;
+    proposals: Array<{
+      proposal_id: string;
+      field_key: string;
+      proposed_value: string;
+      classification: string;
+      location: { line: number; section: string | null };
+      evidence_span: string;
+      conflict: boolean;
+    }>;
+    missing_fields: string[];
+    activation_blocked: boolean;
+  } | null>(null);
+  const [selectedExtraction, setSelectedExtraction] = useState<string[]>([]);
+  const [extractionReview, setExtractionReview] = useState<{
+    state: string;
+    unresolved_fields: string[];
+  } | null>(null);
+  const [indicatorDesignSource, setIndicatorDesignSource] = useState({
+    library_definition_id: "",
+    library_definition_revision_id: "",
+    programme_id: "",
+    programme_revision_id: "",
+    proxy_basis: "DIRECT",
+  });
+  const [indicatorProposal, setIndicatorProposal] = useState<{
+    proposed_fields: Record<string, unknown>;
+    warnings: string[];
+    can_approve: boolean;
+    standard_mapping_created: boolean;
+  } | null>(null);
+  const [indicatorFields, setIndicatorFields] = useState<string[]>([]);
+  const [indicatorDraft, setIndicatorDraft] = useState<{
+    object_id: string;
+    submit_ready: boolean;
+    warnings: string[];
+  } | null>(null);
   const [busy, setBusy] = useState<"assessment" | "advisory" | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -140,6 +245,19 @@ export function AIEnablementPanel({
   const policyGeneration = useRef(0);
   const canRead = capabilities.includes("ai.enablement.read");
   const canAdvise = capabilities.includes("ai.advisory.request");
+  const canAnalyse = capabilities.includes("calculated-results.read");
+  const canDraftReport = capabilities.includes("reports.draft.create");
+  const canReviewReportDraft = capabilities.includes("reports.draft.edit");
+  const canUseQualitativeAssistance = capabilities.includes(
+    "qualitative-extracts.draft.create",
+  );
+  const canSuggestFindings = capabilities.includes("calculated-results.read");
+  const canCreateActionProposal = capabilities.includes(
+    "work-items.draft.create",
+  );
+  const canDesignIndicator = capabilities.includes(
+    "indicator-definitions.draft.create",
+  );
   const canManagePolicy = capabilities.includes("ai.policy.manage");
   // US-MP-03: the ranking weights are changed by holders of ai.enablement.manage.
   const canManageWeights = capabilities.includes("ai.enablement.manage");
@@ -170,6 +288,7 @@ export function AIEnablementPanel({
     setCatalogState(null);
     setAssessment(null);
     setAdvisory(null);
+    setAdvisoryJob(null);
     setError("");
     setBusy(null);
     setProfile(initialProfile);
@@ -219,6 +338,7 @@ export function AIEnablementPanel({
     setConsent(false);
     setAssessment(null);
     setAdvisory(null);
+    setAdvisoryJob(null);
     setError("");
   };
   function loadProfile(value: Profile) {
@@ -230,6 +350,7 @@ export function AIEnablementPanel({
     setConsent(false);
     setAssessment(null);
     setAdvisory(null);
+    setAdvisoryJob(null);
     setError("");
     setBusy(null);
   }
@@ -249,6 +370,8 @@ export function AIEnablementPanel({
         operation_id: crypto.randomUUID(),
         profile,
         consent: true,
+        purpose: "AI_ADOPTION_ADVISORY",
+        source_dependencies: [],
         policy_version: policy!.policy_version,
       });
     }
@@ -256,19 +379,24 @@ export function AIEnablementPanel({
     setBusy(kind);
     setAdvisory(null);
     try {
-      const result = await request(base + "ai-enablement/" + kind, {
-        method: "POST",
-        signal: controller.signal,
-        body:
-          kind === "advisory"
-            ? pendingAdvisory.current!
-            : JSON.stringify({ profile }),
-      });
+      const result = await request(
+        base +
+          "ai-enablement/" +
+          (kind === "advisory" ? "advisory-jobs" : kind),
+        {
+          method: "POST",
+          signal: controller.signal,
+          body:
+            kind === "advisory"
+              ? pendingAdvisory.current!
+              : JSON.stringify({ profile }),
+        },
+      );
       if (currentGeneration !== generation.current) return;
-      setAssessment(result.assessment);
+      if (result.assessment) setAssessment(result.assessment);
       if (kind === "advisory") {
         pendingAdvisory.current = null;
-        setAdvisory(result);
+        setAdvisoryJob(result);
       }
     } catch (e) {
       if (
@@ -495,7 +623,7 @@ export function AIEnablementPanel({
                           }
                         }}
                       >
-                        Request AI advisory draft
+                        Queue AI advisory draft
                       </button>
                     )}
                   </div>
@@ -530,7 +658,7 @@ export function AIEnablementPanel({
                 <p role="status">
                   {busy === "assessment"
                     ? "Assessing your brief…"
-                    : "Preparing an AI advisory draft…"}
+                    : "Reserving budget and queueing the advisory job…"}
                 </p>
               )}
             </section>
@@ -540,6 +668,41 @@ export function AIEnablementPanel({
                   Readiness assessment · {label(assessment.readiness.stage)}
                 </h3>
                 <Items items={assessment.readiness.reasons} />
+                <h4>Digital maturity and data readiness</h4>
+                <p className="muted">
+                  Framework {assessment.maturity_framework.framework_id} ·
+                  edition {assessment.maturity_framework.framework_version} ·
+                  editorial self-assessment. This is not external certification,
+                  advisor approval or an official impact result.
+                </p>
+                <div className="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th scope="col">Dimension</th>
+                        <th scope="col">Score</th>
+                        <th scope="col">Explanation</th>
+                        <th scope="col">Rule and inputs</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {assessment.maturity_framework.scores.map((score) => (
+                        <tr key={score.dimension_id}>
+                          <th scope="row">{label(score.dimension_id)}</th>
+                          <td>
+                            {score.score}/{score.scale_max} ·{" "}
+                            {label(score.level)}
+                          </td>
+                          <td>{score.explanation}</td>
+                          <td>
+                            {score.rule_id} · {score.input_fields.join(", ")}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <Items items={assessment.maturity_framework.limitations} />
                 <h4>Next steps</h4>
                 <Items items={assessment.next_steps} />
                 <h4>Capacity gaps</h4>
@@ -583,6 +746,651 @@ export function AIEnablementPanel({
               request={request}
               explain={explain}
             />
+            <AIEvidenceQuestions
+              base={base}
+              policyVersion={policy?.policy_version ?? null}
+              canAsk={canAdvise}
+              request={request}
+              explain={explain}
+            />
+            <AINumericAnalysis
+              base={base}
+              policyVersion={policy?.policy_version ?? null}
+              canAnalyse={canAnalyse}
+              request={request}
+              explain={explain}
+            />
+            <AIReportDrafting
+              base={base}
+              policyVersion={policy?.policy_version ?? null}
+              canDraft={canDraftReport}
+              canReview={canReviewReportDraft}
+              request={request}
+              explain={explain}
+            />
+            <AIQualitativeAssistance
+              base={base}
+              policyVersion={policy?.policy_version ?? null}
+              canUse={canUseQualitativeAssistance}
+              request={request}
+              explain={explain}
+            />
+            <AIProactiveFindings
+              base={base}
+              policyVersion={policy?.policy_version ?? null}
+              canManage={canManageWeights}
+              canSuggest={canSuggestFindings}
+              request={request}
+              explain={explain}
+            />
+            <AIActionProposals
+              base={base}
+              policyVersion={policy?.policy_version ?? null}
+              canCreate={canCreateActionProposal}
+              request={request}
+              explain={explain}
+            />
+            {advisoryJob && (
+              <section aria-labelledby="ai-advisory-job" aria-live="polite">
+                <h3 id="ai-advisory-job">AI advisory job</h3>
+                <p role="status">
+                  {label(advisoryJob.state)} · {advisoryJob.progress}% ·{" "}
+                  {advisoryJob.estimated_units} unit reserved
+                </p>
+                {advisoryJob.label && (
+                  <p className={advisoryJob.complete ? "muted" : "ai-notice"}>
+                    {advisoryJob.label}
+                    {!advisoryJob.can_publish_final &&
+                      " — this partial result cannot be published as final."}
+                  </p>
+                )}
+                <div className="actions">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      const current = await request(
+                        base +
+                          "ai-enablement/advisory-jobs/" +
+                          advisoryJob.job_id,
+                      );
+                      setAdvisoryJob(current);
+                    }}
+                  >
+                    Refresh progress
+                  </button>
+                  {advisoryJob.can_cancel && (
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        const cancelled = await request(
+                          base +
+                            "ai-enablement/advisory-jobs/" +
+                            advisoryJob.job_id +
+                            "/actions/cancel",
+                          { method: "POST" },
+                        );
+                        setAdvisoryJob(cancelled);
+                      }}
+                    >
+                      Cancel AI job
+                    </button>
+                  )}
+                </div>
+              </section>
+            )}
+            {canAdvise && (
+              <details>
+                <summary>
+                  Design an indicator draft from the approved library
+                </summary>
+                <p className="muted">
+                  This use remains reserved until policy activation is reviewed.
+                  Proposals cannot approve an indicator or create a standard
+                  mapping.
+                </p>
+                {[
+                  ["library_definition_id", "Approved definition ID"],
+                  [
+                    "library_definition_revision_id",
+                    "Exact definition revision ID",
+                  ],
+                  ["programme_id", "Programme ID"],
+                  ["programme_revision_id", "Exact programme revision ID"],
+                ].map(([field, title]) => (
+                  <label key={field}>
+                    {title}
+                    <input
+                      value={
+                        indicatorDesignSource[
+                          field as keyof typeof indicatorDesignSource
+                        ]
+                      }
+                      onChange={(event) =>
+                        setIndicatorDesignSource({
+                          ...indicatorDesignSource,
+                          [field]: event.target.value,
+                        })
+                      }
+                    />
+                  </label>
+                ))}
+                <label>
+                  Measurement basis
+                  <select
+                    value={indicatorDesignSource.proxy_basis}
+                    onChange={(event) =>
+                      setIndicatorDesignSource({
+                        ...indicatorDesignSource,
+                        proxy_basis: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="DIRECT">Direct measure</option>
+                    <option value="PROXY">Proxy requiring review</option>
+                  </select>
+                </label>
+                <button
+                  type="button"
+                  disabled={!policy}
+                  onClick={async () => {
+                    const result = await request(
+                      base + "ai-enablement/indicator-design/proposals",
+                      {
+                        method: "POST",
+                        body: JSON.stringify({
+                          ...indicatorDesignSource,
+                          policy_version: policy!.policy_version,
+                          language: "en",
+                        }),
+                      },
+                    );
+                    setIndicatorProposal(result);
+                    setIndicatorFields([]);
+                    setIndicatorDraft(null);
+                  }}
+                >
+                  Propose measurement contract
+                </button>
+                {indicatorProposal && (
+                  <section aria-label="Indicator proposal review">
+                    <Items items={indicatorProposal.warnings} />
+                    {Object.entries(indicatorProposal.proposed_fields).map(
+                      ([field, value]) => (
+                        <label key={field}>
+                          <input
+                            type="checkbox"
+                            checked={indicatorFields.includes(field)}
+                            onChange={(event) =>
+                              setIndicatorFields(
+                                event.target.checked
+                                  ? [...indicatorFields, field]
+                                  : indicatorFields.filter(
+                                      (selected) => selected !== field,
+                                    ),
+                              )
+                            }
+                          />
+                          {label(field)}: {JSON.stringify(value)}
+                        </label>
+                      ),
+                    )}
+                    {canDesignIndicator && (
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const receipt = await request(
+                            base + "ai-enablement/indicator-design/drafts",
+                            {
+                              method: "POST",
+                              body: JSON.stringify({
+                                operation_id: crypto.randomUUID(),
+                                ...indicatorDesignSource,
+                                policy_version: policy!.policy_version,
+                                language: "en",
+                                selected_fields: indicatorFields,
+                              }),
+                            },
+                          );
+                          setIndicatorDraft(receipt);
+                        }}
+                      >
+                        Create selected-field draft
+                      </button>
+                    )}
+                    {indicatorDraft && (
+                      <p role="status">
+                        Draft {indicatorDraft.object_id} ·{" "}
+                        {indicatorDraft.submit_ready
+                          ? "ready for ordinary submission checks"
+                          : "incomplete; submission remains blocked"}
+                      </p>
+                    )}
+                  </section>
+                )}
+              </details>
+            )}
+            {canAdvise && (
+              <details>
+                <summary>Extract proposal fields for review</summary>
+                <p className="muted">
+                  Clean UTF-8 text Evidence only. No framework or target is
+                  changed until a separate domain draft is created.
+                </p>
+                <label>
+                  Evidence object ID
+                  <input
+                    value={extractionSource.object_id}
+                    onChange={(event) =>
+                      setExtractionSource({
+                        ...extractionSource,
+                        object_id: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Exact Evidence revision ID
+                  <input
+                    value={extractionSource.revision_id}
+                    onChange={(event) =>
+                      setExtractionSource({
+                        ...extractionSource,
+                        revision_id: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+                <button
+                  type="button"
+                  disabled={!policy}
+                  onClick={async () => {
+                    const draft = await request(
+                      base + "ai-enablement/extractions",
+                      {
+                        method: "POST",
+                        body: JSON.stringify({
+                          operation_id: crypto.randomUUID(),
+                          source_object_id: extractionSource.object_id,
+                          source_revision_id: extractionSource.revision_id,
+                          policy_version: policy!.policy_version,
+                          language: extractionSource.language,
+                        }),
+                      },
+                    );
+                    setExtraction(draft);
+                    setSelectedExtraction([]);
+                    setExtractionReview(null);
+                  }}
+                >
+                  Create extraction proposals
+                </button>
+                {extraction && (
+                  <section aria-label="Extraction proposal review">
+                    <p role="status">
+                      {extraction.proposals.length} proposals · missing:{" "}
+                      {extraction.missing_fields.join(", ") || "none"}
+                    </p>
+                    {extraction.proposals.map((proposal) => (
+                      <label key={proposal.proposal_id}>
+                        <input
+                          type="checkbox"
+                          checked={selectedExtraction.includes(
+                            proposal.proposal_id,
+                          )}
+                          onChange={(event) =>
+                            setSelectedExtraction(
+                              event.target.checked
+                                ? [...selectedExtraction, proposal.proposal_id]
+                                : selectedExtraction.filter(
+                                    (value) => value !== proposal.proposal_id,
+                                  ),
+                            )
+                          }
+                        />
+                        {label(proposal.field_key)}: {proposal.proposed_value} ·{" "}
+                        {label(proposal.classification)} · line{" "}
+                        {proposal.location.line}
+                        {proposal.location.section
+                          ? " · " + proposal.location.section
+                          : ""}
+                        {proposal.conflict ? " · conflicting value" : ""}
+                      </label>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        const review = await request(
+                          base +
+                            "ai-enablement/extractions/" +
+                            extraction.draft_id +
+                            "/actions/apply",
+                          {
+                            method: "POST",
+                            body: JSON.stringify({
+                              operation_id: crypto.randomUUID(),
+                              selected_proposal_ids: selectedExtraction,
+                              human_additions: [],
+                            }),
+                          },
+                        );
+                        setExtractionReview(review);
+                      }}
+                    >
+                      Record selected proposals
+                    </button>
+                    {extractionReview && (
+                      <p role="status">
+                        {label(extractionReview.state)} · unresolved:{" "}
+                        {extractionReview.unresolved_fields.join(", ") ||
+                          "none"}
+                      </p>
+                    )}
+                  </section>
+                )}
+              </details>
+            )}
+            {canAdvise && (
+              <details>
+                <summary>Report an AI safety concern</summary>
+                <label>
+                  Output type
+                  <select
+                    value={safetyFeedback.output_kind}
+                    onChange={(event) =>
+                      setSafetyFeedback({
+                        ...safetyFeedback,
+                        output_kind: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="ADVISORY">Advisory</option>
+                    <option value="ADVISORY_JOB">Advisory job</option>
+                    <option value="FORECAST">Forecast scenario</option>
+                  </select>
+                </label>
+                <label>
+                  Output ID
+                  <input
+                    value={safetyFeedback.output_id}
+                    onChange={(event) =>
+                      setSafetyFeedback({
+                        ...safetyFeedback,
+                        output_id: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Concern category
+                  <select
+                    value={safetyFeedback.category}
+                    onChange={(event) =>
+                      setSafetyFeedback({
+                        ...safetyFeedback,
+                        category: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="SENSITIVE_CITATION">
+                      Sensitive citation
+                    </option>
+                    <option value="HARMFUL_CONTENT">Harmful content</option>
+                    <option value="UNSUPPORTED_CLAIM">Unsupported claim</option>
+                    <option value="UNAUTHORISED_ACTION">
+                      Unauthorised action
+                    </option>
+                    <option value="OTHER">Other</option>
+                  </select>
+                </label>
+                <label>
+                  Safe supporting detail (do not include source payloads or
+                  personal data)
+                  <textarea
+                    maxLength={1000}
+                    value={safetyFeedback.safe_detail}
+                    onChange={(event) =>
+                      setSafetyFeedback({
+                        ...safetyFeedback,
+                        safe_detail: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Independent reviewer ID
+                  <input
+                    value={safetyFeedback.reviewer_id}
+                    onChange={(event) =>
+                      setSafetyFeedback({
+                        ...safetyFeedback,
+                        reviewer_id: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const receipt = await request(
+                      base + "ai-enablement/safety-feedback",
+                      {
+                        method: "POST",
+                        body: JSON.stringify(safetyFeedback),
+                      },
+                    );
+                    setSafetyReceipt(receipt.feedback_id);
+                  }}
+                >
+                  Submit safety feedback
+                </button>
+                {safetyReceipt && (
+                  <p role="status">Feedback recorded: {safetyReceipt}</p>
+                )}
+              </details>
+            )}
+            {canManagePolicy && (
+              <details>
+                <summary>AI safety shutdown</summary>
+                <label>
+                  Action
+                  <select
+                    value={shutdown.action}
+                    onChange={(event) =>
+                      setShutdown({ ...shutdown, action: event.target.value })
+                    }
+                  >
+                    <option value="DISABLE">Disable immediately</option>
+                    <option value="REENABLE">Re-enable after review</option>
+                  </select>
+                </label>
+                <label>
+                  Shutdown scope
+                  <select
+                    value={shutdown.scope_kind}
+                    onChange={(event) =>
+                      setShutdown({
+                        ...shutdown,
+                        scope_kind: event.target.value,
+                        scope_value:
+                          event.target.value === "USE_CASE"
+                            ? "ADVISORY_DRAFT"
+                            : event.target.value === "DESTINATION"
+                              ? "openai-us"
+                              : "",
+                      })
+                    }
+                  >
+                    <option value="USE_CASE">Use case</option>
+                    <option value="DESTINATION">Provider destination</option>
+                    <option value="CONFIGURATION">
+                      Exact configuration ID
+                    </option>
+                  </select>
+                </label>
+                {shutdown.scope_kind === "USE_CASE" ? (
+                  <label>
+                    Use case
+                    <select
+                      value={shutdown.scope_value}
+                      onChange={(event) =>
+                        setShutdown({
+                          ...shutdown,
+                          scope_value: event.target.value,
+                        })
+                      }
+                    >
+                      <option value="ADVISORY_DRAFT">Advisory draft</option>
+                      <option value="REPORT_DRAFT">Report draft</option>
+                      <option value="EXTRACTION">Extraction</option>
+                      <option value="CHAT">Chat</option>
+                      <option value="INDICATOR_DESIGN">Indicator design</option>
+                      <option value="IMPORT_CLEANING">
+                        Import mapping and cleaning
+                      </option>
+                      <option value="EVIDENCE_QUESTION">
+                        Evidence questions
+                      </option>
+                      <option value="NUMERIC_ANALYSIS">
+                        Governed numerical analysis
+                      </option>
+                      <option value="QUALITATIVE_ASSISTANCE">
+                        Qualitative assistance
+                      </option>
+                      <option value="PROACTIVE_FINDINGS">
+                        Proactive finding suggestions
+                      </option>
+                      <option value="ACTION_PROPOSAL">
+                        Draft action proposals
+                      </option>
+                    </select>
+                  </label>
+                ) : shutdown.scope_kind === "DESTINATION" ? (
+                  <label>
+                    Provider destination
+                    <select value={shutdown.scope_value} disabled>
+                      <option value="openai-us">OpenAI US</option>
+                    </select>
+                  </label>
+                ) : (
+                  <label>
+                    Configuration ID (SHA-256)
+                    <input
+                      value={shutdown.scope_value}
+                      onChange={(event) =>
+                        setShutdown({
+                          ...shutdown,
+                          scope_value: event.target.value,
+                        })
+                      }
+                    />
+                  </label>
+                )}
+                {shutdown.action === "REENABLE" && (
+                  <>
+                    <label>
+                      Disabled shutdown event ID
+                      <input
+                        value={shutdown.disabled_event_id}
+                        onChange={(event) =>
+                          setShutdown({
+                            ...shutdown,
+                            disabled_event_id: event.target.value,
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      Fix evidence object ID
+                      <input
+                        value={shutdown.fix_evidence_object_id}
+                        onChange={(event) =>
+                          setShutdown({
+                            ...shutdown,
+                            fix_evidence_object_id: event.target.value,
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      Fix evidence revision ID
+                      <input
+                        value={shutdown.fix_evidence_revision_id}
+                        onChange={(event) =>
+                          setShutdown({
+                            ...shutdown,
+                            fix_evidence_revision_id: event.target.value,
+                          })
+                        }
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        await request(
+                          base +
+                            "ai-enablement/safety-shutdowns/" +
+                            shutdown.disabled_event_id +
+                            "/actions/approve-recovery",
+                          {
+                            method: "POST",
+                            body: JSON.stringify({
+                              fix_evidence_object_id:
+                                shutdown.fix_evidence_object_id,
+                              fix_evidence_revision_id:
+                                shutdown.fix_evidence_revision_id,
+                            }),
+                          },
+                        );
+                        setRecoveryApproval(
+                          "Independent regression approval recorded",
+                        );
+                      }}
+                    >
+                      Approve recovery independently
+                    </button>
+                    {recoveryApproval && (
+                      <p role="status">{recoveryApproval}</p>
+                    )}
+                  </>
+                )}
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const result = await request(
+                      base + "ai-enablement/safety-shutdowns",
+                      {
+                        method: "POST",
+                        body: JSON.stringify({
+                          scope_kind: shutdown.scope_kind,
+                          scope_value: shutdown.scope_value,
+                          action: shutdown.action,
+                          reason_category:
+                            shutdown.action === "REENABLE"
+                              ? "OTHER"
+                              : shutdown.reason_category,
+                          disabled_event_id: shutdown.disabled_event_id || null,
+                        }),
+                      },
+                    );
+                    setShutdownResult(result);
+                  }}
+                >
+                  {shutdown.action === "DISABLE"
+                    ? "Disable affected AI"
+                    : "Request re-enable"}
+                </button>
+                {shutdownResult && (
+                  <p role="status">
+                    {label(shutdownResult.state)} ·{" "}
+                    {shutdownResult.queued_jobs_stopped.length} queued stopped ·{" "}
+                    {shutdownResult.running_jobs_cancellation_requested.length}{" "}
+                    running cancellation requested ·{" "}
+                    {shutdownResult.affected_artifacts.length} artifacts listed.
+                    Manual workflows remain available.
+                  </p>
+                )}
+              </details>
+            )}
             {advisory && (
               <section aria-labelledby="ai-advisory">
                 <h3 id="ai-advisory">AI advisory draft</h3>

@@ -1,0 +1,630 @@
+{
+  "reviewedAtUtc": "2026-10-11T03:17:32.781732+00:00",
+  "subject": {
+    "commit": "078b395c8684d2f81f5f1edd1c4fa6c3d409f72a",
+    "tree": "f79fa249fc3589d2b941ef38c7bdb173097ee286",
+    "baseline": "eb194fdbb6fc8247db8429fc23120aa0fe659ed8",
+    "changedPaths": 41,
+    "all41BlobPins": [
+      {
+        "path": "docs/DOCUMENTATION-INDEX.md",
+        "change": "M",
+        "gitBlob": "8c526db1e76bd180ccb4702ce11f05f5f06b76ec",
+        "sha256": "3271ab297a00d91c286cef72141533c9c824e63df4f4b9b9c3ac8b608ac621b9",
+        "bytes": 19715
+      },
+      {
+        "path": "docs/agile/WORKING-AGREEMENT.md",
+        "change": "M",
+        "gitBlob": "8de71d7508f1502c6d22f897cc4cec3bce23fbf6",
+        "sha256": "11c7c4e793f73f025975b20e2db9563a36bf3794ff44f2f966b3ce53e5d20332",
+        "bytes": 4545
+      },
+      {
+        "path": "docs/product/01-VISION.md",
+        "change": "M",
+        "gitBlob": "08997d25fb87d4649249f0b5b66bb09aadffc7f1",
+        "sha256": "3a7b3ba4b33dad8c22a888fccdbac632cd5bef31678bf47bbc4d764fe5c0f9f8",
+        "bytes": 11684
+      },
+      {
+        "path": "docs/product/02-STRATEGY.md",
+        "change": "M",
+        "gitBlob": "077aa5d74f04f7103a0825152ef6752b8c1eae6a",
+        "sha256": "2f7bfa32f0f5143e2bb128e974b2c1239bb276854b26174189e0b794794caffb",
+        "bytes": 14383
+      },
+      {
+        "path": "docs/product/03-ROADMAP.md",
+        "change": "M",
+        "gitBlob": "28bf85e4d4bc027360eeeca74f02fe0ebf04a1c1",
+        "sha256": "8ce683d72c5b28f4b1fba0c612acb7b7fe8efcae423e3760e4595a25ab1d48cf",
+        "bytes": 10013
+      },
+      {
+        "path": "docs/product/04-RELEASE-GOALS.md",
+        "change": "M",
+        "gitBlob": "2fb6490229bf4bf98515e6ce0e76d8ef0caa933c",
+        "sha256": "6cf5b50d78e1696e85c051d76f6998bdf007cd05c00b48c7009e982c3ab93fa2",
+        "bytes": 15456
+      },
+      {
+        "path": "docs/product/05-STORY-AND-TASK-STANDARD.md",
+        "change": "M",
+        "gitBlob": "2e0cfb46172bf26725fe95e637582a42c1bccf65",
+        "sha256": "a6d5d79f1924ebe80447f3f6476c26a5fde091ccb9df123565d36f6dab806dcb",
+        "bytes": 18577
+      },
+      {
+        "path": "docs/product/06-NEXT-SPRINT-REFINEMENT.md",
+        "change": "M",
+        "gitBlob": "29c2f3d9d7cb626becfd6ee7e03f56270112aa6b",
+        "sha256": "43163cac0bae15f0ce82098e0534ee6fce8b69cba98b1528444868f8b040ef39",
+        "bytes": 28861
+      },
+      {
+        "path": "docs/product/07-LINEAR-IMPORT-STATUS.md",
+        "change": "M",
+        "gitBlob": "be9b66d884ff4259cefbfc0bbc5a247e7856a76b",
+        "sha256": "30c6416ec97e1c783068aca25fafed49b64c76f27360b7f0a839f33005ab9bcb",
+        "bytes": 10016
+      },
+      {
+        "path": "docs/product/08-BACKLOG-CATALOGUE.md",
+        "change": "M",
+        "gitBlob": "36c2cb57ec26d081891bf33862f4828131360a5f",
+        "sha256": "7f4abe73bd86186a23425345d560841b56ee83fa3332b7d350476cad7a829256",
+        "bytes": 85687
+      },
+      {
+        "path": "docs/product/10-COMPLETE-BACKLOG-REFINEMENT.md",
+        "change": "M",
+        "gitBlob": "c7539e5ef4e7ec82a5cece53a47ed7e6c4d86002",
+        "sha256": "9050c8ce0913e366dae08b3ed67425c3ca481b962f01f87a6c90d58b72e18fdb",
+        "bytes": 52382
+      },
+      {
+        "path": "docs/product/11-FRAMEWORK-REFINEMENT.md",
+        "change": "A",
+        "gitBlob": "c84bbc0c7803620b345ac0573c4bf55405d5ce2e",
+        "sha256": "a6349d7ecd65f238fd8e1f6dc8824b136d4667411c3fe33248f49af369b47bc0",
+        "bytes": 5466
+      },
+      {
+        "path": "docs/product/README.md",
+        "change": "M",
+        "gitBlob": "80e906c65116ab634df6f9e322c40015b6714223",
+        "sha256": "1b937205d8265a7f9ba091989fb4c30a0ed28d91af08af426b823fb2d35bbda3",
+        "bytes": 5333
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/01-VISION.md",
+        "change": "A",
+        "gitBlob": "e5f6a0775f3392e8bc80d928c5bb42d7249137d0",
+        "sha256": "da931e4ac1aa3c851aada79ecb73d6b08e6360f90001cc17508321a897965159",
+        "bytes": 6075
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/02-STRATEGY.md",
+        "change": "A",
+        "gitBlob": "dfa82bbdd87396f14b53f6e881d9e0ff8d878667",
+        "sha256": "2aff3dbc5c48a6a16742c124775cf5e079945040fd59d41e16549b615a12c1c3",
+        "bytes": 5515
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/03-ROADMAP.md",
+        "change": "A",
+        "gitBlob": "4f9ec0b6890089fa875f7cf95f0397972d06cfc8",
+        "sha256": "f38813a702f5c983025ab1ebda5e6ff0d444f000f04310efa6f8d363d6284cf7",
+        "bytes": 4230
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/04-RELEASE-GOALS.md",
+        "change": "A",
+        "gitBlob": "6c04d99fb2191b6ee317f7edd6a96032a0bdd0dd",
+        "sha256": "f8e8ceb66d36e46201f716ed02b056edb24e7b2d58569f0a516b1b8b2d8038a9",
+        "bytes": 4962
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/05-STORY-AND-TASK-STANDARD.md",
+        "change": "A",
+        "gitBlob": "96ed940aea05570b306b3534456e750dc8bc0c46",
+        "sha256": "b50e6c65e48c97544e8747ec34dc13b6d9a053d9f3320393f542377d4aed9843",
+        "bytes": 4208
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/06-NEXT-SPRINT-REFINEMENT.md",
+        "change": "A",
+        "gitBlob": "a206d1d52d7bca887774376d7cdecb9a971f9f9a",
+        "sha256": "41fdfd38f4b3aa56d4aabf716ba1b8688d85e2b54b56912a11d6979450ee983b",
+        "bytes": 2168
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/07-LINEAR-IMPORT-STATUS.md",
+        "change": "A",
+        "gitBlob": "2028098aeef713c286a9d33a8200076bfa2668f1",
+        "sha256": "2983a2c82f667bec3ee7d642473af06be4517f7f66e7cc625c56df4ab74dc43c",
+        "bytes": 2291
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/08-BACKLOG-CATALOGUE.md",
+        "change": "A",
+        "gitBlob": "2028098aeef713c286a9d33a8200076bfa2668f1",
+        "sha256": "2983a2c82f667bec3ee7d642473af06be4517f7f66e7cc625c56df4ab74dc43c",
+        "bytes": 2291
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/10-COMPLETE-BACKLOG-REFINEMENT.md",
+        "change": "A",
+        "gitBlob": "96ed940aea05570b306b3534456e750dc8bc0c46",
+        "sha256": "b50e6c65e48c97544e8747ec34dc13b6d9a053d9f3320393f542377d4aed9843",
+        "bytes": 4208
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/README.md",
+        "change": "A",
+        "gitBlob": "c84bbc0c7803620b345ac0573c4bf55405d5ce2e",
+        "sha256": "a6349d7ecd65f238fd8e1f6dc8824b136d4667411c3fe33248f49af369b47bc0",
+        "bytes": 5466
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/bundle-review/BUNDLE-AND-SCRIPT-REVIEW.json",
+        "change": "A",
+        "gitBlob": "4241d74f89360269c90dbb4b40251c8477fed842",
+        "sha256": "16afbb433d3d2ba9b1eded1f3f567f6c752c2dee4ac388ebc8a3de8c96a78690",
+        "bytes": 7353
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/bundle-review/CRITERION-ALIAS-MAP.json",
+        "change": "A",
+        "gitBlob": "748878648b9604289804a7f3713afa7495b095e2",
+        "sha256": "279c1bec0920f02dba67f43cb6fcb6ce5f2fa311c79dc98dc18ac0a4f29c99ee",
+        "bytes": 890236
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/bundle-review/PROPOSAL-SEMANTIC-APPEND-REVIEW.json",
+        "change": "A",
+        "gitBlob": "5b04876bda06b7599cc241b6c4280009ee9704b8",
+        "sha256": "a6045fb9d29e81f0ebf423b7457f3de525e1fe8d6a1a4b30a8af1cf07da2c82d",
+        "bytes": 29593
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/bundle-review/PROPOSAL-STRUCTURE-SOURCE-REVIEW.json",
+        "change": "A",
+        "gitBlob": "9ad7324bb3dc47e4a969b5226417ad824e605cbf",
+        "sha256": "25050df5a8c9789894e682e3531645f5249cbe51d2918b0bbb871ec1ae7ef225",
+        "bytes": 18644
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/epic-story-author/CRITERION-EVIDENCE-ANNOTATIONS.json",
+        "change": "A",
+        "gitBlob": "463b39159a5556eac90d8f8e4c8d0fd29bcb87dd",
+        "sha256": "53f4f7c6091590e1b373a71375666138c4a047d3ff90e7e769335cf0b86a60e4",
+        "bytes": 4595321
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/epic-story-author/EPIC-REFINEMENT.json",
+        "change": "A",
+        "gitBlob": "269f56ba4ffbc64de04bb6097fc590d8ac42f146",
+        "sha256": "7341c131d214dfe9b679e895e85403a3495d73a434a0ccde049846c715e8cccc",
+        "bytes": 716206
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/epic-story-author/GAP-ANALYSIS.md",
+        "change": "A",
+        "gitBlob": "edb35793cb6b6a1d2a3927378bafa7ea9ab2589e",
+        "sha256": "22fbcd4c76e494912855be1f5bba9870b470bd6ac752dcba02226ce14c81c8ae",
+        "bytes": 6564
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/epic-story-author/SOURCE-PINS.json",
+        "change": "A",
+        "gitBlob": "d9a442d03e70b5e0b0e4c91567c9883ef70499ae",
+        "sha256": "28bcb258fc670f059d947ff82a252fb23fa64c896c6e91db6db73df9e06bf5a2",
+        "bytes": 2295
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/epic-story-author/STORY-MEASURE-CONTRACTS.json",
+        "change": "A",
+        "gitBlob": "b7a506da0fee8189d2af60655ea191b4247df40d",
+        "sha256": "daf3ee76a691e48e7f41364cf62cf67f095066b48815f94686092308e79926f0",
+        "bytes": 2161783
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/epic-story-author/STORY-MEASURE-VALIDATION.json",
+        "change": "A",
+        "gitBlob": "5994ce4fe148717e31cbe1967d483a33f51c262a",
+        "sha256": "4c096b8f5da9e0584142954e23104f4c96d8699a6ee95ebd3444711ea8810619",
+        "bytes": 901
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/epic-story-author/STORY-REFINEMENT.json",
+        "change": "A",
+        "gitBlob": "948d57447c2ca0731dd5e65aec9f3ae5cbaed588",
+        "sha256": "dedfa3f1d13410c3abdfda1b3a09c281df1c49a011084241bdab78408c813f45",
+        "bytes": 3236539
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/epic-story-author/STRUCTURAL-VALIDATION.json",
+        "change": "A",
+        "gitBlob": "1a28451fcfe44ed2ecfa6bf4bb887e3a471d1b2c",
+        "sha256": "c8bd194d0b82af325649e85b8803175056079f567b25f9e51ff65107dcceaecf",
+        "bytes": 619
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/task-author/README.md",
+        "change": "A",
+        "gitBlob": "4637b25a7e8a46e6b485f44f8b84586b88dad42d",
+        "sha256": "f56b479bfdaa803b94e72341a7e58e2889b77a858d8f1c4830c6cf2df7344134",
+        "bytes": 3987
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/task-author/TASK-LANE-FINAL-RECEIPT.json",
+        "change": "A",
+        "gitBlob": "be8aadbb31373e079a89922f9ff9bed1cc459215",
+        "sha256": "fae3dcdf6f5c6d7f983a03963f999d7605cb47c058433a5ca823cc33d924eb2f",
+        "bytes": 5107
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/task-author/acceptance-clarifications.proposed.json",
+        "change": "A",
+        "gitBlob": "45bde1720584bfd81468f3d1794cbff59d68c231",
+        "sha256": "7f107169827dd436ce0a213097ecb6dac6ba041ed5d28715cb4c1694c5ead8ee",
+        "bytes": 76311
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+        "change": "A",
+        "gitBlob": "4da84928504e0ee3e4135d586cff2a5a09dd2da4",
+        "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+        "bytes": 7419410
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/task-author/supplemental-verification-plans.proposed.json",
+        "change": "A",
+        "gitBlob": "565b9547f663e6b5fb8a7703305b1da55c63248f",
+        "sha256": "3e25d95e35156d337aefe4030fbce6c89e17b683343ebb0d294fc97819b3e3d4",
+        "bytes": 1132335
+      },
+      {
+        "path": "docs/product/framework-v4-20261011/task-author/task-contracts.proposed.json",
+        "change": "A",
+        "gitBlob": "e751c171bb14c2864da07276a81633261e9b928b",
+        "sha256": "c3793154d8a020e883d07d8492e7327515f510427e69efe1136f4ce886ff29a8",
+        "bytes": 13484732
+      }
+    ]
+  },
+  "reviewType": "Independent local documentation/evidence/source review; no repository or native mutation, application execution, external trust, owner acceptance, CI, main merge or deployed-state certification.",
+  "checks": [
+    {
+      "check": "exact committed review subject",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "clean owned review checkout",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "all41 changes confined to documentation",
+      "passed": true,
+      "details": {
+        "paths": 41
+      }
+    },
+    {
+      "check": "all baseline paths outside41 preserved exactly",
+      "passed": true,
+      "details": {
+        "protectedTrackedPaths": 1748,
+        "differences": []
+      }
+    },
+    {
+      "check": "no deletion or rename of original path",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "modified doc history is exact prefix except additive index entries and one explicit inventory correction",
+      "passed": true,
+      "details": [
+        {
+          "path": "docs/DOCUMENTATION-INDEX.md",
+          "historicalOriginalContentExactWithOnlyNewIndexInsertions": true
+        },
+        {
+          "path": "docs/agile/WORKING-AGREEMENT.md",
+          "oldBytesPreservedWithOnlyExplicitDatedInventoryCorrection": true,
+          "correctionCount": 1,
+          "originalAvailableAt": "eb194fdbb6fc8247db8429fc23120aa0fe659ed8"
+        },
+        {
+          "path": "docs/product/01-VISION.md",
+          "historicalOriginalPrefixExact": true
+        },
+        {
+          "path": "docs/product/02-STRATEGY.md",
+          "historicalOriginalPrefixExact": true
+        },
+        {
+          "path": "docs/product/03-ROADMAP.md",
+          "historicalOriginalPrefixExact": true
+        },
+        {
+          "path": "docs/product/04-RELEASE-GOALS.md",
+          "historicalOriginalPrefixExact": true
+        },
+        {
+          "path": "docs/product/05-STORY-AND-TASK-STANDARD.md",
+          "historicalOriginalPrefixExact": true
+        },
+        {
+          "path": "docs/product/06-NEXT-SPRINT-REFINEMENT.md",
+          "historicalOriginalPrefixExact": true
+        },
+        {
+          "path": "docs/product/07-LINEAR-IMPORT-STATUS.md",
+          "historicalOriginalPrefixExact": true
+        },
+        {
+          "path": "docs/product/08-BACKLOG-CATALOGUE.md",
+          "historicalOriginalPrefixExact": true
+        },
+        {
+          "path": "docs/product/10-COMPLETE-BACKLOG-REFINEMENT.md",
+          "historicalOriginalPrefixExact": true
+        },
+        {
+          "path": "docs/product/README.md",
+          "historicalOriginalPrefixExact": true
+        }
+      ]
+    },
+    {
+      "check": "all18 author and review artifacts exact-copy previously inspected bytes",
+      "passed": true,
+      "details": {
+        "count": 18,
+        "copies": [
+          {
+            "path": "docs/product/framework-v4-20261011/bundle-review/BUNDLE-AND-SCRIPT-REVIEW.json",
+            "source": "outputs/imprana-product-refinement-20261011/bundle-review/BUNDLE-AND-SCRIPT-REVIEW.json",
+            "bytes": 7353,
+            "sha256": "16afbb433d3d2ba9b1eded1f3f567f6c752c2dee4ac388ebc8a3de8c96a78690",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/bundle-review/CRITERION-ALIAS-MAP.json",
+            "source": "outputs/imprana-product-refinement-20261011/bundle-review/CRITERION-ALIAS-MAP.json",
+            "bytes": 890236,
+            "sha256": "279c1bec0920f02dba67f43cb6fcb6ce5f2fa311c79dc98dc18ac0a4f29c99ee",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/bundle-review/PROPOSAL-SEMANTIC-APPEND-REVIEW.json",
+            "source": "outputs/imprana-product-refinement-20261011/bundle-review/PROPOSAL-SEMANTIC-APPEND-REVIEW.json",
+            "bytes": 29593,
+            "sha256": "a6045fb9d29e81f0ebf423b7457f3de525e1fe8d6a1a4b30a8af1cf07da2c82d",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/bundle-review/PROPOSAL-STRUCTURE-SOURCE-REVIEW.json",
+            "source": "outputs/imprana-product-refinement-20261011/bundle-review/PROPOSAL-STRUCTURE-SOURCE-REVIEW.json",
+            "bytes": 18644,
+            "sha256": "25050df5a8c9789894e682e3531645f5249cbe51d2918b0bbb871ec1ae7ef225",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/epic-story-author/CRITERION-EVIDENCE-ANNOTATIONS.json",
+            "source": "outputs/imprana-product-refinement-20261011/epic-story-author/CRITERION-EVIDENCE-ANNOTATIONS.json",
+            "bytes": 4595321,
+            "sha256": "53f4f7c6091590e1b373a71375666138c4a047d3ff90e7e769335cf0b86a60e4",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/epic-story-author/EPIC-REFINEMENT.json",
+            "source": "outputs/imprana-product-refinement-20261011/epic-story-author/EPIC-REFINEMENT.json",
+            "bytes": 716206,
+            "sha256": "7341c131d214dfe9b679e895e85403a3495d73a434a0ccde049846c715e8cccc",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/epic-story-author/GAP-ANALYSIS.md",
+            "source": "outputs/imprana-product-refinement-20261011/epic-story-author/GAP-ANALYSIS.md",
+            "bytes": 6564,
+            "sha256": "22fbcd4c76e494912855be1f5bba9870b470bd6ac752dcba02226ce14c81c8ae",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/epic-story-author/SOURCE-PINS.json",
+            "source": "outputs/imprana-product-refinement-20261011/epic-story-author/SOURCE-PINS.json",
+            "bytes": 2295,
+            "sha256": "28bcb258fc670f059d947ff82a252fb23fa64c896c6e91db6db73df9e06bf5a2",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/epic-story-author/STORY-MEASURE-CONTRACTS.json",
+            "source": "outputs/imprana-product-refinement-20261011/epic-story-author/STORY-MEASURE-CONTRACTS.json",
+            "bytes": 2161783,
+            "sha256": "daf3ee76a691e48e7f41364cf62cf67f095066b48815f94686092308e79926f0",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/epic-story-author/STORY-MEASURE-VALIDATION.json",
+            "source": "outputs/imprana-product-refinement-20261011/epic-story-author/STORY-MEASURE-VALIDATION.json",
+            "bytes": 901,
+            "sha256": "4c096b8f5da9e0584142954e23104f4c96d8699a6ee95ebd3444711ea8810619",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/epic-story-author/STORY-REFINEMENT.json",
+            "source": "outputs/imprana-product-refinement-20261011/epic-story-author/STORY-REFINEMENT.json",
+            "bytes": 3236539,
+            "sha256": "dedfa3f1d13410c3abdfda1b3a09c281df1c49a011084241bdab78408c813f45",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/epic-story-author/STRUCTURAL-VALIDATION.json",
+            "source": "outputs/imprana-product-refinement-20261011/epic-story-author/STRUCTURAL-VALIDATION.json",
+            "bytes": 619,
+            "sha256": "c8bd194d0b82af325649e85b8803175056079f567b25f9e51ff65107dcceaecf",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/task-author/README.md",
+            "source": "outputs/imprana-product-refinement-20261011/task-author/README.md",
+            "bytes": 3987,
+            "sha256": "f56b479bfdaa803b94e72341a7e58e2889b77a858d8f1c4830c6cf2df7344134",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/task-author/TASK-LANE-FINAL-RECEIPT.json",
+            "source": "outputs/imprana-product-refinement-20261011/task-author/TASK-LANE-FINAL-RECEIPT.json",
+            "bytes": 5107,
+            "sha256": "fae3dcdf6f5c6d7f983a03963f999d7605cb47c058433a5ca823cc33d924eb2f",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/task-author/acceptance-clarifications.proposed.json",
+            "source": "outputs/imprana-product-refinement-20261011/task-author/acceptance-clarifications.proposed.json",
+            "bytes": 76311,
+            "sha256": "7f107169827dd436ce0a213097ecb6dac6ba041ed5d28715cb4c1694c5ead8ee",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+            "source": "outputs/imprana-product-refinement-20261011/task-author/acceptance-task-matrix.proposed.json",
+            "bytes": 7419410,
+            "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/task-author/supplemental-verification-plans.proposed.json",
+            "source": "outputs/imprana-product-refinement-20261011/task-author/supplemental-verification-plans.proposed.json",
+            "bytes": 1132335,
+            "sha256": "3e25d95e35156d337aefe4030fbce6c89e17b683343ebb0d294fc97819b3e3d4",
+            "byteEqualReviewedOutput": true
+          },
+          {
+            "path": "docs/product/framework-v4-20261011/task-author/task-contracts.proposed.json",
+            "source": "outputs/imprana-product-refinement-20261011/task-author/task-contracts.proposed.json",
+            "bytes": 13484732,
+            "sha256": "c3793154d8a020e883d07d8492e7327515f510427e69efe1136f4ce886ff29a8",
+            "byteEqualReviewedOutput": true
+          }
+        ]
+      }
+    },
+    {
+      "check": "exact full source inventory54/368/1328/1131/779 and2historical split parents",
+      "passed": true,
+      "details": {
+        "csv": 370,
+        "activeStories": 368,
+        "retainedSplitParents": [
+          "FR-AI-016",
+          "US-DX-01"
+        ],
+        "epics": 54,
+        "storyContracts": 368,
+        "originalScenarios": 1328,
+        "annotationScenarios": 1328,
+        "criterionAliases": 1328,
+        "taskContracts": 1131,
+        "taskPrerequisites": 779,
+        "measureContracts": 368
+      }
+    },
+    {
+      "check": "all hierarchy source states/hash references and sibling parent boundaries preserved",
+      "passed": true,
+      "details": {
+        "errors": []
+      }
+    },
+    {
+      "check": "all1131 task and1328 criterion execution explicitly not run",
+      "passed": true,
+      "details": {
+        "errors": []
+      }
+    },
+    {
+      "check": "all existing component byte pins match declared historical planning revision",
+      "passed": true,
+      "details": {
+        "uniqueFilePins": 158,
+        "errors": [],
+        "revision": "eb194fdbb6fc8247db8429fc23120aa0fe659ed8"
+      }
+    },
+    {
+      "check": "all5 declared source-policy pins match baseline Git blobs",
+      "passed": true,
+      "details": {
+        "errors": [],
+        "historicalPlanningRevision": "eb194fdbb6fc8247db8429fc23120aa0fe659ed8"
+      }
+    },
+    {
+      "check": "build/domain/platform/schema source versions exact with application unchanged",
+      "passed": true,
+      "details": {
+        "runtimeExecutionObserved": false
+      }
+    },
+    {
+      "check": "all16 JSON artifacts parse",
+      "passed": true,
+      "details": {
+        "count": 16
+      }
+    },
+    {
+      "check": "changed paths contain no detected unrelated product references",
+      "passed": true,
+      "details": {
+        "matches": []
+      }
+    },
+    {
+      "check": "no detected raw connector account envelopes or credential markers in41 changedpaths",
+      "passed": true,
+      "details": {
+        "matches": [],
+        "boundary": "Bounded source-content screening, not account/backend/security certification"
+      }
+    }
+  ],
+  "finding": [
+    {
+      "id": "IMPRANA-FINAL-078-01",
+      "severity": "current-checkpoint-evidence-gap",
+      "path": "docs/product/README.md",
+      "actual": "Appended framework line says real planning checker results and actual Linear publication receipt are preserved in this edition; the41-path committed checkpoint has neither compact actual checker reports nor a final global1553 current native receipt. The related current07 correctly conditions completion on actual publication receipt. Root states078 is a local draft and will add actual compact receipts or label pending before finalcandidate.",
+      "requiredResolution": "Bind final edition to genuine scoped needs_input/full bounded incomplete receipts and fresh all1553 current publication proof, or explicitly pending. Never extrapolate353-partition proof into globalcompletion."
+    }
+  ],
+  "genuineLocalQualityBoundary": {
+    "whole2893Scope": "The full v1 actual loop was interrupted incomplete; v3 actual300second loop ended without report/state, summary3/next3. Not a gate pass or fail. Raw79/66/59MB inputs remain outsideGit.",
+    "scopedAssessment": "Actual17-element connected source/closure scope,8 explicit tiers selected16 exactsources; loop2→summary0→next0 needs_input46passed57missing. Missing real independent review/trust and controlled AI-assurance remain open. Current078 has not yet copied these compact actual receipts.",
+    "sourceStructure": "54epics368active stories1328original scenarios1131tasks779taskprerequisites retained. Supplement1069plans/37missingphase clarifications/7existingplanassertion augments/13qualification ownership gaps remain proposals."
+  },
+  "strategicSemanticDisposition": "Previously independently reviewed source-bound root choices and all368/19family measure contracts are coherent as planning proposals; alternatives/comparisons, uncertain baselines, falsifiers, allscenario obligations and consequence/refusal boundaries are retained. No new research/market/date/Ready/Done/owner acceptance is certified. Review checks full structural/source inventory and29contrasting story samples, not every future business hypothesis as validated research.",
+  "nativeBoundary": {
+    "own353Partition": "353fresh full readbacks verified under individually observed supplement-only formatting policyV5; originals and captured metadata exact. Raw account envelopes outsideGit.",
+    "global1553CurrentReadback": "Not yet observed by this reviewer; pending parent final fresh readback and evidence.",
+    "existingBaselineNative": "1553issues/779prerequisites historical proof is protected; current supplements cannot be declared complete from oldbaseline."
+  },
+  "disposition": "Source/document proposal preservation suitable for final evidence edition; one concrete forwardreceipt gap must be resolved before claiming final current publication. This is not ownerapproval or wholeframework qualification.",
+  "mutation": {
+    "repo": false,
+    "native": false,
+    "runtime": false,
+    "network": false
+  },
+  "failedStructuralChecks": []
+}

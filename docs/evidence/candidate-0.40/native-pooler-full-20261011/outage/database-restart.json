@@ -1,0 +1,13 @@
+{
+  "topology": "pgbouncer-transaction",
+  "downtime_seconds": 12.8,
+  "seconds_to_first_503_readiness": 5.3,
+  "seconds_to_read_503": 5.3,
+  "seconds_to_ready_after_start": 0.5,
+  "read_attempts_after_ready": 2,
+  "seconds_to_read_after_ready": 0.5,
+  "worker_survived": true,
+  "worker_refused_classes": [
+    "ProtocolViolation"
+  ]
+}

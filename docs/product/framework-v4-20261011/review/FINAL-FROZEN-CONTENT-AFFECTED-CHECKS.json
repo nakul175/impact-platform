@@ -1,0 +1,32 @@
+{
+  "product": "Imprana Commons",
+  "createdAtUtc": "2026-10-11T03:49:27.797567+00:00",
+  "status": "PASS",
+  "stagedTree": "52fb39e93d0823bc423f9ff83a2e90a44644460b",
+  "parentHead": "078b395c8684d2f81f5f1edd1c4fa6c3d409f72a",
+  "checks": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/doc_index.py",
+        "--check"
+      ],
+      "exitCode": 0,
+      "output": "docs/DOCUMENTATION-INDEX.md is current."
+    }
+  ],
+  "jsonSyntaxFiles": 55,
+  "noFilesAbove20MB": true,
+  "noRuntimeQualificationClaim": true,
+  "limitations": "Actual Native preservation, package selected-profile outcome, protected source and copied-evidence safety are separate named independent receipts. No CI, production, release authority or owner acceptance is granted."
+}

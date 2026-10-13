@@ -1,0 +1,64 @@
+{
+  "product": "Imprana Commons",
+  "baseline": "eb194fdbb6fc8247db8429fc23120aa0fe659ed8",
+  "checks": [
+    {
+      "path": "docs/product/01-VISION.md",
+      "source_prefix_exact": true,
+      "source_sha256": "3fefbdca4e974f6f809aed719f2a3984d92a710b053255b14c9e5e5d845c044e",
+      "now_sha256": "3a7b3ba4b33dad8c22a888fccdbac632cd5bef31678bf47bbc4d764fe5c0f9f8"
+    },
+    {
+      "path": "docs/product/02-STRATEGY.md",
+      "source_prefix_exact": true,
+      "source_sha256": "13d223bc4aabab6b86447f855aba0e6d0b54a29a23bb32f1faf4189410c15088",
+      "now_sha256": "2f7bfa32f0f5143e2bb128e974b2c1239bb276854b26174189e0b794794caffb"
+    },
+    {
+      "path": "docs/product/03-ROADMAP.md",
+      "source_prefix_exact": true,
+      "source_sha256": "dc225715a0196ef636c24569d6dbe99ef56cb7a717ec2e18ccb611e7fc34ed56",
+      "now_sha256": "8ce683d72c5b28f4b1fba0c612acb7b7fe8efcae423e3760e4595a25ab1d48cf"
+    },
+    {
+      "path": "docs/product/04-RELEASE-GOALS.md",
+      "source_prefix_exact": true,
+      "source_sha256": "44ee07a14121c76aca4385fda885a2700869aee9a0de5f1674b8168211e11f31",
+      "now_sha256": "6cf5b50d78e1696e85c051d76f6998bdf007cd05c00b48c7009e982c3ab93fa2"
+    },
+    {
+      "path": "docs/product/05-STORY-AND-TASK-STANDARD.md",
+      "source_prefix_exact": true,
+      "source_sha256": "a5645d266ad9afc58cf2f81eb5d63f2dfb1809a02891cffa2157041a7c24dbf4",
+      "now_sha256": "a6d5d79f1924ebe80447f3f6476c26a5fde091ccb9df123565d36f6dab806dcb"
+    },
+    {
+      "path": "docs/product/06-NEXT-SPRINT-REFINEMENT.md",
+      "source_prefix_exact": true,
+      "source_sha256": "511095cacd79dc78f8e71d3664a1b3bf9d216d468b09ec41759ad6612f413414",
+      "now_sha256": "43163cac0bae15f0ce82098e0534ee6fce8b69cba98b1528444868f8b040ef39"
+    },
+    {
+      "path": "docs/product/07-LINEAR-IMPORT-STATUS.md",
+      "source_prefix_exact": true,
+      "source_sha256": "58eb838da760dba0a1cf3eb52080e991e303bcc567894fa672da46477a306161",
+      "now_sha256": "30c6416ec97e1c783068aca25fafed49b64c76f27360b7f0a839f33005ab9bcb"
+    },
+    {
+      "path": "docs/product/08-BACKLOG-CATALOGUE.md",
+      "source_prefix_exact": true,
+      "source_sha256": "568d2918cd46cf27e2f7e451e8602f2251360c396361092585f60e3d437b8b66",
+      "now_sha256": "7f4abe73bd86186a23425345d560841b56ee83fa3332b7d350476cad7a829256"
+    },
+    {
+      "path": "docs/product/10-COMPLETE-BACKLOG-REFINEMENT.md",
+      "source_prefix_exact": true,
+      "source_sha256": "fe665306981086a095553043812301e9dfe935134691aea47fd0ca7c3a649d41",
+      "now_sha256": "9050c8ce0913e366dae08b3ed67425c3ca481b962f01f87a6c90d58b72e18fdb"
+    }
+  ],
+  "all_original_current_doc_prefixes_exact": true,
+  "new_json_parse_valid": true,
+  "runtime_code_tests_run": false,
+  "publication_verification": "Pending actual all-object readback"
+}

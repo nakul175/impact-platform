@@ -1,0 +1,13 @@
+{
+  "review_phase": "source review",
+  "reviewer": "root agent; not human or independent-agent approval",
+  "change": "Replace obsolete schema43 fixture count with complete contiguous source/applied migration sequence, filenames and unchanged per-migration digest assertions",
+  "changed_sources": [
+    "qualification/test_ai_plan_exports_live.py"
+  ],
+  "old_migrations_changed": false,
+  "tests_removed_or_skipped": false,
+  "root_cause": "33 shared setup errors at assert 44 == 43; no assertion failures in executed application tests",
+  "source_sha256": "3f9c57b672a3712939885cc03da38853e2f50082280b3ae1cbe40fc87903b4af",
+  "diff": "diff --git a/qualification/test_ai_plan_exports_live.py b/qualification/test_ai_plan_exports_live.py\nindex 720e5d4..275426c 100644\n--- a/qualification/test_ai_plan_exports_live.py\n+++ b/qualification/test_ai_plan_exports_live.py\n@@ -76,7 +76,13 @@ def export_migration_ledger(live):\n     }\n     path = root / f\"docs/evidence/sprint-0.34-ai-plan-export-{environment}-applied-migrations.json\"\n     path.write_text(json.dumps(report, indent=2) + \"\\n\")\n-    assert len(applied) == 43\n+    # This is the current candidate ledger, not the historical schema-43 receipt.\n+    # Require every source migration exactly once and in contiguous order; a new\n+    # additive migration must not make the older export regression unavailable.\n+    sources = sorted((root / \"infrastructure/migrations\").glob(\"[0-9][0-9][0-9][0-9]_*.sql\"))\n+    assert [int(source.name[:4]) for source in sources] == list(range(1, len(sources) + 1))\n+    assert [row[\"version\"] for row in applied] == list(range(1, len(sources) + 1))\n+    assert [row[\"file\"] for row in applied] == [source.name for source in sources]\n     assert all(row[\"applied_sha256\"] == row[\"current_source_sha256\"] for row in applied)\n \n \n"
+}

@@ -1,0 +1,63 @@
+{
+  "at": "2026-10-11T15:11:02.558105+00:00",
+  "base_head": "ec891997066b16bcc2e2c96114d093a3cf5d9157",
+  "story": "US-DX-01a / APL-361",
+  "implementation": "Optional saved Evidence selection, bounded metadata pages, fresh current-version selection, generation invalidation and exact frozen retry; no default grants changed",
+  "adapter": {
+    "passed": 10,
+    "failed": 0,
+    "scope": "Actual compiled component closures through declared test-only hooks/request adapter, not browser/HTTP"
+  },
+  "native_browser": {
+    "groups_passed": 9,
+    "assertions": 295,
+    "failed": 0,
+    "not_run": 0,
+    "axe_scans": 8,
+    "request_failures_retained": 11,
+    "sources_and_assets_stable": true,
+    "scope": "Original actual native/browser diagnosis regression plus two no-Evidence-capability assertions; positive linked selector browser path pending"
+  },
+  "initial_failure": "New browser access-note assertion observed old built assets. Failed raw run preserved; rebuilt UI and unchanged assertion passed.",
+  "receipt_assembly_correction": "First guard expected false boolean; actual changed-source fields are empty arrays. Guard corrected to actual schema; no execution outcome changed.",
+  "reviews": [
+    {
+      "phase": "code",
+      "reviewer": "root self-review, not independent human",
+      "findings": "Canonical closed selectors<=5; labels/URLs not saved, mandatory notes and old absent fields retained; capability/session/tenant remount; edits/switch/install/save/read-loss invalidate picker responses; default profiles and source grants unchanged"
+    },
+    {
+      "phase": "evidence",
+      "reviewer": "root self-review, not independent human",
+      "findings": "10 adapter cases separate from9 actual mounted native-browser groups295 assertions. Source/asset hashes unchanged; cluster stopped. No positive selector browser/HTTP, new full-suite or human release credit."
+    }
+  ],
+  "remaining": [
+    "Positive selector mounted native/browser qualification",
+    "Typed-linkage cleanup and registered upgrade/recovery",
+    "Source privacy/retention races and integrated refresh",
+    "External/financial/current-head hosted/container and actual human/operational/release gates"
+  ],
+  "deployed": false,
+  "delivered_stories": 0,
+  "source_sha256": {
+    "apps/web/src/AIDiagnosis.tsx": "2825fd5b5f570be7976da944ce62aa55a0aeb38f38eaec43434fa444852859b5",
+    "tools/browser/ai-diagnosis-check.mjs": "35b4a3fd8f3fc4e5919e9ef0a0489e7654689af942b54a10500ef7a706715d7a",
+    "tools/browser/ai-diagnosis-uncertain-command-check.cjs": "31e2e1320c7325fd1361233edbf35600f79135efb3ba159c9c69681a451f9c5b"
+  },
+  "evidence_sha256": {
+    "release-check-final.log": "3a44c7a40518cfd3e451b2271e2836a3d2ad92b6a242427d2502898d8bafdb16",
+    "browser-run-1-RUN-RECEIPT.json": "73c17d0d48f98bdd4a5c937a85a5a295b50df0e9cfbb129d095c1ff676e505a7",
+    "browser-run-1-cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "component-run-1.json": "e16bcba2b442479315e06a86356cee30ef5f97e7ca320fafdc8ec37dfc607a32",
+    "browser-run-2-integrated-worker-fence.log": "35683393d69cb39ba826b3989fdce29037c19e9d667b7eef31a0d79842aecae4",
+    "browser-run-2-cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "component-run-2.json": "521f00a9d42f478d21bed840778c1d725033a9be1030f6bbfe5f32ecb98760d5",
+    "browser-run-1-integrated-worker-fence.log": "881253f2b258c1b54782dec5f76ee89f9ecc7c8cf6223f6fe9ab91f59b9e5e11",
+    "release-check.log": "3a44c7a40518cfd3e451b2271e2836a3d2ad92b6a242427d2502898d8bafdb16",
+    "browser-run-2-RUN-RECEIPT.json": "1161d58ac64e17add5fa4e03d7cfc209a727fb63780d2ca31cc06f6693a54c4b",
+    "browser-run-2-browser-tests.json": "6d4d276165c062d707111a05c4281f00e3ec8cdffbfa1f5754bf07dcbd8656b0",
+    "browser-run-1-browser-tests.json": "ce9e76c05df948ad4555da3a91655aa4ae450b41e1b331015818f2f4109ea63d",
+    "build.log": "be5c6b806581673b0c7b6df297cccbbbd9da37bd8792a6f4f536d194f4d584dc"
+  }
+}

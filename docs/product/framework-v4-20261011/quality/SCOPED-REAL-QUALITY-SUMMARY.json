@@ -1,0 +1,76 @@
+{
+  "product": "Imprana Commons",
+  "scope": "Actual partial real eight-tier planning workflow:8 assessed+9 context,16exact source snapshots. Not full2893 quality assessment.",
+  "workflowExitCodes": {
+    "loop": 2,
+    "summary": 0,
+    "next": 0
+  },
+  "qualityState": {
+    "status": "needs_input",
+    "passed": 46,
+    "applicable": 103,
+    "exemptions": 0,
+    "counts": {
+      "passed": 46,
+      "not_applicable": 0,
+      "missing": 57,
+      "failed": 0,
+      "stale": 0,
+      "invalid": 0
+    },
+    "score": null,
+    "exitRule": "Every selected mandatory stage gate and integrity check must pass with current evidence and supplied review. Deferred/reference-sampled checks cannot certify the full catalogue. No averaging, timeout or iteration limit grants a pass.",
+    "certificationGranted": false
+  },
+  "assessmentCoverage": {
+    "assessmentMode": "profile",
+    "stage": "planning",
+    "selectedMandatoryReviewCount": 56,
+    "integrityChecksAlwaysRun": true,
+    "referenceCheckInstances": 1909,
+    "referenceChecksFullyAssessed": false,
+    "referenceInstancesDeferred": 1909,
+    "advisorySampleCount": 16,
+    "advisoryUnreviewedCount": 16,
+    "legacyDefaultWarning": null,
+    "conclusion": "Only the selected stage's seven mandatory gates per assessed item were checked. Advisory samples and deferred reference details do not count as passed."
+  },
+  "unresolvedByResolutionKind": {
+    "author_repair_or_owner_decision": 9,
+    "independent_review_task": 48
+  },
+  "reviewerAuthentication": {
+    "status": "not_authenticated_offline",
+    "advisoryOnly": true,
+    "registryCanBeAuthorCreated": true,
+    "externalApprovalRequired": true
+  },
+  "nextOwnerQueue": [
+    {
+      "checkId": "external_trust_catalogue",
+      "elementId": null,
+      "reason": "Real mode requires separately supplied independent review profiles and a verification receipt pinned to this catalogue.",
+      "decisionOwnerId": null,
+      "status": "unanswered"
+    },
+    {
+      "checkId": "gate.vision.planning.06",
+      "elementId": "VISION-IMPRANA-01",
+      "reason": "Required stage details unresolved: common.ai_assurance_reference. Deferred reference details from other stages are not demanded.",
+      "decisionOwnerId": null,
+      "status": "unanswered"
+    },
+    {
+      "checkId": "gate.strategy.planning.06",
+      "elementId": "STR-01",
+      "reason": "Required stage details unresolved: common.ai_assurance_reference. Deferred reference details from other stages are not demanded.",
+      "decisionOwnerId": null,
+      "status": "unanswered"
+    }
+  ],
+  "authorGuidance": "Document assumptions as draft recommendations. Do not create favorable independent trust/review profiles, approval, named owner decisions or actual evaluation evidence. Resolve a controlled actual AI assurance record reference and separately authenticated independent review/verification receipt via actual accountable authority. Local reviewer agents do not supply that external authentication.",
+  "wholeProductDraftDocumentation": "All2893 source/planning elements and native1553objects remain covered by separate exact source/structure/native readback checks. This partial checker is not whole-product Ready/Done or complete delivery.",
+  "reportSha256": "492c2a8375db8a2fc8afc754a8d685042bb6e598cf1c1a490d6b3c918def98d9",
+  "workflowReceiptSha256": "425b6c8a514afb07b4a056ecce46a66258ff43af79d5e4e481bb04e12c26345e"
+}

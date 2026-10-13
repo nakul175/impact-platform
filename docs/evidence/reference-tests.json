@@ -6,10 +6,10 @@
   "skipped": 0,
   "failures": 0,
   "errors": 0,
-  "duration_seconds": 0.004,
+  "duration_seconds": 0.002,
   "product_validated": false,
   "scope": "Design reference only",
-  "run_at": "2026-10-03T02:07:12Z",
+  "run_at": "2026-10-13T04:10:34Z",
   "details": {
     "failed": [],
     "errors": [],

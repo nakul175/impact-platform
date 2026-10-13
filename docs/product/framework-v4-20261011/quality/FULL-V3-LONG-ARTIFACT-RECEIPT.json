@@ -1,0 +1,54 @@
+{
+  "createdAtUtc": "2026-10-11T03:39:21.126384+00:00",
+  "artifacts": {
+    "INVOCATION.json": {
+      "sha256": "030cad85ad06b887a25267082266b106c1b1b77b1ece0174541d68669687abd9",
+      "bytes": 4174
+    },
+    "FULL-V3-LONG-WORKFLOW-RECEIPT.json": {
+      "sha256": "43c5c817d826f4ae6c83c10be13922091479d219b9a5888169ca81938e8265a3",
+      "bytes": 1661
+    },
+    "loop.stdout.json": {
+      "sha256": "5847f6e75263006e5912a6ac2861beb083a9ec3c93ae9b40e331077dc0e542d8",
+      "bytes": 3989
+    },
+    "loop.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "summary.stdout.json": {
+      "sha256": "3351ce17041912a5b1ef87b06135fa283e2c085b8f456692d7f8dec80c0f370b",
+      "bytes": 7942
+    },
+    "summary.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "next.stdout.json": {
+      "sha256": "4238bc9c7b257d4891a5a1949101d8dccbacd0649bfa2533dfce6edfab03189e",
+      "bytes": 4607
+    },
+    "next.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  },
+  "largeReport": {
+    "sha256": "b67dd26c25c746352bbf0597ef5e426d826628323dca891a9b44238592c9e913",
+    "bytes": 1948924266
+  },
+  "compactSummary": {
+    "path": "outputs/imprana-product-refinement-20261011/bundle-review/FULL-V3-REAL-QUALITY-SUMMARY.json",
+    "sha256": "385ad7b8aca5e3b3eba5caa7c12589f3958210812ede9c11fd17fc712de17fdd",
+    "bytes": 11231
+  },
+  "sourceInput": {
+    "sha256": "e179ca2e553e17c29927f5ca0340255075f197a39fc8efe7f30045433334f14d",
+    "bytes": 59345772
+  },
+  "trustedPackageModified": false,
+  "fullWholeProfileRunCompleted": true,
+  "actualStatus": "needs_input",
+  "scoreOrCertificationGranted": false
+}

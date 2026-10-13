@@ -1,0 +1,34 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "A Programme Manager ranks the brief's opportunities with four scores and a total",
+      "status": "passed"
+    },
+    {
+      "name": "Changing the weights reorders the ranking and cites the new revision",
+      "status": "passed"
+    },
+    {
+      "name": "Weights that do not add up to 100 are refused with an alert and nothing is sent",
+      "status": "passed"
+    },
+    {
+      "name": "A save against weights changed meanwhile is refused and the weights in force reload",
+      "status": "passed"
+    },
+    {
+      "name": "Unreadable saved weights: managers get the editor seeded with the defaults and replace them",
+      "status": "passed"
+    },
+    {
+      "name": "A reader without ai.enablement.manage ranks with the defaults and has no editor",
+      "status": "passed"
+    },
+    {
+      "name": "An opportunity the server leaves unranked is listed only under Not ranked: scores incomplete",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

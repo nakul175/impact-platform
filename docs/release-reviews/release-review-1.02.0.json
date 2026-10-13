@@ -1,0 +1,16 @@
+{
+  "release": "1.02.0",
+  "story": "FR-AI-004",
+  "linear_issue": "APL-535",
+  "state": "CODING_CANDIDATE_ONLY",
+  "scope": "Deterministic non-destructive import mapping and date-pattern proposals",
+  "policy_activation": "RESERVED_DISABLED",
+  "raw_rows_can_change": false,
+  "identity_merge_available": false,
+  "approved_actual_overwrite_available": false,
+  "tests": "NOT_RUN_BY_OWNER_REQUEST",
+  "ci": "NOT_RUN_BY_OWNER_REQUEST",
+  "merge": "NOT_MERGED",
+  "staging": "NOT_DEPLOYED",
+  "acceptance": "PENDING"
+}

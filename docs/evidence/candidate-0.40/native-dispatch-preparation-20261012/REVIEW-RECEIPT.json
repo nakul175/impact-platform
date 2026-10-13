@@ -1,0 +1,50 @@
+{
+  "separate_code_review": true,
+  "separate_evidence_review": true,
+  "runs": [
+    {
+      "run": 5,
+      "passed": 9,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "source_pins": 302,
+      "final_worker_hash_matches": false
+    },
+    {
+      "run": 6,
+      "passed": 9,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "source_pins": 302,
+      "final_worker_hash_matches": false
+    },
+    {
+      "run": 7,
+      "passed": 9,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "source_pins": 302,
+      "final_worker_hash_matches": true,
+      "two_unrelated_invitations_dispatched_and_SENT_before_target_batch": true
+    }
+  ],
+  "raw_initial_format_failure_preserved": true,
+  "source_pins_stable": true,
+  "original_tracked_evidence_unchanged": true,
+  "new_folder_created_during_run6": "Exact new bytes separated by historical-evidence wrapper then restored from generated-evidence; not preexisting tracked evidence mutation",
+  "owned_clusters_stopped": true,
+  "credential_pattern_hits": 0,
+  "files_scanned": 15,
+  "production_or_migration_change": false,
+  "exact_prior_background_cause": "UNPROVEN",
+  "future_eligibility_or_external_writer_fence": false,
+  "fresh_hosted_CI_required": true,
+  "human_signoff": false,
+  "staging_deployed": false,
+  "run7_historical_evidence_changes": [],
+  "final_worker_sha": "8a19467815ab5527e920785b11c723c538daa8077276d7d6438023f417c5eacc",
+  "supporting_review": "Independent read-only agent checked final9-case XML,302stablehashes,2unrelated deliveries, exacttargettakeover, stop0/portclosed, nohistorychanges or private export; no human signoff"
+}

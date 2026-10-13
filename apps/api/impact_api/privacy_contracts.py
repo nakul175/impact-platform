@@ -58,6 +58,7 @@ def augment(spec, policy):
         "deadline": DATE,
         "evidence_ids": ids,
         "import_ids": ids,
+        "diagnosis_ids": ids,
         "purpose": PURPOSE,
     }
     schemas["PrivacyCaseDraftData"] = closed(deepcopy(draft))

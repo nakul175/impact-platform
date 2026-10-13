@@ -1,0 +1,69 @@
+{
+  "record": "IMPRANA-FINAL-NATIVE-BOUNDED-AI-REVIEW-RECEIPT-20261011",
+  "recorded_at_utc": "2026-10-11T06:22:33.932977+00:00",
+  "status": "PASS",
+  "checks": 54,
+  "passed": 54,
+  "material_findings": [],
+  "actual_offline_helper_exit_code": 0,
+  "actual_independent_checker_exit_code": 0,
+  "python_version": "3.9.6",
+  "counts": {
+    "target_full_descriptions": 368,
+    "captured_issue_metadata": 1553,
+    "explicit_estimates": 1553,
+    "unselected_excerpt_only": 1185,
+    "documents": 10,
+    "concrete_repaired_targets": 21,
+    "additional_fullGET_field_values": 11418,
+    "helper_corruption_guards": 13,
+    "additional_independent_guards": 5
+  },
+  "artifacts": [
+    {
+      "path": "ACTUAL-INDEPENDENT-EVIDENCE-CHECKS.json",
+      "sha256": "4439081b7d64babdf0dc330d84595237da2847a0491b7255330ef2c1328cba5a",
+      "bytes": 27743
+    },
+    {
+      "path": "ACTUAL-HELPER-REVIEW.json",
+      "sha256": "8abbac4a396203a5d5e8143ca9523efc5e69c3e597018a2f8a39f44d380d0c62",
+      "bytes": 136035
+    },
+    {
+      "path": "check_final_evidence.py",
+      "sha256": "4b899cd4434c334ce8848b66d5d909280f9f37cb464a56964f4a8e5916670196",
+      "bytes": 20081
+    },
+    {
+      "path": "actual-helper.stdout.txt",
+      "sha256": "3d118bafe2ed891d954e6101bf18c3e61a5d61c6c283aabdeffe7911d3cefe05",
+      "bytes": 648
+    },
+    {
+      "path": "actual-helper.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "history/first-helper-review.json",
+      "sha256": "8abbac4a396203a5d5e8143ca9523efc5e69c3e597018a2f8a39f44d380d0c62",
+      "bytes": 136035
+    }
+  ],
+  "claim": "Actual saved-capture integrity and offline publication-helper evidence only. No product test/runtime/CI/Native mutation/human approval was performed in this review.",
+  "scope": "Bounded AI evidence review of actual saved captures and an actual offline publication-helper run; no Native queries/mutations or product tests.",
+  "independence": "Reviewer authored PM draft records and published Native lane B (103 targets); separately reviews capture integration, root/helper disposition, lanes C/D repairs and overview. This is not independent human/trust/acceptance approval.",
+  "limitations": [
+    "Unselected1185 descriptions are500-character list excerpts, not complete-content proof.",
+    "First target original prefix uses exact saved prior full capture; no fresh pre-save full GET for that target.",
+    "Assignee/cycle fields were not requested and are not inferred from omissions.",
+    "779 source dependency edges are immutable; no new all-live relationship proof or external enforcement proof.",
+    "Root APL429 repair has raw bad/fixed readbacks and a prose patch description, not a structured save request; identical-literal equivalence was independently derived from those raw bytes.",
+    "Native captures establish bounded captured field/content integrity, not runtime tests, Ready/Done, approval, deployment or spending authority.",
+    "PM shared draft assurance groups remain needs_input; QA bindings/applicability/run/adoption and authentic reviews remain unresolved."
+  ],
+  "raw_account_envelopes_copied_to_receipt": false,
+  "Native_or_repository_mutations": false,
+  "source_pins_file": "ACTUAL-INDEPENDENT-EVIDENCE-CHECKS.json"
+}

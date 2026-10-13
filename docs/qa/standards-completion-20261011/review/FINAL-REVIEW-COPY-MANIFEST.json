@@ -1,0 +1,96 @@
+{
+  "record": "IMPRANA-FINAL-INDEPENDENT-REVIEW-EXACT-COPY-MANIFEST",
+  "scope": "Exact copies of separate AI documentation reviews; no raw Native account payloads, product runs, authentic human approval or release authority. Original reviewer adapter observations remain separately preserved.",
+  "files": [
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-independent-review/FINAL-INDEPENDENT-DOCUMENTATION-INTEGRATION-REVIEW.json",
+      "destination": "docs/qa/standards-completion-20261011/review/final-documentation/FINAL-INDEPENDENT-DOCUMENTATION-INTEGRATION-REVIEW.json",
+      "bytes": 51326,
+      "sha256": "3ce40b14beffb527d488ae3ba2fa468da275faa044947953e1ff1c7c7896f25d"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-independent-review/SEALED-REVIEW-MANIFEST.json",
+      "destination": "docs/qa/standards-completion-20261011/review/final-documentation/SEALED-REVIEW-MANIFEST.json",
+      "bytes": 1541,
+      "sha256": "d83375a8771389519bed7f6fafff1b9114ef5326d39a69a2091a6aace2cfdf4c"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-independent-review/FIRST-REVIEWER-ADAPTER-OBSERVATION.json",
+      "destination": "docs/qa/standards-completion-20261011/review/final-documentation/FIRST-REVIEWER-ADAPTER-OBSERVATION.json",
+      "bytes": 39890,
+      "sha256": "47222085bbbcf93d7fc7a821023deafc39718bbd2300ef9a92f1eac5afcf08da"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-independent-review/SECOND-REVIEWER-ADAPTER-OBSERVATION.json",
+      "destination": "docs/qa/standards-completion-20261011/review/final-documentation/SECOND-REVIEWER-ADAPTER-OBSERVATION.json",
+      "bytes": 48997,
+      "sha256": "3f999d3cf7f8bf0257232459dfe96d28fc68a3be20e343c352376ca78e34029b"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-independent-review/REVIEWER-ADAPTER-RECONCILIATION.json",
+      "destination": "docs/qa/standards-completion-20261011/review/final-documentation/REVIEWER-ADAPTER-RECONCILIATION.json",
+      "bytes": 1134,
+      "sha256": "263ac2927ee63dcaf089bd5af42cbdd3693422eb9736085eab4b9afcd564b387"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-independent-review/README.md",
+      "destination": "docs/qa/standards-completion-20261011/review/final-documentation/README.md",
+      "bytes": 2968,
+      "sha256": "44e212526cd7d8d7cd0153cea27ad78e9a27b1f8f6200e2f42be038bd03c184a"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-independent-review/review_final_documentation.py",
+      "destination": "docs/qa/standards-completion-20261011/review/final-documentation/review_final_documentation.py",
+      "bytes": 32367,
+      "sha256": "68b309d81d8bf63af4a36b7422c4c8066cebd6ff000272b842e074a2eade3889"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-native-independent-review/INDEPENDENT-REVIEW-RECEIPT.json",
+      "destination": "docs/qa/standards-completion-20261011/review/final-native/INDEPENDENT-REVIEW-RECEIPT.json",
+      "bytes": 3335,
+      "sha256": "bc21f59cc8e0dba02cd324793c81df9c08b194faeca7e5a0b1b67f24a59f5027"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-native-independent-review/ACTUAL-INDEPENDENT-EVIDENCE-CHECKS.json",
+      "destination": "docs/qa/standards-completion-20261011/review/final-native/ACTUAL-INDEPENDENT-EVIDENCE-CHECKS.json",
+      "bytes": 27743,
+      "sha256": "4439081b7d64babdf0dc330d84595237da2847a0491b7255330ef2c1328cba5a"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-native-independent-review/ACTUAL-HELPER-REVIEW.json",
+      "destination": "docs/qa/standards-completion-20261011/review/final-native/ACTUAL-HELPER-REVIEW.json",
+      "bytes": 136035,
+      "sha256": "8abbac4a396203a5d5e8143ca9523efc5e69c3e597018a2f8a39f44d380d0c62"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-native-independent-review/REVIEW.md",
+      "destination": "docs/qa/standards-completion-20261011/review/final-native/REVIEW.md",
+      "bytes": 2925,
+      "sha256": "693c31f193e62e29c47e09574d022dc7bbab9e8f4ea788b0b9a87907d2b09e57"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-native-independent-review/check_final_evidence.py",
+      "destination": "docs/qa/standards-completion-20261011/review/final-native/check_final_evidence.py",
+      "bytes": 20081,
+      "sha256": "4b899cd4434c334ce8848b66d5d909280f9f37cb464a56964f4a8e5916670196"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-native-independent-review/actual-helper.stdout.txt",
+      "destination": "docs/qa/standards-completion-20261011/review/final-native/actual-helper.stdout.txt",
+      "bytes": 648,
+      "sha256": "3d118bafe2ed891d954e6101bf18c3e61a5d61c6c283aabdeffe7911d3cefe05"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-native-independent-review/actual-helper.stderr.txt",
+      "destination": "docs/qa/standards-completion-20261011/review/final-native/actual-helper.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "outputs/imprana-standards-completion-20261011/final-preservation/FINAL-SOURCE-PRESERVATION-RECEIPT.json",
+      "destination": "docs/qa/standards-completion-20261011/review/FINAL-SOURCE-PRESERVATION-RECEIPT.json",
+      "bytes": 3337,
+      "sha256": "8d7f6d634b97fa37461ef61ec7beaa012ce169b87eb9f01cf45bac1f42e4aa51"
+    }
+  ]
+}

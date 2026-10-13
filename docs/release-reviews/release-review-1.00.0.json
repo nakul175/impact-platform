@@ -1,0 +1,14 @@
+{
+  "release": "1.00.0",
+  "story": "FR-AI-002",
+  "linear_issue": "APL-531",
+  "state": "CODING_CANDIDATE_ONLY",
+  "scope": "Traceable review-only extraction proposals from permitted clean UTF-8 text Evidence",
+  "source_profile": "text/plain UTF-8 only",
+  "domain_objects_changed": false,
+  "tests": "NOT_RUN_BY_OWNER_REQUEST",
+  "ci": "NOT_RUN_BY_OWNER_REQUEST",
+  "merge": "NOT_MERGED",
+  "staging": "NOT_DEPLOYED",
+  "acceptance": "PENDING"
+}

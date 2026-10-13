@@ -1,0 +1,93 @@
+{
+  "at": "2026-10-11T17:39:30.514225+00:00",
+  "story": "US-DX-01a / APL-361",
+  "parent_head": "79b2316b73cfe8d3a69d76ab5146c6632025350e",
+  "final_source_sha256": {
+    "deploy/check_writer_quiescence.py": "bf146ac40db894a8d9f8216cee826b70200761ac04b58810fbbe057e70278fa9",
+    "deploy/lib.sh": "eea1f7aa755b9ee1e705cca6c615a5767351a5dcf4a7c46d39d6727f0e1521db",
+    "deploy/update.sh": "1bc19b15a9299d79998e4972225b54177a1ffd7bdbc124416787e5ae6ea72a0a",
+    "deploy/Dockerfile": "98ed0ec2b50d165a2342815f4a003c920a35260c20e9948e13145e0d94b20295",
+    "qualification/test_deployment_quiescence_unit.py": "f2dd2ef3745f409a02331329f3338db5963f9461b9c51e1ff6c24012360fb5a5"
+  },
+  "helper_units": {
+    "passed": 27,
+    "failed": 0,
+    "errors": 0,
+    "skips": 0,
+    "raw": "units/run-4.xml"
+  },
+  "retained_deployment_units": {
+    "passed": 95,
+    "failed": 0,
+    "errors": 0,
+    "skips": 0,
+    "raw": "units/retained-deploy-units.xml"
+  },
+  "final_combined_affected_units": {
+    "passed": 198,
+    "failed": 0,
+    "errors": 0,
+    "skips": 0,
+    "raw": "units/final-combined.xml",
+    "scope": "Deployment95, newhelpers27 and release/version/access/privacy-plan cases combined at final source; not198 new cases"
+  },
+  "failure_retained": {
+    "raw": "units/run-1.xml",
+    "passed": 18,
+    "failed": 1,
+    "cause": "macOSBash3.2 set-u emptyrunning_ids array. Productionloop corrected; no oldassertion weakened."
+  },
+  "native_probe": {
+    "observations_passed": 5,
+    "scope": "Actual ownedPostgreSQL17.10 fresh0/schema47/heldclientrefusal/preparedtransactionrefusal/cleanupzero. NoDocker/Compose servicepath qualification. No runtime login/account created. Read-only probe plus actual additive migration in disposabledatabase only.",
+    "probe_python_sha256_at_test": "bf146ac40db894a8d9f8216cee826b70200761ac04b58810fbbe057e70278fa9",
+    "source_pins_stable_at_finish": true,
+    "later_deployment_shell_edits": true,
+    "shell_current_bytes_covered_by": "units/final-combined.xml",
+    "exit_code": 0,
+    "cluster_stop_exit_code": 0
+  },
+  "review_phases": [
+    {
+      "phase": "code",
+      "reviewer": "release_gate_audit supporting agent",
+      "human_signoff": false,
+      "finding": "Earlierunexpectedexit/privatecheckpoint findings fixed. Final boundedfailclosedpath no concrete defect. Runtime external-client race and container shutdown/hardkill qualifications remain."
+    },
+    {
+      "phase": "evidence",
+      "reviewer": "root separate reconciliation plus diagnosis_privacy_review supporting agent",
+      "human_signoff": false,
+      "finding": "Rawfull/provider/browser receipts isolated from laterdeploypatch. JUnit198final0failure/skip; originalunitfailure retained. ActualprobePythonhashmatchescurrent, historicalshellpins retained notclaimedcurrent. Safe publicationexcludesprivateDSNs/passwords/configs/dumps; root verifiedpublished artifacts."
+    }
+  ],
+  "limitations": [
+    "Probe-to-migration external clients can reconnect; accountable maintenance disconnect must persist",
+    "Actual container graceful stop/inflight handling/120secondhardkill/recovery not qualified",
+    "Hard processkill may bypass shelltrap; operator must inspect live state, never assume previous schema unchanged",
+    "Originalschema maximum/images checkpoint alone is not full checksum rollback proof",
+    "Existing prepare_database/accountbootstrap permissions unchanged; no newliveidentity authority",
+    "PaidCI/export/human/product/release gates held"
+  ],
+  "deployed": false,
+  "delivered_stories": 0,
+  "raw_sha256": {
+    "native/qualify_quiescence_probe.py.SOURCE.txt": "5c66a5b409315a42b23837f977b806e604061bc0f2029eb9918172b709f9e9f5",
+    "native/run_diagnosis_quiescence_native.py.SOURCE.txt": "755670dda2cf5c6d315a4f2bdfdf10db6d405c16959791574a70f34998de3dd7",
+    "native/RUN-RECEIPT.json": "35bdad9873d75a8be4e2deee299f528ac2623446036b2ff1ee6e74de15309cc1",
+    "native/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "native/native-quiescence.log": "fab2a43bb56146283d9b90f2a855f097fe72f1b7ff0ee41a2d6a52031a9d20b2",
+    "units/final-combined.xml": "057c20b2f6e2b5d30fbc90da387755ed5263d9979e2e1ead875a657d4faedaae",
+    "units/retained-deploy-units.log": "1b94a2cdcd14923adbd3ce9a3c8ce47994166473e280ad29621b23ff863c34e5",
+    "units/run-1.xml": "51de439d1673779314870dd80906aaa099a1fa7c9a449a364edc9904afb13d73",
+    "units/run-3.xml": "944e0deb12b20fee5934ce4e06ca9f0faba16eca42a1a98fe10fb6a02841b5ce",
+    "units/run-2.xml": "271db55c3b1a383efca6c75be057f91f3d7853d39ea387cd5613f0681022174d",
+    "units/run-4.xml": "f29c089d4b30fe4ae7c5c4fad06902897751149baf5b80d99ba2f07b373c0d70",
+    "units/run-1.log": "a5fc5e7c8152deb9c3b8501ce084894e3e8839a30fe781e106b05564556edc08",
+    "units/run-3.log": "64576d99c4cef913eb9b9bd4e5a096807fe2289f77eb08a67c7de2e43fc6349d",
+    "units/run-2.log": "32faef56d0289369b1ac111e68ee0bb7b2ed1bcf92d3f33b75313bd0556c3e6f",
+    "units/run-4.log": "a82a0b51cd86fa0131904e08c34ef556963104f0e3677f688117e093ebf2d3fe",
+    "units/final-combined.log": "40fd26c6f648ab50cb1aab20436b6caafa6fb39bfcc299421b1d40ecf0fb7360",
+    "units/retained-deploy-units.xml": "65a49a2cd58f6ab65b2e0e8b9b5d9350e287c707bae5baaa8ba5be3f764ef66f"
+  }
+}

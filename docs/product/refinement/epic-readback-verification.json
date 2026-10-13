@@ -1,0 +1,603 @@
+{
+  "result": "PASS",
+  "count": 54,
+  "scope": "Original epic descriptions and protected metadata unchanged; no epic mutations.",
+  "snapshot_sha256": "0bb762733086a794ed8657ec1f2f6e8a327a482b21a0a3bde2fa306f3e0a31be",
+  "records": [
+    {
+      "native_id": "APL-278",
+      "canonical_id": "EPIC-AI-CAPABILITIES",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "004887997fab35773b49b6e7259556c7a4b6cac754396bc8eb7b264ee4c202eb"
+    },
+    {
+      "native_id": "APL-279",
+      "canonical_id": "EPIC-ACCESS-CONTROL",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "437710c2a05f9571b9782235ac06f08d45edd65a5d9d6464ea69173567ff1885"
+    },
+    {
+      "native_id": "APL-280",
+      "canonical_id": "EPIC-ADOPTION-ADOPT",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "6d54fd60aed181a54760872e571bc5bef20366ffcac5f8c782a98a76b621004a"
+    },
+    {
+      "native_id": "APL-281",
+      "canonical_id": "EPIC-ADOPTION-ASSESS",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "7b78f39c76630e8ee2d9dc4a89a29e128a3dd9b0a5562baf46e189805950f469"
+    },
+    {
+      "native_id": "APL-282",
+      "canonical_id": "EPIC-ADOPTION-DEPLOY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "728f093857035fd237a53873fd12a0bc7faa476c2456b762310596589274058f"
+    },
+    {
+      "native_id": "APL-283",
+      "canonical_id": "EPIC-ADOPTION-DIAGNOSE",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "8875e3537d76270ae7fea0749c3d8808cc5ce3c5eb0113f837345182abb92b2a"
+    },
+    {
+      "native_id": "APL-284",
+      "canonical_id": "EPIC-ADOPTION-DISCOVER",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "197a42a8e838c13028b5ae4b4551c1b0bbb4a383faad1c67057a4a25deba1b9c"
+    },
+    {
+      "native_id": "APL-285",
+      "canonical_id": "EPIC-ADOPTION-IMPROVE",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "4da8eb9ad843504956571bde497dab55bcd08eb1d7e0cb8850a7efa3555695cb"
+    },
+    {
+      "native_id": "APL-286",
+      "canonical_id": "EPIC-ADOPTION-MAP",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "f7f0b181789be46d8981f517b4dc3184d86bc08d936f2214c067d1508a976244"
+    },
+    {
+      "native_id": "APL-287",
+      "canonical_id": "EPIC-ADOPTION-VALUE-CASE",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "0748a9b7abdee5ba61abde0f6028c9f356e870f14abd7744dd9953f8791a0267"
+    },
+    {
+      "native_id": "APL-288",
+      "canonical_id": "EPIC-CALCULATIONS",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "3b49cbb20cbe719a7e0beb626abf0a0aea39c99acc3e9ccc81630b8cb4d7d704"
+    },
+    {
+      "native_id": "APL-289",
+      "canonical_id": "EPIC-COMMERCIAL-AND-BILLING",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "c8912bda247dad737d92772150c082b9a868dcddab3ea9f857ec7cb05b322ff7"
+    },
+    {
+      "native_id": "APL-290",
+      "canonical_id": "EPIC-DASHBOARDS-AND-ANALYSIS",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "85c9c898a5001e52b651b68ef5730fd3e33a5b4956ec49cd7ec2dab6ad633c01"
+    },
+    {
+      "native_id": "APL-291",
+      "canonical_id": "EPIC-DATA-IMPORT-AND-MANAGEMENT",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "30f71bae4ea61283ced9fd25431858c27801d762eb9293fdfcc3ce79c571963f"
+    },
+    {
+      "native_id": "APL-292",
+      "canonical_id": "EPIC-DATA-QUALITY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "daf2cf711ae33fd05e103fd96ee9f7572ae06acc7137b00c2e54ab3362dc287a"
+    },
+    {
+      "native_id": "APL-293",
+      "canonical_id": "EPIC-EVALUATION",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "c351717dd5209a68bb863d92a5fefb74fc2eb52f369941a6d5f8b84d8326911b"
+    },
+    {
+      "native_id": "APL-294",
+      "canonical_id": "EPIC-EVIDENCE",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "5452e1be60d05563889e0cb3db11c46cd16f9f99c88a41589befc88dab7dda9e"
+    },
+    {
+      "native_id": "APL-295",
+      "canonical_id": "EPIC-FINANCE",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "4378ee9f44f47eb679bf559dc5b48ff9764e8338fa45a0c03c1f9fa3b0175a89"
+    },
+    {
+      "native_id": "APL-296",
+      "canonical_id": "EPIC-FORMS-AND-COLLECTION",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "bca877015dcef708cd43a3caa2293582cb94157513b4f95d3fa8319f6772e609"
+    },
+    {
+      "native_id": "APL-297",
+      "canonical_id": "EPIC-FUNDER-PORTFOLIO",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "7a8d40da80b36e0f20520c405c913fc6f4d48dd6c69d86f022c2faaafc5ecefa"
+    },
+    {
+      "native_id": "APL-298",
+      "canonical_id": "EPIC-IDENTITY-AND-ACCOUNTS",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "a9176e048227ef6cee762900f4736e5a8bde4c2fbf21a56c3717514ca18b8602"
+    },
+    {
+      "native_id": "APL-299",
+      "canonical_id": "EPIC-INDICATORS",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "b070d6938f9d51b53b51dcfafc3948af91db93b0d75b1798a9704978bf54620c"
+    },
+    {
+      "native_id": "APL-300",
+      "canonical_id": "EPIC-INTEGRATIONS-AND-CONNECTORS",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "4bc363144ebd993492247d355dd178204097e38f38bc303be3b0a931bb4e9f3b"
+    },
+    {
+      "native_id": "APL-301",
+      "canonical_id": "EPIC-MIGRATION-AND-EXIT",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "4e75d77760c1945ef27778037fc735a75e2538cefd7561c9c459d447e1691475"
+    },
+    {
+      "native_id": "APL-302",
+      "canonical_id": "EPIC-NFR-AI-QUALITY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "66d771c34941a47d2258f58ce6f2533eb94ed877f6b3b5c648e52991c67ccc57"
+    },
+    {
+      "native_id": "APL-303",
+      "canonical_id": "EPIC-NFR-AUDIT",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "f06f104bffbbff999e2c55fb7196ff8d36c20b66f047693650f0016553429c77"
+    },
+    {
+      "native_id": "APL-304",
+      "canonical_id": "EPIC-NFR-AVAILABILITY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "50f1f65e759f174a5f57c93ddf6e6f59b42ca3a0bd17a8cf40e315f3f0a53965"
+    },
+    {
+      "native_id": "APL-305",
+      "canonical_id": "EPIC-NFR-CAPACITY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "e603bb4d7bc7473b2db3099368a38cac4001f260f58c64c2e95dcb7a8551c9b6"
+    },
+    {
+      "native_id": "APL-306",
+      "canonical_id": "EPIC-NFR-COMPATIBILITY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "f655031e8eaffe0d55201f22df5673a2e7bfee1017ca378c3351e2594b36580a"
+    },
+    {
+      "native_id": "APL-307",
+      "canonical_id": "EPIC-NFR-COST",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "98ab085640b338bc5ba42339b80746c6d3e0628c5135ce910020d1a379bd490e"
+    },
+    {
+      "native_id": "APL-308",
+      "canonical_id": "EPIC-NFR-DATA-INTEGRITY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "a7b01710de26dbe6d9832b4f5d27297bc4f54fe28224467f038614d119cc543f"
+    },
+    {
+      "native_id": "APL-309",
+      "canonical_id": "EPIC-NFR-LOCALISATION",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "12e386b31473762792f4705a3bfcf8c6323ed81344913a7e3ed2d93db413f1ac"
+    },
+    {
+      "native_id": "APL-310",
+      "canonical_id": "EPIC-NFR-MAINTAINABILITY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "51fa9ebe84c160de90e43c33560c85c2c9f8775f9d0b3e871208632b1181afdb"
+    },
+    {
+      "native_id": "APL-311",
+      "canonical_id": "EPIC-NFR-OBSERVABILITY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "c8e47394062d207f4badcf8ac7ccc5234faff5600cb8686b5217f4fe8c905492"
+    },
+    {
+      "native_id": "APL-312",
+      "canonical_id": "EPIC-NFR-PERFORMANCE",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "4be238c2cb5069fa7469c059f9830a747051d9181c2823d79de75a102ad8a425"
+    },
+    {
+      "native_id": "APL-313",
+      "canonical_id": "EPIC-NFR-PORTABILITY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "3f92fe3c285224cdc5bb92cc9f59edf1eb19aab0e0e97d0c8c5c333271a2e93f"
+    },
+    {
+      "native_id": "APL-314",
+      "canonical_id": "EPIC-NFR-RECOVERY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "318fac675364f0ab5615e636bd3893e2430ffb0e1a3b69751b0b5c1903d66dab"
+    },
+    {
+      "native_id": "APL-315",
+      "canonical_id": "EPIC-NFR-SUPPORT",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "c4fecdd778d9e2f26939bf2ba10b7cf0ff19896bc0198487274b31b30aa1e7d7"
+    },
+    {
+      "native_id": "APL-316",
+      "canonical_id": "EPIC-NON-FUNCTIONAL",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "b05219451b5a4d05b600788e10a7281e1abe0f453fbd05e7c22e9e19e8d02376"
+    },
+    {
+      "native_id": "APL-317",
+      "canonical_id": "EPIC-OFFLINE-COLLECTION",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "f01683ff0b8654e617e502607c98a65ea397a70cfc3a51d36080b1eaa4db7e98"
+    },
+    {
+      "native_id": "APL-318",
+      "canonical_id": "EPIC-OPERATORS",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "3af26d0807729a6aa357ab2dbf52a326c134389c0e3174c45f70e835daad5bf4"
+    },
+    {
+      "native_id": "APL-319",
+      "canonical_id": "EPIC-PARTICIPANTS",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "044a8641d32d904a1b3380f7cbf7517254189bd3281c2ded20218eefc4ffa089"
+    },
+    {
+      "native_id": "APL-320",
+      "canonical_id": "EPIC-PARTNERS",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "d822fd6d919be0d3dffa013c2b8dc683d250cc3dade64c2e1e67da96f0825d6b"
+    },
+    {
+      "native_id": "APL-321",
+      "canonical_id": "EPIC-PLATFORM",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "e2fcd5447285a536eded9c133ecaa293586bac03f8d2234a5de514f534f031b5"
+    },
+    {
+      "native_id": "APL-322",
+      "canonical_id": "EPIC-PRIVACY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "8db7112e6f698bee5d60328e02e654bf6ff022705e074e0059a416406f27db3c"
+    },
+    {
+      "native_id": "APL-323",
+      "canonical_id": "EPIC-PROGRAMMES",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "23e9da24de4ee1f6d8c527c2db81f5782936ce6d9cbf1f46d5455401fd0c90c4"
+    },
+    {
+      "native_id": "APL-324",
+      "canonical_id": "EPIC-REPORTING",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "3f029ce19066e3c732da89083930064a5663b762e181d68b7c67d51c78db20c4"
+    },
+    {
+      "native_id": "APL-325",
+      "canonical_id": "EPIC-RESULTS-PLANNING",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "6df8163b13fdd942a05c823b6ee43f105d1709ced2dbcbcecdcb858f73f5fcc3"
+    },
+    {
+      "native_id": "APL-326",
+      "canonical_id": "EPIC-SECURITY",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "066a2f67f373fe4dd5ae23529c80b5ac74ec3eaa8f315f4a459a9a94842f90e4"
+    },
+    {
+      "native_id": "APL-327",
+      "canonical_id": "EPIC-SERVICE-OPERATIONS",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "8addcae10fb06ce0d45918c368cd0f10b1abf791fced5da8eb0a1a90a1588ebd"
+    },
+    {
+      "native_id": "APL-328",
+      "canonical_id": "EPIC-TENANCY-AND-ORGANISATION",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "3fba35c589bd5e89ab160f131d59a9829a259805d7670db0b629938c1f518b6e"
+    },
+    {
+      "native_id": "APL-329",
+      "canonical_id": "EPIC-TRANSITION",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "0dbee3578430d518065f5ac5c9e313df239b36ce767618fb2d79f68cf5348b05"
+    },
+    {
+      "native_id": "APL-330",
+      "canonical_id": "EPIC-USER-EXPERIENCE",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "a6c13ce00f65898dab5055da50f8a07ee8ce24310c4d57f06e927102c2972ca8"
+    },
+    {
+      "native_id": "APL-331",
+      "canonical_id": "EPIC-WORKFLOW-AND-REVIEW",
+      "checks": {
+        "required_fields": true,
+        "metadata_unchanged": true,
+        "labels_unchanged": true,
+        "description_unchanged": true
+      },
+      "description_sha256": "b473292a2ec167bd43b1a98c41b46b78cb781f03182fd6775200ac05a3b34e0e"
+    }
+  ],
+  "failures": []
+}

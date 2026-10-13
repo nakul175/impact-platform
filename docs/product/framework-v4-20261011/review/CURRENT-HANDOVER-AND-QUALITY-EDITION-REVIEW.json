@@ -1,0 +1,95 @@
+{
+  "reviewedAtUtc": "2026-10-11T03:29:41.380238+00:00",
+  "scope": "Current uncommitted handover/quality/compact capture edition only, following exact078local source review; final tree still required.",
+  "pins": [
+    {
+      "path": "docs/product/framework-v4-20261011/START-HERE.md",
+      "sha256": "5793a2afb656219b49e88e6cc4101d4065a189b6b13eed411a7be75bf8555f2a",
+      "bytes": 6070
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/quality/README.md",
+      "sha256": "a7813f3160bbd8b10caa3943f2bfaed1e7c9f8ceea04ca5832803ba6c1bd0cd7",
+      "bytes": 1861
+    },
+    {
+      "path": "docs/product/README.md",
+      "sha256": "2a315d9537a9c0a2bbf861dbd78680827b6da540ea4d168417015e16ae7221e6",
+      "bytes": 5493
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/quality/SCOPED-REAL-QUALITY-SUMMARY.json",
+      "sha256": "d619557e8a36cb696a43dc7078a3036b3a46256904cf926a92e54a39bfc219e5",
+      "bytes": 3431
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/quality/SCOPED-WORKFLOW-RECEIPT.json",
+      "sha256": "425b6c8a514afb07b4a056ecce46a66258ff43af79d5e4e481bb04e12c26345e",
+      "bytes": 1445
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/quality/FINAL-QUALITY-WORKFLOW-CHECKPOINT.json",
+      "sha256": "a166629d766f908ad9fb785b7dc0bbb686d0a3816f8c96784148bc4befcef2d0",
+      "bytes": 3892
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/review/LOCAL-COMMIT-078-INDEPENDENT-REVIEW.json",
+      "sha256": "0fec71070a5acfcf7c0511118a8cdf5827b12876f202212641a4bf6542d9cf23",
+      "bytes": 27617
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/review/FIRST-DRAFT-LOCAL-CHECKS.json",
+      "sha256": "9a184b363d664e66f9a77836920f06340d7b50ebaf136c2ff4782552baab2ed7",
+      "bytes": 2223
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/review/LOCAL-COMMIT-078-ALL-MEASURES-ADDENDUM.json",
+      "sha256": "35285204853dce35a92b8ada7e302281d720b3dfc21696f85fb2f5919cd637cd",
+      "bytes": 1245
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/review/LOCAL-DOC-STRUCTURE-CHECK.json",
+      "sha256": "f1bb6728d4f1415eda428fc5acc088ec7c1d0bdb421a580add045a27afb42536",
+      "bytes": 2807
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/publication/PROTECTED-HISTORY-PINS.json",
+      "sha256": "31c88eb80650cd3ba7985a054fb3e2fa98bc8958e3994255f8c786b945426b15",
+      "bytes": 7073
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/publication/EXPECTED-BEFORE-AND-PLAN-PINS.json",
+      "sha256": "60477ea4ac07e87e375f94d15b293e2170e94d236d1e3685a5286facc050df38",
+      "bytes": 45577
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/publication/MILESTONE-METADATA-CLARIFICATION.json",
+      "sha256": "588653826bdb1744b92ed4c362e11d9a70948bd2bde5763a9c0791d1614e47bf",
+      "bytes": 1947
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/publication/CAPTURE-RECEIPT.json",
+      "sha256": "4069d919fedc8805187e58912d65dbe175de51d77d36b90a92166451724f2d94",
+      "bytes": 13164
+    }
+  ],
+  "checks": {
+    "READMEforwardCompletionClaimNowExplicitPending": true,
+    "fiveExactCopiedQualityReviewReceipts": true,
+    "handoverOnlyImpranaSource": true,
+    "currentOverviewLinkMatchesFreshFullGET": true,
+    "40ClarificationBlocksMatchesActualAuthorProposal": true,
+    "noDetectedUnrelatedProductOrAccountCredentialMarkers": true
+  },
+  "unsafeMatches": [],
+  "semanticDisposition": "Handover correctly restricts toImprana, preserves source0.39.0/schema43 as historicalsource pins not liveincidentresolution, keeps nativecurrent statuses/owners/estimates/releasepermissions separate, explicitly records scopedneeds_input, full300s assessment incomplete, missingtrust/assurance, finalglobalnativepending, GitHubexportapprovalpending and no main/CI authority. Existing26point Sprint2 remains a recommendation. No invented research/operational outcomes.",
+  "concretePreviousFindingResolution": "README no longer asserts nonexistent final allobjectreceipt; actual scopedquality outcomes copiedexact, final nativecompletion explicitly pending. Publishedoverview URL matches independently freshGET.",
+  "retainedLimits": [
+    "Global1553currentissues not yet independently observed.",
+    "WholeV3long1800s execution currentlyrunning; no qualityoutcome inferred.",
+    "40authorclarification sourceblocks do not establish nativefinaldelivery until fullreadbackproof.",
+    "Final stagedtree/source/rawmetadata safety review remains separate."
+  ],
+  "repoOrNativeMutation": false,
+  "approvalGranted": false
+}

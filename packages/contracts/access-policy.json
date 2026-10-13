@@ -1,5 +1,5 @@
 {
-  "version": "1.28.0",
+  "version": "1.130.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -2121,45 +2121,6 @@
       "field_filter_required": true,
       "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
       "audit": false
-    },
-    {
-      "operation_id": "list_evaluations",
-      "method": "GET",
-      "path": "/v1/tenants/{tenant_id}/evaluations",
-      "capability": "evaluations.read",
-      "role_templates": [
-        "MEL_ADMIN",
-        "PROGRAMME_MANAGER",
-        "AUTHOR",
-        "REVIEWER",
-        "ANALYST",
-        "DATA_STEWARD",
-        "EXTERNAL"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": false
-    },
-    {
-      "operation_id": "create_evaluations",
-      "method": "POST",
-      "path": "/v1/tenants/{tenant_id}/evaluations",
-      "capability": "evaluations.draft.create",
-      "role_templates": [
-        "AUTHOR",
-        "ANALYST"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": false,
-      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-      "audit": true
     },
     {
       "operation_id": "get_evaluations",
@@ -4829,6 +4790,897 @@
       "audit": false
     },
     {
+      "operation_id": "list_saved_views",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/saved-views",
+      "capability": "work-items.read",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_saved_views",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/saved-views",
+      "capability": "work-items.read",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_saved_views",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/saved-views/{object_id}",
+      "capability": "work-items.read",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "patch_saved_views",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/saved-views/{object_id}",
+      "capability": "work-items.read",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "list_population_matching_scopes",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/population-matching-scopes",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
+    },
+    {
+      "operation_id": "create_population_matching_scopes",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/population-matching-scopes",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
+    },
+    {
+      "operation_id": "get_population_matching_scopes",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/population-matching-scopes/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
+    },
+    {
+      "operation_id": "patch_population_matching_scopes",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/population-matching-scopes/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
+    },
+    {
+      "operation_id": "submit_population_matching_scope",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/population-matching-scopes/{object_id}/actions/submit",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
+    },
+    {
+      "operation_id": "compute_population_overlap",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/population-overlap/compute",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact tenant/project scope and approved current scope revision; no name or fuzzy matching."
+    },
+    {
+      "operation_id": "list_aggregation_hierarchies",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/aggregation-hierarchies",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Acyclic explicit edges; unique unions deduplicate exact sources; additive duplicates and unreconciled weights are refused."
+    },
+    {
+      "operation_id": "create_aggregation_hierarchies",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/aggregation-hierarchies",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Acyclic explicit edges; unique unions deduplicate exact sources; additive duplicates and unreconciled weights are refused."
+    },
+    {
+      "operation_id": "get_aggregation_hierarchies",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Acyclic explicit edges; unique unions deduplicate exact sources; additive duplicates and unreconciled weights are refused."
+    },
+    {
+      "operation_id": "patch_aggregation_hierarchies",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Acyclic explicit edges; unique unions deduplicate exact sources; additive duplicates and unreconciled weights are refused."
+    },
+    {
+      "operation_id": "submit_aggregation_hierarchy",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/aggregation-hierarchies/{object_id}/actions/submit",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Acyclic explicit edges; unique unions deduplicate exact sources; additive duplicates and unreconciled weights are refused."
+    },
+    {
+      "operation_id": "compute_hierarchical_aggregation",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/hierarchical-aggregation/compute",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Acyclic explicit edges; unique unions deduplicate exact sources; additive duplicates and unreconciled weights are refused."
+    },
+    {
+      "operation_id": "list_dimension_crosswalks",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dimension-crosswalks",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Exact approved definition revisions and category codes; broad-to-narrow splits require explicit proportional estimation; unknown never silently remaps."
+    },
+    {
+      "operation_id": "create_dimension_crosswalks",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dimension-crosswalks",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact approved definition revisions and category codes; broad-to-narrow splits require explicit proportional estimation; unknown never silently remaps."
+    },
+    {
+      "operation_id": "get_dimension_crosswalks",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dimension-crosswalks/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Exact approved definition revisions and category codes; broad-to-narrow splits require explicit proportional estimation; unknown never silently remaps."
+    },
+    {
+      "operation_id": "patch_dimension_crosswalks",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/dimension-crosswalks/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact approved definition revisions and category codes; broad-to-narrow splits require explicit proportional estimation; unknown never silently remaps."
+    },
+    {
+      "operation_id": "submit_dimension_crosswalk",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dimension-crosswalks/{object_id}/actions/submit",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact approved definition revisions and category codes; broad-to-narrow splits require explicit proportional estimation; unknown never silently remaps."
+    },
+    {
+      "operation_id": "preview_dimension_crosswalk",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dimension-crosswalks/{object_id}/preview",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact approved definition revisions and category codes; broad-to-narrow splits require explicit proportional estimation; unknown never silently remaps."
+    },
+    {
+      "operation_id": "list_formula_definitions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/formula-definitions",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review."
+    },
+    {
+      "operation_id": "create_formula_definitions",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/formula-definitions",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review."
+    },
+    {
+      "operation_id": "get_formula_definitions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/formula-definitions/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review."
+    },
+    {
+      "operation_id": "patch_formula_definitions",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/formula-definitions/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review."
+    },
+    {
+      "operation_id": "submit_formula_definition",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/formula-definitions/{object_id}/actions/submit",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review."
+    },
+    {
+      "operation_id": "preview_formula_definition",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/formula-definitions/preview",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Closed AST and bounded catalogue only; exact readable approved references; cycles, incompatible units and invalid composite weights refused before review."
+    },
+    {
+      "operation_id": "list_portfolio_allocation_views",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/portfolio-allocation-views",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
+    },
+    {
+      "operation_id": "create_portfolio_allocation_views",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/portfolio-allocation-views",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
+    },
+    {
+      "operation_id": "get_portfolio_allocation_views",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/portfolio-allocation-views/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
+    },
+    {
+      "operation_id": "patch_portfolio_allocation_views",
+      "method": "PATCH",
+      "path": "/v1/tenants/{tenant_id}/portfolio-allocation-views/{object_id}",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
+    },
+    {
+      "operation_id": "submit_portfolio_allocation_view",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/portfolio-allocation-views/{object_id}/actions/submit",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
+    },
+    {
+      "operation_id": "preview_portfolio_attribution",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/portfolio-allocation-views/{object_id}/preview",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current visible projects only; organisation count deduplicates project identity; approved shares disclose basis/remainder and never causal ownership."
+    },
+    {
+      "operation_id": "create_sponsored_cohort",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/sponsored-cohorts",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Acceptance is grantee-tenant bound, exact-terms, time-bounded and no-charge; it grants no data authority."
+    },
+    {
+      "operation_id": "accept_sponsored_access",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/sponsored-access/{enrolment_id}/actions/accept",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Acceptance is grantee-tenant bound, exact-terms, time-bounded and no-charge; it grants no data authority."
+    },
+    {
+      "operation_id": "list_sponsored_access",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/sponsored-access",
+      "capability": "subscriptions.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Acceptance is grantee-tenant bound, exact-terms, time-bounded and no-charge; it grants no data authority."
+    },
+    {
+      "operation_id": "list_effective_entitlements",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/effective-entitlements",
+      "capability": "subscriptions.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Every effective entitlement has explicit direct/sponsor sources; one entitlement has at most one charge source."
+    },
+    {
+      "operation_id": "list_service_packages",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/service-packages",
+      "capability": "subscriptions.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Only code-owned packages with nonblank scope and positive fixed price; purchase line uses the active subscription's single open invoice."
+    },
+    {
+      "operation_id": "purchase_service_package",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/subscriptions/{subscription_id}/service-packages",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Only code-owned packages with nonblank scope and positive fixed price; purchase line uses the active subscription's single open invoice."
+    },
+    {
+      "operation_id": "configure_billing_profile",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/billing-profile",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Only active configured markets; INR requires a pinned positive GST line before immutable issuance."
+    },
+    {
+      "operation_id": "issue_commercial_invoice",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/commercial-invoices/{invoice_id}/actions/issue",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Only active configured markets; INR requires a pinned positive GST line before immutable issuance."
+    },
+    {
+      "operation_id": "read_commercial_invoice",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/commercial-invoices/{invoice_id}",
+      "capability": "subscriptions.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Only active configured markets; INR requires a pinned positive GST line before immutable issuance."
+    },
+    {
+      "operation_id": "configure_organisation_agreement",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/agreements",
+      "capability": "subscription.admin",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "One current bundle covers all platform solutions; deployment pins a revision and cannot request a separate contract or DPA."
+    },
+    {
+      "operation_id": "read_organisation_agreements",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/agreements",
+      "capability": "subscriptions.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "One current bundle covers all platform solutions; deployment pins a revision and cannot request a separate contract or DPA."
+    },
+    {
+      "operation_id": "check_permitted_resources",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/access-checks/resources",
+      "capability": "grants.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Every item is resolved against current tenant, type, availability and requested capability; denied/unknown items emit no row and policy resolution errors fail closed."
+    },
+    {
+      "operation_id": "attach_fine_grained_grant_facets",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/grants/{grant_id}/field-policy",
+      "capability": "grant.approve",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Active existing grant only; selected records remain inside its existing scope; writable categories are a subset of readable categories; the facet is attach-once and can only narrow."
+    },
+    {
+      "operation_id": "explain_own_effective_access",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/access/effective/self",
+      "capability": "notifications.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "FINANCE"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Self explains only the current principal. Simulation requires tenant-wide grants.read and a current in-tenant subject; outputs contain no resource names or field values."
+    },
+    {
+      "operation_id": "simulate_effective_access",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/access/effective/simulations",
+      "capability": "grants.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Self explains only the current principal. Simulation requires tenant-wide grants.read and a current in-tenant subject; outputs contain no resource names or field values."
+    },
+    {
+      "operation_id": "create_derivative_manifest",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/derivatives/{derivative_id}/revisions",
+      "capability": "reports.write",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "All exact sources must be currently readable; mixed sources remain private unless the object is an approved aggregate."
+    },
+    {
+      "operation_id": "read_derivative_manifest",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/derivatives/{derivative_id}/revisions/{revision_id}",
+      "capability": "reports.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Every immutable source dependency is rechecked against current authority before disclosure."
+    },
+    {
+      "operation_id": "create_external_share",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/external-shares",
+      "capability": "reports.share",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact revision, active audience, actions, owner, reason and expiry no later than seven days are mandatory."
+    },
+    {
+      "operation_id": "read_external_share",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/external-shares/{share_id}",
+      "capability": "reports.read",
+      "role_templates": [
+        "TENANT_MEMBER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Audience, expiry, revocation and every source are revalidated; failure returns no preview."
+    },
+    {
+      "operation_id": "revoke_external_share",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/external-shares/{share_id}/revocation",
+      "capability": "reports.share",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "PROGRAMME_MANAGER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Only the current owner can revoke; repetition is idempotent."
+    },
+    {
+      "operation_id": "issue_presentation_lease",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/derivatives/{derivative_id}/revisions/{revision_id}/presentation-leases",
+      "capability": "reports.read",
+      "role_templates": [
+        "TENANT_MEMBER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "All derivative sources are checked and the current policy epoch is pinned for no more than sixty seconds."
+    },
+    {
+      "operation_id": "validate_presentation_lease",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/presentation-leases/{lease_id}",
+      "capability": "reports.read",
+      "role_templates": [
+        "TENANT_MEMBER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Principal, expiry, tenant policy epoch and every source are rechecked; stale presentations fail closed."
+    },
+    {
+      "operation_id": "list_ai_option_trials",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/trials",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "FINANCE"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_option_trial",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/trials",
+      "capability": "ai.solution-fit.score",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true,
+      "state_guard": "Current natural-person advisor; option is catalogue-mapped; own data is one currently authorised exact Evidence revision or the fixed synthetic sample; duration is1-28days and immutable."
+    },
+    {
+      "operation_id": "record_ai_trial_result",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/trials/{trial_id}/results",
+      "capability": "ai.solution-fit.score",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "create_ai_value_case_from_trial",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases/from-trial",
+      "capability": "ai.value-case.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
       "operation_id": "list_measurement_changes",
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/measurement-changes",
@@ -5200,6 +6052,72 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "get_calculated_result_reproduction",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/calculated-results/{object_id}/reproduction",
+      "capability": "lineage-manifests.read",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current authority for the result and every frozen dependency; bounded arithmetic fields only."
+    },
+    {
+      "operation_id": "get_calculated_result_explanation",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/calculated-results/{object_id}/explanation",
+      "capability": "lineage-manifests.read",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current result and lineage authority; excluded sources are aggregate counts only."
+    },
+    {
+      "operation_id": "compare_calculated_result_runs",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/calculated-results/{object_id}/comparison/{later_result_id}",
+      "capability": "lineage-manifests.read",
+      "role_templates": [
+        "AUTHOR",
+        "REVIEWER",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current authority for both results and permitted sources; withheld references cannot be inspected and prevent a reconciled approval claim."
+    },
+    {
+      "operation_id": "preview_calculation_compatibility",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/calculation-compatibility/preview",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current authority for every exact definition revision; labels never establish compatibility."
     },
     {
       "operation_id": "action_submissions_correct",
@@ -5624,6 +6542,132 @@
       "audit": false
     },
     {
+      "operation_id": "preview_dashboards",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/preview",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "preview_dashboard_geography",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/geographic-preview",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "action_dashboards_copy",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/copy",
+      "capability": "dashboards.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "preview_dashboard_pivot",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/pivot-preview",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "action_dashboard_pivot_run",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/run-pivot",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "read_dashboard_pivot_job",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/pivot-jobs/{job_id}",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "cancel_dashboard_pivot_job",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/pivot-jobs/{job_id}/actions/cancel",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
       "operation_id": "create_audit_export",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/audit-exports",
@@ -5965,6 +7009,334 @@
       "audit": false
     },
     {
+      "operation_id": "create_ai_safety_feedback",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/safety-feedback",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_safety_shutdowns",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/safety-shutdowns",
+      "capability": "ai.policy.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "manage_ai_safety_shutdown",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/safety-shutdowns",
+      "capability": "ai.policy.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": false
+    },
+    {
+      "operation_id": "approve_ai_safety_recovery",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/safety-shutdowns/{event_id}/actions/approve-recovery",
+      "capability": "ai.policy.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_extraction",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/extractions",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "review_ai_extraction",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/extractions/{draft_id}/actions/apply",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_indicator_proposal",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/indicator-design/proposals",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_indicator_draft",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/indicator-design/drafts",
+      "capability": "indicator-definitions.draft.create",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "create_ai_import_proposals",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/proposals",
+      "capability": "imports.read",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "apply_ai_import_proposals",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/actions/apply",
+      "capability": "imports.draft.edit",
+      "role_templates": [
+        "DATA_STEWARD",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "answer_ai_evidence_question",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/evidence-questions",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "PROGRAMME_MANAGER",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_report_draft",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/report-drafts",
+      "capability": "reports.draft.create",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "review_ai_report_draft",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/report-drafts/{draft_id}/actions/review",
+      "capability": "reports.draft.edit",
+      "role_templates": [
+        "AUTHOR",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_qualitative_run",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/qualitative-runs",
+      "capability": "qualitative-extracts.draft.create",
+      "role_templates": [
+        "ANALYST",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "review_ai_qualitative_suggestion",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/qualitative-suggestions/{suggestion_id}/actions/review",
+      "capability": "qualitative-extracts.draft.create",
+      "role_templates": [
+        "ANALYST",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "configure_ai_detection_task",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/detection-tasks",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_suggested_finding",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/suggested-findings",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "ANALYST",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "review_ai_suggested_finding",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/suggested-findings/{suggestion_id}/actions/review",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_action_proposal",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/action-proposals",
+      "capability": "work-items.draft.create",
+      "role_templates": [
+        "PROGRAMME_MANAGER",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "confirm_ai_action_proposal",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/action-proposals/{proposal_id}/actions/confirm",
+      "capability": "work-items.draft.create",
+      "role_templates": [
+        "PROGRAMME_MANAGER",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "execute_ai_numeric_analysis",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/numeric-analysis",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "ANALYST",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_forecast",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/forecasts",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_forecast",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/forecasts/{scenario_id}",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "export_ai_forecast",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/forecasts/{scenario_id}/export",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "request_ai_forecast_adoption",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/forecasts/{scenario_id}/versions/{version}/actions/request-adoption",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
       "operation_id": "get_ai_enablement_catalog",
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/ai-enablement/catalog",
@@ -6034,6 +7406,48 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true
+    },
+    {
+      "operation_id": "create_ai_advisory_job",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_advisory_job",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs/{job_id}",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "cancel_ai_advisory_job",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs/{job_id}/actions/cancel",
+      "capability": "ai.advisory.request",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
     },
     {
       "operation_id": "get_ai_policy",
@@ -6255,6 +7669,866 @@
         "TENANT_ADMIN",
         "MEL_ADMIN",
         "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "generate_ai_deployment_plan",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/generate",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current plan revision under tenant lock; milestone progress requires the named current owner."
+    },
+    {
+      "operation_id": "update_ai_deployment_milestone",
+      "method": "PUT",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/milestones/{milestone_code}",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current plan revision under tenant lock; milestone progress requires the named current owner."
+    },
+    {
+      "operation_id": "complete_ai_deployment_plan",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/complete",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current plan revision under tenant lock; milestone progress requires the named current owner."
+    },
+    {
+      "operation_id": "attest_ai_solution_deployment",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/deployment/actions/attest",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current active Data Author role and explicit deployed-solution attestation; completion belongs only to the authenticated learner."
+    },
+    {
+      "operation_id": "get_ai_role_training",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training",
+      "capability": "ai.training.read",
+      "role_templates": [
+        "AUTHOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Current active Data Author role and explicit deployed-solution attestation; completion belongs only to the authenticated learner."
+    },
+    {
+      "operation_id": "complete_ai_role_training_module",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/role-training/modules/{module_key}/actions/complete",
+      "capability": "ai.training.manage",
+      "role_templates": [
+        "AUTHOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Current active Data Author role and explicit deployed-solution attestation; completion belongs only to the authenticated learner."
+    },
+    {
+      "operation_id": "list_ai_champion_appointments",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/champion-appointments",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "FINANCE"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Exact current deployed-solution attestation; active participant memberships and scoped authority. CHAMPION is a solution appointment, not an IAM grant."
+    },
+    {
+      "operation_id": "appoint_ai_internal_champion",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/champion-appointments",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "OWNER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "state_guard": "Exact current deployed-solution attestation; active participant memberships and scoped authority. CHAMPION is a solution appointment, not an IAM grant."
+    },
+    {
+      "operation_id": "get_ai_champion_guide",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/plans/{object_id}/champion-guide",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "FINANCE"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false,
+      "state_guard": "Exact current deployed-solution attestation; active participant memberships and scoped authority. CHAMPION is a solution appointment, not an IAM grant."
+    },
+    {
+      "operation_id": "list_ai_diagnoses",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses",
+      "capability": "ai.diagnosis.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_diagnosis",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses",
+      "capability": "ai.diagnosis.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_diagnosis",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}",
+      "capability": "ai.diagnosis.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "update_ai_diagnosis",
+      "method": "PUT",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}",
+      "capability": "ai.diagnosis.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "complete_ai_diagnosis",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/actions/complete",
+      "capability": "ai.diagnosis.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "revise_ai_diagnosis",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/actions/revise",
+      "capability": "ai.diagnosis.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_diagnosis_revisions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions",
+      "capability": "ai.diagnosis.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_diagnosis_revision",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions/{revision_id}",
+      "capability": "ai.diagnosis.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_ai_diagnosis_contributor_invitations",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributor-invitations",
+      "capability": "ai.diagnosis.contributors.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_diagnosis_contributor_invitation",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributor-invitations",
+      "capability": "ai.diagnosis.contributors.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_diagnosis_contributions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions",
+      "capability": "ai.diagnosis.contributors.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "submit_ai_diagnosis_contribution",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions",
+      "capability": "ai.diagnosis.contribute",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "accept_ai_diagnosis_contribution",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions/{contribution_id}/actions/accept",
+      "capability": "ai.diagnosis.contributors.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "reject_ai_diagnosis_contribution",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/contributions/{contribution_id}/actions/reject",
+      "capability": "ai.diagnosis.contributors.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "request_ai_diagnosis_review",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/advisor-reviews",
+      "capability": "ai.diagnosis.manage",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_diagnosis_reviews",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/advisor-reviews",
+      "capability": "ai.diagnosis.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_ai_diagnosis_review_queue",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnosis-review-queue",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_diagnosis_review",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnosis-reviews/{review_id}",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "start_ai_diagnosis_review",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnosis-reviews/{review_id}/actions/start",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "comment_ai_diagnosis_review",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnosis-reviews/{review_id}/comments",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "validate_ai_diagnosis_review",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnosis-reviews/{review_id}/actions/validate",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_solution_shortlist",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/solution-shortlist",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "FINANCE"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_ai_solution_fit_scores",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/solution-fit-scores",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "FINANCE"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_solution_fit_score",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/solution-fit-scores",
+      "capability": "ai.solution-fit.score",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_problem_baselines",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/problem-baselines",
+      "capability": "ai.problem-baseline.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_problem_baseline",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/problem-baselines",
+      "capability": "ai.problem-baseline.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_problem_baseline",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}",
+      "capability": "ai.problem-baseline.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "update_ai_problem_baseline",
+      "method": "PUT",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}",
+      "capability": "ai.problem-baseline.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "lock_ai_problem_baseline",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/actions/lock",
+      "capability": "ai.problem-baseline.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_problem_baseline_revisions",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/revisions",
+      "capability": "ai.problem-baseline.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_problem_baseline_revision",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/problem-baselines/{object_id}/revisions/{revision_id}",
+      "capability": "ai.problem-baseline.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_outcome_observation",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/outcome-observations",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_outcome_dashboard",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/outcomes-dashboard",
+      "capability": "ai.outcomes.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_sponsor_value_report",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/sponsor-value-reports",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_sponsor_value_report",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/sponsor-value-reports/{object_id}",
+      "capability": "publication.download",
+      "role_templates": [
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "start_ai_quarterly_value_review",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_quarterly_value_review",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "record_ai_quarterly_review_agreement",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/agreements",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "record_ai_quarterly_review_action",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "track_ai_quarterly_review_action",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions/{action_id}/progress",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "complete_ai_quarterly_value_review",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/quarterly-value-reviews/{review_id}/actions/complete",
+      "capability": "ai.diagnosis.review",
+      "role_templates": [
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_next_opportunities",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/next-opportunities",
+      "capability": "ai.diagnosis.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "take_up_ai_next_opportunity",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/next-opportunities/{suggestion_id}/actions/take-up",
+      "capability": "ai.diagnosis.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "record_ai_outcome_sharing_consent",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/outcome-sharing-consents",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "list_ai_outcome_evidence_publications",
+      "method": "GET",
+      "path": "/v1/platform/outcome-evidence-publications",
+      "capability": "platform.operator",
+      "role_templates": [
+        "PLATFORM_OPERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "prepare_ai_outcome_evidence_publication",
+      "method": "POST",
+      "path": "/v1/platform/outcome-evidence-publications",
+      "capability": "platform.operator",
+      "role_templates": [
+        "PLATFORM_OPERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "act_ai_outcome_evidence_publication",
+      "method": "POST",
+      "path": "/v1/platform/outcome-evidence-publications/{publication_id}/actions/{action}",
+      "capability": "platform.operator",
+      "role_templates": [
+        "PLATFORM_OPERATOR"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_opportunity_map",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/opportunity-map",
+      "capability": "ai.diagnosis.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "rank_mapped_ai_opportunities",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/opportunity-ranking",
+      "capability": "ai.opportunity-mapping.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "calculate_ai_value_case",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-case",
+      "capability": "ai.enablement.read",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "FINANCE"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "export_ai_value_case",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-case/export",
+      "capability": "ai.enablement.export",
+      "role_templates": [
+        "TENANT_ADMIN",
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_value_case_version",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases",
+      "capability": "ai.value-case.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_ai_value_case_version",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}",
+      "capability": "ai.value-case.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_ai_value_case_revision",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/revisions/{revision_id}",
+      "capability": "ai.value-case.read",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "approve_ai_value_case",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/approve",
+      "capability": "ai.value-case.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "lock_ai_value_case_baseline",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/lock",
+      "capability": "ai.value-case.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": 300,
+      "audit": true
+    },
+    {
+      "operation_id": "revise_ai_value_case",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/revise",
+      "capability": "ai.value-case.manage",
+      "role_templates": [
+        "TENANT_ADMIN"
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,

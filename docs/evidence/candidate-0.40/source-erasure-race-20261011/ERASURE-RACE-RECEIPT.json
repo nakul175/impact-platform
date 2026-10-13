@@ -1,0 +1,81 @@
+{
+  "at": "2026-10-11T15:56:41.805319+00:00",
+  "base_head": "2f71469e27a7c8d03fd644411b181811660469a9",
+  "story": "US-DX-01a / APL-361",
+  "test_path": "qualification/test_ai_diagnosis_linkage_candidate_native.py::test_waiting_diagnosis_routes_recheck_actual_independent_source_erasure",
+  "native_runs": [
+    {
+      "run": 1,
+      "passed": 124,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stable_pins": 281,
+      "started_at": "2026-10-11T15:53:50.038706+00:00",
+      "finished_at": "2026-10-11T15:54:13.995799+00:00",
+      "added_assertions": "initial erasure race"
+    },
+    {
+      "run": 2,
+      "passed": 124,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "stable_pins": 281,
+      "started_at": "2026-10-11T15:55:10.408659+00:00",
+      "finished_at": "2026-10-11T15:55:33.715560+00:00",
+      "added_assertions": "diagnosis/revision/receipt no-effects and delay function absence"
+    }
+  ],
+  "counts_scope": "1 new actual erasure-race case plus123 retained affected cases; seven routes within one case, not seven stories",
+  "schema_registered": 46,
+  "linkage_candidate_registered": false,
+  "actual_proof": [
+    "Existing independent member Evidence erasure API test retains subject-active refusal, natural-person approval, exact plan/hash, seven-store execution, actual blob removal, immutable audit and official-number checks",
+    "Fresh object-only Evidence read grant remains active through the erasure, so denial is caused by removal rather than fixture authority loss",
+    "Disposable restricted-migrator delay-only trigger pauses actual Evidence removal while API holds tenant lock; PostgreSQL observes8 real APP advisory waits: erasure plus seven queued diagnosis routes",
+    "After actual erasure commits, current/named/history/create/complete/exact replay refuse404 RESOURCE_UNAVAILABLE; list filters linked diagnosis",
+    "Exact diagnosis JSON and typed links retained; diagnosis registry/revision/operation-receipt counts unchanged",
+    "Delay trigger/function and candidate table/hooks removed on teardown; clusters stopped; sealed candidate and all46 migration pins unchanged"
+  ],
+  "review_phases": [
+    {
+      "phase": "code",
+      "reviewer": "root integration self-review",
+      "human_signoff": false,
+      "finding": "Only qualification instrumentation changed. Existing approved erasure API flow unchanged. Delay-only trigger grants no privileges and targets one fresh source UUID. No approved diagnosis-removal entry manufactured; no frozen migration edited."
+    },
+    {
+      "phase": "evidence",
+      "reviewer": "root integration self-review",
+      "human_signoff": false,
+      "finding": "Both actual JUnit runs124passed/0failure/error/skip. Finalrun contains strengthened no-effects and cleanup assertions. Native lock observation explicit, source grant remains active. Not retention purge, supported diagnosis removal, full suite, recovery, hosted CI or acceptance."
+    }
+  ],
+  "remaining": [
+    "Public privacy plan has no AIDiagnosis removal target; positive supported diagnosis-removal cleanup needs a concrete scope/contract decision before promotion",
+    "Registered linkage migration/checksum retry and actual recovery",
+    "Current-head full integration and required hosted/container/financial/export/human/operational/owner release gates"
+  ],
+  "delivered_stories": 0,
+  "deployed": false,
+  "raw_sha256": {
+    "release-threat-units.log": "2fdbfd8ca4b1f03517583a95c9d797258bdf9116d64cf90fbdaa175b61869611",
+    "release-check.log": "d31757da16e0f8d8046a87a3bfbad76a7fcd95342bd9e841184d9205a0add885",
+    "release-threat-units-initial-failure.log": "149ce0cc4bb6b659635d424330cca07b5f9e8ff56ff671afa70bc24f105248cc",
+    "run-2/integrated-worker-fence.log": "03e0f0a86a8a894c14d16f2dda740145bc8ed2e98c1c7cf2cf5d46b916a39bcd",
+    "run-2/RUN-RECEIPT.json": "01deba8f55ccc01993f8a76ccfce3bd7803671b3500e74a0947257393c5ab632",
+    "run-2/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-2/integrated-worker-fence-tests.xml": "749415b26504a51a5b955a193e87942036107d8a68d0df358ea646136c79daff",
+    "run-1/integrated-worker-fence.log": "420dc4b4ae0d5f709dcb65c8af4b85d1d2268dc25e9939a24bb5729069ca8004",
+    "run-1/RUN-RECEIPT.json": "b6aadc9833863dacaef0275cd286577f85aa2778cf6213f722ee33b473d2f129",
+    "run-1/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-1/integrated-worker-fence-tests.xml": "9b2e94528ee7951c3443c2e057b5fecd2fb046698f7f38205f586b992d1d7b89"
+  },
+  "release_threat_units": {
+    "passed": 46,
+    "initial_failed": 1,
+    "initial_passed": 45,
+    "correction": "New uncommitted IR14 area privacy was outside enum; corrected to ai-module, failure retained. No historic entry/test changed."
+  }
+}

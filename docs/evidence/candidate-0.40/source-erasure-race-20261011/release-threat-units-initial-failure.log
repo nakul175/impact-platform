@@ -1,0 +1,17 @@
+..........................................F...                           [100%]
+=================================== FAILURES ===================================
+________ test_the_repository_register_and_release_review_pass_the_check ________
+
+    def test_the_repository_register_and_release_review_pass_the_check():
+        build, _ = current_review()
+        problems, lines = check.run(ROOT, changed=material_paths_of_build_0_37() if build == "0.37.0" else [])
+>       assert problems == [], problems
+E       AssertionError: ["release review: impact_reviews/13/areas/1: 'privacy' is not one of ['migration', 'contracts', 'access-policy', 'ai-module']"]
+E       assert ["release rev...'ai-module']"] == []
+E         
+E         Left contains one more item: "release review: impact_reviews/13/areas/1: 'privacy' is not one of ['migration', 'contracts', 'access-policy', 'ai-module']"
+E         Use -v to get more diff
+
+qualification/test_release_review_unit.py:1219: AssertionError
+=========================== short test summary info ============================
+FAILED qualification/test_release_review_unit.py::test_the_repository_register_and_release_review_pass_the_check

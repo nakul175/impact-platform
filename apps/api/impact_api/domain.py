@@ -56,6 +56,7 @@ METHODS = {
     "POOLED_RATIO": ({"RATIO", "PERCENTAGE"}, {"FLOW"}),
     "COUNT": ({"COUNT"}, {"EVENT"}),
     "LAST_VALID": ({"COUNT", "DECIMAL", "RATIO", "PERCENTAGE"}, {"STOCK", "CUMULATIVE"}),
+    "CUMULATIVE_DIFFERENCE": ({"COUNT", "DECIMAL"}, {"CUMULATIVE"}),
     "MEAN": ({"COUNT", "DECIMAL", "RATIO", "PERCENTAGE"}, {"FLOW", "STOCK"}),
     "MEDIAN": ({"COUNT", "DECIMAL"}, {"FLOW", "STOCK"}),
     "MIN": ({"COUNT", "DECIMAL"}, {"FLOW", "STOCK"}),
@@ -65,6 +66,8 @@ RATIO_TYPES = {"RATIO", "PERCENTAGE"}
 # The one reserved category a result uses for contributions without a code on a non-exhaustive dimension.
 UNSPECIFIED = "UNSPECIFIED"
 PRECISION = 100
+INPUT_SCALE = 12
+MAX_CALCULATION_CONTRIBUTORS = 10000
 
 
 def method_supported(definition):
@@ -84,15 +87,78 @@ def display(value, places):
 
 def ratio(definition, n, d):
     """One contributor's or one pool's ratio; the multiplier is applied after pooling (FR-CAL-003)."""
-    if n < 0 or d < 0 or (definition["measurement_type"] == "PERCENTAGE" and n > d):
-        raise DomainError("INCOMPATIBLE_MEASURE")
+    if n < 0 or d < 0:
+        raise DomainError("INCOMPATIBLE_MEASURE", reason="NEGATIVE_RATIO_QUANTITY")
+    if definition["measurement_type"] == "PERCENTAGE" and n > d:
+        raise DomainError("INCOMPATIBLE_MEASURE", reason="PERCENTAGE_OUT_OF_RANGE")
     if d == 0:
         return None
     return n / d * (100 if definition["measurement_type"] == "PERCENTAGE" else 1)
 
 
 def components(o):
-    return decimal_value(o.get("numerator")), decimal_value(o.get("denominator"))
+    if o.get("numerator") is None or o.get("denominator") is None:
+        raise DomainError("INCOMPATIBLE_MEASURE", reason="RATIO_QUANTITIES_REQUIRED")
+    return decimal_value(o["numerator"]), decimal_value(o["denominator"])
+
+
+def method_disclosure(definition):
+    """Machine-readable interpretation guard carried with every frozen calculation formula."""
+    rule = definition["combination_rule"]
+    interpretation = definition.get("statistical_interpretation") or {}
+    sample_basis = interpretation.get("sample_basis", "RAW_VALUES")
+    weighting = interpretation.get("weighting", "NONE")
+    statistic_label = "MEAN_OF_MEDIANS" if rule == "MEAN" and sample_basis == "SUBGROUP_MEDIANS" else None
+    statistical = {
+        "sample_basis": sample_basis,
+        "weighting": weighting,
+        "uncertainty_method": interpretation.get("uncertainty_method", "NONE"),
+        "uncertainty_level": interpretation.get("uncertainty_level"),
+        "population_interpretation": interpretation.get("population_interpretation", "SAMPLE"),
+        "expansion_method": interpretation.get("expansion_method"),
+    }
+    if rule == "POOLED_RATIO":
+        return {
+            "statistic_label": "POOLED_RATIO",
+            "weighting_basis": "DENOMINATOR_WEIGHTED",
+            "component_requirement": "NUMERATOR_AND_DENOMINATOR_REQUIRED",
+            "multiplier_stage": "AFTER_POOLING",
+            **statistical,
+        }
+    if rule == "MEAN":
+        return {
+            "statistic_label": statistic_label
+            or ("WEIGHTED_MEAN" if weighting == "FREQUENCY" else "UNWEIGHTED_MEAN"),
+            "weighting_basis": "FREQUENCY_WEIGHTED"
+            if weighting == "FREQUENCY"
+            else "EQUAL_CONTRIBUTOR_WEIGHT",
+            "component_requirement": "NUMERATOR_AND_DENOMINATOR_REQUIRED"
+            if definition["measurement_type"] in RATIO_TYPES
+            else "VALUE_REQUIRED",
+            "multiplier_stage": "PER_CONTRIBUTOR_BEFORE_MEAN"
+            if definition["measurement_type"] in RATIO_TYPES
+            else "NOT_APPLICABLE",
+            **statistical,
+        }
+    if rule == "CUMULATIVE_DIFFERENCE":
+        return {
+            "statistic_label": "CUMULATIVE_DIFFERENCE",
+            "weighting_basis": "NOT_APPLICABLE",
+            "component_requirement": "VALUE_REQUIRED",
+            "multiplier_stage": "NOT_APPLICABLE",
+            "cumulative_baseline": definition["cumulative_baseline"],
+            "cumulative_baseline_basis": definition["cumulative_baseline_basis"],
+            **statistical,
+        }
+    return {
+        "statistic_label": "POOLED_MEDIAN" if rule == "MEDIAN" else rule,
+        "weighting_basis": "FREQUENCY_WEIGHTED" if weighting == "FREQUENCY" else "NOT_APPLICABLE",
+        "component_requirement": "NUMERATOR_AND_DENOMINATOR_REQUIRED"
+        if definition["measurement_type"] in RATIO_TYPES
+        else "VALUE_REQUIRED",
+        "multiplier_stage": "NOT_APPLICABLE",
+        **statistical,
+    }
 
 
 def aware(value):
@@ -125,6 +191,8 @@ def calculate(definition, observations):
     if not method_supported(definition):
         raise DomainError("INCOMPATIBLE_MEASURE", reason="CONFIGURATION_NOT_IMPLEMENTED")
     values = [o for o in observations if o["approval_state"] == "APPROVED" and o["value_state"] == "PRESENT"]
+    if len(values) > MAX_CALCULATION_CONTRIBUTORS:
+        raise DomainError("VALIDATION_FAILED", reason="CALCULATION_INPUT_LIMIT")
     base = {
         "value_state": "UNDEFINED",
         "value": None,
@@ -151,7 +219,7 @@ def calculate(definition, observations):
             value = ratio(definition, n, d)
             if value is None:
                 return {**base, "reason_code": "ZERO_DENOMINATOR"}
-        elif rule == "LAST_VALID":
+        elif rule in {"LAST_VALID", "CUMULATIVE_DIFFERENCE"}:
             ordered = sorted(values, key=event_order)
             latest = event_order(ordered[-1])
             tied = [o for o in ordered if event_order(o) == latest]
@@ -167,6 +235,20 @@ def calculate(definition, observations):
                     any(b < a for a, b in zip(earlier, later)) for earlier, later in zip(series, series[1:])
                 ):
                     return {**base, "reason_code": "CUMULATIVE_DECLINE"}
+            if rule == "CUMULATIVE_DIFFERENCE":
+                baseline = decimal_value(definition["cumulative_baseline"])
+                latest_value = decimal_value(tied[0]["value"])
+                if any(decimal_value(o["value"]) < baseline for o in ordered):
+                    return {**base, "reason_code": "CUMULATIVE_DECLINE"}
+                value = latest_value - baseline
+                raw = stored(value)
+                return {
+                    **base,
+                    "value_state": "PRESENT",
+                    "value": raw,
+                    "displayed_value": display(Decimal(raw), places),
+                    "reason_code": "CALCULATED",
+                }
             if ratio_type:
                 n, d = keys.pop()
                 base.update(numerator=stored(n), denominator=stored(d))
@@ -182,6 +264,14 @@ def calculate(definition, observations):
             value = sum(parts, Decimal(0)) / len(parts)
         else:
             numbers = [decimal_value(o["value"]) for o in values]
+            if definition["measurement_type"] == "COUNT" and any(v < 0 for v in numbers):
+                raise DomainError("INCOMPATIBLE_MEASURE", reason="NEGATIVE_COUNT")
+            if (
+                definition["measurement_type"] == "DECIMAL"
+                and any(v < 0 for v in numbers)
+                and not definition.get("allows_negative_adjustments", False)
+            ):
+                raise DomainError("INCOMPATIBLE_MEASURE", reason="NEGATIVE_ADJUSTMENT_NOT_APPROVED")
             if rule == "SUM":
                 value = sum(numbers, Decimal(0))
             elif rule == "COUNT":
@@ -189,17 +279,46 @@ def calculate(definition, observations):
                     raise DomainError("INCOMPATIBLE_MEASURE")
                 value = Decimal(len(numbers))
             elif rule == "MEAN":
-                value = sum(numbers, Decimal(0)) / len(numbers)
+                if (definition.get("statistical_interpretation") or {}).get("weighting") == "FREQUENCY":
+                    weights = [decimal_value(o.get("statistical_weight")) for o in values]
+                    if any(w <= 0 for w in weights):
+                        raise DomainError("INCOMPATIBLE_MEASURE", reason="INVALID_STATISTICAL_WEIGHT")
+                    value = sum((v * w for v, w in zip(numbers, weights, strict=True)), Decimal(0)) / sum(
+                        weights
+                    )
+                else:
+                    value = sum(numbers, Decimal(0)) / len(numbers)
             elif rule == "MEDIAN":
-                ordered = sorted(numbers)
-                middle = len(ordered) // 2
-                value = ordered[middle] if len(ordered) % 2 else (ordered[middle - 1] + ordered[middle]) / 2
+                if (definition.get("statistical_interpretation") or {}).get("weighting") == "FREQUENCY":
+                    weighted = sorted(
+                        (v, decimal_value(o.get("statistical_weight")))
+                        for v, o in zip(numbers, values, strict=True)
+                    )
+                    if any(w <= 0 or w != w.to_integral_value() for _, w in weighted):
+                        raise DomainError("INCOMPATIBLE_MEASURE", reason="INVALID_FREQUENCY_WEIGHT")
+                    total = sum((weight for _, weight in weighted), Decimal(0))
+                    positions = [(total + 1) // 2, (total + 2) // 2]
+                    selected, cumulative = [], Decimal(0)
+                    for number, weight in weighted:
+                        cumulative += weight
+                        while len(selected) < 2 and cumulative >= positions[len(selected)]:
+                            selected.append(number)
+                    value = sum(selected, Decimal(0)) / 2
+                else:
+                    ordered = sorted(numbers)
+                    middle = len(ordered) // 2
+                    value = (
+                        ordered[middle] if len(ordered) % 2 else (ordered[middle - 1] + ordered[middle]) / 2
+                    )
             elif rule == "MIN":
                 value = min(numbers)
             else:
                 value = max(numbers)
         # The display is derived from the stored 12-place value, so every artifact that carries the
         # raw decimal (snapshot, export, attainment) reproduces its displayed figure exactly.
+        expansion = (definition.get("statistical_interpretation") or {}).get("expansion_method")
+        if expansion:
+            value *= decimal_value(expansion["factor"])
         raw = stored(value)
         return {
             **base,
@@ -213,6 +332,7 @@ def calculate(definition, observations):
 def method_limitations(definition):
     """Labels a statistic that must never be read as the pooled or summed figure (CAL02, CAL05)."""
     rule = definition.get("combination_rule")
+    interpretation = definition.get("statistical_interpretation") or {}
     labels = {
         "MEAN": (
             "UNWEIGHTED_MEAN",
@@ -223,8 +343,31 @@ def method_limitations(definition):
             "LATEST_POSITION",
             "Latest approved position by event time; positions are never summed across the period.",
         ),
+        "CUMULATIVE_DIFFERENCE": (
+            "CUMULATIVE_INCREMENT",
+            "Latest approved cumulative position minus the approved starting baseline; cumulative totals are never summed.",
+        ),
     }
-    return [{"code": labels[rule][0], "message": labels[rule][1]}] if rule in labels else []
+    result = [{"code": labels[rule][0], "message": labels[rule][1]}] if rule in labels else []
+    if rule == "MEAN" and interpretation.get("sample_basis") == "SUBGROUP_MEDIANS":
+        result = [
+            {
+                "code": "MEAN_OF_MEDIANS",
+                "message": "Mean of supplied subgroup medians; this is not a pooled median.",
+            }
+        ]
+    if interpretation.get("population_interpretation", "SAMPLE") == "SAMPLE":
+        result.append(
+            {"code": "SAMPLE_NOT_POPULATION", "message": "Sample statistic; it is not a population count."}
+        )
+    if interpretation.get("uncertainty_method", "NONE") == "NONE":
+        result.append(
+            {
+                "code": "UNCERTAINTY_NOT_ESTIMATED",
+                "message": "No uncertainty estimate is attached to this statistic.",
+            }
+        )
+    return result
 
 
 def dimension_codes(raw):

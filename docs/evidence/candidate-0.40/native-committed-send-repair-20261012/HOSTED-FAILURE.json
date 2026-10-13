@@ -1,0 +1,24 @@
+{
+  "head": "6d6faa07a0d4a84daa50b663acfcc438106ace73",
+  "qualification_run": 38209560545,
+  "checks_run": 38209560441,
+  "jobs": {
+    "checks": "PASS",
+    "container-stack": "PASS",
+    "live-identity-provider": "PASS",
+    "local-reference-and-browser": "PASS",
+    "native-postgresql-gate": "FAIL"
+  },
+  "native_full_suite": {
+    "passed": 2694,
+    "failed": 1,
+    "skipped": 29,
+    "deselected": 1,
+    "warnings": 1
+  },
+  "failed_case": "qualification/test_native_worker.py::test_native_batch_outliving_its_lease_sends_every_row_once",
+  "failed_assertion": "Readiness signalled with zero SENT rows; expected exactly one",
+  "underlying_handler_error_class": "NOT_OBSERVED_NO_CAUSE_CLAIM",
+  "three_clone_restore_cases": "PASS in actual hosted full suite",
+  "staging_deployed": false
+}

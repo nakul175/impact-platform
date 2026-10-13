@@ -1,9 +1,9 @@
 {
   "scope": "Pure integrated frontend adapter checks using installed Node; synthetic in-memory replies only, no API, database, UI, native-role or acceptance qualification",
   "actual_api_qualification": "NOT_RUN",
-  "started_at": "2026-10-05T19:31:19.669Z",
-  "finished_at": "2026-10-05T19:31:19.679Z",
-  "node_version": "v24.19.0",
+  "started_at": "2026-10-13T05:54:51.488Z",
+  "finished_at": "2026-10-13T05:54:51.497Z",
+  "node_version": "v24.21.0",
   "results": [
     {
       "name": "exact command and saved-revision path contain only the closed internal-self intent",
@@ -88,15 +88,39 @@
     {
       "name": "even valid reissued bytes with the same operation cannot replace a pinned copy",
       "status": "passed"
+    },
+    {
+      "name": "both package editions are accepted only with their own guidance edition",
+      "status": "passed"
+    },
+    {
+      "name": "closed decoder refuses a v1 label on v2 guidance",
+      "status": "passed"
+    },
+    {
+      "name": "closed decoder refuses a v2 label on v1 guidance",
+      "status": "passed"
+    },
+    {
+      "name": "closed decoder refuses a v2 label on unarchived guidance",
+      "status": "passed"
+    },
+    {
+      "name": "closed decoder refuses a manifest label other than the document's",
+      "status": "passed"
+    },
+    {
+      "name": "closed decoder refuses an unknown package edition",
+      "status": "passed"
     }
   ],
   "qualified_sources": {
-    "apps/web/src/AIPlanExportAdapter.ts": "2120d12614279926449c419ea926fab576fc9634127bed1793147ead3829296d",
-    "tools/browser/ai-plan-export-adapter-check.mjs": "2f88a21234018ca064050669acf504cd756a6cf75a9d4aaeef611c7f16f908ca"
+    "apps/web/src/AIPlanExportAdapter.ts": "a6c1ee40e03904386b6d401fa5df2c281720b68d9fead947701efd865fc1fb5f",
+    "tools/browser/ai-plan-export-adapter-check.mjs": "cf66c1351c148b7fba1c6e427c9304ba2e6221458546eca19db042a2963d1d1d"
   },
   "current_sources": {
-    "apps/web/src/AIPlanExportAdapter.ts": "2120d12614279926449c419ea926fab576fc9634127bed1793147ead3829296d",
-    "tools/browser/ai-plan-export-adapter-check.mjs": "2f88a21234018ca064050669acf504cd756a6cf75a9d4aaeef611c7f16f908ca"
+    "apps/web/src/AIPlanExportAdapter.ts": "a6c1ee40e03904386b6d401fa5df2c281720b68d9fead947701efd865fc1fb5f",
+    "tools/browser/ai-plan-export-adapter-check.mjs": "cf66c1351c148b7fba1c6e427c9304ba2e6221458546eca19db042a2963d1d1d"
   },
   "sources_unchanged": true
 }

@@ -1,0 +1,88 @@
+{
+  "project": "Imprana Commons",
+  "story": "US-DX-01a / APL-361",
+  "observed_at_utc": "2026-10-11T13:07:46.676367+00:00",
+  "tested_source_head": "815077f61abc4da5ca79579c5da46e99c56fd418",
+  "implementation_head": "a8597a7e9be9ffadda87daa32ccb3d28f681de60",
+  "runtime": "Actual installed Chrome 154.0.8037.98 + native PostgreSQL 17.10 + restricted provisioned runtime login",
+  "schema": 46,
+  "result": {
+    "cases": 9,
+    "passed": 9,
+    "failed": 0,
+    "not_run": 0,
+    "assertions": 293
+  },
+  "source_pins_unchanged": 272,
+  "served_asset_pins_unchanged": true,
+  "accessibility_scans": 8,
+  "automated_violations": 0,
+  "automated_incomplete_findings": 0,
+  "manual_accessibility_acceptance": false,
+  "failed_attempt_preserved": "attempt-1: fixture helper could not find checkout .venv/bin/python; 1 failed / 8 not run / 6 assertions. No UI qualification credited.",
+  "environment_repair": "Temporarily linked absent checkout .venv to existing ../impact-platform/.venv without installation or source edits, then removed link and restored original absence.",
+  "request_failures_retained": [
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/diagnoses",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/diagnoses/7fdcacb7-68c3-4689-8635-bc54b2e4068d",
+      "error": "net::ERR_CONNECTION_FAILED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/diagnoses/7fdcacb7-68c3-4689-8635-bc54b2e4068d",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/diagnoses/7fdcacb7-68c3-4689-8635-bc54b2e4068d",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "request_failure_interpretation": "Recorded transport abort/failure observations during deliberate lost-response and delayed-read groups; corresponding bounded group assertions passed. No claim of zero request failures.",
+  "external_requests": 0,
+  "forbidden_requests": 0,
+  "advisory_rows_start": {
+    "ai_advisory_request": 0,
+    "ai_advisory_result": 0
+  },
+  "advisory_rows_end": {
+    "ai_advisory_request": 0,
+    "ai_advisory_result": 0
+  },
+  "cleanup": "Runner API cleanup and native cluster stop exit0; temporary dependency link removed.",
+  "review": {
+    "code_phase": "Reviewed unchanged browser runner/source pins and 46 immutable migration pins; environment-only repair, no implementation or test edits.",
+    "evidence_phase": "Separately compared actual 9 results/293 assertions, 8 axe scans, raw failed attempt, source/asset stability, recorded transport failures and cleanup. Integration self-review, not independent human signoff."
+  },
+  "limits": [
+    "Synthetic disposable loopback data only; no nonprofit owner acceptance, production use or deployment claim.",
+    "Disposable preexisting read-grant purpose narrowing and restoration qualifies an actual refusal; it is not ordinary grant/role creation.",
+    "PGlite fixture runs do not qualify native-role RLS/concurrency. Native qualification remains a separate gate.",
+    "Outbox rows are transaction intents, not external messages or provider deliveries.",
+    "Automated axe serious/critical results are bounded scans; incomplete findings are retained and manual assistive-technology acceptance is not inferred.",
+    "Actual server response transport is deliberately lost or delayed in two groups; server success, conflict, completion, replay and refusal are never fabricated.",
+    "Current exact-head hosted CI/checks, container deployment path, human/security/access-upgrade/owner gates remain held. No remote export, deployment or acceptance.",
+    "Wrapper copied an unrelated older performance XML; it is excluded from this browser evidence."
+  ],
+  "new_spending": false,
+  "deployed": false,
+  "evidence_sha256": {
+    "attempt-1/RUN-RECEIPT.json": "14d5ff55a4933aa683d76ab479195f1ad47328cb85db84748bbe22ee79cd1c76",
+    "attempt-1/browser-tests.json": "1ca79897f280017163f47a4e8f50cd2aaebe32283b96eb3e158d237fcaa50eed",
+    "attempt-1/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "attempt-1/integrated-worker-fence.log": "0361fa4bc93fcd6e58fade652a3fd2bd24987294d30b7c85e7fda6356cdb6480",
+    "attempt-2/RUN-RECEIPT.json": "0876da0c7b1650fda9221f4973486703ea61f7bab154a6989ddc58b6221f086d",
+    "attempt-2/browser-tests.json": "db37264c23d931e0ae898478091a7a94cc50435b3a2327f788e90cfb5a62f1f3",
+    "attempt-2/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "attempt-2/integrated-worker-fence.log": "4a9c9f9e9f4b53444ecaea0138c72f938b3dd59e8e7a1a7778b57c9a8711c830",
+    "captures/diagnosis-completed.png": "fccef46bff5ca0cebbacc770f7e6185851e94c9e5fe52f94897e384cf4568d98",
+    "captures/diagnosis-completion-refused.png": "70921909114cd9ffb546e98954d121784dfcbddb757953fbf37a26c5a0a8feb6",
+    "captures/diagnosis-mobile.png": "d269aa1b53ad91395137a3ab03f97eb6856b7adc8c9bf37477737a7efe97ac0c",
+    "captures/diagnosis-saved-draft.png": "09d3a5e20d589af8696eb2426d3bc06aa07920b8ad2ed27e304e9dc817d146b0"
+  }
+}

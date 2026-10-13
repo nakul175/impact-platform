@@ -1,0 +1,64 @@
+{
+  "record": "IMPRANA-INTEGRATION-DOCUMENT-CHECK",
+  "scope": "Offline source/copy/document integrity only, no product runs, owner approvals, deployment or semantic package quality certification",
+  "baseline": "4472cc845b62c32ffd074d2afee49b5d32f98879",
+  "checks": [
+    {
+      "check": "all original protected tracked source files unchanged",
+      "pass": true,
+      "detail": {
+        "protected_files": 1910,
+        "changed": []
+      }
+    },
+    {
+      "check": "sealed source exact bytes",
+      "pass": true,
+      "detail": {
+        "members": 25,
+        "mismatches": []
+      }
+    },
+    {
+      "check": "sealed pm exact bytes",
+      "pass": true,
+      "detail": {
+        "members": 62,
+        "mismatches": []
+      }
+    },
+    {
+      "check": "sealed proposed exact bytes",
+      "pass": true,
+      "detail": {
+        "members": 394,
+        "mismatches": []
+      }
+    },
+    {
+      "check": "sealed cases exact bytes",
+      "pass": true,
+      "detail": {
+        "members": 375,
+        "mismatches": []
+      }
+    },
+    {
+      "check": "all new JSON parses",
+      "pass": true,
+      "detail": {
+        "errors": []
+      }
+    },
+    {
+      "check": "new Markdown local links resolve",
+      "pass": true,
+      "detail": {
+        "local_links": 419,
+        "missing": []
+      }
+    }
+  ],
+  "errors": [],
+  "status": "PASS"
+}

@@ -1,0 +1,674 @@
+{
+  "reviewedAtUtc": "2026-10-11T02:10:49.562423+00:00",
+  "reviewType": "Independent read-only semantic sample and native append suitability guidance.",
+  "scope": {
+    "semanticStorySamples": 29,
+    "selection": "20 contrasting technical/control stories plus nine nonprofit AI-adoption-chain stories, intentionally covering all high-consequence key families and the whole diagnose→map→discover→assess→value→deploy→adopt→improve journey.",
+    "structuralPopulation": "Full54epics/368stories/1131tasks/1328scenarios separately pinned in PROPOSAL-STRUCTURE-SOURCE-REVIEW.json. Not a claim that every semantic field passed every canonical gate.",
+    "sourceOriginality": "Exact source Gherkin/requirements/native identifiers remain authoritative for meaning; new evidence plans, targets decisions, assumptions and feedback contracts are proposed annotations."
+  },
+  "samples": [
+    {
+      "storyId": "FR-SEC-008",
+      "epicId": "EPIC-SECURITY",
+      "releaseGoalId": "RG-FOUNDATION",
+      "sourceGherkinSha256": "67c46e49869f3b199bc13bb0d76244940b7d6a003a3059d37348ddb592dead09",
+      "criterionIds": [
+        "AC-FR-SEC-008-001",
+        "AC-FR-SEC-008-002",
+        "AC-FR-SEC-008-003"
+      ],
+      "taskIds": [
+        "TASK-FR-SEC-008-01",
+        "TASK-FR-SEC-008-02",
+        "TASK-FR-SEC-008-03"
+      ],
+      "sourceVerificationLevels": [
+        "manual"
+      ],
+      "scopeAndOracleReview": "Security feature flags never waive gate evidence; traceable code/inventory/migration/approvals are future evidence, and a commissioned review is not a passed assurance claim.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-AI-016a",
+      "epicId": "EPIC-AI-CAPABILITIES",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "be1732b88a4e8b00c96a6f987d865452a768586980c90201f089dfb07ad88d97",
+      "criterionIds": [
+        "AC-FR-AI-016a-001",
+        "AC-FR-AI-016a-002",
+        "AC-FR-AI-016a-003"
+      ],
+      "taskIds": [
+        "TASK-FR-AI-016a-01",
+        "TASK-FR-AI-016a-02",
+        "TASK-FR-AI-016a-03",
+        "TASK-FR-AI-016a-04",
+        "TASK-FR-AI-016a-05",
+        "TASK-FR-AI-016a-06"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Reservation/job/cancellation split is intact; provider acceptance ambiguity, one settlement, current authority and input preservation remain explicit. Budget units/charges are unresolved choices, not paid permission.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-AI-016b",
+      "epicId": "EPIC-AI-CAPABILITIES",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "118a26cdbf31e54bf9383afea5ffd7b627866518749d11480d2aa86db16a0d21",
+      "criterionIds": [
+        "AC-FR-AI-016b-001",
+        "AC-FR-AI-016b-002"
+      ],
+      "taskIds": [
+        "TASK-FR-AI-016b-01",
+        "TASK-FR-AI-016b-02",
+        "TASK-FR-AI-016b-03"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Partial/timeouts stay separate from reservation jobs, incomplete drafts cannot become final, and original provider failure deadline/label criteria remain unrun.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-ACC-001",
+      "epicId": "EPIC-ACCESS-CONTROL",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "6e50bdfbd2b29c1cffbc90c6e4484e86205dd972899ae24b29570df31446ae67",
+      "criterionIds": [
+        "AC-FR-ACC-001-001",
+        "AC-FR-ACC-001-002",
+        "AC-FR-ACC-001-003",
+        "AC-FR-ACC-001-004"
+      ],
+      "taskIds": [
+        "TASK-FR-ACC-001-01",
+        "TASK-FR-ACC-001-02",
+        "TASK-FR-ACC-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "browser",
+        "integration"
+      ],
+      "scopeAndOracleReview": "Unknown/hidden selectors and batch references retain no names/count disclosure; cached broad role cannot be a policy failure fallback.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-CAL-003",
+      "epicId": "EPIC-CALCULATIONS",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "70ff0c2b74d1b1504ab60bb3b6636b634141fc09b8d5595ca0ff3e7aa6d6fcf0",
+      "criterionIds": [
+        "AC-FR-CAL-003-001",
+        "AC-FR-CAL-003-002",
+        "AC-FR-CAL-003-003",
+        "AC-FR-CAL-003-004"
+      ],
+      "taskIds": [
+        "TASK-FR-CAL-003-01",
+        "TASK-FR-CAL-003-02",
+        "TASK-FR-CAL-003-03"
+      ],
+      "sourceVerificationLevels": [
+        "unit"
+      ],
+      "scopeAndOracleReview": "Source pooled quantities/UNDEFINED and distinct labelled unweighted statistic remain; source 50/100 plus 1/10 example is retained, no average-percent substitute.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-OFF-001",
+      "epicId": "EPIC-OFFLINE-COLLECTION",
+      "releaseGoalId": "RG-R2",
+      "sourceGherkinSha256": "19cdbb1e88ce27478b0e639cb45703cc22b0dfe5a0b13d6ba8b8bac1743392bd",
+      "criterionIds": [
+        "AC-FR-OFF-001-001",
+        "AC-FR-OFF-001-002",
+        "AC-FR-OFF-001-003",
+        "AC-FR-OFF-001-004"
+      ],
+      "taskIds": [
+        "TASK-FR-OFF-001-01",
+        "TASK-FR-OFF-001-02",
+        "TASK-FR-OFF-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "browser"
+      ],
+      "scopeAndOracleReview": "Assigned-only actor/tenant/device/policy packages, current online renewal, expiry and package inventory are retained; browser appearance alone does not prove an unassigned record absent.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-PRV-001",
+      "epicId": "EPIC-PRIVACY",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "1d7adc70e15169290415953fecc760a49eabad6f420e07925264189351724167",
+      "criterionIds": [
+        "AC-FR-PRV-001-001",
+        "AC-FR-PRV-001-002",
+        "AC-FR-PRV-001-003",
+        "AC-FR-PRV-001-004"
+      ],
+      "taskIds": [
+        "TASK-FR-PRV-001-01",
+        "TASK-FR-PRV-001-02",
+        "TASK-FR-PRV-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "browser",
+        "integration"
+      ],
+      "scopeAndOracleReview": "Classification/purpose/owner/retention, stricter inheritance, impact review and no unclassified sensitive collection remain; synthetic fixtures do not prove lawful basis.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-WFL-001",
+      "epicId": "EPIC-WORKFLOW-AND-REVIEW",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "89ce0d14b5b6d5629c1f36a50c3bfbcb009ab879f2731910439844bb1c4595c8",
+      "criterionIds": [
+        "AC-FR-WFL-001-001",
+        "AC-FR-WFL-001-002",
+        "AC-FR-WFL-001-003",
+        "AC-FR-WFL-001-004",
+        "AC-FR-WFL-001-005"
+      ],
+      "taskIds": [
+        "TASK-FR-WFL-001-01",
+        "TASK-FR-WFL-001-02",
+        "TASK-FR-WFL-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "native"
+      ],
+      "scopeAndOracleReview": "Original version running instances and explicit migration invalidation survive; no independent-review or mandatory privacy/security quorum bypass. Existing interface-kind task verification duty is an explicit proposal.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-TEN-001",
+      "epicId": "EPIC-TENANCY-AND-ORGANISATION",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "17bf91e3a0aa5c7bb83da6bca67a1f09304daa341eb654118063359f938d9a52",
+      "criterionIds": [
+        "AC-FR-TEN-001-001",
+        "AC-FR-TEN-001-002",
+        "AC-FR-TEN-001-003",
+        "AC-FR-TEN-001-004"
+      ],
+      "taskIds": [
+        "TASK-FR-TEN-001-01",
+        "TASK-FR-TEN-001-02",
+        "TASK-FR-TEN-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "native"
+      ],
+      "scopeAndOracleReview": "Two-tenant isolation, accepted-row history, future write cancellation, scoped support/exit, reactivation rechecks and no automatic queued replay remain.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-IAM-001",
+      "epicId": "EPIC-IDENTITY-AND-ACCOUNTS",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "3fc7b138b5cd7d1ad0d66e25ab4e6e3ac24f55fbfae213aab3d8c786c13496f8",
+      "criterionIds": [
+        "AC-FR-IAM-001-001",
+        "AC-FR-IAM-001-002",
+        "AC-FR-IAM-001-003",
+        "AC-FR-IAM-001-004"
+      ],
+      "taskIds": [
+        "TASK-FR-IAM-001-01",
+        "TASK-FR-IAM-001-02",
+        "TASK-FR-IAM-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "browser",
+        "integration"
+      ],
+      "scopeAndOracleReview": "Nominated identity/token/inviter authority, one membership, seven-day default and resend invalidation remain; email receipt alone cannot prove activated membership.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-PAR-001",
+      "epicId": "EPIC-PARTICIPANTS",
+      "releaseGoalId": "RG-R2",
+      "sourceGherkinSha256": "ac291b1aaaa83b5a5642214914557653df7ae5a5539215d7f4a6dedf01999258",
+      "criterionIds": [
+        "AC-FR-PAR-001-001",
+        "AC-FR-PAR-001-002",
+        "AC-FR-PAR-001-003"
+      ],
+      "taskIds": [
+        "TASK-FR-PAR-001-01",
+        "TASK-FR-PAR-001-02",
+        "TASK-FR-PAR-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Aggregate-only vs registry mode/pseudonyms and no mandatory national IDs remain; registry switch without privacy review refuses and creates no empty personal rows.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-INT-001",
+      "epicId": "EPIC-INTEGRATIONS-AND-CONNECTORS",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "d24c5817e629effc02ce6d6f5fc7c5a132147c0070f4e04415c3ffeafb7ec674",
+      "criterionIds": [
+        "AC-FR-INT-001-001",
+        "AC-FR-INT-001-002",
+        "AC-FR-INT-001-003"
+      ],
+      "taskIds": [
+        "TASK-FR-INT-001-01",
+        "TASK-FR-INT-001-02",
+        "TASK-FR-INT-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Versioned connector fixture, count reconciliation and unsupported-field manifest remain; mapping/trial is no production activation or destructive deletion permission.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-DAT-001",
+      "epicId": "EPIC-DATA-IMPORT-AND-MANAGEMENT",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "739e0d9f87c41e134be0bc3bd0d3ff8a96807e5e5c7f63cbf93476e0f477a965",
+      "criterionIds": [
+        "AC-FR-DAT-001-001",
+        "AC-FR-DAT-001-002",
+        "AC-FR-DAT-001-003"
+      ],
+      "taskIds": [
+        "TASK-FR-DAT-001-01",
+        "TASK-FR-DAT-001-02",
+        "TASK-FR-DAT-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "browser",
+        "integration"
+      ],
+      "scopeAndOracleReview": "Raw/interpreted preview, leading-zero/long identifiers, formula mode, explicit ambiguous-date pattern and safety before parsing remain distinct source controls.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-EVD-001",
+      "epicId": "EPIC-EVIDENCE",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "4f1ebca8b3bdf43c9a273580b7eb8f95e3cab038f59ebe4de7d3e16cbd9f0bd6",
+      "criterionIds": [
+        "AC-FR-EVD-001-001",
+        "AC-FR-EVD-001-002",
+        "AC-FR-EVD-001-003",
+        "AC-FR-EVD-001-004",
+        "AC-FR-EVD-001-005"
+      ],
+      "taskIds": [
+        "TASK-FR-EVD-001-01",
+        "TASK-FR-EVD-001-02",
+        "TASK-FR-EVD-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "File replacement creates new versions and keeps prior citations, source URLs remain external references and permission applies to search/content metadata.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-FIN-001",
+      "epicId": "EPIC-FINANCE",
+      "releaseGoalId": "RG-R2",
+      "sourceGherkinSha256": "4cd28b072d65a7a9aecd7757ab719c910fc4cbdcd0a603eba421ee91ded3c9d8",
+      "criterionIds": [
+        "AC-FR-FIN-001-001",
+        "AC-FR-FIN-001-002",
+        "AC-FR-FIN-001-003",
+        "AC-FR-FIN-001-004"
+      ],
+      "taskIds": [
+        "TASK-FR-FIN-001-01",
+        "TASK-FR-FIN-001-02",
+        "TASK-FR-FIN-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Agreement/subgrant/Decimal/amendment evidence and confidential clauses remain; funding does not confer grants or ownership shares; no payment execution inferred.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-MIG-007",
+      "epicId": "EPIC-MIGRATION-AND-EXIT",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "b47a717d7023fa789e9ef9352f9cd88506f3ea740b0b7e89804f81607c543054",
+      "criterionIds": [
+        "AC-FR-MIG-007-001",
+        "AC-FR-MIG-007-002",
+        "AC-FR-MIG-007-003",
+        "AC-FR-MIG-007-004"
+      ],
+      "taskIds": [
+        "TASK-FR-MIG-007-01",
+        "TASK-FR-MIG-007-02",
+        "TASK-FR-MIG-007-03"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Reconstructable relationship package, count/hash/exclusions and explicit secret reconfiguration remain; owner exit does not waive sensitive source projection or prove a restore.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "VF-PER-001",
+      "epicId": "EPIC-NFR-PERFORMANCE",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "3d010bba2e2b2bf54b3c17f9e8477e45464aad67f5f6b519359a428702ba6d76",
+      "criterionIds": [
+        "AC-VF-PER-001-001",
+        "AC-VF-PER-001-002",
+        "AC-VF-PER-001-003"
+      ],
+      "taskIds": [
+        "TASK-VF-PER-001-01",
+        "TASK-VF-PER-001-02",
+        "TASK-VF-PER-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "native"
+      ],
+      "scopeAndOracleReview": "Original per-action/per-tenant p95 2 seconds and p99 5 seconds/100-row lists remain, usable durable confirmation and full concurrent peak/soak profile required. No fast/slow pooling or invented observed latency.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "VF-DR-001",
+      "epicId": "EPIC-NFR-RECOVERY",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "7f720ddbbab6526f45c4dcd6e9370c5ce15ea6dced5197b5193e82b7f839b170",
+      "criterionIds": [
+        "AC-VF-DR-001-001",
+        "AC-VF-DR-001-002",
+        "AC-VF-DR-001-003",
+        "AC-VF-DR-001-004"
+      ],
+      "taskIds": [
+        "TASK-VF-DR-001-01",
+        "TASK-VF-DR-001-02",
+        "TASK-VF-DR-001-03"
+      ],
+      "sourceVerificationLevels": [
+        "native"
+      ],
+      "scopeAndOracleReview": "Original RPO at most15 minutes/RTO at most4 hours from incident declaration remain, allowed-region complete files/config/governance and actual accepted-write loss must be verified.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "FR-UX-003",
+      "epicId": "EPIC-USER-EXPERIENCE",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "da5bb8f25304b1c6d7fecc6cf70814ec220bc4a47e09a1090033a189c4218239",
+      "criterionIds": [
+        "AC-FR-UX-003-001",
+        "AC-FR-UX-003-002",
+        "AC-FR-UX-003-003",
+        "AC-FR-UX-003-004"
+      ],
+      "taskIds": [
+        "TASK-FR-UX-003-01",
+        "TASK-FR-UX-003-02",
+        "TASK-FR-UX-003-03"
+      ],
+      "sourceVerificationLevels": [
+        "browser"
+      ],
+      "scopeAndOracleReview": "Recoverable draft/operation IDs and current authorized receipt reconciliation before unknown repeat remain; governed inverses cannot erase audit or restore lawfully deleted data.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "US-CM-04",
+      "epicId": "EPIC-COMMERCIAL-AND-BILLING",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "1909cc109927fa572cd8e6d045538e3b2d6cb3f1918aa9e3af0b54cb90642b3e",
+      "criterionIds": [
+        "AC-US-CM-04-001",
+        "AC-US-CM-04-002",
+        "AC-US-CM-04-003"
+      ],
+      "taskIds": [
+        "TASK-US-CM-04-01",
+        "TASK-US-CM-04-02",
+        "TASK-US-CM-04-03"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Sponsorship-end minimum90-day retained read-only data and one-step conversion source remain; no purchased subscription, early deletion or external spend authorization inferred.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "US-DC-01",
+      "epicId": "EPIC-ADOPTION-DISCOVER",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "88eaa34b8bb444e6489199eaff753bc3d8e64cd39f54ed4b751ef3e945d01193",
+      "criterionIds": [
+        "AC-US-DC-01-001",
+        "AC-US-DC-01-002",
+        "AC-US-DC-01-003"
+      ],
+      "taskIds": [
+        "TASK-US-DC-01-01",
+        "TASK-US-DC-01-02",
+        "TASK-US-DC-01-03"
+      ],
+      "sourceVerificationLevels": [
+        "browser",
+        "integration"
+      ],
+      "scopeAndOracleReview": "Default at most3 vetted options and explicit more request remain; listing is a curation hypothesis, not warranty or procurement approval.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "US-DX-01a",
+      "epicId": "EPIC-ADOPTION-DIAGNOSE",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "6568f4b80844144e6398bde82db86533faaa15862a1d9e54e2dbf9df79b59d73",
+      "criterionIds": [
+        "AC-US-DX-01a-001",
+        "AC-US-DX-01a-002"
+      ],
+      "taskIds": [
+        "TASK-US-DX-01a-01",
+        "TASK-US-DX-01a-02",
+        "TASK-US-DX-01a-03",
+        "TASK-US-DX-01a-04",
+        "TASK-US-DX-01a-05",
+        "TASK-US-DX-01a-06"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Structured stable problem/evidence/priority recording remains independent from conversational intake; source gap requires explicit proposed fixture, not changed criteria.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "US-DX-01b",
+      "epicId": "EPIC-ADOPTION-DIAGNOSE",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "3aab47793df1cf2fdbcfb3132df4a921a6dc4c643b0af11bd4952fde2075a40c",
+      "criterionIds": [
+        "AC-US-DX-01b-001",
+        "AC-US-DX-01b-002"
+      ],
+      "taskIds": [
+        "TASK-US-DX-01b-01",
+        "TASK-US-DX-01b-02",
+        "TASK-US-DX-01b-03"
+      ],
+      "sourceVerificationLevels": [
+        "browser",
+        "integration"
+      ],
+      "scopeAndOracleReview": "Conversation under60minutes and Executive Director accept/edit review remain; generated problems are proposals, not silently saved organization decisions.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "US-MP-01",
+      "epicId": "EPIC-ADOPTION-MAP",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "c36936aedf7f418f8fddb2089019766001200e7ab3ba2c716a6d82d1d5a59f21",
+      "criterionIds": [
+        "AC-US-MP-01-001",
+        "AC-US-MP-01-002"
+      ],
+      "taskIds": [
+        "TASK-US-MP-01-01",
+        "TASK-US-MP-01-02",
+        "TASK-US-MP-01-03"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Each diagnosed problem has at least one pattern-library candidate and real-world example; proposed ranking does not authorize buying.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "US-VC-01",
+      "epicId": "EPIC-ADOPTION-VALUE-CASE",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "d67a78e3e480338c89c029cff0e44ad828bd78f35d1a0b66dab99bd15cbb2854",
+      "criterionIds": [
+        "AC-US-VC-01-001",
+        "AC-US-VC-01-002",
+        "AC-US-VC-01-003"
+      ],
+      "taskIds": [
+        "TASK-US-VC-01-01",
+        "TASK-US-VC-01-02",
+        "TASK-US-VC-01-03"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Source1–3year ROI/TCO baseline/trial costs and licenses/setup/training/staff inputs stay; missing prices/rates/formula/attribution are open recommended decisions, not invented ROI.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "US-AS-01",
+      "epicId": "EPIC-ADOPTION-ASSESS",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "c40ed9b27b480a51191475972ce25a8d94779b5955c037a4a718c438c4ce6588",
+      "criterionIds": [
+        "AC-US-AS-01-001",
+        "AC-US-AS-01-002"
+      ],
+      "taskIds": [
+        "TASK-US-AS-01-01",
+        "TASK-US-AS-01-02",
+        "TASK-US-AS-01-03"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Advisor-led pilot up to4weeks and permitted sample/own data remain; trial can prove bounded workflow, not purchase, production or legal authorization.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "US-DP-02",
+      "epicId": "EPIC-ADOPTION-DEPLOY",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "40a456a36cf7392de6a6583c7f1171b5a6d3811fe89b96cbc7248e7dd5b895cc",
+      "criterionIds": [
+        "AC-US-DP-02-001",
+        "AC-US-DP-02-002"
+      ],
+      "taskIds": [
+        "TASK-US-DP-02-01",
+        "TASK-US-DP-02-02",
+        "TASK-US-DP-02-03"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Existing workflow touchpoints/source-of-truth and no duplicate entry remain; written plan is not a deployment or accepted integration.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "US-AD-01",
+      "epicId": "EPIC-ADOPTION-ADOPT",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "e4796016a8e17310b2cb27944cf93509d908f86c45fddbc7d488000987c5f3a0",
+      "criterionIds": [
+        "AC-US-AD-01-001",
+        "AC-US-AD-01-002",
+        "AC-US-AD-01-003"
+      ],
+      "taskIds": [
+        "TASK-US-AD-01-01",
+        "TASK-US-AD-01-02",
+        "TASK-US-AD-01-03"
+      ],
+      "sourceVerificationLevels": [
+        "browser",
+        "integration"
+      ],
+      "scopeAndOracleReview": "Role-based module/completion source remains; course completion is not competency certification or actual adoption.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    },
+    {
+      "storyId": "US-IM-01",
+      "epicId": "EPIC-ADOPTION-IMPROVE",
+      "releaseGoalId": "RG-R1",
+      "sourceGherkinSha256": "e14b0b02e7c2ff08076025f6d25e571d82acb0963674a1293ab88d16a39aa794",
+      "criterionIds": [
+        "AC-US-IM-01-001",
+        "AC-US-IM-01-002"
+      ],
+      "taskIds": [
+        "TASK-US-IM-01-01",
+        "TASK-US-IM-01-02",
+        "TASK-US-IM-01-03"
+      ],
+      "sourceVerificationLevels": [
+        "integration"
+      ],
+      "scopeAndOracleReview": "Usage/outcomes against exact locked baseline remain; favorable comparison does not establish causal attribution.",
+      "disposition": "Suitable as additive draft planning annotation with preserved source clauses and unresolved actual execution/approval gates; no readiness or acceptance granted."
+    }
+  ],
+  "findings": [
+    {
+      "id": "SEMANTIC-01",
+      "type": "retained_gate",
+      "finding": "Actual component/interface design, fixtures, independent review, accountable owner, estimates/target agreement and applicable runtime AI/data authority remain open source-specific gates. Generic artifact plans are not final contracts or coding/sprint acceptance."
+    },
+    {
+      "id": "SEMANTIC-02",
+      "type": "required_label",
+      "finding": "Seven augmented plan assertion groups need explicit original Then vs existing supplementary plan oracle labels in the integrated criterion/native story presentation. Task matrix already supplies the distinction; do not alter either source."
+    },
+    {
+      "id": "SEMANTIC-03",
+      "type": "retained_gap",
+      "finding": "Keep37 missing source phases and13 non-qualification verification-duty proposals in the handover/decision ledger with precise resume evidence. User best-recommendation authority permits the draft proposal, not fake owner/team acceptance."
+    },
+    {
+      "id": "SEMANTIC-04",
+      "type": "native_reconciliation",
+      "finding": "One idempotent named append per actual canonical issue after current native readback; preserve human text, parent/milestone/status/estimate/assignee and all predecessor relations. Related links remain nonblocking."
+    },
+    {
+      "id": "SEMANTIC-05",
+      "type": "assurance_boundary",
+      "finding": "Overall AI product use and personal/organisation-sensitive data have source-backed obligations. Per-slice exclusions require actual pinned rationale; absent keywords do not establish no-use. Keep evaluation rights/configuration/critical slices/fallback and current-authority/privacy controls planned, not observed."
+    }
+  ],
+  "conclusion": "No introduced source acceptance weakening identified in the29 sampled stories. Structurally consistent append proposals are suitable for reconciliation as explicitly proposed/unrun documentation. Canonical planning completion, native publication, Ready/Done, delivery and product acceptance are not established by this independent review.",
+  "formalCheckerGateVerdictsAuthored": false,
+  "externalTrustSupplied": false,
+  "networkOrNativeWrites": false,
+  "runtimeTestsRun": false,
+  "productApprovalGranted": false
+}

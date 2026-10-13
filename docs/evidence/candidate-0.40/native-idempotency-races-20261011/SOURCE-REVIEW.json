@@ -1,0 +1,17 @@
+{
+  "phase": "source review",
+  "reviewer": "root agent, not independent human signoff",
+  "observed_at": "2026-10-11T10:40:17.994985+00:00",
+  "tested_source_sha256": "f9fd1c8621046ff8735052f9451e82f48908f50071a0a0e879cab15533f0840f",
+  "prior_case_assertions_retained": true,
+  "seven_added_cases": [
+    "Exact same-operation create/edit/complete/revise x4",
+    "Different valid payload on same-operation create/edit/revise x3"
+  ],
+  "oracle": "Independent HTTP connections released by existing native race barrier; exact retries return identical receipt, changed payload yields one winner and CONFLICT_OPERATION, one new diagnosis revision/audit/receipt/outbox only, previous revision byte-exact over API, winner retry unchanged and loser still refused",
+  "limits": [
+    "Barrier-released HTTP qualification; does not force each conflicting payload to win separately",
+    "Synthetic native fixture only; no new human signoff, complete full-suite, provider/browser/deployed acceptance"
+  ],
+  "product_source_migration_or_original_criteria_changed": false
+}

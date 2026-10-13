@@ -1,0 +1,88 @@
+{
+  "story": "US-DX-01a/APL-361",
+  "tested_head": "0ed0c5bdb2fb65aba0b8babe31253c495aa3653b",
+  "tested_scope": "Clean exact committed application plus current test harness, actual native PostgreSQL17.10 and PgBouncer1.26.0 transaction pool size3; no source edits during runs",
+  "full_selected_suite": {
+    "tests": 2714,
+    "passed": 2690,
+    "skipped": 24,
+    "failures": 0,
+    "errors": 0,
+    "deselected": 1,
+    "warnings": 1,
+    "seconds": 388.005
+  },
+  "api_restart_phases": {
+    "phase1": {
+      "passed": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0
+    },
+    "phase2": {
+      "passed": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0
+    },
+    "actual_new_api_process": true,
+    "original_exact_receipts_and_diagnosis_history": "PASS"
+  },
+  "restore": {
+    "tables": 193,
+    "rows": 117676,
+    "differences": 0,
+    "schema": 47,
+    "checksums_verified": 47,
+    "migrations_applied": [],
+    "security_official_arithmetic": "PASS",
+    "copied_database_dropped": true,
+    "topology": "Direct restricted restored clones; original runtime pooled. No pooled restored API claim"
+  },
+  "upgrade": {
+    "from_schema": 45,
+    "to_schema": 47,
+    "applied": [
+      "0046_diagnosis_problem_order.sql",
+      "0047_diagnosis_evidence_privacy.sql"
+    ],
+    "populated_revisions": 509,
+    "tenants": 2,
+    "preserved_data_security_and_checksum_checks": "PASS"
+  },
+  "separate_owned_pooler_outage": {
+    "tests": 1,
+    "passed": 1,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 14.522,
+    "downtime_seconds": 12.8,
+    "first_503_readiness_seconds": 5.3,
+    "read_503_seconds": 5.3,
+    "recovery_ready_seconds": 0.5,
+    "read_attempts_after_ready": 2,
+    "worker_refused_classes": [
+      "ProtocolViolation"
+    ],
+    "actual_behavior": "API live200/readiness+read+write retryable503; original API and worker survive; heartbeat advances, exact old receipt preserved, refused write has zero receipts then exact retry twice creates one receipt/revision. No midtransaction kill or latency acceptance claim."
+  },
+  "source_pins_each": 298,
+  "source_pins_stable": true,
+  "cluster_stop_exit_codes": [
+    0,
+    0
+  ],
+  "binary_sha256": "26abb67072fda4dc0014a6dfd8f9dfa97a26c1668ec1942a6bd40fa1ea44af91",
+  "historical_evidence_restored_byte_exact": 9,
+  "code_review": "Application/harness code unchanged since separately code-reviewed 0ed0c5b; this batch preserves evidence/documentation only",
+  "evidence_review": "Separate supporting read-only review verified main and both restart XMLs,298pins/runtime hash/cleanup/193tables117676rows security/golden/schema47/full restore/populated45to47upgrade; compared all9 historical files against gitshow testedhead; distinct outage review verified1pass/actual12.8s downtime/retryable503/recovery/exactonce/cleanup.19full and8outage copied artifacts scanned without credential-pattern matches; only safe restart XMLs added, private cookie/state/config/dumps excluded. Not human signoff.",
+  "limits": [
+    "24original skips remain:18liveIdP, one configured diagnosis restored API, one historicalHTTPceiling, one actualDBoutage, two separate APIrestartphases, onePGlite-only worker",
+    "This separate outage pass does not rewrite skipped main result",
+    "Local provider/browser evidence at preceding application pins remains separate; no pooled IdP/browser claim",
+    "No TLS/production pooler/provider topology acceptance",
+    "No pre-erasure backup TH27 closure",
+    "No required hosted CI/container/publicexport/humanacceptance/deployment;0/50delivered"
+  ]
+}

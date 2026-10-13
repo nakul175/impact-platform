@@ -35,14 +35,69 @@ from .audit_export import AuditExports
 from .retention_policies import RetentionPolicies
 from . import security_events
 from .dashboards import Dashboards
+from .dashboard_authoring import DashboardAuthoring
+from .dashboard_alerts import DashboardAlerts
+from .dashboard_publication import DashboardPublication
+from .external_analytics import ExternalAnalytics
+from .anomaly_assistance import AnomalyAssistance
+from .evaluation_registry import EvaluationRegistry
+from .evaluation_methodology import EvaluationMethodology
+from .analysis_packages import AnalysisPackages
+from .learning_agenda import LearningAgenda
+from .management_responses import ManagementResponses
+from .qualitative_evidence import QualitativeEvidence
+from .transcription import Transcription
+from .findings import Findings
+from .finance_governance import FinanceGovernance
+from .dashboard_pivots import DashboardPivots
+from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
 from .ai_enablement import AIEnablement
+from .ai_jobs import AIJobs
+from .ai_forecasts import AIForecasts
+from .ai_safety import AISafety
+from .ai_extraction import AIExtraction
+from .ai_indicator_design import AIIndicatorDesign
+from .ai_import_assistance import AIImportAssistance
+from .ai_evidence_questions import AIEvidenceQuestions
+from .ai_numeric_analysis import AINumericAnalysis
+from .ai_report_drafting import AIReportDrafting
+from .ai_qualitative_assistance import AIQualitativeAssistance
+from .ai_proactive_findings import AIProactiveFindings
+from .ai_action_proposals import AIActionProposals
 from .ai_policy import AIPolicy
 from .ai_ranking import AIRanking
 from .ai_adoption_plans import AIAdoptionPlans
+from .ai_role_training import AIRoleTraining
+from .ai_champion_appointments import AIChampionAppointments
+from .ai_diagnoses import AIDiagnoses
+from .ai_diagnosis_contributions import AIDiagnosisContributions
+from .ai_diagnosis_reviews import AIDiagnosisReviews
+from .ai_solution_fit_scores import AISolutionFitScores
+from .ai_problem_baselines import AIProblemBaselines
+from .ai_outcome_observations import AIOutcomeObservations
+from .ai_sponsor_value_reports import AISponsorValueReports
+from .ai_quarterly_value_reviews import AIQuarterlyValueReviews
+from .ai_outcome_evidence import AIOutcomeEvidence
+from .ai_next_opportunities import AINextOpportunities
+from .ai_value_case_versions import AIValueCaseVersions
+from .ai_opportunity_mapping import AIOpportunityMapping
 from .ai_plan_exports import AIPlanExports
 from .ai_impact_references import AIImpactReferences
 from .human_advice import HumanAdviceCases
+from .sponsored_access import SponsoredAccess
+from .entitlement_view import EntitlementView
+from .service_packages import ServicePackages
+from .tax_invoicing import TaxInvoicing
+from .agreement_coverage import AgreementCoverage
+from .access_checks import AccessChecks
+from .fine_grained_access import FineGrainedAccess
+from .effective_access import EffectiveAccess
+from .permission_safe_derivatives import PermissionSafeDerivatives
+from .external_shares import ExternalShares
+from .access_change_propagation import AccessChangePropagation
+from .ai_trials import AITrials
+from .partner_revenue import PartnerRevenue
 from .human_advice_contracts import ACTION_DATA as HUMAN_ADVICE_ACTIONS
 from .ai_advisory_provider import OpenAIAdvisory
 from .contracts import validate
@@ -109,19 +164,101 @@ def create_app():
     account = Account(auth)
     service = Service(s, db)
     ai_enablement = AIEnablement(service, OpenAIAdvisory(s.ai_api_key, s.ai_model), enabled=s.ai_enabled)
+    ai_jobs = AIJobs(service, ai_enablement)
+    ai_forecasts = AIForecasts(service)
+    ai_safety = AISafety(service)
+    ai_extraction = AIExtraction(
+        service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
+    )
+    ai_indicator_design = AIIndicatorDesign(
+        service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
+    )
+    ai_import_assistance = AIImportAssistance(
+        service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
+    )
+    ai_evidence_questions = AIEvidenceQuestions(
+        service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
+    )
+    ai_numeric_analysis = AINumericAnalysis(
+        service, ai_enablement.provider.destination, ai_enablement.provider.evaluation_configuration
+    )
+    ai_report_drafting = AIReportDrafting(
+        service,
+        service.reporting,
+        ai_enablement.provider.destination,
+        ai_enablement.provider.evaluation_configuration,
+    )
+    ai_qualitative_assistance = AIQualitativeAssistance(
+        service,
+        ai_enablement.provider.destination,
+        ai_enablement.provider.evaluation_configuration,
+    )
+    ai_proactive_findings = AIProactiveFindings(
+        service,
+        ai_enablement.provider.destination,
+        ai_enablement.provider.evaluation_configuration,
+    )
+    ai_action_proposals = AIActionProposals(
+        service,
+        ai_enablement.provider.destination,
+        ai_enablement.provider.evaluation_configuration,
+    )
     ai_policy = AIPolicy(service, ai_enablement.server_ready)
-    ai_ranking = AIRanking(service)
     ai_plans = AIAdoptionPlans(service)
+    ai_role_training = AIRoleTraining(service)
+    ai_champion_appointments = AIChampionAppointments(service)
+    ai_diagnoses = AIDiagnoses(service)
+    ai_diagnosis_contributions = AIDiagnosisContributions(service, ai_diagnoses)
+    ai_diagnosis_reviews = AIDiagnosisReviews(service, ai_diagnoses)
+    ai_solution_fit_scores = AISolutionFitScores(service)
+    ai_problem_baselines = AIProblemBaselines(service, ai_diagnoses)
+    ai_outcome_observations = AIOutcomeObservations(service, ai_diagnoses, ai_problem_baselines)
+    ai_sponsor_value_reports = AISponsorValueReports(service, ai_outcome_observations)
+    ai_quarterly_value_reviews = AIQuarterlyValueReviews(service, ai_outcome_observations)
+    ai_next_opportunities = AINextOpportunities(service, ai_diagnoses)
+    ai_value_cases = AIValueCaseVersions(service)
+    ai_opportunity_mapping = AIOpportunityMapping(ai_diagnoses)
+    ai_ranking = AIRanking(service, mappings=ai_opportunity_mapping)
     ai_plan_exports = AIPlanExports(service)
     human_advice = HumanAdviceCases(service)
+    sponsored_access = SponsoredAccess(service)
+    entitlement_view = EntitlementView(service)
+    service_packages = ServicePackages(service)
+    tax_invoicing = TaxInvoicing(service)
+    agreement_coverage = AgreementCoverage(service)
+    access_checks = AccessChecks(service)
+    fine_grained_access = FineGrainedAccess(service)
+    effective_access = EffectiveAccess(service)
+    permission_safe_derivatives = PermissionSafeDerivatives(service)
+    external_shares = ExternalShares(service, permission_safe_derivatives)
+    access_change_propagation = AccessChangePropagation(service, permission_safe_derivatives)
+    ai_trials = AITrials(service, ai_value_cases)
     administration = Administration(s, db, service)
     lifecycle = TenantLifecycle(s, db)
+    partner_revenue = PartnerRevenue(lifecycle)
+    ai_outcome_evidence = AIOutcomeEvidence(service, lifecycle)
     bootstrap_access = AccessBootstrap(lifecycle)
     authority_renewal = AuthorityRenewal(lifecycle)
     access_upgrade = AccessUpgrade(lifecycle)
     recovery_contacts = RecoveryContacts(lifecycle)
     worker_status = WorkerStatus(lifecycle)
     dashboards = Dashboards(service)
+    dashboard_authoring = DashboardAuthoring(service)
+    dashboard_alerts = DashboardAlerts(service)
+    dashboard_publication = DashboardPublication(service)
+    external_analytics = ExternalAnalytics(service)
+    anomaly_assistance = AnomalyAssistance(service)
+    evaluation_registry = EvaluationRegistry(service)
+    evaluation_methodology = EvaluationMethodology(service)
+    analysis_packages = AnalysisPackages(service)
+    learning_agenda = LearningAgenda(service)
+    management_responses = ManagementResponses(service)
+    qualitative_evidence = QualitativeEvidence(service)
+    transcription = Transcription(service)
+    findings = Findings(service)
+    finance_governance = FinanceGovernance(service)
+    dashboard_pivots = DashboardPivots(service)
+    dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
     audit_exports = AuditExports(service)
     retention_policies = RetentionPolicies(service)
@@ -155,6 +292,11 @@ def create_app():
             await run_in_threadpool(
                 security_events.record, db, exc.denial, request.state.correlation, request.url.path
             )
+        if getattr(exc, "calculation_failure", None):
+            try:
+                await run_in_threadpool(service.record_calculation_failure, exc.calculation_failure)
+            except Exception:
+                LOG.exception("Could not preserve calculation failure receipt")
         return error(request, exc)
 
     @app.exception_handler(RequestValidationError)
@@ -399,6 +541,23 @@ def create_app():
             operators.account, auth.resolve(request), action, body, uuid(account_id)
         )
 
+    @app.post("/v1/platform/partner-revenue-entries", status_code=201)
+    async def partner_revenue_entry_create(request: Request):
+        body = await strict_body(request)
+        return await run_in_threadpool(partner_revenue.entry, auth.resolve(request), body)
+
+    @app.post("/v1/platform/partner-statements", status_code=201)
+    async def partner_statement_generate(request: Request):
+        body = await strict_body(request)
+        return await run_in_threadpool(partner_revenue.statement, auth.resolve(request), body)
+
+    @app.post("/v1/platform/partner-statements/{statement_id}/actions/settle")
+    async def partner_statement_settle(request: Request, statement_id: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            partner_revenue.settle, auth.resolve(request), uuid(statement_id), body
+        )
+
     @app.post("/v1/platform/tenants")
     async def request_tenant(request: Request):
         body = await strict_body(request)
@@ -635,9 +794,477 @@ def create_app():
     def ai_solutions(request: Request, tenant: str):
         return ai_enablement.solutions(auth.resolve(request), uuid(tenant))
 
+    @app.get("/v1/tenants/{tenant}/ai-enablement/solution-shortlist")
+    def ai_solution_shortlist(request: Request, tenant: str, opportunity_id: str, expanded: bool = False):
+        return ai_enablement.solution_shortlist(auth.resolve(request), uuid(tenant), opportunity_id, expanded)
+
+    @app.get("/v1/public/ai-vetting-criteria")
+    def public_ai_vetting_criteria():
+        return ai_enablement.public_vetting()
+
+    @app.get("/v1/public/ai-solution-disclosures")
+    def public_ai_solution_disclosures():
+        return ai_enablement.public_disclosures()
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/solution-fit-scores")
+    def ai_solution_fit_score_list(request: Request, tenant: str, opportunity_id: str):
+        return ai_solution_fit_scores.list(auth.resolve(request), uuid(tenant), opportunity_id)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/solution-fit-scores", status_code=201)
+    async def ai_solution_fit_score_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        return ai_solution_fit_scores.create(
+            auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
     @app.get("/v1/tenants/{tenant}/ai-enablement/task-templates")
     def ai_task_templates(request: Request, tenant: str):
         return ai_enablement.task_templates(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses")
+    def ai_diagnosis_list(request: Request, tenant: str, limit: int = 50, cursor: str | None = None):
+        return ai_diagnoses.listing(auth.resolve(request), uuid(tenant), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}")
+    def ai_diagnosis_get(request: Request, tenant: str, obj: str):
+        return ai_diagnoses.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/revisions")
+    def ai_diagnosis_history(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return ai_diagnoses.history(auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/revisions/{revision_id}")
+    def ai_diagnosis_revision(request: Request, tenant: str, obj: str, revision_id: str):
+        return ai_diagnoses.get(auth.resolve(request), uuid(tenant), uuid(obj), uuid(revision_id))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnoses", status_code=201)
+    async def ai_diagnosis_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIDiagnosisCreate", body)
+        return await run_in_threadpool(
+            ai_diagnoses.command, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.put("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}")
+    async def ai_diagnosis_update(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIDiagnosisUpdate", body)
+        return await run_in_threadpool(
+            ai_diagnoses.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+            uuid(obj),
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/actions/complete")
+    async def ai_diagnosis_complete(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIDiagnosisComplete", body)
+        return await run_in_threadpool(
+            ai_diagnoses.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+            uuid(obj),
+            "complete",
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/actions/revise")
+    async def ai_diagnosis_revise(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIDiagnosisRevise", body)
+        return await run_in_threadpool(
+            ai_diagnoses.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+            uuid(obj),
+            "revise",
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributor-invitations")
+    def ai_diagnosis_contributor_invitations(request: Request, tenant: str, obj: str):
+        return ai_diagnosis_contributions.list_invitations(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributor-invitations",
+        status_code=201,
+    )
+    async def ai_diagnosis_contributor_invitation_create(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIDiagnosisContributorInvitationCreate", body)
+        return await run_in_threadpool(
+            ai_diagnosis_contributions.create_invitation,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributions")
+    def ai_diagnosis_contributions_list(request: Request, tenant: str, obj: str):
+        return ai_diagnosis_contributions.list_contributions(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributions",
+        status_code=201,
+    )
+    async def ai_diagnosis_contribution_submit(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIDiagnosisContributionSubmit", body)
+        return await run_in_threadpool(
+            ai_diagnosis_contributions.submit,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributions/{contribution_id}/actions/accept"
+    )
+    async def ai_diagnosis_contribution_accept(request: Request, tenant: str, obj: str, contribution_id: str):
+        body = await strict_body(request)
+        validate("AIDiagnosisContributionDecision", body)
+        return await run_in_threadpool(
+            ai_diagnosis_contributions.decide,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(contribution_id),
+            body,
+            request.state.correlation,
+            "ACCEPTED",
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/contributions/{contribution_id}/actions/reject"
+    )
+    async def ai_diagnosis_contribution_reject(request: Request, tenant: str, obj: str, contribution_id: str):
+        body = await strict_body(request)
+        validate("AIDiagnosisContributionRejection", body)
+        return await run_in_threadpool(
+            ai_diagnosis_contributions.decide,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(contribution_id),
+            body,
+            request.state.correlation,
+            "REJECTED",
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/advisor-reviews", status_code=201)
+    async def ai_diagnosis_review_request(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIDiagnosisReviewRequest", body)
+        return await run_in_threadpool(
+            ai_diagnosis_reviews.request,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/advisor-reviews")
+    def ai_diagnosis_review_list(request: Request, tenant: str, obj: str):
+        return ai_diagnosis_reviews.list_for_diagnosis(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnosis-review-queue")
+    def ai_diagnosis_review_queue(request: Request, tenant: str):
+        return ai_diagnosis_reviews.queue(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnosis-reviews/{review_id}")
+    def ai_diagnosis_review_get(request: Request, tenant: str, review_id: str):
+        return ai_diagnosis_reviews.get(auth.resolve(request), uuid(tenant), uuid(review_id))
+
+    async def diagnosis_review_action(request, tenant, review_id, schema, kind):
+        body = await strict_body(request)
+        validate(schema, body)
+        return await run_in_threadpool(
+            ai_diagnosis_reviews.act,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(review_id),
+            body,
+            request.state.correlation,
+            kind,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnosis-reviews/{review_id}/actions/start")
+    async def ai_diagnosis_review_start(request: Request, tenant: str, review_id: str):
+        return await diagnosis_review_action(request, tenant, review_id, "AIDiagnosisReviewAction", "STARTED")
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnosis-reviews/{review_id}/comments")
+    async def ai_diagnosis_review_comment(request: Request, tenant: str, review_id: str):
+        return await diagnosis_review_action(
+            request, tenant, review_id, "AIDiagnosisReviewComment", "COMMENTED"
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnosis-reviews/{review_id}/actions/validate")
+    async def ai_diagnosis_review_validate(request: Request, tenant: str, review_id: str):
+        return await diagnosis_review_action(
+            request, tenant, review_id, "AIDiagnosisReviewAction", "VALIDATED"
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines")
+    def ai_problem_baseline_list(request: Request, tenant: str, limit: int = 50, cursor: str | None = None):
+        return ai_problem_baselines.listing(auth.resolve(request), uuid(tenant), limit, cursor)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/outcome-observations", status_code=201)
+    async def ai_outcome_observation_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AICurrentOutcomeObservationCreate", body)
+        return await run_in_threadpool(
+            ai_outcome_observations.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/outcome-sharing-consents", status_code=201)
+    async def ai_outcome_sharing_consent_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIOutcomeSharingConsentCreate", body)
+        return await run_in_threadpool(
+            ai_outcome_evidence.consent, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.get("/v1/platform/outcome-evidence-publications")
+    def ai_outcome_evidence_publication_list(request: Request):
+        return ai_outcome_evidence.listing(auth.resolve(request))
+
+    @app.post("/v1/platform/outcome-evidence-publications", status_code=201)
+    async def ai_outcome_evidence_publication_prepare(request: Request):
+        body = await strict_body(request)
+        validate("AIOutcomeEvidencePrepare", body)
+        return await run_in_threadpool(ai_outcome_evidence.prepare, auth.resolve(request), body)
+
+    @app.post("/v1/platform/outcome-evidence-publications/{publication_id}/actions/{action}", status_code=201)
+    async def ai_outcome_evidence_publication_action(request: Request, publication_id: str, action: str):
+        body = await strict_body(request)
+        validate("AIOutcomeEvidenceAction", body)
+        return await run_in_threadpool(
+            ai_outcome_evidence.action, auth.resolve(request), uuid(publication_id), action, body
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/outcomes-dashboard")
+    def ai_outcomes_dashboard_get(
+        request: Request,
+        tenant: str,
+        plan_id: str,
+        baseline_object_id: str,
+        opportunity_id: str,
+    ):
+        return ai_outcome_observations.dashboard(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(plan_id),
+            uuid(baseline_object_id),
+            opportunity_id,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/sponsor-value-reports", status_code=201)
+    async def ai_sponsor_value_report_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AISponsorValueReportCreate", body)
+        return await run_in_threadpool(
+            ai_sponsor_value_reports.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/sponsor-value-reports/{obj}")
+    def ai_sponsor_value_report_get(request: Request, tenant: str, obj: str):
+        return ai_sponsor_value_reports.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews", status_code=201)
+    async def ai_quarterly_value_review_start(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIQuarterlyValueReviewStart", body)
+        return await run_in_threadpool(
+            ai_quarterly_value_reviews.start,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}")
+    def ai_quarterly_value_review_get(request: Request, tenant: str, review_id: str):
+        return ai_quarterly_value_reviews.get(auth.resolve(request), uuid(tenant), uuid(review_id))
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/agreements", status_code=201
+    )
+    async def ai_quarterly_value_review_agreement(request: Request, tenant: str, review_id: str):
+        body = await strict_body(request)
+        validate("AIQuarterlyValueReviewAgreementCreate", body)
+        return await run_in_threadpool(
+            ai_quarterly_value_reviews.agreement,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(review_id),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/actions", status_code=201
+    )
+    async def ai_quarterly_value_review_action(request: Request, tenant: str, review_id: str):
+        body = await strict_body(request)
+        validate("AIQuarterlyValueReviewActionCreate", body)
+        return await run_in_threadpool(
+            ai_quarterly_value_reviews.action,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(review_id),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/actions/{action_id}/progress",
+        status_code=201,
+    )
+    async def ai_quarterly_value_review_progress(
+        request: Request, tenant: str, review_id: str, action_id: str
+    ):
+        body = await strict_body(request)
+        validate("AIQuarterlyValueReviewActionProgress", body)
+        return await run_in_threadpool(
+            ai_quarterly_value_reviews.action,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(review_id),
+            body,
+            request.state.correlation,
+            uuid(action_id),
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/quarterly-value-reviews/{review_id}/actions/complete",
+        status_code=201,
+    )
+    async def ai_quarterly_value_review_complete(request: Request, tenant: str, review_id: str):
+        body = await strict_body(request)
+        validate("AIQuarterlyValueReviewComplete", body)
+        return await run_in_threadpool(
+            ai_quarterly_value_reviews.complete,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(review_id),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/next-opportunities")
+    def ai_next_opportunity_list(request: Request, tenant: str):
+        return ai_next_opportunities.listing(auth.resolve(request), uuid(tenant))
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/next-opportunities/{suggestion_id}/actions/take-up",
+        status_code=201,
+    )
+    async def ai_next_opportunity_take_up(request: Request, tenant: str, suggestion_id: str):
+        body = await strict_body(request)
+        validate("AINextOpportunityTakeUp", body)
+        return await run_in_threadpool(
+            ai_next_opportunities.take_up,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(suggestion_id),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/opportunity-map")
+    def ai_opportunity_map_get(request: Request, tenant: str, obj: str, revision_id: str | None = None):
+        return ai_opportunity_mapping.get(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(revision_id) if revision_id is not None else None,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/diagnoses/{obj}/opportunity-ranking")
+    async def ai_mapped_opportunity_ranking(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIMappedOpportunityRankingRequest", body)
+        return await run_in_threadpool(
+            ai_ranking.rank_mapping,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(body["revision_id"]),
+            body["profile"],
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}")
+    def ai_problem_baseline_get(request: Request, tenant: str, obj: str):
+        return ai_problem_baselines.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}/revisions")
+    def ai_problem_baseline_history(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return ai_problem_baselines.history(auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}/revisions/{revision_id}")
+    def ai_problem_baseline_revision(request: Request, tenant: str, obj: str, revision_id: str):
+        return ai_problem_baselines.get(auth.resolve(request), uuid(tenant), uuid(obj), uuid(revision_id))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/problem-baselines", status_code=201)
+    async def ai_problem_baseline_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIProblemBaselineCreate", body)
+        return await run_in_threadpool(
+            ai_problem_baselines.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.put("/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}")
+    async def ai_problem_baseline_update(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIProblemBaselineUpdate", body)
+        return await run_in_threadpool(
+            ai_problem_baselines.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+            uuid(obj),
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/problem-baselines/{obj}/actions/lock")
+    async def ai_problem_baseline_lock(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIProblemBaselineLock", body)
+        return await run_in_threadpool(
+            ai_problem_baselines.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+            uuid(obj),
+            "lock",
+        )
 
     @app.get("/v1/tenants/{tenant}/ai-enablement/plans")
     def ai_plan_list(request: Request, tenant: str, limit: int = 50, cursor: str | None = None):
@@ -685,6 +1312,123 @@ def create_app():
             ai_plans.save, auth.resolve(request), uuid(tenant), body, request.state.correlation, uuid(obj)
         )
 
+    @app.post("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/deployment/actions/generate")
+    async def ai_deployment_generate(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIDeploymentGenerate", body)
+        return await run_in_threadpool(
+            ai_plans.deployment,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+            "generate",
+        )
+
+    @app.put("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/deployment/milestones/{milestone_code}")
+    async def ai_deployment_progress(request: Request, tenant: str, obj: str, milestone_code: str):
+        body = await strict_body(request)
+        validate("AIDeploymentProgress", body)
+        return await run_in_threadpool(
+            ai_plans.deployment,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+            "progress",
+            milestone_code,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/deployment/actions/complete")
+    async def ai_deployment_complete(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIDeploymentComplete", body)
+        return await run_in_threadpool(
+            ai_plans.deployment,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+            "complete",
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/deployment/actions/attest")
+    async def ai_deployment_attest(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AITrainingDeploymentAttest", body)
+        return await run_in_threadpool(
+            ai_plans.attest_deployment,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/role-training")
+    async def ai_role_training_get(request: Request, tenant: str, obj: str, solution_id: str):
+        return await run_in_threadpool(
+            ai_role_training.get,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            solution_id,
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/plans/{obj}/role-training/modules/{module_key}/actions/complete"
+    )
+    async def ai_role_training_complete(request: Request, tenant: str, obj: str, module_key: str):
+        body = await strict_body(request)
+        validate("AIRoleTrainingComplete", body)
+        return await run_in_threadpool(
+            ai_role_training.complete,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            module_key,
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/champion-appointments")
+    async def ai_champion_appointments_list(request: Request, tenant: str, obj: str):
+        return await run_in_threadpool(
+            ai_champion_appointments.listing,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/plans/{obj}/champion-appointments",
+        status_code=201,
+    )
+    async def ai_champion_appointment_create(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AIChampionAppointmentCreate", body)
+        return await run_in_threadpool(
+            ai_champion_appointments.create,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/champion-guide")
+    async def ai_champion_guide_get(request: Request, tenant: str, obj: str, solution_id: str):
+        return await run_in_threadpool(
+            ai_champion_appointments.guide,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            solution_id,
+        )
+
     @app.put("/v1/tenants/{tenant}/ai-enablement/plans/{obj}/impact-reference")
     async def ai_impact_reference_save(request: Request, tenant: str, obj: str):
         body = await strict_body(request)
@@ -718,6 +1462,202 @@ def create_app():
             ai_enablement.advisory, auth.resolve(request), uuid(tenant), body, request.state.correlation
         )
 
+    @app.post("/v1/tenants/{tenant}/ai-enablement/advisory-jobs", status_code=202)
+    async def create_ai_advisory_job(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIAdvisoryRequest", body)
+        return await run_in_threadpool(ai_jobs.submit, auth.resolve(request), uuid(tenant), body)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/advisory-jobs/{job}")
+    def get_ai_advisory_job(request: Request, tenant: str, job: str):
+        return ai_jobs.status(auth.resolve(request), uuid(tenant), uuid(job))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/advisory-jobs/{job}/actions/cancel")
+    def cancel_ai_advisory_job(request: Request, tenant: str, job: str):
+        return ai_jobs.cancel(auth.resolve(request), uuid(tenant), uuid(job))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/forecasts")
+    async def create_ai_forecast(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIForecastRequest", body)
+        return ai_forecasts.create(auth.resolve(request), uuid(tenant), body)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/forecasts/{scenario}")
+    def get_ai_forecast(request: Request, tenant: str, scenario: str, version: int | None = None):
+        return ai_forecasts.get(auth.resolve(request), uuid(tenant), uuid(scenario), version)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/forecasts/{scenario}/export")
+    def export_ai_forecast(request: Request, tenant: str, scenario: str, version: int | None = None):
+        return ai_forecasts.export(auth.resolve(request), uuid(tenant), uuid(scenario), version)
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/forecasts/{scenario}/versions/{version}/actions/request-adoption"
+    )
+    def request_ai_forecast_adoption(request: Request, tenant: str, scenario: str, version: int):
+        return ai_forecasts.request_adoption(auth.resolve(request), uuid(tenant), uuid(scenario), version)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/safety-feedback")
+    async def create_ai_safety_feedback(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AISafetyFeedbackRequest", body)
+        return ai_safety.feedback(auth.resolve(request), uuid(tenant), body)
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/safety-shutdowns")
+    def get_ai_safety_shutdowns(request: Request, tenant: str):
+        return ai_safety.status(auth.resolve(request), uuid(tenant))
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/safety-shutdowns")
+    async def manage_ai_safety_shutdown(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIShutdownRequest", body)
+        return ai_safety.change(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/safety-shutdowns/{event}/actions/approve-recovery")
+    async def approve_ai_safety_recovery(request: Request, tenant: str, event: str):
+        body = await strict_body(request)
+        validate("AIRecoveryApprovalRequest", body)
+        return ai_safety.approve_recovery(auth.resolve(request), uuid(tenant), uuid(event), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/extractions")
+    async def create_ai_extraction(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIExtractionRequest", body)
+        return await run_in_threadpool(
+            ai_extraction.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/extractions/{draft}/actions/apply")
+    async def review_ai_extraction(request: Request, tenant: str, draft: str):
+        body = await strict_body(request)
+        validate("AIExtractionApplyRequest", body)
+        return ai_extraction.apply(auth.resolve(request), uuid(tenant), uuid(draft), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/indicator-design/proposals")
+    async def create_ai_indicator_proposal(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIIndicatorProposalRequest", body)
+        return ai_indicator_design.propose(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/indicator-design/drafts")
+    async def create_ai_indicator_draft(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIIndicatorDraftRequest", body)
+        return ai_indicator_design.create_draft(
+            auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/import-assistance/{batch}/revisions/{revision}/proposals")
+    async def create_ai_import_proposals(request: Request, tenant: str, batch: str, revision: str):
+        body = await strict_body(request)
+        validate("AIImportProposalRequest", body)
+        return ai_import_assistance.propose(
+            auth.resolve(request), uuid(tenant), uuid(batch), uuid(revision), body
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/ai-enablement/import-assistance/{batch}/revisions/{revision}/actions/apply"
+    )
+    async def apply_ai_import_proposals(request: Request, tenant: str, batch: str, revision: str):
+        body = await strict_body(request)
+        validate("AIImportApplyRequest", body)
+        return ai_import_assistance.apply(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(batch),
+            uuid(revision),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/evidence-questions")
+    async def answer_ai_evidence_question(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIEvidenceQuestionRequest", body)
+        return ai_evidence_questions.answer(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/numeric-analysis")
+    async def execute_ai_numeric_analysis(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AINumericAnalysisRequest", body)
+        return ai_numeric_analysis.execute(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/report-drafts")
+    async def create_ai_report_draft(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIReportDraftRequest", body)
+        return ai_report_drafting.create(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/report-drafts/{draft_id}/actions/review")
+    async def review_ai_report_draft(request: Request, tenant: str, draft_id: str):
+        body = await strict_body(request)
+        validate("AIReportDraftReviewRequest", body)
+        return ai_report_drafting.review(auth.resolve(request), uuid(tenant), uuid(draft_id), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/qualitative-runs")
+    async def create_ai_qualitative_run(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIQualitativeRunRequest", body)
+        return await run_in_threadpool(
+            ai_qualitative_assistance.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/qualitative-suggestions/{suggestion_id}/actions/review")
+    async def review_ai_qualitative_suggestion(request: Request, tenant: str, suggestion_id: str):
+        body = await strict_body(request)
+        validate("AIQualitativeReviewRequest", body)
+        return await run_in_threadpool(
+            ai_qualitative_assistance.review,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(suggestion_id),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/detection-tasks")
+    async def configure_ai_detection_task(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIDetectionTaskRequest", body)
+        return ai_proactive_findings.configure(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/suggested-findings")
+    async def create_ai_suggested_finding(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AISuggestedFindingRequest", body)
+        return ai_proactive_findings.suggest(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/suggested-findings/{suggestion_id}/actions/review")
+    async def review_ai_suggested_finding(request: Request, tenant: str, suggestion_id: str):
+        body = await strict_body(request)
+        validate("AIFindingReviewRequest", body)
+        return ai_proactive_findings.review(auth.resolve(request), uuid(tenant), uuid(suggestion_id), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/action-proposals")
+    async def create_ai_action_proposal(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIActionProposalRequest", body)
+        return ai_action_proposals.create(auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/action-proposals/{proposal_id}/actions/confirm")
+    async def confirm_ai_action_proposal(request: Request, tenant: str, proposal_id: str):
+        body = await strict_body(request)
+        validate("AIActionConfirmationRequest", body)
+        return ai_action_proposals.confirm(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(proposal_id),
+            body,
+            request.state.correlation,
+        )
+
     @app.post("/v1/tenants/{tenant}/ai-enablement/cost-comparison")
     async def ai_cost_comparison(request: Request, tenant: str):
         body = await strict_body(request)
@@ -725,6 +1665,65 @@ def create_app():
         return await run_in_threadpool(
             ai_enablement.cost_comparison, auth.resolve(request), uuid(tenant), body
         )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-case")
+    async def ai_value_case(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIValueCaseRequest", body)
+        return await run_in_threadpool(ai_enablement.value_case, auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-case/export")
+    async def ai_value_case_export(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIValueCaseExportRequest", body)
+        return await run_in_threadpool(
+            ai_enablement.value_case_export, auth.resolve(request), uuid(tenant), body
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-cases", status_code=201)
+    async def ai_value_case_version_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AIValueCaseVersionCreate", body)
+        return await run_in_threadpool(
+            ai_value_cases.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/value-cases/{obj}")
+    def ai_value_case_version_get(request: Request, tenant: str, obj: str):
+        return ai_value_cases.get(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/value-cases/{obj}/revisions/{revision_id}")
+    def ai_value_case_revision_get(request: Request, tenant: str, obj: str, revision_id: str):
+        return ai_value_cases.get(auth.resolve(request), uuid(tenant), uuid(obj), uuid(revision_id))
+
+    async def value_case_version_action(request: Request, tenant: str, obj: str, action: str, schema: str):
+        body = await strict_body(request)
+        validate(schema, body)
+        return await run_in_threadpool(
+            ai_value_cases.command,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+            uuid(obj),
+            action,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-cases/{obj}/actions/approve")
+    async def ai_value_case_approve(request: Request, tenant: str, obj: str):
+        return await value_case_version_action(request, tenant, obj, "approve", "AIValueCaseVersionLock")
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-cases/{obj}/actions/lock")
+    async def ai_value_case_baseline_lock(request: Request, tenant: str, obj: str):
+        return await value_case_version_action(request, tenant, obj, "lock", "AIValueCaseVersionLock")
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-cases/{obj}/actions/revise")
+    async def ai_value_case_revise(request: Request, tenant: str, obj: str):
+        return await value_case_version_action(request, tenant, obj, "revise", "AIValueCaseVersionRevise")
 
     @app.post("/v1/tenants/{tenant}/ai-enablement/pilot-evaluation")
     async def ai_pilot_evaluation(request: Request, tenant: str):
@@ -807,6 +1806,535 @@ def create_app():
             period_id=uuid(period_id) if period_id else None,
         )
 
+    @app.get("/v1/tenants/{tenant}/dashboards/{obj}/preview")
+    def dashboard_preview(
+        request: Request,
+        tenant: str,
+        obj: str,
+        viewport: str = "DESKTOP",
+        drill_level: str | None = None,
+    ):
+        return dashboard_authoring.preview(
+            auth.resolve(request), uuid(tenant), uuid(obj), viewport, drill_level
+        )
+
+    @app.post("/v1/tenants/{tenant}/dashboard-alert-rules", status_code=201)
+    async def dashboard_alert_rule_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("DashboardAlertRuleCreate", body)
+        return await run_in_threadpool(
+            dashboard_alerts.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/dashboard-alert-rules/{obj}/actions/evaluate")
+    async def dashboard_alert_rule_evaluate(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardAlertEvaluate", body)
+        return await run_in_threadpool(
+            dashboard_alerts.run,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/external-analytics-connections", status_code=201)
+    async def external_analytics_connection_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("ExternalAnalyticsConnectionCreate", body)
+        return await run_in_threadpool(
+            external_analytics.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/external-analytics-connections/{obj}/actions/refresh")
+    async def external_analytics_connection_refresh(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("ExternalAnalyticsRefresh", body)
+        return await run_in_threadpool(
+            external_analytics.refresh,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/external-analytics-connections/{obj}/actions/revoke")
+    async def external_analytics_connection_revoke(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("ExternalAnalyticsRevoke", body)
+        return await run_in_threadpool(
+            external_analytics.revoke,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/anomaly-runs", status_code=201)
+    async def anomaly_run_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AnomalyRunCreate", body)
+        return await run_in_threadpool(
+            anomaly_assistance.run,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/anomaly-findings/{obj}/actions/review")
+    async def anomaly_finding_review(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AnomalyFindingReview", body)
+        return await run_in_threadpool(
+            anomaly_assistance.review,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluations", status_code=201)
+    async def evaluation_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("EvaluationRegistrationCreate", body)
+        return await run_in_threadpool(
+            evaluation_registry.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluations/{obj}/actions/stage-gate")
+    async def evaluation_stage_gate(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("EvaluationStageGate", body)
+        return await run_in_threadpool(
+            evaluation_registry.gate,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluation-methodologies", status_code=201)
+    async def evaluation_methodology_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("EvaluationMethodologyCreate", body)
+        return await run_in_threadpool(
+            evaluation_methodology.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluation-methodologies/{obj}/actions/amend")
+    async def evaluation_methodology_amend(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("EvaluationMethodologyAmend", body)
+        return await run_in_threadpool(
+            evaluation_methodology.amend,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluation-methodologies/{obj}/actions/review")
+    async def evaluation_methodology_review(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("EvaluationMethodologyReview", body)
+        return await run_in_threadpool(
+            evaluation_methodology.review,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluation-methodologies/{obj}/sample-export")
+    async def evaluation_methodology_export(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("EvaluationSampleExportRequest", body)
+        return await run_in_threadpool(
+            evaluation_methodology.export,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+        )
+
+    @app.post("/v1/tenants/{tenant}/analysis-packages", status_code=201)
+    async def analysis_package_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AnalysisPackageCreate", body)
+        return await run_in_threadpool(
+            analysis_packages.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/analysis-packages/{obj}/export")
+    def analysis_package_export(request: Request, tenant: str, obj: str):
+        return analysis_packages.export(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.post("/v1/tenants/{tenant}/learning-questions", status_code=201)
+    async def learning_question_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("LearningQuestionCreate", body)
+        return await run_in_threadpool(
+            learning_agenda.create, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/learning-questions/{obj}/actions/close")
+    async def learning_question_close(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("LearningQuestionClose", body)
+        return await run_in_threadpool(
+            learning_agenda.close,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/learning-questions/{obj}/actions/reopen")
+    async def learning_question_reopen(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("LearningQuestionReopen", body)
+        return await run_in_threadpool(
+            learning_agenda.reopen,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/learning-questions/{obj}/summary")
+    def learning_question_summary(request: Request, tenant: str, obj: str, disclosure_id: str | None = None):
+        return learning_agenda.summary(
+            auth.resolve(request), uuid(tenant), uuid(obj), uuid(disclosure_id) if disclosure_id else None
+        )
+
+    @app.post("/v1/tenants/{tenant}/learning-questions/{obj}/actions/consider-context", status_code=201)
+    async def learning_question_context(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("LearningContextConsider", body)
+        return await run_in_threadpool(
+            learning_agenda.consider_context,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/analysis-packages/{obj}/results", status_code=201)
+    async def analysis_package_result(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AnalysisResultRegister", body)
+        return await run_in_threadpool(
+            analysis_packages.register_result,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluation-recommendations/{obj}/response", status_code=201)
+    async def management_response_create(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("ManagementResponseCreate", body)
+        return await run_in_threadpool(
+            management_responses.respond,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/management-actions/{obj}/actions/complete")
+    async def management_action_complete(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("ManagementActionComplete", body)
+        return await run_in_threadpool(
+            management_responses.complete,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/management-actions/{obj}/actions/escalate-overdue")
+    async def management_action_escalate(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("ManagementActionEscalate", body)
+        return await run_in_threadpool(
+            management_responses.evaluate_overdue,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/qualitative-codebooks", status_code=201)
+    async def qualitative_codebook_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("QualitativeCodebookCreate", body)
+        return await run_in_threadpool(
+            qualitative_evidence.create_codebook,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/qualitative-assignments", status_code=201)
+    async def qualitative_assignment_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("QualitativeAssignmentCreate", body)
+        return await run_in_threadpool(
+            qualitative_evidence.assign, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/qualitative-adjudications", status_code=201)
+    async def qualitative_adjudication_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("QualitativeAdjudicationCreate", body)
+        return await run_in_threadpool(
+            qualitative_evidence.adjudicate,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/qualitative-agreements", status_code=201)
+    async def qualitative_agreement_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("QualitativeAgreementCreate", body)
+        return await run_in_threadpool(
+            qualitative_evidence.agreement,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/transcription-requests", status_code=201)
+    async def transcription_request(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("TranscriptionRequest", body)
+        return await run_in_threadpool(
+            transcription.request, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/transcript-corrections", status_code=201)
+    async def transcript_correction(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("TranscriptCorrection", body)
+        return await run_in_threadpool(
+            transcription.correct, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/quotation-references", status_code=201)
+    async def quotation_reference(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("QuotationReferenceCreate", body)
+        return await run_in_threadpool(
+            transcription.quote, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/findings", status_code=201)
+    async def finding_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("FindingCreate", body)
+        return await run_in_threadpool(
+            findings.create, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/finding-revisions", status_code=201)
+    async def finding_revise(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("FindingRevise", body)
+        return await run_in_threadpool(
+            findings.revise, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/finding-publications", status_code=201)
+    async def finding_publish(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("FindingPublish", body)
+        return await run_in_threadpool(
+            findings.publish, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/budgets", status_code=201)
+    async def budget_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("BudgetCreate", body)
+        return await run_in_threadpool(
+            finance_governance.create_budget,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/budget-revisions", status_code=201)
+    async def budget_revise(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("BudgetRevise", body)
+        return await run_in_threadpool(
+            finance_governance.revise_budget,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/budget-approvals", status_code=201)
+    async def budget_approve(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("BudgetApprove", body)
+        return await run_in_threadpool(
+            finance_governance.approve_budget,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/expenditure-imports", status_code=201)
+    async def expenditure_import(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("ExpenditureImport", body)
+        return await run_in_threadpool(
+            finance_governance.import_expenditure,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/finance-variance-views", status_code=201)
+    async def finance_variance_save(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("FinanceVarianceSave", body)
+        return await run_in_threadpool(
+            finance_governance.save_variance,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy", status_code=201)
+    async def dashboard_copy(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardCopy", body)
+        return await run_in_threadpool(
+            dashboard_authoring.copy,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/dashboards/{obj}/sharing-preview")
+    def dashboard_sharing_preview(request: Request, tenant: str, obj: str, recipient_id: str):
+        return dashboard_publication.sharing_preview(
+            auth.resolve(request), uuid(tenant), uuid(obj), uuid(recipient_id)
+        )
+
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/publish", status_code=201)
+    async def dashboard_publish(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardPublish", body)
+        return await run_in_threadpool(
+            dashboard_publication.publish,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}")
+    def dashboard_publication_status(request: Request, tenant: str, obj: str, publication_id: str):
+        return dashboard_publication.status(
+            auth.resolve(request), uuid(tenant), uuid(obj), uuid(publication_id)
+        )
+
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/pivot-preview")
+    async def dashboard_pivot_preview(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardPivotData", body)
+        return await run_in_threadpool(
+            dashboard_pivots.preview, auth.resolve(request), uuid(tenant), uuid(obj), body
+        )
+
+    @app.get("/v1/tenants/{tenant}/dashboards/{obj}/geographic-preview")
+    def dashboard_geographic_preview(request: Request, tenant: str, obj: str, widget_id: str):
+        return dashboard_geography.preview(auth.resolve(request), uuid(tenant), uuid(obj), uuid(widget_id))
+
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/run-pivot")
+    async def dashboard_pivot_run(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardPivotRun", body)
+        return await run_in_threadpool(
+            dashboard_pivots.run,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/dashboards/{obj}/pivot-jobs/{job}")
+    def dashboard_pivot_job(request: Request, tenant: str, obj: str, job: str):
+        return dashboard_pivots.status(auth.resolve(request), uuid(tenant), uuid(obj), uuid(job))
+
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/pivot-jobs/{job}/actions/cancel")
+    async def dashboard_pivot_cancel(request: Request, tenant: str, obj: str, job: str):
+        body = await strict_body(request)
+        validate("DashboardPivotCancel", body)
+        return await run_in_threadpool(
+            dashboard_pivots.cancel,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(job),
+            body,
+            request.state.correlation,
+        )
+
     @app.get("/v1/tenants/{tenant}/indicator-instances/{obj}/dashboard-series")
     def indicator_dashboard_series(
         request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
@@ -845,6 +2373,7 @@ def create_app():
         tenant: str,
         obj: str,
         period_id: str | None = None,
+        coverage_threshold: int = 0,
         limit: int = 50,
         cursor: str | None = None,
     ):
@@ -856,6 +2385,7 @@ def create_app():
             limit=limit,
             cursor=cursor,
             period_id=uuid(period_id) if period_id else None,
+            coverage_threshold=coverage_threshold,
         )
 
     @app.get("/v1/tenants/{tenant}/publication-recipients")
@@ -1006,6 +2536,300 @@ def create_app():
     def result_evidence(request: Request, tenant: str, obj: str):
         return service.evidence.attachments(
             auth.resolve(request), uuid(tenant), "CalculatedResult", uuid(obj)
+        )
+
+    @app.get("/v1/tenants/{tenant}/calculated-results/{obj}/reproduction")
+    def result_reproduction(request: Request, tenant: str, obj: str):
+        return service.reproduce_calculation(
+            auth.resolve(request), uuid(tenant), uuid(obj), request.state.correlation
+        )
+
+    @app.get("/v1/tenants/{tenant}/calculated-results/{obj}/explanation")
+    def result_explanation(request: Request, tenant: str, obj: str):
+        return service.calculation_reconciliation.explain(
+            auth.resolve(request), uuid(tenant), uuid(obj), request.state.correlation
+        )
+
+    @app.get("/v1/tenants/{tenant}/calculated-results/{obj}/comparison/{later_result_id}")
+    def result_comparison(request: Request, tenant: str, obj: str, later_result_id: str):
+        return service.calculation_reconciliation.compare(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(later_result_id),
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/calculation-compatibility/preview")
+    async def calculation_compatibility_preview(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.calculation_compatibility.preview,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/population-overlap/compute")
+    async def population_overlap_compute(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.population_overlap.compute,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/hierarchical-aggregation/compute")
+    async def hierarchical_aggregation_compute(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.hierarchical_aggregation.compute,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/dimension-crosswalks/{obj}/preview")
+    async def dimension_crosswalk_preview(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.dimension_crosswalk.preview,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/formula-definitions/preview")
+    async def formula_definition_preview(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.formula_authoring.preview,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/portfolio-allocation-views/{obj}/preview")
+    async def portfolio_attribution_preview(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service.portfolio_attribution.preview,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/sponsored-cohorts", status_code=201)
+    async def sponsored_cohort_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            sponsored_access.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/sponsored-access/{enrolment}/actions/accept")
+    async def sponsored_access_accept(request: Request, tenant: str, enrolment: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            sponsored_access.accept,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(enrolment),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/sponsored-access")
+    def sponsored_access_list(request: Request, tenant: str):
+        return sponsored_access.active(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/effective-entitlements")
+    def effective_entitlement_list(request: Request, tenant: str):
+        return entitlement_view.read(auth.resolve(request), uuid(tenant))
+
+    @app.get("/v1/tenants/{tenant}/service-packages")
+    def service_package_list(request: Request, tenant: str):
+        return service_packages.listing(auth.resolve(request), uuid(tenant))
+
+    @app.post("/v1/tenants/{tenant}/subscriptions/{subscription}/service-packages")
+    async def service_package_purchase(request: Request, tenant: str, subscription: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            service_packages.purchase,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(subscription),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/billing-profile")
+    async def billing_profile_configure(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            tax_invoicing.configure,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/commercial-invoices/{invoice}/actions/issue")
+    async def commercial_invoice_issue(request: Request, tenant: str, invoice: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            tax_invoicing.issue,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(invoice),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/commercial-invoices/{invoice}")
+    def commercial_invoice_read(request: Request, tenant: str, invoice: str):
+        return tax_invoicing.read(auth.resolve(request), uuid(tenant), uuid(invoice))
+
+    @app.post("/v1/tenants/{tenant}/agreements")
+    async def organisation_agreement_configure(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            agreement_coverage.configure,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/agreements")
+    def organisation_agreement_read(request: Request, tenant: str):
+        return agreement_coverage.read(auth.resolve(request), uuid(tenant))
+
+    @app.post("/v1/tenants/{tenant}/access-checks/resources")
+    async def access_check_resources(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(access_checks.permitted, auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/grants/{grant_id}/field-policy")
+    async def attach_grant_field_policy(request: Request, tenant: str, grant_id: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            fine_grained_access.attach,
+            auth.resolve(request),
+            uuid(tenant),
+            str(uuid(grant_id)),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/access/effective/self")
+    async def explain_own_access(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(effective_access.own, auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/access/effective/simulations")
+    async def simulate_member_access(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(effective_access.simulate, auth.resolve(request), uuid(tenant), body)
+
+    @app.post("/v1/tenants/{tenant}/derivatives/{derivative_id}/revisions")
+    async def create_derivative(tenant: str, derivative_id: str, request: Request):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            permission_safe_derivatives.create,
+            auth.resolve(request),
+            uuid(tenant),
+            str(uuid(derivative_id)),
+            body,
+        )
+
+    @app.get("/v1/tenants/{tenant}/derivatives/{derivative_id}/revisions/{revision_id}")
+    async def read_derivative(tenant: str, derivative_id: str, revision_id: str, request: Request):
+        return await run_in_threadpool(
+            permission_safe_derivatives.read,
+            auth.resolve(request),
+            uuid(tenant),
+            str(uuid(derivative_id)),
+            str(uuid(revision_id)),
+        )
+
+    @app.post("/v1/tenants/{tenant}/external-shares")
+    async def create_external_share(tenant: str, request: Request):
+        body = await strict_body(request)
+        return await run_in_threadpool(external_shares.create, auth.resolve(request), uuid(tenant), body)
+
+    @app.get("/v1/tenants/{tenant}/external-shares/{share_id}")
+    async def read_external_share(tenant: str, share_id: str, request: Request):
+        return await run_in_threadpool(
+            external_shares.read, auth.resolve(request), uuid(tenant), str(uuid(share_id))
+        )
+
+    @app.post("/v1/tenants/{tenant}/external-shares/{share_id}/revocation")
+    async def revoke_external_share(tenant: str, share_id: str, request: Request):
+        return await run_in_threadpool(
+            external_shares.revoke, auth.resolve(request), uuid(tenant), str(uuid(share_id))
+        )
+
+    @app.post("/v1/tenants/{tenant}/derivatives/{derivative_id}/revisions/{revision_id}/presentation-leases")
+    async def issue_presentation_lease(tenant: str, derivative_id: str, revision_id: str, request: Request):
+        return await run_in_threadpool(
+            access_change_propagation.issue,
+            auth.resolve(request),
+            uuid(tenant),
+            str(uuid(derivative_id)),
+            str(uuid(revision_id)),
+        )
+
+    @app.get("/v1/tenants/{tenant}/presentation-leases/{lease_id}")
+    async def validate_presentation_lease(tenant: str, lease_id: str, request: Request):
+        return await run_in_threadpool(
+            access_change_propagation.validate, auth.resolve(request), uuid(tenant), str(uuid(lease_id))
+        )
+
+    @app.get("/v1/tenants/{tenant}/ai-enablement/trials")
+    def ai_trial_list(request: Request, tenant: str, opportunity_id: str):
+        return ai_trials.list(auth.resolve(request), uuid(tenant), opportunity_id)
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/trials", status_code=201)
+    async def ai_trial_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            ai_trials.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/trials/{trial_id}/results", status_code=201)
+    async def ai_trial_result_create(request: Request, tenant: str, trial_id: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            ai_trials.record_result,
+            auth.resolve(request),
+            uuid(tenant),
+            str(uuid(trial_id)),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/ai-enablement/value-cases/from-trial", status_code=201)
+    async def ai_value_case_from_trial(request: Request, tenant: str):
+        body = await strict_body(request)
+        return await run_in_threadpool(
+            ai_trials.build_value_case, auth.resolve(request), uuid(tenant), body, request.state.correlation
         )
 
     @app.get("/v1/tenants/{tenant}/reports/{obj}/exports")

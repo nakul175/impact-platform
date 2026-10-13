@@ -1,0 +1,22 @@
+{
+  "engine": "Chromium 153",
+  "results": [
+    {
+      "name": "Every tool card carries its commercial disclosure label",
+      "status": "passed"
+    },
+    {
+      "name": "Every comparison column carries the disclosure label",
+      "status": "passed"
+    },
+    {
+      "name": "A disclosed relationship shows its types and statement on the card and in the comparison (client rendering of a modified real response)",
+      "status": "passed"
+    },
+    {
+      "name": "A saved plan's archived guidance shows the disclosures captured at save time",
+      "status": "passed"
+    }
+  ],
+  "uncaughtErrors": []
+}

@@ -1,0 +1,179 @@
+{
+  "project": "Imprana Commons",
+  "story": "US-DX-01a / APL-361",
+  "observed_at_utc": "2026-10-11T13:28:55.490844+00:00",
+  "tested_base_head": "8559004312460ab4d2fab00b7d55e9a421a90bac",
+  "tested_working_patch_sha256": "ff0d1a4b4d8e64b32f2399c1f384d773331ebf1222802a22eb91b9755633b878",
+  "tested_files_sha256": {
+    "scripts/run.py": "9660291aa716ced9adf598f0d011b23f27063b15ece27e2ed1805bc8c514c38f",
+    "tools/browser/ai-diagnosis-check.mjs": "4f0f66c0682f909da4478282835c5e64fcb63ee385bd659737be6a76ce346941"
+  },
+  "code_change": "Browser runner exports its actual sys.executable as IMPACT_QUALIFICATION_PYTHON; diagnosis fixture helper uses that trusted runner path, with legacy checkout .venv fallback for direct invocation. Array-form spawn retained; no user/body executable input.",
+  "scope": "Qualification infrastructure only; no runtime diagnosis DTO/storage/authority/UI change or protected evidence implementation",
+  "actual_final_result": {
+    "cases": 9,
+    "passed": 9,
+    "failed": 0,
+    "not_run": 0,
+    "assertions": 293
+  },
+  "engine": "Actual installed Chrome154 + native PostgreSQL17.10 schema46 loopback synthetic API",
+  "virtualenv_link_present_during_run": false,
+  "source_and_served_assets_stable": true,
+  "source_pin_count": 352,
+  "request_failures_retained": [
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/diagnoses",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/membership-directory",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/privacy-cases",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/retention-proofs",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/retention-policies",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/retention-schedule",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/retention-holds",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/access-denials",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/diagnoses/fb5ac663-73ef-4190-8de3-6add73390ce3",
+      "error": "net::ERR_CONNECTION_FAILED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/membership-directory",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/privacy-cases",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/retention-proofs",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/retention-policies",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/retention-schedule",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/retention-holds",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/access-denials",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/diagnoses/fb5ac663-73ef-4190-8de3-6add73390ce3",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/membership-directory",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/privacy-cases",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/retention-proofs",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/retention-policies",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/retention-schedule",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/retention-holds",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/access-denials",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/diagnoses/fb5ac663-73ef-4190-8de3-6add73390ce3",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "accessibility_scans": 8,
+  "runtime_cleanup": "Runner/API complete, clusterstop0; no dependency link created",
+  "quality": "Ruff check/format, Node syntax and final Prettier check passed. Initial formatter check found the changed helper line; formatted and reran all9 actual browser groups against final pins.",
+  "reviews": {
+    "code": "Separate review confirms trusted runner-only executable propagation, array spawn, unchanged fixture and privilege/refusal guards; all46 applied migrations unchanged. Other browser tools ignore new runner env without changes.",
+    "evidence": "Separate review parsed both actual9group/293assertion runs, final script/helper source pins and working diff hash, no-link environment and cleanup; not independent human review."
+  },
+  "limits": [
+    "Tested base+explicit working patch, not a clean-head hosted CI run",
+    "Original prior source-bound product/native/provider/upgrade results remain distinct historical receipts",
+    "Protected selectors, hosted/container/financial/export/human/operational gates still pending",
+    "No deployment, acceptance, next feature or new spending"
+  ],
+  "evidence_sha256": {
+    "TESTED-PATCH.diff": "ff0d1a4b4d8e64b32f2399c1f384d773331ebf1222802a22eb91b9755633b878",
+    "captures/diagnosis-completed.png": "e760f869eb0c13dc9e9baa112ce094d5c32de07936b9856b2df1798d485590a1",
+    "captures/diagnosis-completion-refused.png": "70921909114cd9ffb546e98954d121784dfcbddb757953fbf37a26c5a0a8feb6",
+    "captures/diagnosis-mobile.png": "d269aa1b53ad91395137a3ab03f97eb6856b7adc8c9bf37477737a7efe97ac0c",
+    "captures/diagnosis-saved-draft.png": "09d3a5e20d589af8696eb2426d3bc06aa07920b8ad2ed27e304e9dc817d146b0",
+    "run-1/RUN-RECEIPT.json": "47a5671b3b573a1dbbd42bbfde5e7eec8ecd3a8786c5ec154bf16fcddffea2fa",
+    "run-1/browser-tests.json": "9e6ad1009b6d8b02f9c6a94f02e21f9dca7e95e3f4093f712cef8ceae9c827a6",
+    "run-1/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-1/integrated-worker-fence.log": "80215b41e6c18ab7af0f9684c86c205042eb9efc8dd40866760063d2c55c6c09",
+    "run-2/RUN-RECEIPT.json": "deaf7172fe5f4c65ffb10f37a5c36e86e1c56087cf03dc5ab8134c1fde8a55c0",
+    "run-2/browser-tests.json": "5f562e0da28060b214539a8cc8c4f74502ccac167081ecf10f3fe4c152437bdf",
+    "run-2/cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-2/integrated-worker-fence.log": "2dc0abae31f4a001446b1df02abd7081d25516b66b85620180d17ff17e033e0a"
+  }
+}

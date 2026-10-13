@@ -1,0 +1,55 @@
+{
+  "completed_at": "2026-10-11T18:12:36.428965+00:00",
+  "binary": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-pooler-runtime-20261011/installed/bin/pgbouncer",
+  "sha256": "26abb67072fda4dc0014a6dfd8f9dfa97a26c1668ec1942a6bd40fa1ea44af91",
+  "version_output": "PgBouncer 1.26.0\nlibevent 2.1.13-stable\nadns: evdns2\ntls: unsupported\n",
+  "linked_libraries_output": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-pooler-runtime-20261011/installed/bin/pgbouncer:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+  "source_verification": {
+    "pgbouncer": {
+      "url": "https://www.pgbouncer.org/downloads/files/1.26.0/pgbouncer-1.26.0.tar.gz",
+      "sha256": "afd25dd61ee6775d37b40629b87ce08736b3e6955f3057bb212e410fbf21c71d",
+      "verification": "Exact match official project .sha256 file"
+    },
+    "libevent": {
+      "url": "https://github.com/libevent/libevent/releases/download/release-2.1.13-stable/libevent-2.1.13-stable.tar.gz",
+      "sha256": "f7e9383b8c0baa81b687e5b5eecc01beefaf1b19b64151d95ed61647fe7a315c",
+      "verification": "Exact match official GitHub release asset SHA256 digest"
+    }
+  },
+  "signature_verified": false,
+  "pkg_config": "Downloaded only, never extracted/executed; explicit LIBEVENT_CFLAGS/LIBEVENT_LIBS avoided dependency",
+  "configure_options": {
+    "libevent": [
+      "--disable-shared",
+      "--enable-static",
+      "--disable-openssl",
+      "--disable-samples",
+      "--disable-libevent-regress"
+    ],
+    "pgbouncer": [
+      "--without-openssl",
+      "--without-cares",
+      "--without-pam",
+      "--without-ldap",
+      "--without-systemd"
+    ]
+  },
+  "build_results": {
+    "libevent_configure": 0,
+    "libevent_make": 0,
+    "libevent_install": 0,
+    "pgbouncer_configure": 0,
+    "pgbouncer_default_make": 2,
+    "pgbouncer_binary_make": 0,
+    "pgbouncer_install_pgbouncer": 0
+  },
+  "failure_preserved": "Default PgBouncer make failed for missing pandoc manpage generation; dedicated upstream binary build/install targets passed. Initial extraction filter keyword unsupported by system Python; retry explicitly validated member paths, devices and link targets before extraction.",
+  "limits": [
+    "Disposable local synthetic qualification binary only",
+    "No TLS support; not production-ready security configuration",
+    "No upstream signature claim",
+    "No pooler, database or API service started",
+    "No library upstream test-suite execution; root will qualify native pooler behavior",
+    "No system installation, account change, paid resource or repository dependency change"
+  ]
+}

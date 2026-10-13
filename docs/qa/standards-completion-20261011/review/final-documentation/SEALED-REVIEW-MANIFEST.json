@@ -1,0 +1,41 @@
+{
+  "record": "IMPRANA-FINAL-INDEPENDENT-REVIEW-SEAL",
+  "recorded_at_utc": "2026-10-11T06:23:53.933051+00:00",
+  "review_receipt_sha256": "3ce40b14beffb527d488ae3ba2fa468da275faa044947953e1ff1c7c7896f25d",
+  "disposition": "PASS_DOCUMENT_SOURCE_AND_PUBLICATION_INTEGRITY_ONLY",
+  "actual_document_checks": 37,
+  "failures": [],
+  "files": [
+    {
+      "path": "FINAL-INDEPENDENT-DOCUMENTATION-INTEGRATION-REVIEW.json",
+      "sha256": "3ce40b14beffb527d488ae3ba2fa468da275faa044947953e1ff1c7c7896f25d",
+      "bytes": 51326
+    },
+    {
+      "path": "FIRST-REVIEWER-ADAPTER-OBSERVATION.json",
+      "sha256": "47222085bbbcf93d7fc7a821023deafc39718bbd2300ef9a92f1eac5afcf08da",
+      "bytes": 39890
+    },
+    {
+      "path": "README.md",
+      "sha256": "44e212526cd7d8d7cd0153cea27ad78e9a27b1f8f6200e2f42be038bd03c184a",
+      "bytes": 2968
+    },
+    {
+      "path": "REVIEWER-ADAPTER-RECONCILIATION.json",
+      "sha256": "263ac2927ee63dcaf089bd5af42cbdd3693422eb9736085eab4b9afcd564b387",
+      "bytes": 1134
+    },
+    {
+      "path": "SECOND-REVIEWER-ADAPTER-OBSERVATION.json",
+      "sha256": "3f999d3cf7f8bf0257232459dfe96d28fc68a3be20e343c352376ca78e34029b",
+      "bytes": 48997
+    },
+    {
+      "path": "review_final_documentation.py",
+      "sha256": "68b309d81d8bf63af4a36b7422c4c8066cebd6ff000272b842e074a2eade3889",
+      "bytes": 32367
+    }
+  ],
+  "scope": "Independent AI source/documentation integrity only; no Native/repository mutations, product/package tests, authenticated human approval or release authority."
+}

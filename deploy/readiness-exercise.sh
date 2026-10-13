@@ -68,6 +68,18 @@ except (OSError, ValueError):
     print("[]")' "$1"
 }
 
+wait_worker_running() { # true|false: wait until Docker reports the requested state
+  local expected="$1" id running i
+  id="$(compose ps --all -q worker)"
+  [ -n "$id" ] || return 1
+  for i in $(seq 1 20); do
+    running="$(docker inspect --format '{{.State.Running}}' "$id" 2>/dev/null || true)"
+    [ "$running" = "$expected" ] && return 0
+    sleep 1
+  done
+  return 1
+}
+
 main() {
   require_root
   require_compose_env
@@ -85,11 +97,16 @@ main() {
   # 2. worker stopped -> alerted
   t0=$(date +%s)
   compose stop worker >/dev/null 2>&1
+  # Compose can return while the engine is still publishing the last running state.  The
+  # operations check must observe the completed stop, otherwise the worker heartbeat is stale
+  # but the container snapshot can still say running for this one check.
+  worker_stopped=0
+  wait_worker_running false && worker_stopped=1
   "$DEPLOY_DIR/ops-check.sh" >/dev/null
   t1=$(date +%s)
   codes="$(alert_codes "$OPS_DIR/ops-status.json")"
   detail="{\"alerts\":$codes,\"active\":$(active_keys "$OPS_DIR/alert-state.json")}"
-  if has_codes "$OPS_DIR/ops-status.json" WORKER_STALE CONTAINER_UNHEALTHY &&
+  if [ "$worker_stopped" = 1 ] && has_codes "$OPS_DIR/ops-status.json" WORKER_STALE CONTAINER_UNHEALTHY &&
     python3 -c 'import json,sys; a=json.load(open(sys.argv[1])).get("active",{}); sys.exit(0 if "WORKER_STALE|" in a and "CONTAINER_UNHEALTHY|worker" in a else 1)' "$OPS_DIR/alert-state.json"; then
     record_step worker_stopped PASS $((t1 - t0)) "$detail"
   else
@@ -99,6 +116,8 @@ main() {
   # 3. worker started -> cleared
   t0=$(date +%s)
   compose start worker >/dev/null 2>&1
+  worker_started=0
+  wait_worker_running true && worker_started=1
   local i cleared=0
   for i in $(seq 1 "$MAX_CLEAR_CHECKS"); do
     "$DEPLOY_DIR/ops-check.sh" >/dev/null
@@ -111,7 +130,7 @@ main() {
   t1=$(date +%s)
   codes="$(alert_codes "$OPS_DIR/ops-status.json")"
   detail="{\"alerts\":$codes,\"checks\":$i,\"active\":$(active_keys "$OPS_DIR/alert-state.json")}"
-  if [ "$cleared" = 1 ] &&
+  if [ "$worker_started" = 1 ] && [ "$cleared" = 1 ] &&
     python3 -c 'import json,sys; a=json.load(open(sys.argv[1])).get("active",{}); sys.exit(1 if "WORKER_STALE|" in a or "CONTAINER_UNHEALTHY|worker" in a else 0)' "$OPS_DIR/alert-state.json"; then
     record_step worker_started PASS $((t1 - t0)) "$detail"
   else

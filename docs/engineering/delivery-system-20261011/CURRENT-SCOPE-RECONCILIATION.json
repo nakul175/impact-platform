@@ -1,0 +1,58 @@
+{
+  "project": "Imprana Commons",
+  "story": "US-DX-01a / APL-361",
+  "observed_at_utc": "2026-10-11T13:15:19.105311+00:00",
+  "inspected_head": "d996d7adb847f95d87b29084db60091e88d2255d",
+  "original_gherkin_sha256": "6568f4b80844144e6398bde82db86533faaa15862a1d9e54e2dbf9df79b59d73",
+  "criterion_serialization": "Source-defined Gherkin excludes Markdown fence trailing newline; raw extracted block hash retained separately. No criterion text changed.",
+  "raw_native_fenced_gherkin_sha256": "db3338b4c74f5049bd9f12baf17f8d681dc2b28cf79b9726eb851952dc6fa796",
+  "initial_receipt_guard": "Initial comparison included the Markdown fence trailing newline and refused to publish; corrected only serialization boundary, with both hashes retained. No runtime test failure.",
+  "native_issues": [
+    {
+      "id": "APL-361",
+      "description_sha256": "2f5201c010b1134bc6d4b608ab3ca7404a7d7fc38c0a32160216d0bccb5fd523",
+      "status": "In Progress",
+      "parent": "APL-283"
+    },
+    {
+      "id": "APL-666",
+      "description_sha256": "a9bb0a55446295f42603fad9fbb479c880026cc149f7ad09453f8b9b1b51d09a",
+      "status": "In Progress",
+      "parent": "APL-361"
+    },
+    {
+      "id": "APL-671",
+      "description_sha256": "5d9ad23ac7572cb07a3b147e00ba0f23b1d659cbeb21275d6c8ff058afb69095",
+      "status": "In Progress",
+      "parent": "APL-361"
+    },
+    {
+      "id": "APL-678",
+      "description_sha256": "944855eb8c0751a111ceb30ec779eb151d1be837bd5d2c2d51288d5d0d10d506",
+      "status": "In Progress",
+      "parent": "APL-361"
+    }
+  ],
+  "source_sha256": {
+    "apps/api/impact_api/ai_diagnoses.py": "f61f398e83983bbcfa3d6b6452c1f1b92d236820bf7579634cd65c2e558de220",
+    "apps/api/impact_api/ai_diagnosis_contracts.py": "65748a7b44daf535cf68120f414cdad57bb905f8746e3675f3089a6701d05def",
+    "apps/api/impact_api/evidence.py": "58d753d46ca074a19dbc0246ca441eedabc524f6c9a0cf367f7cf41f424472c0",
+    "apps/api/impact_api/evidence_contracts.py": "e930aeb906f15d533c6d891b11696563ffa70f76de05d82c970c8e6609f64787",
+    "apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "infrastructure/migrations/0045_diagnosis_worker_fence.sql": "603f4a2914b21a1686a28baa0d7f7b8a0e5228c0f0615fc63ef64561817d87f2",
+    "infrastructure/migrations/0046_diagnosis_problem_order.sql": "953337b70fa70138bbd19c2ad445d6d666f10beb3a85d42bfffd1cd5fde4b80f"
+  },
+  "observations": {
+    "selected_storage_guard": "0046 IDs/order/state and0045 worker fence implemented; selected native/upgrade/recovery cases qualified, not broad task acceptance.",
+    "protected_selectors": "Absent. Closed diagnosis problem fields include bounded plain-text supporting_evidence, no selected Evidence object/revision or completion-time source recheck.",
+    "reuse": "Existing evidence.attach/content and store.load enforce current authority/restriction in their own paths; not diagnosis selector implementation.",
+    "original_scope": "Two frozen scenarios cover saved order/evidence and named incomplete refusal; no waiver of broader APL671 planning duties."
+  },
+  "review_phases": {
+    "code": "Current diagnosis fields versus existing evidence/load/attachment primitives and fresh task oracles inspected separately.",
+    "evidence": "Native description/source digests and original serialization checked separately; source inspection is not selector runtime evidence or independent human signoff."
+  },
+  "scope_change_accepted": false,
+  "issue_mutations": false,
+  "deployed": false
+}

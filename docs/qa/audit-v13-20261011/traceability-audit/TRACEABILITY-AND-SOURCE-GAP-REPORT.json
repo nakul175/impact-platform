@@ -1,0 +1,1254 @@
+{
+  "report_version": "imprana-qa-v13-traceability-source-audit/2026-10-11/v1",
+  "scope": "Imprana Commons only; documentation/source inspection at exact b01a628; attachment is proposed framework, not owner instruction/approval",
+  "pinned_head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+  "pinned_tree": "c15d52d24710a9c93905b6822838d168e9c7a5dc",
+  "inventory": {
+    "active_stories": 368,
+    "epics": 54,
+    "original_criteria": 1328,
+    "proposed_tasks": 1131,
+    "task_dependency_edges": 779,
+    "backlog_rows_including_two_historical_split_records": 370,
+    "criterion_alias_records": 1328,
+    "criterion_execution_state_counts": {
+      "Not run": 1328
+    }
+  },
+  "source_inventory_ref": "SOURCE-TRACEABILITY-INVENTORY.json",
+  "source_inventory_sha256": "85cc832ae7f56885aa067b91ce3e0a6ffcf7187663e1b42c2e13c8cf6f30bab3",
+  "findings": [
+    {
+      "id": "TRACE-01",
+      "topic": "Preserve hierarchy and three criterion aliases",
+      "assessment_at_pinned_head": "PARTIAL",
+      "matched_package_requirements": [
+        "QA13-011",
+        "QA13-027",
+        "QA13-052"
+      ],
+      "actual_source_observation": "Exact source census:54epics,368active stories,1328original scenario blocks,1131proposed tasks,779task edges.1328alias rows bridge story annotations to matrix AC IDs; source hashes, all task endpoints and primary/support same-story parents match. Two Split rows remain historical among370backlog rows.",
+      "specific_gap": "Planning AC-to-task contracts exist, but no normalized versioned case/run/defect/decision chain is present at b01. The825legacy design cases,307core requirements,108NPAcases and1328scenarios are different populations; native issue UUIDs and release milestones must not be recast as new cases.",
+      "minimal_additive_adoption": "Document a bridge using unchanged canonical story/task/AC IDs and aliases. Keep task and AC as siblings under the source story; matrix primary verification links are duties, not parent changes. Retain all779dependencies. Assign future case IDs by reviewed collision-resistant allocation; map legacy IDs only where exact procedure/oracles actually match.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/bundle-review/CRITERION-ALIAS-MAP.json",
+          "line": 6,
+          "line_text": "    \"storyAnnotationId\": \"FR-SEC-008-AC-01\",",
+          "sha256": "279c1bec0920f02dba67f43cb6fcb6ce5f2fa311c79dc98dc18ac0a4f29c99ee",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+          "line": 111,
+          "line_text": "      \"primary_verification_task_id\": \"TASK-FR-SEC-008-03\",",
+          "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/task-author/task-contracts.proposed.json",
+          "line": 142,
+          "line_text": "      \"primary_parent_story_id\": \"FR-SEC-008\",",
+          "sha256": "c3793154d8a020e883d07d8492e7327515f510427e69efe1136f4ce886ff29a8",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line": 64,
+          "line_text": "The 825-case baseline catalogue is retained. It contains 540 functional cases, 37 nonfunctional cases, 30 journeys, 143 reference cases, 18 API integration cases, 12 smoke cases and 45 security or boundary cases. These design case IDs are not interchangeable with the names of the current automated tests. A green automated test establishes only its asserted behavior.",
+          "sha256": "fe50fe631b15c06bc009b3f2f43b3713b75307944f1bc080d7c5da14ac32c9a9",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/TRACEABILITY.md",
+          "line": 2,
+          "line_text": "Canonical chain: vision → strategy → roadmap → release goal → operating release → epic → story → AC → technical task → case → execution → defect → decision. Preserve existing canonical IDs. Strategy and release goal are planning concepts; an operating release identifies the deployable candidate. Nonfunctional requirements may attach at release/epic level with an explicit AC/oracle; no fictional story is required.",
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "line": 2,
+          "line_text": "Preserve existing canonical product IDs. New QA IDs use `TC-<scope>-<unique>`, `RUN-<unique>`, `BUG-<unique>`, `RISK-<scope>-<unique>`, `EX-<unique>`. Use a UUID or collision-resistant repository allocator for unique; demo IDs are reserved to examples. Never allocate by CSV row count. Versions are explicit immutable strings. IDs must contain only letters/digits/underscore/hyphen/dot, starting with a letter.",
+          "sha256": "b97985d780cd5c30ad665561c7e8c3d53d148df22328136389f451ee8cc43dd4"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/LINEAR-GITHUB.md",
+          "line": 22,
+          "line_text": "## Working agreement",
+          "sha256": "b1b354abe72242161c70cb7aa850d31b1235dc8930f27916f5d26082fda13c7f"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "Aliases do not add criteria.825case IDs are not1328validatedACs. Do not duplicate native issues or change dependency/status metadata."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "TRACE-02",
+      "topic": "Independent canonical criteria export and denominator pins",
+      "assessment_at_pinned_head": "MISSING",
+      "matched_package_requirements": [
+        "QA13-015",
+        "QA13-016",
+        "QA13-017",
+        "QA13-019",
+        "QA13-020",
+        "QA13-036"
+      ],
+      "actual_source_observation": "Original backlog bytes/full-Gherkin hashes and each exact scenario hash are retained. Task-author metadata records planningeb194fdb and application8a1e405f/build0.39.0; these are original source lineage, not a current candidate execution pin.",
+      "specific_gap": "Existing source-preservation hashes are not v1.3 scope criteria_source_ref/sha, expected_ac_count and sortedAC-ID/version hash with independently reviewed source/export authority. No per-criterion v1.3 immutable version/applicability or actual reviewed source snapshot exists at the pinned HEAD.",
+      "minimal_additive_adoption": "Describe a future independently reviewed export from original canonical backlog/scenario source plus the exact alias bridge, never from test mappings alone. Select actual scope first and include every applicable/NO/UNKNOWN criterion. Preserve source text/hashes; declare versions through reviewed source change. Pin exact JSON bytes/count/sorted[ACid,ACversion] hash after real review. Keep criteria_source_review_ref unresolved until supplied; do not use an agent report as owner authority.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+          "line": 5,
+          "line_text": "  \"planning_head\": \"eb194fdbb6fc8247db8429fc23120aa0fe659ed8\",",
+          "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+          "line": 6,
+          "line_text": "  \"application_source_commit\": \"8a1e405f0086033dfb25ad834689a08bfe9f1eea\",",
+          "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+          "line": 67,
+          "line_text": "        \"exact_scenario_block_sha256\": \"c565fb4e46b73bbf7707f0e4dbb16f4a24e4b19459790eaab930f757e9687ee1\",",
+          "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/bundle-review/CRITERION-ALIAS-MAP.json",
+          "line": 8,
+          "line_text": "    \"sourceFullGherkinSha256\": \"67c46e49869f3b199bc13bb0d76244940b7d6a003a3059d37348ddb592dead09\",",
+          "sha256": "279c1bec0920f02dba67f43cb6fcb6ce5f2fa311c79dc98dc18ac0a4f29c99ee",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/CRITERIA-SOURCE-PINNING.md",
+          "line": 5,
+          "line_text": "1. Export **all in-scope ACs** from the canonical PM release-goal/scope, including not-applicable and unresolved items, as a local JSON snapshot shaped like templates/criteria-source.json. Each record contains ac_id, ac_version and YES/NO/UNKNOWN applicability. Do not derive the export from tests, coverage links or the QA register.",
+          "sha256": "b1efaabd32b331457860b7b0dbd5a5d4db59f518570eb7d7622d1b6621ff55fc"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/CRITERIA-SOURCE-PINNING.md",
+          "line": 7,
+          "line_text": "3. Set scope.json criteria_source_ref (relative to evidence_root), criteria_source_sha256 (exact file-byte hash), expected_ac_count (all records), expected_ac_ids_sha256 (canonical identity-set hash), and criteria_source_review_ref. Use the helper below to calculate pins from the reviewed export.",
+          "sha256": "b1efaabd32b331457860b7b0dbd5a5d4db59f518570eb7d7622d1b6621ff55fc"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "checker/criteria_pin.py",
+          "line": 17,
+          "line_text": "    return {'expected_ac_count':len(pairs),'expected_ac_ids_sha256':hashlib.sha256(json.dumps(sorted(pairs),ensure_ascii=False,separators=(',',':')).encode()).hexdigest(),'criteria_source_sha256':hashlib.sha256(raw).hexdigest(),'criteria_source_review_ref':source['review_ref'],'scope_id':source['scope_id'],'notice':'Candidate values only; source completeness/authority must be independently reviewed. This helper does not modify scope.'}",
+          "sha256": "23bdaed08df3454428bbad3a4fd23b8b4a86efe54cbe6fe94fe370d96a9a0920"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "checker/qa_lint.py",
+          "line": 123,
+          "line_text": "                if criteria_hash(source_pairs) != scope.get('expected_ac_ids_sha256'): error('AC population: source IDs hash mismatch')",
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "Count1328 alone is not independent completeness approval. Self-repinning a narrowed register does not establish fullsource coverage. Do not invent AC versions/review authority."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "TRACE-03",
+      "topic": "Separate eight normalized registers and explicit selection",
+      "assessment_at_pinned_head": "MISSING",
+      "matched_package_requirements": [
+        "QA13-012",
+        "QA13-013",
+        "QA13-014",
+        "QA13-036",
+        "QA13-051"
+      ],
+      "actual_source_observation": "At exact b01 HEAD no tracked docs/qa normalizedscope or v1.3 registers exist. NPAcase/scenario/traceability registers and an empty test-run template already separate plans from executions; the1131task/1328AC matrix remains explicit proposed evaluation duty.",
+      "specific_gap": "The existing CSV schemas do not supply independent complete AC denominator, pure mapping links, immutable run rows and mapping_id→run_id coverage-selection. No defensible new planned/validated percentage is available across the mixed populations.",
+      "minimal_additive_adoption": "Add only an audit/reconciliation plan now. A later authorised pilot may create exact ac/case/traceability/run/coverage-selection/defect/risk/exception schemas, retaining originals. Initial unexecuted case designs have no run rows; missing selections deriveNOT_RUN. Do not label unresolved applicabilityNO;UNKNOWN stays denominator. Required mappings all need selectedPASS/CURRENT/QUALIFICATION on matching scope; denominatorzero staysnull.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line": 21,
+          "line_text": "The stable design inventory is test-scenarios.csv and test-cases.csv. Semicolons delimit multiple IDs. Every case begins SPECIFIED_NOT_RUN. Its evidence_status describes related existing evidence independently: NONE, RELATED_LOCAL_EVIDENCE, PENDING_NATIVE_NOT_RUN or INCOMPLETE_REQUIRES_MANUAL_REVIEW. Related local evidence can support a subset of a case's assertions; it never substitutes for executing the full newly specified case or accepting its requirement.",
+          "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/test-run-template.csv",
+          "line": 1,
+          "line_text": "run_id,case_id,requirement_ids,candidate_commit,build,schema,domain_api_version,platform_api_version,environment,database_engine,database_version,harness,harness_version,fixture_ids,content_versions,executor_name,executor_role,executed_at_utc,result,actual_result,evidence_path,defect_id,blocker_reason,scope_decision,reviewer_name,reviewer_role,reviewed_at_utc",
+          "sha256": "02d89451e5d89a33f7755a92e6f75a5668581a26f90ad199239f4c9db13d6419",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/current/TRACEABILITY.csv",
+          "line": 1,
+          "line_text": "Requirement,BRD parent,Title,Priority,Baseline release,Status,Current assessment,Behavior retained,Recovery retained,Acceptance retained,Implementation and test sources,Evidence interpretation",
+          "sha256": "a93bfd9d4a13686df08aba831717ef89a04a36698c6de470fa61553b408d71db",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line": 9,
+          "line_text": "`acceptance-task-matrix.proposed.json` retains every original scenario block and exact source hash with separate Given/When/Then, the original planned verification level, one proposed primary verifier, supporting task contributions and an explicit Not run evidence state. Supplementary AC/EVAL identifiers name the same source scenarios; they do not inflate the acceptance count. `supplemental-verification-plans.proposed.json` records 1,069 applicable engineering-control recommendations separately from those original scenarios.",
+          "sha256": "f56b479bfdaa803b94e72341a7e58e2889b77a858d8f1c4830c6cf2df7344134",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/TRACEABILITY.md",
+          "line": 4,
+          "line_text": "`ac-register.csv` is the denominator: one row per in-scope AC/version, including unmapped requirements. `case-register.csv` defines cases. `traceability.csv` contains AC-to-case links only, with a `required` YES/NO flag. `run-register.csv` holds immutable executions only. `coverage-selection.csv` chooses a qualification run for each mapping in `scope.json`. Missing selection derives NOT_RUN. No run/result/evidence belongs in traceability rows.",
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/TRACEABILITY.md",
+          "line": 6,
+          "line_text": "Planned coverage = applicable ACs with at least one required mapping / applicable ACs. Validated coverage = applicable ACs with at least one required mapping and every required mapping having selected PASS/CURRENT evidence matching the snapshot / applicable ACs. UNKNOWN applicability remains in the denominator conservatively and never validates; NO is excluded only with rationale/source/review. Zero denominator gives null, not 100%. Report partial coverage and unknown applicability separately.",
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "standards/register-schema.json",
+          "line": 1,
+          "line_text": "{",
+          "sha256": "4f24182ea4beda4026af524ffe122eaf20c1c09aba2fbc1b3ab0e0f1165cd65e"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "checker/qa_lint.py",
+          "line": 271,
+          "line_text": "        else: counts['NOT_RUN']+=1; freshness['UNASSESSED']+=1",
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "Do not use historical test totals as current AC coverage. Root newly authored working-tree docs/qa auditdocs are not claimed absent; historical census is b01 only. Empty planning schema does not establishReady."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "TRACE-04",
+      "topic": "Separate record state, result, freshness, approval and delivery",
+      "assessment_at_pinned_head": "PARTIAL",
+      "matched_package_requirements": [
+        "QA13-003",
+        "QA13-021",
+        "QA13-025",
+        "QA13-049",
+        "QA13-051"
+      ],
+      "actual_source_observation": "All1328proposal criteria have actual_execution {state:Not run,run_id:null,date:null,result:null,observed_evidence:[]}. NPA108cases areSPECIFIED_NOT_RUN; related_evidence tags are separate. Current legacy307ledger is113PARTIAL/194PENDING/zerofully accepted; dated825doc9records29Pass/1Blocked/176Inprogress/619Notrun for historicaledition.",
+      "specific_gap": "Legacy planning/implementation labels and historic case states are not normalized sixexecution outcomes plus freshness. A blind Pass→PASS/CURRENT import would misstate candidate qualification; current candidate applicability/source protection still need actual evidence.",
+      "minimal_additive_adoption": "Preserve alloriginal status fields unchanged and add an explicit migration glossary. SPECIFIED_NOT_RUN describes a case plan; noexecutionrow untilactual attempt. Inprogress/PARTIAL/PENDING stayrecord/implementation dimensions. HistoricalPASS can retain source result with UNASSESSED or justifiedSTALE freshness; never currentbyinheritance. ApprovalPENDING and readinessNOT_READY remain distinct from syntactic record quality.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+          "line": 141,
+          "line_text": "      \"actual_execution\": {",
+          "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line": 21,
+          "line_text": "The stable design inventory is test-scenarios.csv and test-cases.csv. Semicolons delimit multiple IDs. Every case begins SPECIFIED_NOT_RUN. Its evidence_status describes related existing evidence independently: NONE, RELATED_LOCAL_EVIDENCE, PENDING_NATIVE_NOT_RUN or INCOMPLETE_REQUIRES_MANUAL_REVIEW. Related local evidence can support a subset of a case's assertions; it never substitutes for executing the full newly specified case or accepting its requirement.",
+          "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/current/DOCUMENTATION-QA.md",
+          "line": 9,
+          "line_text": "| Test cases | All 825 baseline case IDs, first seven descriptive columns, variants and expected results preserved. Current status: 29 Pass, 1 Blocked, 176 In progress and 619 Not run. |",
+          "sha256": "cf7814721304e440b5f55204b45ba0837681611ebc3d070fabfa5396afb2aaa7",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/05-STORY-AND-TASK-STANDARD.md",
+          "line": 99,
+          "line_text": "The backlog's `Built today` field is a historical implementation assessment. `Partial` does not prove the new slice exists, and `Absent` can be stale after building. Preserve the source value for traceability and record new engineering evidence separately. No new planning task is Done by inheritance from an existing implementation.",
+          "sha256": "a6d5d79f1924ebe80447f3f6476c26a5fde091ccb9df123565d36f6dab806dcb",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/05-STORY-AND-TASK-STANDARD.md",
+          "line": 96,
+          "line_text": "| Done | All Done conditions, including product-owner acceptance, are recorded | Never inferred from a merged branch, green tests, task totals or an AI review |",
+          "sha256": "a6d5d79f1924ebe80447f3f6476c26a5fde091ccb9df123565d36f6dab806dcb",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "standards/STATUS-MODEL.md",
+          "line": 8,
+          "line_text": "Blank run fields are not NOT_RUN results: absent runs produce derived NOT_RUN counts. NOT_APPLICABLE needs a reviewed rationale and scope evidence. A previous PASS can be STALE. A case designed but unexecuted has no run; template display status remains NOT_RUN.",
+          "sha256": "bc9a5dab6119a0d54b75986a2ed7e866fdcd91d39c02b6d2016758beb083a1b7"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "standards/statuses.json",
+          "line": 1,
+          "line_text": "{",
+          "sha256": "ba979a6ea772cd6e468ce7928c98653f93720b4735e7a1cd66a81d072c966ec1"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "standards/TESTING-STANDARD.md",
+          "line": 24,
+          "line_text": "PASS means the identified test executed and met its predeclared oracle. FAIL means execution violated it. BLOCKED means a dependency prevented meaningful execution. NOT_RUN means no execution. SKIPPED means intentionally omitted with rationale and owner. NOT_APPLICABLE requires evidence-based applicability and review. STALE evidence cannot establish a current pass.",
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "Not run means no actual execution, not failed product. Neither mergedbranch nor green structuralchecker nor AIreview establishesDone/production approval."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "TRACE-05",
+      "topic": "Append-only run evidence and first-failure preservation",
+      "assessment_at_pinned_head": "PARTIAL",
+      "matched_package_requirements": [
+        "QA13-022",
+        "QA13-023",
+        "QA13-024",
+        "QA13-025",
+        "QA13-028",
+        "QA13-047"
+      ],
+      "actual_source_observation": "Dated qualification documentation distinguishes historical local/native/browser observations, skips and open release gaps. NPA test strategy explicitly retains seven baseline failures asfailed. AGENTS92states focused runners overwrite docs/evidence and ordinarily must restore them beforecommit.",
+      "specific_gap": "Good historical records exist, but mutable shared runner paths are not an enforced append-only normalized run store. Existing files do not guarantee per-attempt selection/parent linkage, no concurrent output collision or fullconfig/tool/data/ACcase versions for every possible reused result.",
+      "minimal_additive_adoption": "Before any future actual run, archive immutable input source/fixtures and output under a unique run directory, retain firstFAIL/BLOCKED plus subsequentdiagnostics/retests, and write artifact manifest. Keep existing runner/oracles unchanged; serialized evidence integration with unique ports/state is operational prerequisite. Qualification group purpose/count/seeds/aggregation predeclared; late diagnosis cannot majority-vote oldfailuregreen. Never overwrite historicalfiles for adoption.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "AGENTS.md",
+          "line": 92,
+          "line_text": "A focused run overwrites files in `docs/evidence/`; restore them before committing (`git checkout -- docs/evidence/ && git clean -f docs/evidence/`) unless you are publishing a clean full run. Port 8000 is every runner's default: set `IMPACT_PORT` when anything else runs. Full details, flags and recorded counts: CLAUDE.md §7 and `docs/QUALIFICATION.md`.",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/QUALIFICATION.md",
+          "line": 3,
+          "line_text": "**Status:** the current build, API versions, schema and the verified state of `main`, CI and staging are stated once, at the top of [HANDOVER.md](HANDOVER.md); `VERSION.json` is the source for the version numbers. This file holds the dated qualification records, newest first; each names the build it measured and keeps the figures recorded at the time. The sections from \"Build 0.27.0\" downwards were written at that build.",
+          "sha256": "7c1659b848a16966e5c0a10df4e8b0534a60809ccb95b3cb2ad72e84d25a7c44",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/QUALIFICATION.md",
+          "line": 21,
+          "line_text": "Final unit targets pass 942 checks (62 explicit skips); the first socket-restricted invocation is retained as an environment failure summary. The design reference passes 143 assertions and explicitly does not validate the product. The supporting tracker has 42 offline checks and 15 passing browser groups. Exact source and evidence fingerprints are in `evidence/sprint-0.32-local-summary.json`.",
+          "sha256": "7c1659b848a16966e5c0a10df4e8b0534a60809ccb95b3cb2ad72e84d25a7c44",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line": 83,
+          "line_text": "An environment failure must be reproducible and distinguished from a product failure. The seven Mac-specific baseline failures below remain failed outcomes; matching the unchanged baseline explains their context but does not make a full local suite green. Resolve or qualify them in the supported Linux/native/container environments before release. A blocked paid job with zero executed steps is an operational/billing block, not a passing product test.",
+          "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line": 57,
+          "line_text": "For actual local or hosted execution, follow repository AGENTS.md, CLAUDE.md and docs/QUALIFICATION.md. Use a unique test port and do not let concurrent runners overwrite shared evidence. The existing script entry points and test files are the source of executable commands; this proposed catalogue adds no new runner or hidden service. Do not alter applied migrations or depend on an unavailable future schema. Target feature cases remain BLOCKED until implementation and policy are approved.",
+          "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "line": 6,
+          "line_text": "Runs are immutable append-only observations; defects are immutable append-only events with unique event IDs and predecessor links. Fix/retest/closure creates a new event, retaining the initial failure. Requirement/case/mapping changes use reviewed versions and invalidation. Do not share a writable CSV across concurrent agents: assign separate record IDs and per-agent change files/branches, then have one integrator validate and append deterministically. CSV register mutation is serialized in reviewed merges. Never resolve duplicate records by silently overwriting one.",
+          "sha256": "b97985d780cd5c30ad665561c7e8c3d53d148df22328136389f451ee8cc43dd4"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "standards/TESTING-STANDARD.md",
+          "line": 26,
+          "line_text": "Each execution is immutable and identifies scope/AC revision, case version, build SHA and artifact digest, configuration, environment, tool versions, procedure, timestamps/timezone, fixture/model/prompt/corpus versions, expected and observed values, attachments, executor and reviewer. Add new runs rather than overwriting failures. Redact sensitive content without removing decision-relevant facts; store restricted detail separately with controlled references.",
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "checker/README.md",
+          "line": 23,
+          "line_text": "Offline record validation cannot authenticate source/evidence/approval, discover criteria omitted from the canonical PM source export, enforce append-only history against prior Git versions, evaluate numeric or statistical gates, judge compensating controls, validate all specialist evidence, or grant readiness/deployment. Scope reviewers approve selection and source completeness. Release mode compares the complete AC register to the frozen source export and its count/identity/source-byte pins. Strict release mode enforces current all-required PASS coverage and no open D3/D4 defects; it deliber",
+          "sha256": "34dd45c0bf49fe95a0b1e5dc7437d07beb00563a05990f5b677d433cb78a6197"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "Existing evidence is not claimed corrupted. This source-only audit has no new productPASS and does not authorise any fixture, provider or paidCI run."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "TRACE-06",
+      "topic": "Actual automation locators and case-version markers",
+      "assessment_at_pinned_head": "MISSING",
+      "matched_package_requirements": [
+        "QA13-026",
+        "QA13-027",
+        "QA13-036",
+        "QA13-054"
+      ],
+      "actual_source_observation": "150tracked qualification/ and tools/browser/ Python/JS/TSfiles have real testfunctions/assertions; exact source census finds zero literal qa:TC-…@ markers in that bounded set. Legacystrategy64explicitly says825design IDs differ from automatedtest names.",
+      "specific_gap": "v1.3AUTO records need both an existing repo-relative locator and a discoverable literal versioned case marker. There is no observed canonical marker binding to these1328source criteria; no evidence a file presence or named function implements each expected behavior.",
+      "minimal_additive_adoption": "Document future percase binding review. Preserve existing meaningful assertions and original case IDs; add markers beside actualcase only in separately authorised test-source work after semantic mapping. Unbound plannedautomation remainsunbound; do not bulkrelabelfutureAUTOasMANUAL to evade checker. Manualcases need actualprocedure, not automatic substitute for provider/native/security evidence.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line": 64,
+          "line_text": "The 825-case baseline catalogue is retained. It contains 540 functional cases, 37 nonfunctional cases, 30 journeys, 143 reference cases, 18 API integration cases, 12 smoke cases and 45 security or boundary cases. These design case IDs are not interchangeable with the names of the current automated tests. A green automated test establishes only its asserted behavior.",
+          "sha256": "fe50fe631b15c06bc009b3f2f43b3713b75307944f1bc080d7c5da14ac32c9a9",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line": 73,
+          "line_text": "Automate deterministic assertions at the narrowest useful layer: exact enum/length/identifier boundaries, independent catalogue copies, request counts, sealed binding, changed-intent conflicts and write-group counts. Use API integration for closed raw JSON, current scope and atomic persistence. Use real native roles and concurrent transaction barriers for RLS/lock/receipt claims. Use the actual browser for save uncertainty, stale-head user experience, mobile controls and tenant-switch response races. Reserve representative manual checks for screen readers, comprehension, quality rubrics and bu",
+          "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "AGENTS.md",
+          "line": 96,
+          "line_text": "- **Domain action:** add schemas, path and policy row in the feature's `*_contracts.py` `augment()` (register new modules in `scripts/build_contracts.py`, keeping `augment_reference` last); regenerate the contracts; register the action in `service.py` and implement it; give fixture actors the capability in `scripts/bootstrap.py`; regenerate the onboarding profile; add the capability prefix to `areaCapabilities` in `apps/web/src/main.tsx` if a screen uses it; tests for the positive case, another tenant (404), revoked (401/404), wrong role (403), self-approval (`INDEPENDENCE_REQUIRED`), stale re",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "line": 4,
+          "line_text": "Every automated test carries its case ID/version in a discoverable marker, annotation or name, e.g. `qa:TC-AUTH-a17@v1` in a test docstring/comment next to the implementation. Framework-native tags are preferred where supported. Add a case register `automation_locator` as `repository-relative-path#symbol-or-line` and optional `marker`. One code test can list multiple IDs only if it asserts each linked outcome. Moved code updates locators in the same PR. Manual cases explicitly use `mode=MANUAL` and a procedure reference. The checker verifies local automatic locator files and marker strings exi",
+          "sha256": "b97985d780cd5c30ad665561c7e8c3d53d148df22328136389f451ee8cc43dd4"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "checker/qa_lint.py",
+          "line": 155,
+          "line_text": "            require(case,['automation_locator','marker'],label)",
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "checker/qa_lint.py",
+          "line": 160,
+          "line_text": "                elif case.get('marker') not in path.read_text(errors='replace'): error(f'{label}: marker absent')",
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "Zero canonicalmarker matches does not mean zero tests/zero behaviorcoverage. qa_lint checks marker/file presence, not assertions or execution. No marker/source edits in thisdocs audit."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "TRACE-07",
+      "topic": "Defect event identity, severity review and exact retest closure",
+      "assessment_at_pinned_head": "PARTIAL",
+      "matched_package_requirements": [
+        "QA13-029",
+        "QA13-030",
+        "QA13-031",
+        "QA13-034"
+      ],
+      "actual_source_observation": "NPAstrategy81requires exactcandidate/reproduction/expectedactual/owner severitytriage and releaseblock for criticalinvariants; priority is explicitly not severity71. Existingrun template has defect/blocker/reviewer fields. Original failed records/diagnostic context are preserved.",
+      "specific_gap": "No normalized immutable predecessor event chain, D1–D4 revieweddowngrade record or machinecheckable same-case/currentqualification/candidate retest closure is present. HistoricalP0/P1 priorities cannot be imported as D4/D3 without explicitreviewedseverity mapping.",
+      "minimal_additive_adoption": "Plan append-only BUG event records retaining stableBUG/case identity, sourcepriority and distinct reviewedseverity. Record explicit mapping if legacyS1/P0 used; retain oldcode. Close only after actual samecasePASS/CURRENT/QUALIFICATION on eventbuild, and completecandidatepins forrelease closure. Any severitydecrease requires actualindependentreviewrationale/reference. Keep quarantine/exception decisions separate; never changeFAILintoPASS.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line": 71,
+          "line_text": "P0 cases protect isolation, independent decision making, privacy, irreversible action boundaries, current authority, atomic writes and critical availability. P1 covers core functional journeys, field bounds, comprehension, accessibility and measured capacity. A priority is a proposed triage order; it is not an accepted severity or agreed release waiver. Run the smallest meaningful checks while implementing a change and broaden only when the change or failure warrants it. Release qualification retains all four required hosted jobs.",
+          "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line": 81,
+          "line_text": "A failed assertion is recorded with exact candidate, minimal synthetic reproduction, expected/actual result, affected requirements, environment, evidence and impact. Assign a named owner and severity through triage. A privacy/isolation or authority bypass, self-approval, corrupted official arithmetic, duplicated financial instruction or partial atomic write blocks the affected release path. Do not relax a natural-person rule, remove a negative test, add a waiver flag or label a dangerous failure a fixture limitation.",
+          "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/test-run-template.csv",
+          "line": 1,
+          "line_text": "run_id,case_id,requirement_ids,candidate_commit,build,schema,domain_api_version,platform_api_version,environment,database_engine,database_version,harness,harness_version,fixture_ids,content_versions,executor_name,executor_role,executed_at_utc,result,actual_result,evidence_path,defect_id,blocker_reason,scope_decision,reviewer_name,reviewer_role,reviewed_at_utc",
+          "sha256": "02d89451e5d89a33f7755a92e6f75a5668581a26f90ad199239f4c9db13d6419",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "standards/RISK-CLASSIFICATION.md",
+          "line": 24,
+          "line_text": "Use D1 minor, D2 recoverable material issue, D3 major function impaired, D4 severe harm/critical outage/disclosure. Higher number means greater harm for both impact and defect severity. Priority remains separate. Existing external S1–S4 systems may retain their native codes, but map explicitly (S1→D4, S2→D3, S3→D2, S4→D1) at import; never reinterpret historical labels silently.",
+          "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "checker/qa_lint.py",
+          "line": 227,
+          "line_text": "            if levels.get(event.get('severity'),0) < levels.get(predecessor.get('severity'),0):",
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "checker/qa_lint.py",
+          "line": 229,
+          "line_text": "        if event.get('status') == 'CLOSED':",
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "templates/defect.md",
+          "line": 20,
+          "line_text": "When decreasing severity, supply `severity_change_rationale` and `severity_review_ref` in the new event; preserve the previous event and case ID. The review reference must resolve and its authority must be established externally. Retest must run the defect's case ID on the closed event's build; release closure additionally matches candidate scope/config/data/artifact. An unrelated passing case is not closure evidence.",
+          "sha256": "b7e96b4cd68f9aa4b4faffb9df42242fac25b8e6943ae7692125407c70421fa0"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "Do not allocate fake defectfix/retest/counselreview to fillschema. Closed unrelatedpass is invalid. PackageD4mostsevere must not silently reverse legacyseverity."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "TRACE-08",
+      "topic": "Portable evidence root and local source confinement",
+      "assessment_at_pinned_head": "PARTIAL",
+      "matched_package_requirements": [
+        "QA13-020",
+        "QA13-022",
+        "QA13-047"
+      ],
+      "actual_source_observation": "Repository evidence links are largely existingrelative artifacts and currentrefinement compactcopies with source/manifests; original taskplans name prospectiveevidencewithout inventing path/run. Agent-local output absolute paths are usefulobservations but not a portableproductrelease evidence root.",
+      "specific_gap": "No v1.3 scope.evidence_root policy/source exportconfinement is installedatb01. HTTPS/recordrefs or resolvedrelativepaths establishlocators, not contentauthenticity or permitted disclosure. Scopeabsoluteoverride/symlinkboundaries remainunqualified.",
+      "minimal_additive_adoption": "Document a futureportable repo:/docs/qa/evidence or reviewed equivalent without bulkcopy. Canonicalsource snapshot localinsideconfiguredroot; preserve exactsourceoriginals. Reject traversal/absolute/symlinkescape forlocalrefs. Keep credentials/rawaccount/personal data outofGit; manifests can reference safe redactedcopy with exacthash and authenticity/reviewerlimitations. Do not relocate/deletehistoric artifacts.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line": 15,
+          "line_text": "All new plans say **Not run**. A future test name, synthetic adapter, queued intent, green component check or agent review does not establish actual delivery, live-provider quality, human approval, Ready, Done, requirement/release acceptance or deployment. Licence/assurance and other human governance checks need their actual records; synthetic fixtures cannot grant rights. Source quantitative thresholds and required environments remain intact, and new arbitrary thresholds are not agreed here.",
+          "sha256": "f56b479bfdaa803b94e72341a7e58e2889b77a858d8f1c4830c6cf2df7344134",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/current/DOCUMENTATION-QA.md",
+          "line": 14,
+          "line_text": "| Navigation/package | Current-document relative Markdown links and archive CRC integrity checked during packaging. Package SHA256 manifest records included file bytes. |",
+          "sha256": "cf7814721304e440b5f55204b45ba0837681611ebc3d070fabfa5396afb2aaa7",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/05-STORY-AND-TASK-STANDARD.md",
+          "line": 118,
+          "line_text": "Every evidence entry records the canonical story/task ID, scenario name, exact test node or browser/manual check, source commit, run ID or artifact path, environment, synthetic fixture, result and date. Record skips and unrun checks. For manual evidence, record the actor, steps, observed result and owner acceptance. Link the release note, PR and security-impact review where relevant. A future test name in a plan is labelled **proposed, not implemented or run**.",
+          "sha256": "a6d5d79f1924ebe80447f3f6476c26a5fde091ccb9df123565d36f6dab806dcb",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/EVIDENCE-ROOT.md",
+          "line": 5,
+          "line_text": "- `package:examples/lifecycle` anchors to the QA package. The fixture uses it; moving registers alone stays valid.",
+          "sha256": "d7d4d3b170cf7003207a83c525ec6703aca75eba61c0528e64fd2b773c168ef2"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/EVIDENCE-ROOT.md",
+          "line": 16,
+          "line_text": "Every local source/evidence/review/procedure reference must use forward-slash relative paths inside the resolved root. Absolute paths (including Windows drive paths), traversal outside the store and symlink escapes are rejected. package:/repo: roots cannot escape their anchors. Absolute references inside the store are also rejected: use their portable relative equivalent. Resolution is a point-in-time offline check; use an immutable approved evidence store during assessment rather than a concurrently changing directory.",
+          "sha256": "d7d4d3b170cf7003207a83c525ec6703aca75eba61c0528e64fd2b773c168ef2"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "checker/README.md",
+          "line": 20,
+          "line_text": "- Local evidence references resolve against configured evidence_root (legacy planning fallback: register folder); HTTPS references are structurally accepted without network/authentication or truth checks. Local anchors are locators only, not semantically parsed. `record:` references produce a review warning because canonical external record identity is not authenticated offline.",
+          "sha256": "34dd45c0bf49fe95a0b1e5dc7437d07beb00563a05990f5b677d433cb78a6197"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "Localpath/HTTPSacceptance is not proof of authenticity, secretredaction, sourceapproval or inaccessibleexternalcontent."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "TRACE-09",
+      "topic": "Planning release goal versus deployable operating candidate",
+      "assessment_at_pinned_head": "PARTIAL",
+      "matched_package_requirements": [
+        "QA13-004",
+        "QA13-011",
+        "QA13-022",
+        "QA13-032",
+        "QA13-035",
+        "QA13-049"
+      ],
+      "actual_source_observation": "Existing productreleasegoals/epics/stories/tasksretaintheirnative hierarchy. Taskmatrixrecords originalapplication source8a1e/build0.39/domain1.28/platform1.11 and saysschema derives migrations; releasequalification requires exactactualcandidatefourhostedjobs+owner. Agentdraft testplans are not releaseevidence.",
+      "specific_gap": "No QA scope.json binds a distinct deployableoperatingrelease candidate/artifact/config/environment/data/assessmenttime beneath the existingreleasegoal. Planninghead/applicationorigin/documentcommit are different identities and cannot replacebuilt artifact or future run candidate.",
+      "minimal_additive_adoption": "Add a candidate-binding template/decisionplan: existing releasegoalID +actualoperatingcandidateID/buildSHA/artifactdigest/config/data/env/schema+tools+time+scope. Preserve cross-releaseepicreferences instead ofduplicateLinearhierarchy. Verify builtartifactand actualfourrequiredjobs exacthead onlywhen separatelyauthorised; no paidexecution fromthisaudit.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+          "line": 7,
+          "line_text": "  \"application_version\": {",
+          "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/05-STORY-AND-TASK-STANDARD.md",
+          "line": 85,
+          "line_text": "Migration numbering and versions belong to implementation integration. This planning package assigns neither a final migration filename nor a build/API version. At the planning source the next available migration is 0044; recheck the actual migration ledger before assigning it. Applied migrations stay byte-identical, including 0041–0043 already present in the source checkout.",
+          "sha256": "a6d5d79f1924ebe80447f3f6476c26a5fde091ccb9df123565d36f6dab806dcb",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line": 103,
+          "line_text": "For a release, the exact candidate must have all four existing hosted jobs green, relevant security/native/identity/container checks executed rather than skipped, identified P0 failures resolved, approved migrations/capabilities and a truthful evidence manifest. Owner confirmation is required before merge. After authorised deployment, capture actual version/health and a bounded synthetic smoke result. Passing CI for one SHA does not permit a later changed candidate without applicable qualification.",
+          "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "AGENTS.md",
+          "line": 58,
+          "line_text": "",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/TRACEABILITY.md",
+          "line": 2,
+          "line_text": "Canonical chain: vision → strategy → roadmap → release goal → operating release → epic → story → AC → technical task → case → execution → defect → decision. Preserve existing canonical IDs. Strategy and release goal are planning concepts; an operating release identifies the deployable candidate. Nonfunctional requirements may attach at release/epic level with an explicit AC/oracle; no fictional story is required.",
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/PM-INTEGRATION.md",
+          "line": 4,
+          "line_text": "Use Strategy and Release goal in planning traceability. Link operating release candidate/build beneath the release goal. Bind shared Definition of Ready/Done checklist versions and AI assurance to PRODUCT-CONTEXT; reuse their criteria rather than making a second checklist authority. QA supplies observed verification and operational evidence for the relevant PM stage gates. Product-document structural quality, implemented correctness, approval and delivery stay distinct.",
+          "sha256": "e58d6be4586dd0b39b386a3b415f11a69fbed9bbc7278ed56c64853ae09c6308"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/CI-CD-GATES.md",
+          "line": 22,
+          "line_text": "Use `python3 docs/qa/checker/qa_lint.py --registers docs/qa/registers --root .` for structural checks/reporting. Use `--release` only when a complete qualification snapshot is expected; it also fails for unvalidated ACs, unknown applicability and required non-current/non-passing mappings. A structurally valid plan may still have zero product evidence. The checker is one subordinate record gate, not the always-run aggregator, specialist approval or complete release-readiness engine. Its exit code must be included in the real configured pipeline.",
+          "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "PlanningRG/milestoneis notnewoperatingreleaseproof. No newmain/live/demo/CI claim."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "TRACE-10",
+      "topic": "CODEOWNERS exists; live required-review protection unknown",
+      "assessment_at_pinned_head": "NOT_VERIFIED",
+      "matched_package_requirements": [
+        "QA13-017",
+        "QA13-018",
+        "QA13-019",
+        "QA13-032",
+        "QA13-033",
+        "QA13-035"
+      ],
+      "actual_source_observation": "ExactHEAD has valid docs/CODEOWNERS6lines:global* @nakul175 anddeploy/infrastructure/docsgovernance patterns; no higher-precedence .github/root CODEOWNERS inHEAD. SupportedGitHub docs/ location was confirmed viaofficialGitHubdocs byroot. Sourceworkflowsincludealwayssmallchecks andfourapplicationqualificationjobs; no trackedqa_lintreference.",
+      "specific_gap": "Presence of supported CODEOWNERS is established, but livebranch/rulesetrequiredcodeownerreview,fresh-review/latest-push,bypass/directforcepush,requiredchecktrustedsource and safeunmergeability tests were notqueried. CurrentQArecordsource/control enforcement cannot be gradedVERIFIED or factuallyNOT_CONFIGURED from fileinspectionalone.",
+      "minimal_additive_adoption": "Record ownershipPRESENT and liveenforcementNOT_VERIFIED/UNKNOWN, with separatelyauthorisedreadonlysettingsinspection checklist. AnyfutureQAexport/schema/checker/workflow/controlchanges remainunderactualhumanreview. Documentexistingdocsonlyqualificationfilters and exactjobselection; do notchangeCI/settings/AGENTS inthisaudit. An always-runtrustedaggregator safePR proof, ifneeded, is a futureapproved engineering/control task.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/CODEOWNERS",
+          "line": 1,
+          "line_text": "# Code owners for review requests (GitHub reads CODEOWNERS from .github/, the root or docs/; it sits in docs/ so that adding it starts no CI run: see docs/governance/README.md). One owner until the owner names more.",
+          "sha256": "f02d2371127f001543067a76f938032e9b579d278d75250731f989b23d3ab68b",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/CODEOWNERS",
+          "line": 3,
+          "line_text": "*                   @nakul175",
+          "sha256": "f02d2371127f001543067a76f938032e9b579d278d75250731f989b23d3ab68b",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": ".github/workflows/checks.yml",
+          "line": 3,
+          "line_text": "# check and the web client's type check. It has no path filter, so a documentation-only pull",
+          "sha256": "16817f3fc91126a582cf8c0e6c9cb1dd9eb6d9bb66c2b2d8bed4d8e4a9e6c702",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": ".github/workflows/checks.yml",
+          "line": 7,
+          "line_text": "  pull_request:",
+          "sha256": "16817f3fc91126a582cf8c0e6c9cb1dd9eb6d9bb66c2b2d8bed4d8e4a9e6c702",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": ".github/workflows/qualification.yml",
+          "line": 9,
+          "line_text": "    paths-ignore:",
+          "sha256": "a9bc90b3240eb52b125e5bef24a1a76f10647efad0970112d814afab708b1b1f",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/SOURCE-PROTECTION.md",
+          "line": 5,
+          "line_text": "1. Merge adoption/github/CODEOWNERS.template into the real product repository's .github/CODEOWNERS. Replace placeholders with real human source/control owners who have required repository permissions; confirm any team contains the intended human reviewers. Customize the exact criteria-source and scope paths. The template is inactive and is not an installed protection.",
+          "sha256": "55ea2ad92fc7686e875d3d2bf11635a46d0c010000e01c0416b88d92c7c74bff"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/SOURCE-PROTECTION.md",
+          "line": 7,
+          "line_text": "3. In the actual protected branch/ruleset, require PR reviews **and review from Code Owners**. Dismiss stale approvals on new changes and require approval of the latest reviewable push where configured. Require the QA status check from the appropriate trusted integration; restrict bypass/direct push/force push according to actual repository policy and inspect administrative bypass permissions.",
+          "sha256": "55ea2ad92fc7686e875d3d2bf11635a46d0c010000e01c0416b88d92c7c74bff"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/SOURCE-PROTECTION.md",
+          "line": 11,
+          "line_text": "A CODEOWNERS file alone does not require approval; the actual branch/ruleset setting must enforce it. Repository features/permissions vary. Verify the real configuration and record its evidence instead of treating this package as enforcement. GitHub documentation: [Code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners), [protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches), [rulesets](https:/",
+          "sha256": "55ea2ad92fc7686e875d3d2bf11635a46d0c010000e01c0416b88d92c7c74bff"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/CI-CD-GATES.md",
+          "line": 13,
+          "line_text": "Always-run gate aggregator must distinguish success from missing, skipped, neutral, cancelled, timed-out and unavailable required child checks. GitHub can accept some non-failure check conclusions, so do not rely on green UI alone to demonstrate execution. Protect branches with named checks and trusted reporting source where available. For merge queues ensure checks execute on the integration candidate using supported events; validate repository settings.",
+          "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "Earlierunsupported-docs/CODEOWNERSsuggestionis corrected. Do notclaimmissingCODEOWNERS or NOT_CONFIGUREDlivefact. WorkflowYAMLdoesnotproveactualenforcement. No settingswrites/safePR/hostedCI executed."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "TRACE-11",
+      "topic": "Reference PM adapter membership; no alternative approval authority",
+      "assessment_at_pinned_head": "PRESENT_WITH_LIMITATIONS",
+      "matched_package_requirements": [
+        "QA13-003",
+        "QA13-037",
+        "QA13-052",
+        "QA13-053",
+        "QA13-054"
+      ],
+      "actual_source_observation": "AttachedQA PMmapping is explicitlyreference_only_not_input_schema. ActualinstalledImprana PMv4.2cataloguecontains3.0-generic edition whose exactrawhashcec6bc14… matchesmappingpin. All23declaredcanonicalfields arepresent; root actualfullmappinghelper exit0 checks aliases/gateprefixes. ExistingwholePMV3 andscopedV4assessmentreportneeds_input notcertificate.",
+      "specific_gap": "Membershipcompatibility is established narrowly, but no QAregister is machinecompatible PMinput solely frommapping. Externaltrust/actualreview/owner/AIassurancemissinggates remainunresolved; not replaced by QA agentcitation or structuralexit0.",
+      "minimal_additive_adoption": "ReuseexactexistingReady/Done and AIassurance source/versionhash references, reportQAobservations into theircanonicalfields. Bind anyfuturePMinput through actualsupported schema, withsourcealignment/actualevidence/gaps and no fabricatedreviews. Root mappingcheck receipt can be retained as compatibilityobservation, not qualityreadiness/ownerapproval.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/05-STORY-AND-TASK-STANDARD.md",
+          "line": 103,
+          "line_text": "The owner and implementing engineer record a dated Ready decision only when all of these are resolved:",
+          "sha256": "a6d5d79f1924ebe80447f3f6476c26a5fde091ccb9df123565d36f6dab806dcb",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/05-STORY-AND-TASK-STANDARD.md",
+          "line": 114,
+          "line_text": "## 6. Definition of Done and evidence record",
+          "sha256": "a6d5d79f1924ebe80447f3f6476c26a5fde091ccb9df123565d36f6dab806dcb",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/quality/FINAL-CONSOLIDATED-REAL-QUALITY-SUMMARY.json",
+          "line": 1,
+          "line_text": "{",
+          "sha256": "1f4920eb0937d3a760239e1bda315c1f8be27125c29b2339fad0b6c04605b710",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/PM-INTEGRATION.md",
+          "line": 2,
+          "line_text": "Read PM-MAPPING.json for the explicit concept mapping and inspected catalogue IDs. This is a reference adapter, not a machine-compatible input document for the PM checker. Canonical product authority remains in the installed product framework.",
+          "sha256": "e58d6be4586dd0b39b386a3b415f11a69fbed9bbc7278ed56c64853ae09c6308"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/PM-INTEGRATION.md",
+          "line": 8,
+          "line_text": "## Field membership validation (v1.2)",
+          "sha256": "e58d6be4586dd0b39b386a3b415f11a69fbed9bbc7278ed56c64853ae09c6308"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/PM-MAPPING.json",
+          "line": 6,
+          "line_text": "  \"reference_only_not_input_schema\": true,",
+          "sha256": "e1f1c9476c864193ccf545c29134b95a8ec6d221cfc921ffe1bd50569bf55625"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "checker/check_pm_mapping.py",
+          "line": 34,
+          "line_text": "    print(json.dumps({'errors':errors,'catalogue':str(path.resolve()),'mode':'FULL_CATALOGUE' if args.catalogue else 'EXTRACTED_INDEX','disclaimer':'Field membership validation; no product scope or approval authentication'},indent=2))",
+          "sha256": "24d1629d8608ce723f64baabb02e2d1b80aef98650c8ba0d2b13958275fedf80"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "MappingtoolPASSonlymembership; noPMschemafullcompatibility, independenttrust, productexecution, Ready/Done/acceptancecertificate."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "TRACE-12",
+      "topic": "Risk, thresholds and performance source facts remain distinct",
+      "assessment_at_pinned_head": "PARTIAL",
+      "matched_package_requirements": [
+        "QA13-006",
+        "QA13-007",
+        "QA13-008",
+        "QA13-009",
+        "QA13-010",
+        "QA13-044",
+        "QA13-051"
+      ],
+      "actual_source_observation": "Taskmatrixpreservesliteralnumeric tokens but explicitly sayssource_trace_aids not independentlyagreedthresholds and new_thresholds:null. Originalstrategyprovidesexistingdomaingate/riskcases; NPApriority istriage not acceptedseverity. Existingdatedperformanceobservationshaveboundedplatformlimits.",
+      "specific_gap": "Uniform reviewedfailuremode impact/likelihood, releasecriticalapplicability, predeclaredfullmetric/cohort/workload/sample/uncertainty approval and thresholds register remainunbound for every1328scenario. Threshold/dataCSVtemplates are not amongeightmachinevalidatedregister schemas; structuralcheckerdoesnotvalidatenumericaladequacy.",
+      "minimal_additive_adoption": "Add requirements-driven risk/metricdecision checklist ratherthaninventuniversalcoverage/latencyaccuracyvalues. Preserve originalnumericrequirements and targetdefinitions exactly; unknownrisk/targets conservativeprovisional requiringowner/specsource. Riskimpact4criticaloverride and nonwaivablecurrentauthority/isolation/arithmetic/independence invariants remainreleaseblocking. Keep thresholds evidence ownerapproval futureactual.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+          "line": 97,
+          "line_text": "        \"new_thresholds\": null",
+          "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+          "line": 96,
+          "line_text": "        \"meaning\": \"Literal tokens are source trace aids, not independently agreed thresholds. Use the complete original requirement/acceptance/scenario for workload, units, environment, pass/fail and exceptions.\",",
+          "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line": 71,
+          "line_text": "P0 cases protect isolation, independent decision making, privacy, irreversible action boundaries, current authority, atomic writes and critical availability. P1 covers core functional journeys, field bounds, comprehension, accessibility and measured capacity. A priority is a proposed triage order; it is not an accepted severity or agreed release waiver. Run the smallest meaningful checks while implementing a change and broaden only when the change or failure warrants it. Release qualification retains all four required hosted jobs.",
+          "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "AGENTS.md",
+          "line": 63,
+          "line_text": "- **Tests.** Never weaken, skip or delete a test to get green; fix the cause. Never present PGlite evidence as concurrency evidence, a PARTIAL requirement as accepted, or a design section as implemented.",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "standards/RISK-CLASSIFICATION.md",
+          "line": 6,
+          "line_text": "| Critical | Impact 4 overrides score | Threat/harm review; negative and abuse cases; authorization and isolation; failure/fallback; independent specialist review; all critical ACs evidenced |",
+          "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "standards/RISK-CLASSIFICATION.md",
+          "line": 17,
+          "line_text": "- Unknown release-critical applicability, undefined required targets, missing required review, stale evidence or blocked required checks means NOT_READY.",
+          "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "standards/RISK-CLASSIFICATION.md",
+          "line": 21,
+          "line_text": "For every numeric gate record metric definition/unit, population and slices, risk tier, target direction/value, denominator, window, workload/sample size, uncertainty rule, baseline, source rationale, owner, version and approval. For statistical gates define confidence method and decision bound in advance; zero observed failures does not imply zero true risk. Report confidence intervals, missing data and slice performance. Undefined target = unresolved gate, not pass. Reject material regression even if a pooled score remains above target when the predefined regression rule says so.",
+          "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "checker/README.md",
+          "line": 23,
+          "line_text": "Offline record validation cannot authenticate source/evidence/approval, discover criteria omitted from the canonical PM source export, enforce append-only history against prior Git versions, evaluate numeric or statistical gates, judge compensating controls, validate all specialist evidence, or grant readiness/deployment. Scope reviewers approve selection and source completeness. Release mode compares the complete AC register to the frozen source export and its count/identity/source-byte pins. Strict release mode enforces current all-required PASS coverage and no open D3/D4 defects; it deliber",
+          "sha256": "34dd45c0bf49fe95a0b1e5dc7437d07beb00563a05990f5b677d433cb78a6197"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "No arbitrary90%coverageorAIaccuracy; no genericthresholdstaticschemaPASSasnumericqualification. No budget/oracle weakening or syntheticapproval."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    },
+    {
+      "id": "TRACE-13",
+      "topic": "Meaningful domain and retest depth already planned, not globally qualified",
+      "assessment_at_pinned_head": "PARTIAL",
+      "matched_package_requirements": [
+        "QA13-026",
+        "QA13-041",
+        "QA13-042",
+        "QA13-043",
+        "QA13-045",
+        "QA13-046",
+        "QA13-047",
+        "QA13-048"
+      ],
+      "actual_source_observation": "ExistingrepoAGENTS96andNPAstrategyrequirepositive/othertenant/revoked/wrongrole/independence/stale/exactretry, atomicpersisted outcomes, realnative roles/concurrency, browseruncertainty, manuala11y and syntheticfixtures.1328matrix preserves sourceoracles and separates supplementaryproposedcontext/verification duties.",
+      "specific_gap": "AllsourceplansareNotrunand actualmanual/specialist/UAT acceptance isunresolved. Currenttestfilereuseanchors are prospectivecontributions, not exactvalidatedsourcecase bindings. Native/liveprovider/restore/manuala11y/AIrealworldevidence are distinctqualifications.",
+      "minimal_additive_adoption": "Keeporiginaloraclesunchanged and attach boundedpositive/negative/state/fault/concurrency/nosideeffect methods whereexactsourcepermits. Documentactualenvironmentandindependentreview prerequisites; no newproducttests/run claims now. Preserve sourcegaplabels(37missingGiven,7planassertionThen,13qualificationdutyassignments) as supplements ratherthanrewrites. Parentdomainaudit can detailrequiredlayers withoutmakingallapplicablebyassumption.",
+      "repository_refs": [
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "AGENTS.md",
+          "line": 96,
+          "line_text": "- **Domain action:** add schemas, path and policy row in the feature's `*_contracts.py` `augment()` (register new modules in `scripts/build_contracts.py`, keeping `augment_reference` last); regenerate the contracts; register the action in `service.py` and implement it; give fixture actors the capability in `scripts/bootstrap.py`; regenerate the onboarding profile; add the capability prefix to `areaCapabilities` in `apps/web/src/main.tsx` if a screen uses it; tests for the positive case, another tenant (404), revoked (401/404), wrong role (403), self-approval (`INDEPENDENCE_REQUIRED`), stale re",
+          "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line": 33,
+          "line_text": "| Integration | Actual API/contract/service/database flow; revision, audit, outbox and receipt rows; closed-body rejection; scoped lists and exact replay. | Fresh PGlite may cover local flow. Repeat relevant tests on native PostgreSQL for transaction/role qualification. Provider transport remains a fake unless separately authorised. |",
+          "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line": 40,
+          "line_text": "| Accessibility | Keyboard, assistive technology, zoom, mobile reflow, focus, announcements, error recovery and automated scans. | Automated violations and incomplete findings are retained separately. Manual evidence is needed for incomplete checks and full critical journeys. |",
+          "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        },
+        {
+          "authority": "repository at pinned HEAD",
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line": 11,
+          "line_text": "`acceptance-clarifications.proposed.json` addresses the actual gaps: 37 source scenarios omit Given; the separate proposed synthetic context notes never edit those original blocks. Seven existing test-plan assertions enrich or restate the original action rather than being original Then clauses; they are explicitly classified and preserved. Thirteen stories lack a qualification-kind task, so a verification duty is proposed on an existing task without adding issues or changing its core. Missing actual assignees, final interfaces, agreed AI evaluation thresholds, physical/native/production eviden",
+          "sha256": "f56b479bfdaa803b94e72341a7e58e2889b77a858d8f1c4830c6cf2df7344134",
+          "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2"
+        }
+      ],
+      "package_refs": [
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "standards/TESTING-STANDARD.md",
+          "line": 18,
+          "line_text": "Story and AC revisions are identified; ambiguity affecting correctness is resolved; risks and applicability are assessed; observable oracles and data exist; required environments/dependencies/permissions are available; owner approves targets where required. Link shared team readiness criteria by version.",
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "workflow/TRACEABILITY.md",
+          "line": 10,
+          "line_text": "The checker prints exact numerators/denominators and structural errors. Scope freeze and completeness of the supplied AC population require human/source review; the checker cannot discover omitted requirements.",
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "authority": "attached QA-v1.3 proposal; not owner approval",
+          "path": "ADOPTION-CHECKLIST.md",
+          "line": 9,
+          "line_text": "- [ ] Inventory existing suites, tooling and evidence before adding tests.",
+          "sha256": "bd652fafd7a9f93a87f965d59f136e490eded3ae4e548c8773976638a71bf66d"
+        }
+      ],
+      "unearned_claims_prohibited": [
+        "Fixture/testplanisnotbehaviorproof. PGlite≠nativeconcurrency, scan≠manualconformance, providerfake≠liveassurance. No executionornewcriterioninflation."
+      ],
+      "approval": "PROPOSED_NOT_OWNER_APPROVED",
+      "application_execution": "NOT_RUN_BY_THIS_AUDIT"
+    }
+  ],
+  "matched_package_requirements": [
+    "QA13-003",
+    "QA13-004",
+    "QA13-006",
+    "QA13-007",
+    "QA13-008",
+    "QA13-009",
+    "QA13-010",
+    "QA13-011",
+    "QA13-012",
+    "QA13-013",
+    "QA13-014",
+    "QA13-015",
+    "QA13-016",
+    "QA13-017",
+    "QA13-018",
+    "QA13-019",
+    "QA13-020",
+    "QA13-021",
+    "QA13-022",
+    "QA13-023",
+    "QA13-024",
+    "QA13-025",
+    "QA13-026",
+    "QA13-027",
+    "QA13-028",
+    "QA13-029",
+    "QA13-030",
+    "QA13-031",
+    "QA13-032",
+    "QA13-033",
+    "QA13-034",
+    "QA13-035",
+    "QA13-036",
+    "QA13-037",
+    "QA13-041",
+    "QA13-042",
+    "QA13-043",
+    "QA13-044",
+    "QA13-045",
+    "QA13-046",
+    "QA13-047",
+    "QA13-048",
+    "QA13-049",
+    "QA13-051",
+    "QA13-052",
+    "QA13-053",
+    "QA13-054"
+  ],
+  "uncovered_domain_requirements": "This lane is traceability/source/status/defect/PM/control review. Parent integrates full54requirement and domain audit; unmatched IDs are not declared satisfied.",
+  "minimal_current_change_boundary": {
+    "authorised_now": "Add audit/requirements/reconciliation documentation only, retaining exact originalsource/hash/aliases/history.",
+    "not_now": [
+      "No normalized register bulkcreation or percase fakebindings",
+      "No testcase markers/appsource/runtimechanges",
+      "No AGENTS/CI/branch-protection/GitHub/Linear changes",
+      "No application/native/browser/provider/cloud/hostedCI execution",
+      "No newapproval/review/trust/certificate or Ready/Done promotion"
+    ]
+  },
+  "package_machine_contract": {
+    "eight_register_headers": {
+      "ac-register": [
+        "ac_id",
+        "ac_version",
+        "scope_id",
+        "source_ref",
+        "applicability",
+        "applicability_rationale",
+        "review_ref",
+        "risk_tier"
+      ],
+      "case-register": [
+        "case_id",
+        "case_version",
+        "scope_id",
+        "mode",
+        "procedure_ref",
+        "automation_locator",
+        "marker"
+      ],
+      "traceability": [
+        "mapping_id",
+        "vision_id",
+        "strategy_id",
+        "roadmap_id",
+        "release_goal_id",
+        "release_id",
+        "epic_id",
+        "story_id",
+        "ac_id",
+        "ac_version",
+        "task_id",
+        "risk_id",
+        "case_id",
+        "case_version",
+        "required"
+      ],
+      "run-register": [
+        "run_id",
+        "case_id",
+        "case_version",
+        "ac_id",
+        "ac_version",
+        "scope_id",
+        "build_sha",
+        "artifact_digest",
+        "environment",
+        "config_version",
+        "data_version",
+        "tool_versions",
+        "start_time",
+        "end_time",
+        "executor",
+        "purpose",
+        "protocol_ref",
+        "result",
+        "freshness",
+        "expected",
+        "observed",
+        "evidence_ref",
+        "parent_attempt",
+        "defect_id",
+        "rationale",
+        "review_ref"
+      ],
+      "coverage-selection": [
+        "mapping_id",
+        "run_id"
+      ],
+      "defect-register": [
+        "event_id",
+        "defect_id",
+        "previous_event_id",
+        "severity",
+        "priority",
+        "status",
+        "case_id",
+        "run_id",
+        "build_sha",
+        "owner",
+        "details_ref",
+        "fix_pr",
+        "retest_run",
+        "close_evidence",
+        "severity_change_rationale",
+        "severity_review_ref"
+      ],
+      "risk-register": [
+        "risk_id",
+        "scope_id",
+        "failure_mode",
+        "impact",
+        "likelihood",
+        "inherent_tier",
+        "rationale_source",
+        "controls",
+        "required_cases",
+        "evidence_refs",
+        "residual_risk",
+        "owner",
+        "reviewer",
+        "decision",
+        "expiry"
+      ],
+      "exception-register": [
+        "exception_id",
+        "scope_id",
+        "gate_id",
+        "unmet_condition",
+        "eligibility",
+        "risk",
+        "controls_evidence",
+        "owner",
+        "authority",
+        "approval_ref",
+        "expiry",
+        "status"
+      ]
+    },
+    "planning_command_template": "python3 <attached-checker>/qa_lint.py --registers <reviewed-register-directory> --root <repository-root>",
+    "release_command_template": "python3 <attached-checker>/qa_lint.py --registers <frozen-register-directory> --root <repository-root> --release",
+    "source_pin_command_template": "python3 <attached-checker>/criteria_pin.py --source <independently-reviewed-local-canonical-export.json>",
+    "command_limit": "Templates only; thesecommandsnotrunbythisaudit. Planningstructuralexit0isnotcompleteness/readiness; releasecannotbeassumedeligible. rootmappingmembershipcheckactualexit0separatesource.",
+    "code_locator_rule": "AUTO requiresrepo-relativeexistinglocator+literalversionedcase marker. Structuralvalidationdoesnotrunassertions.",
+    "non_schema_register_templates": "threshold-register.csv anddata-register.csv aredocumentarytemplates, not amongeightregister-schema.jsoncontracts."
+  },
+  "existing_codeowners_correction": {
+    "correct": "docs/CODEOWNERS is supported GitHublocation and actualHEADglobal* @nakul175.",
+    "previous_inaccurate_suggestion": "A prior agent message implieddocs/CODEOWNERSunsupported; withdrawn andmustnotenterfinalfindings.",
+    "live_enforcement": "NOT_VERIFIED / UNKNOWN, no livequery; do notinferNOT_CONFIGUREDactualstate."
+  },
+  "assessment_state": "PROPOSED_AUDIT_ONLY / no ownerapproval / no productexecution / no readinesscertificate",
+  "created_at_utc": "2026-10-11T04:22:52.980116+00:00"
+}

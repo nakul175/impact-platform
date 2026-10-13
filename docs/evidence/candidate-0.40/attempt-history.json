@@ -1,0 +1,50 @@
+{
+  "initial_api_startup": {
+    "outcome": "FAILED_BEFORE_TESTS",
+    "cause": "EPERM on localhost listener",
+    "tests_executed": 0,
+    "original_receipt": "outputs/imprana-delivery-start-20261011/API-FIRST-STARTUP-FAILURE.json"
+  },
+  "unit_regression_first": {
+    "passed": 1502,
+    "failed": 16,
+    "errors": 2,
+    "skipped": 62,
+    "log_sha256": "4bee758e598fa54c6550af47cb3f5cf51f5d079eb8542176608330f3e858e0e3",
+    "cause": "One historical0042 profile comparison; other local listener refusals. No tests disabled."
+  },
+  "unit_regression_second": {
+    "passed": 1520,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 62,
+    "log_sha256": "ff13d4346aabc196568bf1ab3cfbe4defce592848717e2b9da9fe5bc5d039002",
+    "mode": "Existing pure/local-synthetic regression; local SMTP/identity sinks enabled; no hosted provider"
+  },
+  "api_regression_first": {
+    "passed": 126,
+    "failed": 4,
+    "skipped": 12,
+    "junit": "docs/evidence/candidate-0.40/diagnosis-api-regression-first-failed.xml",
+    "cause": "Three new fault-adapter tests counted shared registry/revision increments incorrectly; historicalkindlist comparison omitted0044. Product implementation unchanged; failure oracles corrected with audit/source evidence; rerun required."
+  },
+  "api_regression_second": {
+    "passed": 135,
+    "failed": 1,
+    "skipped": 12,
+    "junit": "docs/evidence/candidate-0.40/diagnosis-api-regression-second-failed.xml",
+    "cause": "RuntimeINVALID_CURSOR400 not admitted by genericError closedenum. Added separate AIDiagnosisError closed reader; olderError unchanged; exact assertions retained. Final rerun pending."
+  },
+  "browser_first": {
+    "passed_groups": 4,
+    "failed_groups": 1,
+    "not_run_groups": 4,
+    "cause": "Stale-write editable-data assertion incorrectly included server correction_reason. Test compares exact three editable fields; server metadata remains retained."
+  },
+  "browser_second": {
+    "passed_groups": 6,
+    "failed_groups": 1,
+    "not_run_groups": 2,
+    "cause": "Prior replay GET readback still in flight could satisfy next denial wait. Added explicit prior receipt-revision/list settlement; pending final rerun. Separate real delayed read-loss race added as an independent check."
+  }
+}

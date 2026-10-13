@@ -1,0 +1,72 @@
+{
+  "scope": "US-DX-01a local coding/test candidate; no human acceptance or native/fullCI proof",
+  "base_commit": "92341d6d81414be4627c5981363636580f7cbf52",
+  "version": {
+    "build": "0.40.0",
+    "domain_api": "1.29.0",
+    "platform_api": "1.11.0",
+    "documentation_edition": "1.1",
+    "schema_rule": "derived: the number of files in infrastructure/migrations (impact_api/version.py)"
+  },
+  "schema": 44,
+  "story": "US-DX-01a",
+  "linear_issue": "APL-361",
+  "unit": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 62,
+    "tests": 1584
+  },
+  "api": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 12,
+    "tests": 148
+  },
+  "new_diagnosis_api_cases": 57,
+  "browser_groups": {
+    "cases": 9,
+    "passed": 9,
+    "failed": 0,
+    "not_run": 0,
+    "assertions": 289
+  },
+  "uncertain_component_adapter": {
+    "cases": 3,
+    "passed": 3,
+    "failed": 0
+  },
+  "browser_inputs_match_final_manifest": 341,
+  "browser_changed_sources": [],
+  "browser_changed_assets": [],
+  "external_requests": [],
+  "forbidden_requests": [],
+  "runtime": {
+    "environment": "test",
+    "build_id": "impact-0.40.0",
+    "schema_version": "44",
+    "api_version": "1.29.0",
+    "fixture_id": "impact-acceptance-20260925-v1",
+    "mutation_tests_allowed": true
+  },
+  "native_tests_not_run": 4,
+  "requirements_accepted": 0,
+  "source_manifest": "docs/evidence/candidate-0.40/tested-source-manifest.json",
+  "gates_remaining": [
+    "Native PostgreSQL real-role/concurrency, populated upgrade, API restart and restore",
+    "Full application regression, live identity and container deployment-path qualification",
+    "Current-head required hosted CI and checks",
+    "Human accessibility/security and owner release acceptance",
+    "Reviewed access upgrade for existing tenants before use",
+    "Workflow/engineering package profile, financial, named human/operational enforcement activation"
+  ],
+  "remote_actions": false,
+  "next_feature_started": false,
+  "reference": {
+    "tests": 143,
+    "passed": 143,
+    "failures": 0,
+    "evidence": "docs/evidence/candidate-0.40/reference-final.json",
+    "scope": "Preserved independent design reference; not product acceptance"
+  }
+}

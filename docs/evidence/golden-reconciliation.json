@@ -3,8 +3,8 @@
   "corpus_version": "1.1.0",
   "vector_count": 40,
   "live_vector_count": 37,
-  "generated_at": "2026-10-05T11:23:39.214070+00:00",
-  "duration_seconds": 21.4,
+  "generated_at": "2026-10-13T06:02:35.606412+00:00",
+  "duration_seconds": 15.7,
   "summary": {
     "reference": {
       "passed": 40,

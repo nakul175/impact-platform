@@ -1,0 +1,26 @@
+{
+  "head": "d2368091a29a296b86da399f7e7d01f4bd6e073a",
+  "run": 38212778560,
+  "checks_run": 38212778639,
+  "job_id": 114690499764,
+  "jobs": {
+    "checks": "PASS",
+    "container-stack": "PASS",
+    "live-identity-provider": "PASS",
+    "local-reference-and-browser": "PASS",
+    "native-postgresql-gate": "FAIL"
+  },
+  "native_full_suite": {
+    "passed": 2694,
+    "failed": 1,
+    "skipped": 29,
+    "deselected": 1,
+    "warnings": 1
+  },
+  "failed_case": "qualification/test_native_worker.py::test_native_batch_outliving_its_lease_sends_every_row_once",
+  "observed_failure": "One SENT precondition passed, only three LEASED rows instead of five",
+  "other_two_target_states": "NOT_OBSERVED",
+  "source_order_observation": "run_once dispatches before remind; that preparation can create fresh due reminders after dispatch",
+  "exact_background_cause": "NOT_EMPIRICALLY_PROVEN",
+  "staging_deployed": false
+}

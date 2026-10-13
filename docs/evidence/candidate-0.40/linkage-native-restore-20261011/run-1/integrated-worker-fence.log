@@ -1,0 +1,150 @@
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Applied 0041_ai_policy.sql
+Applied 0042_ai_ranking_weights.sql
+Applied 0043_ai_guidance_v2.sql
+Applied 0044_ai_diagnoses.sql
+Applied 0045_diagnosis_worker_fence.sql
+Applied 0046_diagnosis_problem_order.sql
+Loaded disposable acceptance fixture
+Development configuration ready. Credentials: /Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-9472d73f/passwords.json
+Ready at http://127.0.0.1:8342
+...........................................F............................ [ 57%]
+.....................................................                    [100%]
+=================================== FAILURES ===================================
+___ test_real_restored_linkage_preserves_history_triggers_and_runtime_fences ___
+
+live = <conftest.live.<locals>.Client object at 0x10b404410>
+
+    @pytest.mark.usefixtures("linkage")
+    def test_real_restored_linkage_preserves_history_triggers_and_runtime_fences(live):
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import restore_drill
+    
+        fixture = os.environ["IMPACT_FIXTURE_DSN"]
+        target = restore_drill.conninfo_to_dict(fixture)["dbname"] + "_restored"
+        restored = make_conninfo(fixture, dbname=target)
+        source = external(live)
+        with source_access(live, source):
+            draft = save(live, data=linked(source))
+            completed = action(live, draft, "complete")
+            current = action(live, completed, "revise", action_body(completed, reason="Synthetic linked restore"))
+            original = snapshot(fixture, current["object_id"])
+            bindings = rows(live, current)
+            data = payload(live, current)
+            try:
+                result = restore_drill.run(
+                    fixture,
+                    fixture,
+                    restore_drill.passwords_from_env(os.environ),
+                    os.environ["IMPACT_PG_BIN"],
+                    keep=True,
+                )
+                # Private run artifact contains no password or signed session.
+                (live.local / "diagnosis-linkage-restore.json").write_text(json.dumps(result, indent=2) + "\n")
+                assert result["outcome"] == "PASS" and all(result["checks"].values())
+                assert result["dump"]["bytes"] > 0 and result["restore"]["warnings"] is None
+                assert result["migration"]["schema_version"] == 46
+                assert result["migration"]["applied"] == []
+                assert snapshot(restored, current["object_id"]) == original
+                with psycopg.connect(
+                    make_conninfo(os.environ["IMPACT_LOGIN_DSN_APP"], dbname=target), autocommit=True
+                ) as c:
+                    assert c.execute(
+                        "SELECT rolsuper,rolbypassrls FROM pg_roles WHERE rolname=session_user"
+                    ).fetchone() == (False, False)
+                    for tenant in [None, live.fixture["tenant_b"], live.fixture["tenant_a"]]:
+                        with c.transaction():
+                            c.execute("SET LOCAL ROLE impact_app")
+                            if tenant:
+                                c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+                            actual = c.execute(
+                                "SELECT problem_id,reference_position,evidence_id,evidence_revision "
+                                "FROM impact.diagnosis_evidence_binding WHERE object_id=%s AND revision_id=%s "
+                                "ORDER BY problem_id,reference_position",
+                                (current["object_id"], current["revision_id"]),
+                            ).fetchall()
+                            assert actual == (bindings if tenant == live.fixture["tenant_a"] else [])
+                    with c.transaction():
+                        c.execute("SET LOCAL ROLE impact_app")
+                        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+                        before = c.execute(
+                            "SELECT count(*) FROM impact.diagnosis_evidence_binding WHERE object_id=%s",
+                            (current["object_id"],),
+                        ).fetchone()[0]
+                        # Only inside a rolled-back transaction: prove the restored
+                        # population trigger creates one exact reference binding.
+                        insert_copy(c, current, data)
+                        assert (
+                            c.execute(
+                                "SELECT count(*) FROM impact.diagnosis_evidence_binding WHERE object_id=%s",
+                                (current["object_id"],),
+                            ).fetchone()[0]
+                            == before + 1
+                        )
+>                       c.rollback()
+
+qualification/test_ai_diagnosis_linkage_restore_native.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:314: in rollback
+    self.wait(self._rollback_gen())
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:495: in wait
+    return waiting.wait(
+psycopg_binary/_psycopg/waiting.pyx:227: in psycopg_binary._psycopg.wait_c
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Connection [BAD] at 0x10cd4fc50>
+
+    def _rollback_gen(self) -> PQGen[None]:
+        """Generator implementing `Connection.rollback()`."""
+        if self._num_transactions:
+>           raise e.ProgrammingError(
+                "Explicit rollback() forbidden within a Transaction "
+                "context. (Either raise Rollback() or allow "
+                "an exception to propagate out of the context.)"
+            )
+E           psycopg.ProgrammingError: Explicit rollback() forbidden within a Transaction context. (Either raise Rollback() or allow an exception to propagate out of the context.)
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/_connection_base.py:600: ProgrammingError
+=========================== short test summary info ============================
+FAILED qualification/test_ai_diagnosis_linkage_restore_native.py::test_real_restored_linkage_preserves_history_triggers_and_runtime_fences
+1 failed, 124 passed in 22.08s

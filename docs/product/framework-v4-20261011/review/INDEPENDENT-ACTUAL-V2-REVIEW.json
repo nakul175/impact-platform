@@ -1,0 +1,94 @@
+{
+  "reviewer": "imprana_scope_audit",
+  "checked_at_utc": "2026-10-11T03:38:32.092072+00:00",
+  "result": "PASS",
+  "scope": "Separate read-only audit of one actual v2 overview receipt append and its full overview/project readbacks. Frozen v1 global report/input hashes remain unchanged. No Native writes performed in this lane; no other live objects re-read, application acceptance, test acceptance, owner approval, Ready/Done or deployment authority inferred.",
+  "checks": {
+    "all_seven_v1_hashes_still_exact": true,
+    "v1_report_hash_c2a50b14": true,
+    "v1_verifier_d257_and_policy191b_unchanged": true,
+    "fresh_pre_overview_entire_record_equals_frozen_v1_overview": true,
+    "fresh_pre_project_entire_record_equals_frozen_v1_project": true,
+    "complete_v1_overview_prefix_raw_exact": true,
+    "one_declared_append_raw_exact_no_normalization": true,
+    "single_new_receipt_marker": true,
+    "all_overview_nonvolatile_metadata_exact": true,
+    "resource_membership14_and_only_overview_timestamp_projection": true,
+    "overview_resource_other_fields_exact": true,
+    "overview_resource_before_and_after_nonempty_string_ties_exact": true,
+    "all_five_milestone_members_exact": true,
+    "all_other_project_fields_exact": true,
+    "root_actual_checker_pass_zero_errors": true,
+    "independent_actual_rerun_pass_zero_errors": true,
+    "checker_same_reviewed_d7a166d6": true,
+    "actual_readback_and_delta_plan_pins_exact": true
+  },
+  "failed_checks": [],
+  "baseline_pins": {
+    "report": {
+      "path": "verification-author/PUBLICATION-VERIFICATION-REPORT.json",
+      "sha256": "c2a50b143c97273242b92037563c9b80ff8cb35e3aabcff5cdeebb40cae2649d"
+    },
+    "issues": {
+      "path": "native-after/full-issues.json",
+      "sha256": "fd2c1f7c03231e7e56727ce62a2a0db01ddeea294c40cabeef54b32dce080afe"
+    },
+    "documents": {
+      "path": "native-after/full-documents.json",
+      "sha256": "4216be9f8c2a4a0c9eecf248e8ba399ff134fcc02d604a572eb28b847e7571b6"
+    },
+    "project": {
+      "path": "native-after/project.json",
+      "sha256": "c9fc2e4e44d10c0833b8fc0158f2e0ee5e7a6837794717a7fabf986589390819"
+    },
+    "publication_plan": {
+      "path": "native-publication-plan.json",
+      "sha256": "4bd0adde457322c429a1471e70f99d0eadc78b12366c9280e51f0a932220567b"
+    },
+    "policy": {
+      "path": "verification-author/DECLARED-ALL-OBJECT-FORMATTING-POLICY.json",
+      "sha256": "191be095c73728010e641fcd229f808384d905c7e1ff0181bbb51bb27b5dc3ce"
+    },
+    "verifier": {
+      "path": "verification-author/verify_refinement_publication.py",
+      "sha256": "d25759cca892e152e8f443c6b17aa8fe1485418aff3ddb30796964a649a3a23a"
+    }
+  },
+  "reviewed_actual_artifacts": [
+    {
+      "path": "post-v1-overview/DECLARED-V2-OVERVIEW-PLAN.json",
+      "sha256": "b31ec92c428cd843e975996451004d76f89aacf5804f45abffff5b67d6504a44"
+    },
+    {
+      "path": "post-v1-overview/pre-overview.json",
+      "sha256": "0ead898b00f4a465438d881097d45087793772fc5ba39919d962950fe047da50"
+    },
+    {
+      "path": "post-v1-overview/pre-project.json",
+      "sha256": "c9fc2e4e44d10c0833b8fc0158f2e0ee5e7a6837794717a7fabf986589390819"
+    },
+    {
+      "path": "post-v1-overview/after-overview.json",
+      "sha256": "6adbb80e9cd7883817254a2976702977665b6b8496b20850752e71d3c621fd04"
+    },
+    {
+      "path": "post-v1-overview/after-project.json",
+      "sha256": "1bd7b82ca6dad41b3e81967818550227a7bac2d80a66f72818cff42607521a46"
+    },
+    {
+      "path": "post-v1-overview/POST-V1-ACTUAL-OVERVIEW-VERIFICATION.json",
+      "sha256": "555ae0d5a7fee273542ded110e8aaec5baf806cd9b13f8a7fcfd9ab6843db3e7"
+    }
+  ],
+  "independent_rerun": {
+    "path": "independent-final-review/POST-V2-INDEPENDENT-ACTUAL-RERUN.json",
+    "sha256": "e12cb27eab0af4c864b8917a87bd94a9e4606163933ede7acf3dc18ffb0f2cb0"
+  },
+  "counts": {
+    "declared_overview_append": 1,
+    "project_resources": 14,
+    "milestones": 5,
+    "frozen_v1_inputs": 7
+  },
+  "normalizations": []
+}

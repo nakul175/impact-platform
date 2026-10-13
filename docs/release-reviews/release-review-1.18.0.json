@@ -1,0 +1,20 @@
+{
+  "release": "1.18.0",
+  "story": "FR-ANA-001",
+  "linear_issue": "APL-610",
+  "state": "CODING_CANDIDATE_ONLY",
+  "scope": "Governed private dashboard authoring, copy and parity preview",
+  "permitted_widget_kinds_closed": true,
+  "maximum_widgets": 10,
+  "binding_revision_pinned": true,
+  "quality_context_mandatory": true,
+  "copy_private_draft": true,
+  "chart_table_same_stored_values": true,
+  "unavailable_binding_returns_no_stale_value": true,
+  "migration": null,
+  "tests": "NOT_RUN_BY_OWNER_REQUEST",
+  "ci": "NOT_RUN_BY_OWNER_REQUEST",
+  "merge": "NOT_MERGED",
+  "staging": "NOT_DEPLOYED",
+  "acceptance": "PENDING"
+}

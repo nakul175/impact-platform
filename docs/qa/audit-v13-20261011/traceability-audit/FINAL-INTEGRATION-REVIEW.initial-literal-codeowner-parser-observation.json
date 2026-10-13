@@ -1,0 +1,891 @@
+{
+  "scope": "Independent AI read-only integration review of Imprana Commons additive QA-v1.3 documentation only; no authenticated ownerapproval, productqualification, sourceprotectioncertification or publicationauthorisation",
+  "reviewed_at_utc": "2026-10-11T04:34:13.886258+00:00",
+  "baseline_head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+  "baseline_tree": "c15d52d24710a9c93905b6822838d168e9c7a5dc",
+  "frozen_review_tree": "2ae77e42fac9dadc1e11d20dc892fa325bfb01ec",
+  "disposition": "FINDINGS_REQUIRE_RECONCILIATION",
+  "checks": {
+    "baseline_parent_exact": true,
+    "final_frozen_tree_equals_current_staged_index": true,
+    "working_tree_matches_staged_index": true,
+    "47_expected_docs_only_paths": true,
+    "all_existing_nonindex_source_runtime_history_criteria_exact": true,
+    "original_two_indexes_preserved_all_lines_in_order": true,
+    "38_selected_exact_byte_copies": true,
+    "actual_package_zip_sha_and_bytes_match": true,
+    "86_extracted_files_match_pins_and_zip_bytes": true,
+    "85_self_excluding_manifest_records_match": true,
+    "all_8_checker_command_output_pairs_exact": true,
+    "supported_57_regression_observations_retained": true,
+    "package_examples_still_not_product_evidence": true,
+    "54_unique_original_requirement_rows_and_crosswalk": true,
+    "48_domain_rows_and_declared_assessment_counts_match": true,
+    "package_repository_citations_and_domain_references_valid": true,
+    "actual_source_inventory_counts_match": true,
+    "14_source_checks_and1328_not_run_are_retained": true,
+    "actual_0_39_open_gate_arithmetic_preserved": true,
+    "valid_docs_codeowners_unchanged_unknown_live_controls": false,
+    "corrected_25_crosswalk_review_retained": true,
+    "all_new_markdown_links_locators_checked": true,
+    "actual_root_receipts_are_exact_copies": true,
+    "root14_checks_bound_to_earlier45_input_edition": true,
+    "initial_parser_failure_preserved_narrow_correction": true,
+    "no_new_normalized_live_registers_or_code_markers_installed": true,
+    "bounded_content_safety_scan_no_matches": true
+  },
+  "checks_passed": 26,
+  "checks_failed": 1,
+  "all_existing_nonindex_files_protected": {
+    "count": 1839,
+    "mode_path_blob_identity_sha256": "f9f7053d5c2e4b6bdc7121a53721e55a54535ea164ac921e5a45b58e10234575",
+    "changed_or_missing": []
+  },
+  "index_original_lines_preserved": {
+    "docs/DOCUMENTATION-INDEX.md": true,
+    "docs/current/DOCUMENTATION-INDEX.md": true
+  },
+  "reviewed_file_pins": [
+    {
+      "path": "docs/DOCUMENTATION-INDEX.md",
+      "state": "M",
+      "bytes": 21571,
+      "sha256": "11f7924d1d986dd933c6741facc7ab4376af383522d0abb20205bf2423460e80",
+      "blob_oid": "364ecbfd5af1c9088d9d8b31325c47bc20ae9824"
+    },
+    {
+      "path": "docs/current/DOCUMENTATION-INDEX.md",
+      "state": "M",
+      "bytes": 19310,
+      "sha256": "2e449cc0c18038bece3f313a86eb2afce18d764709174312df6a7beb9606f59a",
+      "blob_oid": "c5d76975b9fd8a3c9bcf53db6fa90524a34de804"
+    },
+    {
+      "path": "docs/qa/APLYD-v1.3-AUDIT-20261011.md",
+      "state": "A",
+      "bytes": 13014,
+      "sha256": "30de7fd24d28f5fde58fd7dc9da0f16072736b15932f5a9e6463ba0fa686ac90",
+      "blob_oid": "eefbf21781ec6419ee6f7fcb0540aefa83ae3761"
+    },
+    {
+      "path": "docs/qa/APLYD-v1.3-RECONCILIATION-20261011.md",
+      "state": "A",
+      "bytes": 6322,
+      "sha256": "9e8fa05d46c244ae29582e39fcbb98fe0c7b2988e4d67509a9c80daed187e16e",
+      "blob_oid": "1f7374a245fadd97b2c7d33eb22616ebf92e7354"
+    },
+    {
+      "path": "docs/qa/README.md",
+      "state": "A",
+      "bytes": 1171,
+      "sha256": "4e77501dbbc61ca17b6571f36e5abb066f19b90f45f67f418aa4cb713525b90c",
+      "blob_oid": "f316b9dc37dd5ed09eed6177b3bcd3846185f5e4"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/COPY-MANIFEST.json",
+      "state": "A",
+      "bytes": 15550,
+      "sha256": "18b4c854987eaa4531bb8091a7a8eaae891bc1150732364707be36d386b26556",
+      "blob_oid": "9cd4b00e85766f9a49700014fe479e68541639d8"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/PACKAGE-SOURCE-PINS.json",
+      "state": "A",
+      "bytes": 15980,
+      "sha256": "c027b8c3587d8f07a14d4742129ce1166925f1279f8711d1d2ccfa48e713612d",
+      "blob_oid": "2c6375e285dbd9bb2691342c094bb2dbf68537a5"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/README.md",
+      "state": "A",
+      "bytes": 2370,
+      "sha256": "eded3bba50b8247d7fe4710f3fc55f8d6b38fc26adea75d39296bef17473049c",
+      "blob_oid": "124e0ae4bdcc24c607185c5b183a8f1aceb9d215"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/ROOT-INTEGRATION-CHECKS.initial-link-parser-observation.json",
+      "state": "A",
+      "bytes": 43041,
+      "sha256": "3436f0659db33234552a564a2355b6ddf4cdc3f810ef13ef27cbcace1d6172c2",
+      "blob_oid": "070cdfdf50ed522890cd2f3d075e779e985a89aa"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/ROOT-INTEGRATION-CHECKS.json",
+      "state": "A",
+      "bytes": 17268,
+      "sha256": "f7d5fe8e0ef343d9557ff7fb72ebbd7c2d3651ee080dee93ffc90e533ebbf328",
+      "blob_oid": "ab0865d7e93dc54c02af827cbcec2e2feb81b655"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/CHECKER-SUPPORTED-RUN-RECEIPT.json",
+      "state": "A",
+      "bytes": 15893,
+      "sha256": "a3835bd442690f69655ae2404a458d9e3b0a42fdbe0976b63412ae0deb9af45d",
+      "blob_oid": "935ffd7e7c84c3c7b95738070ffcc25aea9e34cb"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/CROSSWALK-PRELIMINARY-REVIEW.json",
+      "state": "A",
+      "bytes": 4545,
+      "sha256": "f4b3cbc83bd157f160d8a278cb90d144a0706234e4e970415c4c94c40939efb5",
+      "blob_oid": "9977538e8d3f1632e438b0c4ada0aebeb2ef3813"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/CROSSWALK-REVIEW.json",
+      "state": "A",
+      "bytes": 11977,
+      "sha256": "ea878bac63605008fc6fb7a2b887bf946791a9df81bba4795b4810f8af2e954d",
+      "blob_oid": "99a33488d09b092f08f8680d8c8d65e1149d6757"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/DOC-ADOPTION-BOUNDARIES.json",
+      "state": "A",
+      "bytes": 8899,
+      "sha256": "1c3fef4c4a022509a1bf3ec1c4c92467d51f862b79bef9e9e26537d9b0ddec2b",
+      "blob_oid": "bae853cc766e26cbba6ebd8d33a9ec0a7ec880e4"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/PACKAGE-AUDIT-FACTS.md",
+      "state": "A",
+      "bytes": 6742,
+      "sha256": "d498ad1727d238c678cd95870dc9ca4582c462fb89fb9e83c7e9de998eab4bdf",
+      "blob_oid": "81cbfd76c922ff4ece965a2d919cb0c0de78a730"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/QA-V13-REQUIREMENTS-MATRIX.json",
+      "state": "A",
+      "bytes": 72298,
+      "sha256": "3322e84d44a90af6efdf20fe3bcbca8ccaf51892fcd582e8250f25caa7bcef06",
+      "blob_oid": "ad4d815a5e2a217944d386b33c4fc1b25e22dc7a"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/QA-V13-REQUIREMENTS-MATRIX.md",
+      "state": "A",
+      "bytes": 44491,
+      "sha256": "120495aa5538a46e3790b7a4b957c77c36365fcd1f1f4e916dd5cf51482512e5",
+      "blob_oid": "3ba9a76bce38dd66d09821cff49c0f47cc9cbbda"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/empty-strict-release.stderr",
+      "state": "A",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "blob_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/empty-strict-release.stdout",
+      "state": "A",
+      "bytes": 1857,
+      "sha256": "6d8033e0d66ab5b83eb2d54ed4f1a7f595697880413a17a7c83be40e63c5a02d",
+      "blob_oid": "5998d96197447f9fd965903416e84921566cce7b"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/empty-structure.stderr",
+      "state": "A",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "blob_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/empty-structure.stdout",
+      "state": "A",
+      "bytes": 1187,
+      "sha256": "013fc6ae9832a5836d4b48a7487f1490d75c5665c577c947391445da569e86e8",
+      "blob_oid": "f0c17ebb94d77799b82b1021e112fad7f73e45c7"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/fictional-candidate-pins.stderr",
+      "state": "A",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "blob_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/fictional-candidate-pins.stdout",
+      "state": "A",
+      "bytes": 443,
+      "sha256": "0492af109fc0ab785fcc6b0c87d59373ceebb96e820efc675c26dfde86aa2cf2",
+      "blob_oid": "51e97c038cd761dadeb4bfeaae540cf2e4b082ea"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/fictional-strict-release.stderr",
+      "state": "A",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "blob_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/fictional-strict-release.stdout",
+      "state": "A",
+      "bytes": 1324,
+      "sha256": "00592044e6d87be72095fe5ef4bbc5f91a9d6680a7160f5413b13bfaeca8e849",
+      "blob_oid": "9df7dccf0ae9d308bce0248be15e0f2c1422f583"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/fictional-structure.stderr",
+      "state": "A",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "blob_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/fictional-structure.stdout",
+      "state": "A",
+      "bytes": 1224,
+      "sha256": "cc05643f83cd895fa011272b7e1bf8874f4a9f074f4d5e2ff2d4fa5a56f02273",
+      "blob_oid": "d8221c9a05a7076858b0fdcd085df4a5d4c135a0"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/installed-full-pm-mapping.stderr",
+      "state": "A",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "blob_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/installed-full-pm-mapping.stdout",
+      "state": "A",
+      "bytes": 359,
+      "sha256": "c623484c95be032342c40169114b196865b15aa81c79c576fb42052c2feaac41",
+      "blob_oid": "a2739a520e5cf30dc5397822f533ee2a95d79d25"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/pm-index-mapping.stderr",
+      "state": "A",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "blob_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/pm-index-mapping.stdout",
+      "state": "A",
+      "bytes": 337,
+      "sha256": "3f696ee7340df81f80b9a2cf867dab4207246d48970990ef84043ec3c813460b",
+      "blob_oid": "6443f296e1e63b51c843a7b719fabf1bac117185"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/regression.stderr",
+      "state": "A",
+      "bytes": 5920,
+      "sha256": "cb42c802119aa86f5b11b9824cbd4a6e2e64d455a8d0ec9287a297d662d95e27",
+      "blob_oid": "b74259ce58afd870f46cd6d882c3e1da18c2a154"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/regression.stdout",
+      "state": "A",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "blob_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/AUDIT-RECEIPT.json",
+      "state": "A",
+      "bytes": 2249,
+      "sha256": "df88971ce67618ef64ec4f030d99d8517dc458e4562cd94c174bda4f5301b360",
+      "blob_oid": "456e573831806c6f4268f0a8aeee17fa6b5bf2c6"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/BASELINE-APPLICABILITY.json",
+      "state": "A",
+      "bytes": 13815,
+      "sha256": "a2e64055b6c9da74e63ad7c83e3cf48bda92b011068ae742681ab77be749d758",
+      "blob_oid": "168a4364b772cd9c3515a3cbf57d1334ed1d99ff"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/SUMMARY.md",
+      "state": "A",
+      "bytes": 7288,
+      "sha256": "23a857c5d6d357cb989ff110f48d46355b148f64f24d21dbfa82c823cc89175a",
+      "blob_oid": "a56dc73061b19f3203226d7597814bd7b772ae64"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/current-inventory.json",
+      "state": "A",
+      "bytes": 7741,
+      "sha256": "ced615634567483c2eb58c2de9de38b4e0e9bc2f106be2175ffcf274ceea80f6",
+      "blob_oid": "e54bd0b57ea613b36a8ad2b3bf003659c817899f"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/package-to-repo-alignment-54.json",
+      "state": "A",
+      "bytes": 149020,
+      "sha256": "4ebf7037f49170d0628f0017522ff13288c7a41b7f0cf46c5fe079d205e6a5a6",
+      "blob_oid": "da66f2f6a055e728adabf0106739855e6b40f6ca"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/requirement-matrix.json",
+      "state": "A",
+      "bytes": 81192,
+      "sha256": "ef44a8304caa06af6c044ac77079cedc63818648af46436e852a9064fd8f2733",
+      "blob_oid": "4f7fc6ab5d2171f30d48da3c6d697af9ae2c2152"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/reviewed-source-pins.json",
+      "state": "A",
+      "bytes": 24196,
+      "sha256": "11ae4d130357654c3dff0fc8089082bb6e81576f12c0efa7217a3365bfd27d5a",
+      "blob_oid": "8409952c496102654fe057b59dc271af50aa9573"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/traceability-audit/AUDIT-RECEIPT.json",
+      "state": "A",
+      "bytes": 3037,
+      "sha256": "b07c0c0c11ed69db5dc0e88a55fa2dfa9726ab5986ec9cc2d3a34e8578089d98",
+      "blob_oid": "3ac2a931b2c9287840d4b0d9a58f76079689939a"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/traceability-audit/SOURCE-TRACEABILITY-INVENTORY.json",
+      "state": "A",
+      "bytes": 23198,
+      "sha256": "85cc832ae7f56885aa067b91ce3e0a6ffcf7187663e1b42c2e13c8cf6f30bab3",
+      "blob_oid": "2cde8411a55b3918489a127028ad3eab5aa41df2"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/traceability-audit/TRACEABILITY-AND-SOURCE-GAP-REPORT.json",
+      "state": "A",
+      "bytes": 87659,
+      "sha256": "1e82f5818abf8b3ea02552973224b903352d04d9c5a40b9cacc18f00c089014c",
+      "blob_oid": "3b8e03b8a18899408bacb618733e8edffb284532"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/traceability-audit/TRACEABILITY-AND-SOURCE-GAP-REPORT.md",
+      "state": "A",
+      "bytes": 9479,
+      "sha256": "b01cd29c0ee9783ed1d382b9fb9f74157a5ac06c05989a6d8846f85b48b65ffa",
+      "blob_oid": "c95e0fc357deb2f79208d94909435d34f8db8862"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/workbook/DOCX-READONLY-OBSERVATION.json",
+      "state": "A",
+      "bytes": 1273,
+      "sha256": "46e0de0ffaeb3c5290ad3180585c105c2671e48cd14029b46a98d329540315d4",
+      "blob_oid": "effda74d2e5fb935d5be1c00fcbd46d79c3a4a09"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/workbook/READONLY-WORKBOOK-CELL-CHECK.json",
+      "state": "A",
+      "bytes": 957,
+      "sha256": "8238ffee46fc734a27836aaadd04bc02a906be6e914ea9e459f7ee883752eb1c",
+      "blob_oid": "0a33e54a14f542e876968f81518988857a749663"
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/workbook/WORKBOOK-STRUCTURE-OBSERVATION.json",
+      "state": "A",
+      "bytes": 8124,
+      "sha256": "080c80db903d619a34ff554c16ce75143018718d1cc9b48e0c8b61ab535d9bc7",
+      "blob_oid": "64fb1fedc89e077cf6e28b826023265bbb49ef79"
+    }
+  ],
+  "selected38copy_observations": [
+    {
+      "path": "docs/qa/audit-v13-20261011/PACKAGE-SOURCE-PINS.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/PACKAGE-SOURCE-PINS.json",
+      "sha256": "c027b8c3587d8f07a14d4742129ce1166925f1279f8711d1d2ccfa48e713612d",
+      "bytes": 15980,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/workbook/WORKBOOK-STRUCTURE-OBSERVATION.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/WORKBOOK-STRUCTURE-OBSERVATION.json",
+      "sha256": "080c80db903d619a34ff554c16ce75143018718d1cc9b48e0c8b61ab535d9bc7",
+      "bytes": 8124,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/workbook/DOCX-READONLY-OBSERVATION.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/DOCX-READONLY-OBSERVATION.json",
+      "sha256": "46e0de0ffaeb3c5290ad3180585c105c2671e48cd14029b46a98d329540315d4",
+      "bytes": 1273,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/workbook/READONLY-WORKBOOK-CELL-CHECK.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/workbook-readonly/READONLY-WORKBOOK-CELL-CHECK.json",
+      "sha256": "8238ffee46fc734a27836aaadd04bc02a906be6e914ea9e459f7ee883752eb1c",
+      "bytes": 957,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/QA-V13-REQUIREMENTS-MATRIX.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/QA-V13-REQUIREMENTS-MATRIX.json",
+      "sha256": "3322e84d44a90af6efdf20fe3bcbca8ccaf51892fcd582e8250f25caa7bcef06",
+      "bytes": 72298,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/QA-V13-REQUIREMENTS-MATRIX.md",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/QA-V13-REQUIREMENTS-MATRIX.md",
+      "sha256": "120495aa5538a46e3790b7a4b957c77c36365fcd1f1f4e916dd5cf51482512e5",
+      "bytes": 44491,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/DOC-ADOPTION-BOUNDARIES.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/DOC-ADOPTION-BOUNDARIES.json",
+      "sha256": "1c3fef4c4a022509a1bf3ec1c4c92467d51f862b79bef9e9e26537d9b0ddec2b",
+      "bytes": 8899,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/CHECKER-SUPPORTED-RUN-RECEIPT.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/CHECKER-SUPPORTED-RUN-RECEIPT.json",
+      "sha256": "a3835bd442690f69655ae2404a458d9e3b0a42fdbe0976b63412ae0deb9af45d",
+      "bytes": 15893,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/PACKAGE-AUDIT-FACTS.md",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/PACKAGE-AUDIT-FACTS.md",
+      "sha256": "d498ad1727d238c678cd95870dc9ca4582c462fb89fb9e83c7e9de998eab4bdf",
+      "bytes": 6742,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/CROSSWALK-PRELIMINARY-REVIEW.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/CROSSWALK-PRELIMINARY-REVIEW.json",
+      "sha256": "f4b3cbc83bd157f160d8a278cb90d144a0706234e4e970415c4c94c40939efb5",
+      "bytes": 4545,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/CROSSWALK-REVIEW.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/CROSSWALK-REVIEW.json",
+      "sha256": "ea878bac63605008fc6fb7a2b887bf946791a9df81bba4795b4810f8af2e954d",
+      "bytes": 11977,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/empty-strict-release.stderr",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/empty-strict-release.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/empty-strict-release.stdout",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/empty-strict-release.stdout",
+      "sha256": "6d8033e0d66ab5b83eb2d54ed4f1a7f595697880413a17a7c83be40e63c5a02d",
+      "bytes": 1857,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/empty-structure.stderr",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/empty-structure.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/empty-structure.stdout",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/empty-structure.stdout",
+      "sha256": "013fc6ae9832a5836d4b48a7487f1490d75c5665c577c947391445da569e86e8",
+      "bytes": 1187,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/fictional-candidate-pins.stderr",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/fictional-candidate-pins.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/fictional-candidate-pins.stdout",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/fictional-candidate-pins.stdout",
+      "sha256": "0492af109fc0ab785fcc6b0c87d59373ceebb96e820efc675c26dfde86aa2cf2",
+      "bytes": 443,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/fictional-strict-release.stderr",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/fictional-strict-release.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/fictional-strict-release.stdout",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/fictional-strict-release.stdout",
+      "sha256": "00592044e6d87be72095fe5ef4bbc5f91a9d6680a7160f5413b13bfaeca8e849",
+      "bytes": 1324,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/fictional-structure.stderr",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/fictional-structure.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/fictional-structure.stdout",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/fictional-structure.stdout",
+      "sha256": "cc05643f83cd895fa011272b7e1bf8874f4a9f074f4d5e2ff2d4fa5a56f02273",
+      "bytes": 1224,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/installed-full-pm-mapping.stderr",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/installed-full-pm-mapping.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/installed-full-pm-mapping.stdout",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/installed-full-pm-mapping.stdout",
+      "sha256": "c623484c95be032342c40169114b196865b15aa81c79c576fb42052c2feaac41",
+      "bytes": 359,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/pm-index-mapping.stderr",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/pm-index-mapping.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/pm-index-mapping.stdout",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/pm-index-mapping.stdout",
+      "sha256": "3f696ee7340df81f80b9a2cf867dab4207246d48970990ef84043ec3c813460b",
+      "bytes": 337,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/regression.stderr",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/regression.stderr",
+      "sha256": "cb42c802119aa86f5b11b9824cbd4a6e2e64d455a8d0ec9287a297d662d95e27",
+      "bytes": 5920,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/package-audit/runs/python312/regression.stdout",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/runs/python312/regression.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/requirement-matrix.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/repo-domain-audit/requirement-matrix.json",
+      "sha256": "ef44a8304caa06af6c044ac77079cedc63818648af46436e852a9064fd8f2733",
+      "bytes": 81192,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/package-to-repo-alignment-54.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/repo-domain-audit/package-to-repo-alignment-54.json",
+      "sha256": "4ebf7037f49170d0628f0017522ff13288c7a41b7f0cf46c5fe079d205e6a5a6",
+      "bytes": 149020,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/current-inventory.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/repo-domain-audit/current-inventory.json",
+      "sha256": "ced615634567483c2eb58c2de9de38b4e0e9bc2f106be2175ffcf274ceea80f6",
+      "bytes": 7741,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/reviewed-source-pins.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/repo-domain-audit/reviewed-source-pins.json",
+      "sha256": "11ae4d130357654c3dff0fc8089082bb6e81576f12c0efa7217a3365bfd27d5a",
+      "bytes": 24196,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/BASELINE-APPLICABILITY.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/repo-domain-audit/BASELINE-APPLICABILITY.json",
+      "sha256": "a2e64055b6c9da74e63ad7c83e3cf48bda92b011068ae742681ab77be749d758",
+      "bytes": 13815,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/SUMMARY.md",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/repo-domain-audit/SUMMARY.md",
+      "sha256": "23a857c5d6d357cb989ff110f48d46355b148f64f24d21dbfa82c823cc89175a",
+      "bytes": 7288,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/repo-domain-audit/AUDIT-RECEIPT.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/repo-domain-audit/AUDIT-RECEIPT.json",
+      "sha256": "df88971ce67618ef64ec4f030d99d8517dc458e4562cd94c174bda4f5301b360",
+      "bytes": 2249,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/traceability-audit/TRACEABILITY-AND-SOURCE-GAP-REPORT.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/traceability-audit/TRACEABILITY-AND-SOURCE-GAP-REPORT.json",
+      "sha256": "1e82f5818abf8b3ea02552973224b903352d04d9c5a40b9cacc18f00c089014c",
+      "bytes": 87659,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/traceability-audit/TRACEABILITY-AND-SOURCE-GAP-REPORT.md",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/traceability-audit/TRACEABILITY-AND-SOURCE-GAP-REPORT.md",
+      "sha256": "b01cd29c0ee9783ed1d382b9fb9f74157a5ac06c05989a6d8846f85b48b65ffa",
+      "bytes": 9479,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/traceability-audit/SOURCE-TRACEABILITY-INVENTORY.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/traceability-audit/SOURCE-TRACEABILITY-INVENTORY.json",
+      "sha256": "85cc832ae7f56885aa067b91ce3e0a6ffcf7187663e1b42c2e13c8cf6f30bab3",
+      "bytes": 23198,
+      "equals_origin": true,
+      "matches_manifest": true
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/traceability-audit/AUDIT-RECEIPT.json",
+      "origin": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/traceability-audit/AUDIT-RECEIPT.json",
+      "sha256": "b07c0c0c11ed69db5dc0e88a55fa2dfa9726ab5986ec9cc2d3a34e8578089d98",
+      "bytes": 3037,
+      "equals_origin": true,
+      "matches_manifest": true
+    }
+  ],
+  "packageintegrity": {
+    "zip_path": "/Users/athena/Downloads/APLYD-Software-Testing-QA-v1.3.zip",
+    "zip_sha256": "26c64346226f660f6a648e5cebcaf2ee893750e1fb8fe50b13821aae631b5e5a",
+    "zip_bytes": 96489,
+    "file_count": 86,
+    "self_excluding_manifest_entries": 85
+  },
+  "checkerobservations": {
+    "actual_runtime": "Python 3.12.15",
+    "individual_ok_test_lines": 57,
+    "observed_regression_final": "Ran 57 tests / OK",
+    "commands": [
+      {
+        "name": "regression",
+        "actual_exit": 0,
+        "expected_exit": 0,
+        "stdout_hash_exact": true,
+        "stderr_hash_exact": true,
+        "product_test": false
+      },
+      {
+        "name": "fictional-structure",
+        "actual_exit": 0,
+        "expected_exit": 0,
+        "stdout_hash_exact": true,
+        "stderr_hash_exact": true,
+        "product_test": false
+      },
+      {
+        "name": "fictional-strict-release",
+        "actual_exit": 1,
+        "expected_exit": 1,
+        "stdout_hash_exact": true,
+        "stderr_hash_exact": true,
+        "product_test": false
+      },
+      {
+        "name": "empty-structure",
+        "actual_exit": 0,
+        "expected_exit": 0,
+        "stdout_hash_exact": true,
+        "stderr_hash_exact": true,
+        "product_test": false
+      },
+      {
+        "name": "empty-strict-release",
+        "actual_exit": 1,
+        "expected_exit": 1,
+        "stdout_hash_exact": true,
+        "stderr_hash_exact": true,
+        "product_test": false
+      },
+      {
+        "name": "pm-index-mapping",
+        "actual_exit": 0,
+        "expected_exit": 0,
+        "stdout_hash_exact": true,
+        "stderr_hash_exact": true,
+        "product_test": false
+      },
+      {
+        "name": "installed-full-pm-mapping",
+        "actual_exit": 0,
+        "expected_exit": null,
+        "stdout_hash_exact": true,
+        "stderr_hash_exact": true,
+        "product_test": false
+      },
+      {
+        "name": "fictional-candidate-pins",
+        "actual_exit": 0,
+        "expected_exit": 0,
+        "stdout_hash_exact": true,
+        "stderr_hash_exact": true,
+        "product_test": false
+      }
+    ],
+    "meaning": "57 are packagechecker tests only; examplesauthoredfictional; no Imprana producttest run inferred"
+  },
+  "requirements_and_citations": {
+    "package_groups": 54,
+    "domain_rows": 48,
+    "traceability_findings": 13,
+    "source_integrity_checks": 14,
+    "all_original_scope_counts": {
+      "active_stories": 368,
+      "epics": 54,
+      "original_criteria": 1328,
+      "proposed_tasks": 1131,
+      "task_dependency_edges": 779,
+      "backlog_rows_including_two_historical_split_records": 370,
+      "criterion_alias_records": 1328,
+      "criterion_execution_state_counts": {
+        "Not run": 1328
+      }
+    },
+    "citation_ranges_checked": 341,
+    "citation_errors": []
+  },
+  "markdownlinks": {
+    "new_markdown_files": 8,
+    "repo_relative_links_checked": 24,
+    "exact_pinned_absolute_file_line_citations_checked": 87,
+    "external_links_not_fetched": [
+      {
+        "path": "docs/qa/APLYD-v1.3-AUDIT-20261011.md",
+        "target": "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners"
+      }
+    ],
+    "errors": []
+  },
+  "source_open_gate_observation": {
+    "G11": "Not passed",
+    "G12": "Not run",
+    "open_critical_count": 14,
+    "open_other_count": 13,
+    "open_chain_count": 2,
+    "chain_decisions": [
+      "BLOCK",
+      "BLOCK"
+    ],
+    "version_json": {
+      "build": "0.39.0",
+      "domain_api": "1.28.0",
+      "platform_api": "1.11.0",
+      "documentation_edition": "1.1",
+      "schema_rule": "derived: the number of files in infrastructure/migrations (impact_api/version.py)"
+    },
+    "migration_files": 43
+  },
+  "semantic_review": [
+    {
+      "path": "docs/qa/APLYD-v1.3-AUDIT-20261011.md",
+      "lines": [
+        3,
+        5,
+        17,
+        40,
+        42,
+        44,
+        50,
+        59,
+        60,
+        61,
+        65,
+        67
+      ],
+      "finding": "Partially aligned documentary comparison only; source origins/local versions distinct from live state, teachingchecker results distinct from product NOT_RUN, source gate statuses retained, valid CODEOWNERS with unverified enforcement, mapping membership not semanticapproval."
+    },
+    {
+      "path": "docs/qa/APLYD-v1.3-RECONCILIATION-20261011.md",
+      "lines": [
+        3,
+        7,
+        13,
+        15,
+        19,
+        21,
+        25,
+        27,
+        31,
+        33,
+        37,
+        39,
+        43,
+        45
+      ],
+      "finding": "Dependency-ordered proposed adoption; existing IDs/aliases/sourceGherkin/779edges retained, independent denominator export/review before coverage, typed states/defectevents/retest, unchangeddomain targets and nonwaivableinvariants, no authority/spending/runtime installation."
+    },
+    {
+      "path": "docs/qa/README.md",
+      "lines": [
+        5,
+        7
+      ],
+      "finding": "Audit folder is not live package/register/gate installation; history remains authoritative for exact oldexecution scope."
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/README.md",
+      "lines": [
+        3,
+        9,
+        10,
+        14,
+        16
+      ],
+      "finding": "Origin absolute paths are provenance, not portable QAroots. Initial mistaken CODEOWNER suggestion and parser failure retained distinctly. Teachingdata/agentreports not realapproval."
+    },
+    {
+      "path": "docs/qa/audit-v13-20261011/ROOT-INTEGRATION-CHECKS.json",
+      "lines": [],
+      "finding": "14actual documentation/index/copy/release-record checks apply to dated45-input edition; final47edition only adds sourcefaithful receiptcopies and explanatory sentences. Main current wording explicitly says pinnedstagedinputset; not late47productqualification."
+    }
+  ],
+  "root_check_receipt_boundary": "14checks/45inputpaths are retained datedproof, not a claim about product tests or final47files automatically rerun. Current47tree source/copy/link consistency reviewed independently here.",
+  "product_tests_executed": false,
+  "package_checker_rerun_by_reviewer": false,
+  "live_governance_queried": false,
+  "approvals_authenticated": false,
+  "repository_tracked_or_native_files_modified_by_reviewer": false,
+  "copy_safety_limit": "Selected source/audit/checker outputs reviewed; bounded providerkey/bearer/privatekey/unrelatedproduct pattern scan and schema/content inspection found no newmatches. No wholehistory secretcertification or rawaccountexport claimed.",
+  "safety_matches": [],
+  "unresolved_documentation_findings": [],
+  "remaining_adoption_gaps": "All documented normalizedregister/sourceexport/versions/risk/targets/specialistprotocols/actualreview/currentproductqualification/liveenforcement gaps remainopen; documentationreviewcannotclear them.",
+  "future_receipt_append_applicability": "This disposition applies to exact frozen2ae tree. A later publication differing only by exact savedreview/check receipts needs a separately verified added-file/hash delta; no source/content/runtime change covered automatically.",
+  "reviewer_tooling_note": "Initial snapshot used gitwrite-tree to identify stagedtree983; it created a Git-tree object only, no tracked/index/Native mutation. Subsequent review reads exactfrozen2ae object; no application or packagecheck executed."
+}

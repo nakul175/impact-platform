@@ -13,6 +13,7 @@ import json
 import httpx
 
 from .domain import DomainError
+from .ai_execution_boundary import untrusted_envelope
 
 PROVIDER_DEADLINE_SECONDS = 45
 MAX_RESPONSE_BYTES = 256 * 1024
@@ -36,9 +37,10 @@ def unavailable(reason="AI_PROVIDER_UNAVAILABLE"):
 class OpenAIAdvisory:
     # The closed AI policy destination this adapter sends to (FR-AI-001): OpenAI's global
     # api.openai.com endpoint with no regional data-residency project, labelled United States.
-    # The label is the product's working assumption until the DPIA confirms provider region and
-    # retention. A tenant policy must list this destination or every request is refused.
+    # The versioned server-side handling catalogue supplies the reviewed region, no-store and
+    # no-training decision. A tenant policy must list this destination or every request is refused.
     destination = "openai-us"
+    prompt_version = "advisory-instructions-2026-10-13.1"
 
     def __init__(self, api_key, model="gpt-5-mini", client=None):
         self._api_key = api_key
@@ -49,15 +51,27 @@ class OpenAIAdvisory:
     def configured(self):
         return bool(self._api_key and self.model)
 
+    @property
+    def evaluation_configuration(self):
+        return {
+            "destination": self.destination,
+            "model": self.model,
+            "prompt_version": self.prompt_version,
+            "policy_gate_version": "ai-policy-gate-2026-10-13.1",
+            "retrieval": "NONE",
+            "tools": [],
+        }
+
     def generate(self, profile, assessment):
         if not self.configured:
             raise unavailable("AI_NOT_CONFIGURED")
+        envelope, _ = untrusted_envelope(organization_brief=profile, assessment=assessment)
         payload = {
             "model": self.model,
             "instructions": INSTRUCTIONS,
-            "input": json.dumps(
-                {"organization_brief": profile, "assessment": assessment}, ensure_ascii=False
-            ),
+            # Structured source data is explicitly untrusted and separated from server instructions.
+            # This runtime exposes no provider tool definitions, credentials, retrieval or export.
+            "input": json.dumps(envelope, ensure_ascii=False),
             "store": False,
             "max_output_tokens": 2048,
             "reasoning": {"effort": "low"},

@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "complete": true,
+  "planned_cleanup_objects": 3,
+  "acknowledged_cleanup_objects": 3,
+  "actions": [
+    {
+      "canonical_id": "TASK-FR-CAL-016-03",
+      "duplicate_id": "APL-1724",
+      "duplicate_uuid": "1e53e9de-769e-4ca5-9c2f-883d3c7cfe80",
+      "original_id": "APL-1696",
+      "original_uuid": "d7e69d93-adb8-4800-8fd7-c831701d8c59",
+      "original_before_sha256": "6e37a96741d41056c914028b6f36dc446f4e24270d8a0f6e006e04247224a170",
+      "original_after_sha256": "530e6ce457645716e6d638a7f99ba2d79e32ea1346fd38dd95203b43671ae9db",
+      "original_protected_fields_unchanged": true,
+      "duplicate_before_sha256": "0e6cb33c7861d39be5b1e23ac28757388bdf6febab50cd3e43d25797595c4272",
+      "duplicate_after_sha256": "153ae24c77e3f5160939b1c732dc8d4e75ed584a80070890a30b9e1163bcca7a",
+      "duplicate_mapping": {
+        "id": "APL-1696",
+        "title": "[TASK-FR-CAL-016-03] Median-three and invalid-pooling golden corpus"
+      },
+      "project_unset": true,
+      "parent_unset": true,
+      "blocked_by_empty": true,
+      "title_description_team_preserved": true,
+      "previous_milestone": {
+        "id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+        "name": "R3 Ecosystem"
+      },
+      "current_milestone": null,
+      "automatic_status": "Duplicate"
+    },
+    {
+      "canonical_id": "TASK-FR-CAL-016-02",
+      "duplicate_id": "APL-1720",
+      "duplicate_uuid": "272663fd-d11c-4953-9d78-02d817784459",
+      "original_id": "APL-1695",
+      "original_uuid": "cdeef4c2-3106-473c-8d87-9ada5c5e4804",
+      "original_before_sha256": "7daef71472c37978f01bab34c1a74b1b31456054ce573bd937209c85ee4ff57a",
+      "original_after_sha256": "85732cbaf499ca8458894315c5abdf645dcd8b1c02412ff1687b289017c3d3c7",
+      "original_protected_fields_unchanged": true,
+      "duplicate_before_sha256": "bd5b282d3bb646aea154e7e7f4f1cb6cc2fe3f198001170a92785c06d72ae855",
+      "duplicate_after_sha256": "439ac158f862de8814c190184495fd37d60b2e9f7dff5dca6a899b41d289e65b",
+      "duplicate_mapping": {
+        "id": "APL-1695",
+        "title": "[TASK-FR-CAL-016-02] Method-specific deterministic result package"
+      },
+      "project_unset": true,
+      "parent_unset": true,
+      "blocked_by_empty": true,
+      "title_description_team_preserved": true,
+      "previous_milestone": {
+        "id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+        "name": "R3 Ecosystem"
+      },
+      "current_milestone": null,
+      "automatic_status": "Duplicate"
+    },
+    {
+      "canonical_id": "TASK-FR-ANA-005-01",
+      "duplicate_id": "APL-1722",
+      "duplicate_uuid": "dd0c13a0-5733-4454-ba33-156c01c2d85d",
+      "original_id": "APL-1693",
+      "original_uuid": "4131b7d6-5676-4822-a99e-9104f7a120c3",
+      "reconciled_after_interruption": true,
+      "original_current_payload_parent_milestone_status_edges_verified": true,
+      "duplicate_before_sha256": "f317dc95ad07b18677ab31ce69004ccd596f0271c5f4d3b3ca1943148d405814",
+      "duplicate_after_sha256": "05a822208898ac7fae2d51e8629e713461c15e07262799e1993521bfb0b758ae",
+      "duplicate_mapping": {
+        "id": "APL-1693",
+        "title": "[TASK-FR-ANA-005-01] Semantic pivot and cardinality request contract"
+      },
+      "project_unset": true,
+      "parent_unset": true,
+      "blocked_by_empty": true,
+      "title_description_team_preserved": true,
+      "previous_milestone": {
+        "id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+        "name": "R3 Ecosystem"
+      },
+      "current_milestone": null,
+      "automatic_status": "Duplicate"
+    }
+  ],
+  "errors": [],
+  "accepted_automatic_effects": "Duplicate status and milestone clearing accepted by root for only the erroneous duplicate records",
+  "all_three_fresh_readbacks_verified": true
+}

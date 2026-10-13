@@ -9,6 +9,12 @@ from test_changes import propose
 from test_period_governance import request_close
 
 
+def test_personal_saved_view_listing_uses_the_published_work_capability(live):
+    page = get(live, "saved-views")
+    assert page["items"] == []
+    assert page["scope_label"] == "Records permitted by your current access"
+
+
 def test_reviewed_exclusion_preserves_denominator_history_and_allows_close(live, setup):
     programme, indicator, plan, period = setup()
     obligations = [dict(item) for item in plan["data"]["obligations"]]

@@ -22,6 +22,10 @@
       "status": "passed"
     },
     {
+      "name": "New administrator deliberately sets up the tenant reference data",
+      "status": "passed"
+    },
+    {
       "name": "Second administrator requests business access and owner approves",
       "status": "passed"
     },

@@ -1,0 +1,226 @@
+{
+  "authority_order": [
+    "AGENTS.md and CLAUDE.md repository rules",
+    "docs/product/framework-v4-20261011/START-HERE.md latest planning source pins",
+    "VERSION.json and migration files actual local version",
+    "docs/current Test Strategy/Fixture/UAT and dated QA records preserve target and historical evidence",
+    "docs/current/threat-register.json current security status; docs/release-reviews/release-review-0.39.0.json security/AI gate draft"
+  ],
+  "strategy": [
+    "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+    "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md"
+  ],
+  "release_plan_or_gate_record": [
+    "docs/current/RELEASE-ACCEPTANCE.md",
+    "docs/release-reviews/release-review-0.39.0.json"
+  ],
+  "case_and_scenario_design": [
+    "docs/current/Impact-Management-Test-Catalogue-v1.1.xlsx",
+    "docs/nonprofit-ai/v1.0/06-TEST-SCENARIOS-AND-CASES.md",
+    "docs/nonprofit-ai/v1.0/test-cases.csv",
+    "docs/nonprofit-ai/v1.0/test-scenarios.csv",
+    "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+    "docs/product/framework-v4-20261011/task-author/supplemental-verification-plans.proposed.json"
+  ],
+  "execution_and_traceability": [
+    "docs/current/EXECUTION-REGISTER.csv",
+    "docs/current/TRACEABILITY.csv",
+    "docs/nonprofit-ai/v1.0/test-run-template.csv",
+    "docs/QUALIFICATION.md"
+  ],
+  "specialist_domains": {
+    "security": [
+      "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+      "docs/current/threat-register.json",
+      "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md"
+    ],
+    "privacy": [
+      "docs/current/DATA-GOVERNANCE.md",
+      "docs/governance/DPIA.md",
+      "docs/governance/RECORD-OF-PROCESSING.md",
+      "docs/governance/DATA-SUBJECT-REQUESTS.md",
+      "docs/governance/RETENTION-SCHEDULE.md"
+    ],
+    "accessibility": [
+      "docs/current/ACCESSIBILITY-STATEMENT.md"
+    ],
+    "performance": [
+      "docs/QA-PERFORMANCE-2026-10.md",
+      "docs/governance/SLOS-AND-ALERTS.md"
+    ],
+    "recovery": [
+      "docs/QA-DEGRADATION-2026-10.md",
+      "docs/governance/BACKUP-DR.md",
+      "docs/current/SUPPORT-RUNBOOK.md"
+    ],
+    "AI": [
+      "docs/governance/AI-MODEL-CARD.md",
+      "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+      "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md"
+    ],
+    "data": [
+      "docs/current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+      "docs/current/DATA-GOVERNANCE.md"
+    ],
+    "UAT": [
+      "docs/current/UAT-PACK.md"
+    ]
+  },
+  "tooling": {
+    "entrypoint": "Makefile",
+    "runtime_runner": "scripts/run.py",
+    "qualification_test_modules": 99,
+    "syntactic_test_functions": 1201,
+    "count_limit": "These are source inventory counts, not pytest collection, parametric assertions or execution totals.",
+    "browser_modes": {
+      "browser": "check.mjs",
+      "admin-browser": "admin-check.mjs",
+      "measurement-browser": "measurement-check.mjs",
+      "planning-browser": "planning-check.mjs",
+      "ai-enablement-browser": "ai-enablement-check.mjs",
+      "ai-planning-browser": "ai-planning-check.mjs",
+      "ai-saved-review-browser": "ai-saved-review-check.mjs",
+      "ai-walkthrough-browser": "ai-walkthrough-check.mjs",
+      "tola-ai-sprint-browser": "tola-ai-sprint-check.mjs",
+      "tola-ai-extension-browser": "tola-ai-extension-check.mjs",
+      "ai-plan-export-browser": "ai-plan-export-check.mjs",
+      "ai-policy-browser": "ai-policy-check.mjs",
+      "ai-ranking-browser": "ai-ranking-check.mjs",
+      "ai-disclosure-browser": "ai-disclosure-check.mjs",
+      "dashboard-browser": "dashboard-check.mjs",
+      "forms-browser": "forms-check.mjs",
+      "reporting-browser": "reporting-check.mjs",
+      "workspace-browser": "workspace-check.mjs",
+      "tenant-browser": "tenant-check.mjs",
+      "bootstrap-browser": "bootstrap-check.mjs",
+      "recovery-browser": "recovery-check.mjs",
+      "renewal-browser": "renewal-check.mjs",
+      "import-browser": "import-check.mjs",
+      "evidence-browser": "evidence-check.mjs",
+      "export-browser": "export-check.mjs",
+      "requeue-browser": "requeue-check.mjs",
+      "a11y-browser": "a11y-check.mjs",
+      "operators-browser": "operators-check.mjs",
+      "status-browser": "status-check.mjs",
+      "idp-browser": "idp-check.mjs"
+    },
+    "browser_modes_count": 30,
+    "pure_unit_selection": "Makefile:30-31",
+    "api_integration_and_smoke": "scripts/run.py:645-652",
+    "native_restart_restore_upgrade": "scripts/run.py:691-701; scripts/restore_drill.py; scripts/native_upgrade_check.py",
+    "performance": "Makefile:34-37; scripts/perf.py; qualification/perf_harness.py; qualification/perf_support.py",
+    "CI": [
+      ".github/workflows/qualification.yml",
+      ".github/workflows/checks.yml"
+    ]
+  },
+  "preserved_counts": {
+    "core_baseline_requirements": 307,
+    "core_designed_cases": 825,
+    "original_PM_scenarios": 1328,
+    "proposed_supplemental_control_plans": 1069,
+    "nonprofit_scenarios": 50,
+    "nonprofit_cases": 108,
+    "test_population_limit": "These populations overlap and have different identity/purpose. Do not add them or treat them as executed/accepted coverage."
+  },
+  "register_structure_observation": {
+    "docs/current/EXECUTION-REGISTER.csv": {
+      "rows": 2380,
+      "header": [
+        "id",
+        "suite",
+        "name",
+        "result",
+        "source",
+        "evidence",
+        "requirements",
+        "scope",
+        "run_at"
+      ],
+      "recorded_status_counts": {
+        "Pass": 2376,
+        "Local Pass": 2,
+        "Pending CI": 1,
+        "Fail": 1
+      }
+    },
+    "docs/current/TRACEABILITY.csv": {
+      "rows": 307,
+      "header": [
+        "Requirement",
+        "BRD parent",
+        "Title",
+        "Priority",
+        "Baseline release",
+        "Status",
+        "Current assessment",
+        "Behavior retained",
+        "Recovery retained",
+        "Acceptance retained",
+        "Implementation and test sources",
+        "Evidence interpretation"
+      ],
+      "recorded_status_counts": {
+        "": 307
+      }
+    },
+    "docs/nonprofit-ai/v1.0/test-cases.csv": {
+      "rows": 108,
+      "header": [
+        "case_id",
+        "scenario_id",
+        "br_ids",
+        "fr_ids",
+        "title",
+        "layer",
+        "priority",
+        "phase",
+        "status",
+        "evidence_status",
+        "prerequisites",
+        "steps",
+        "expected_result",
+        "test_data",
+        "evidence",
+        "decision_dependencies",
+        "negative_case",
+        "execution_notes"
+      ],
+      "recorded_status_counts": {
+        "SPECIFIED_NOT_RUN": 108
+      }
+    },
+    "docs/nonprofit-ai/v1.0/test-scenarios.csv": {
+      "rows": 50,
+      "header": [
+        "scenario_id",
+        "title",
+        "br_ids",
+        "fr_ids",
+        "layer",
+        "priority",
+        "phase",
+        "status",
+        "prerequisites",
+        "steps",
+        "expected_result",
+        "test_data",
+        "evidence",
+        "decision_dependencies",
+        "case_ids"
+      ],
+      "recorded_status_counts": {
+        "SPECIFIED_NOT_RUN": 50
+      }
+    }
+  },
+  "OOXML_observation_reference": {
+    "path": "../WORKBOOK-STRUCTURE-OBSERVATION.json",
+    "scope": "Parent provided read-only structural/values extraction, not visual render/formula recalculation or product execution.",
+    "workbook_sha256": "1db2338f8577aaebc982367f1c6d19f11ee378821b8e3a9134224235864c1956",
+    "overview_cell": "Overview!A4: Version1.1 |27September2026 |Application0.12.0",
+    "case_rows": 825,
+    "execution_data_rows": 407,
+    "limit": "One reference execution row represents143 assertions; not comparable to current CSV unique tests."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "scope": "56 units;54pass2failure",
+  "failed_tests": [
+    "test_data_dictionary_ledgers_every_migration_file_with_its_checksum",
+    "test_the_repository_register_and_release_review_pass_the_check"
+  ],
+  "causes": [
+    "New47 dictionary prose omitted parser-required ledgertable row",
+    "NewIR19 access-policy metadata path lacked required access-policy area"
+  ],
+  "fixes": [
+    "Added new47 exactSHA table row; old46rows unchanged",
+    "Added access-policy area to uncommittedIR19; actualpolicyonlyversion1.30\u21921.31, no permission widening"
+  ],
+  "old_tests_unchanged": true
+}

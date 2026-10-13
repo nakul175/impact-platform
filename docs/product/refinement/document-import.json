@@ -1,0 +1,14 @@
+{
+  "schema_version": "imprana-refinement-document-import/v1",
+  "project_uuid": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046",
+  "title": "Imprana Commons — Complete backlog refinement",
+  "status": "AWAITING_DIRECT_DOCUMENT_APPROVAL",
+  "created": false,
+  "response_uncertain": false,
+  "source_commit": "26e132883c767e11ee077a5b47c2008c39b4436a",
+  "last_error": {
+    "kind": "automatic_approval_rejection",
+    "reason": "This creates a new Linear document exporting the full repo-derived refinement catalogue, while the user’s approval covered remaining tasks and story updates—not this additional document payload; sensitive egress therefore lacks specific authorization."
+  },
+  "scope": "Only additional overview document creation is paused. Directly approved task and story updates continue. The complete source and proposal remain preserved in Git."
+}

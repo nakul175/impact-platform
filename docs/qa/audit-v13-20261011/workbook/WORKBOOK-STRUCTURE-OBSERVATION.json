@@ -1,0 +1,309 @@
+{
+  "file": "docs/current/Impact-Management-Test-Catalogue-v1.1.xlsx",
+  "sha256": "1db2338f8577aaebc982367f1c6d19f11ee378821b8e3a9134224235864c1956",
+  "workbookSheets": [
+    {
+      "sheet": "Overview",
+      "dimension": null,
+      "nonemptyRows": 19,
+      "firstRows": [
+        {
+          "A2": "Impact Management Test Catalogue"
+        },
+        {
+          "A4": "Version 1.1 | 27 September 2026 | Application 0.12.0"
+        },
+        {
+          "A6": "Suite",
+          "B6": "Designed",
+          "C6": "Pass",
+          "D6": "Fail",
+          "E6": "Blocked",
+          "F6": "Not run",
+          "G6": "In progress",
+          "H6": "Not applicable"
+        }
+      ],
+      "formulaCount": 58
+    },
+    {
+      "sheet": "Functional",
+      "dimension": null,
+      "nonemptyRows": 543,
+      "firstRows": [
+        {
+          "A2": "Functional test cases"
+        },
+        {
+          "A4": "540 cases \u2022 Build 0.12 evidence reconciled; partial support is not full acceptance"
+        },
+        {
+          "A6": "Test ID",
+          "B6": "FSD and BRD reference",
+          "C6": "Priority and release",
+          "D6": "Scenario",
+          "E6": "Preconditions and data",
+          "F6": "Steps",
+          "G6": "Expected outcome",
+          "H6": "Status",
+          "I6": "Evidence or run ID",
+          "J6": "Defect and notes"
+        }
+      ],
+      "formulaCount": 0
+    },
+    {
+      "sheet": "Nonfunctional",
+      "dimension": null,
+      "nonemptyRows": 40,
+      "firstRows": [
+        {
+          "A2": "Nonfunctional qualification"
+        },
+        {
+          "A4": "37 cases \u2022 Build 0.12 evidence reconciled; partial support is not full acceptance"
+        },
+        {
+          "A6": "Test ID",
+          "B6": "FSD and BRD reference",
+          "C6": "Priority and release",
+          "D6": "Scenario",
+          "E6": "Preconditions and data",
+          "F6": "Steps",
+          "G6": "Expected outcome",
+          "H6": "Status",
+          "I6": "Evidence or run ID",
+          "J6": "Defect and notes"
+        }
+      ],
+      "formulaCount": 0
+    },
+    {
+      "sheet": "Journeys",
+      "dimension": null,
+      "nonemptyRows": 33,
+      "firstRows": [
+        {
+          "A2": "Integrated acceptance journeys"
+        },
+        {
+          "A4": "30 cases \u2022 Build 0.12 evidence reconciled; partial support is not full acceptance"
+        },
+        {
+          "A6": "Test ID",
+          "B6": "FSD and BRD reference",
+          "C6": "Priority and release",
+          "D6": "Scenario",
+          "E6": "Preconditions and data",
+          "F6": "Steps",
+          "G6": "Expected outcome",
+          "H6": "Status",
+          "I6": "Evidence or run ID",
+          "J6": "Defect and notes"
+        }
+      ],
+      "formulaCount": 0
+    },
+    {
+      "sheet": "Unit",
+      "dimension": null,
+      "nonemptyRows": 146,
+      "firstRows": [
+        {
+          "A2": "Unit contract cases"
+        },
+        {
+          "A4": "143 cases \u2022 Build 0.12 evidence reconciled; partial support is not full acceptance"
+        },
+        {
+          "A6": "Test ID",
+          "B6": "FSD and BRD reference",
+          "C6": "Priority and release",
+          "D6": "Scenario",
+          "E6": "Preconditions and data",
+          "F6": "Steps",
+          "G6": "Expected outcome",
+          "H6": "Status",
+          "I6": "Evidence or run ID",
+          "J6": "Defect and notes"
+        }
+      ],
+      "formulaCount": 0
+    },
+    {
+      "sheet": "Integration",
+      "dimension": null,
+      "nonemptyRows": 21,
+      "firstRows": [
+        {
+          "A2": "API integration cases"
+        },
+        {
+          "A4": "18 cases \u2022 Build 0.12 evidence reconciled; partial support is not full acceptance"
+        },
+        {
+          "A6": "Test ID",
+          "B6": "FSD and BRD reference",
+          "C6": "Priority and release",
+          "D6": "Scenario",
+          "E6": "Preconditions and data",
+          "F6": "Steps",
+          "G6": "Expected outcome",
+          "H6": "Status",
+          "I6": "Evidence or run ID",
+          "J6": "Defect and notes"
+        }
+      ],
+      "formulaCount": 0
+    },
+    {
+      "sheet": "Smoke",
+      "dimension": null,
+      "nonemptyRows": 15,
+      "firstRows": [
+        {
+          "A2": "Deployment smoke cases"
+        },
+        {
+          "A4": "12 cases \u2022 Build 0.12 evidence reconciled; partial support is not full acceptance"
+        },
+        {
+          "A6": "Test ID",
+          "B6": "FSD and BRD reference",
+          "C6": "Priority and release",
+          "D6": "Scenario",
+          "E6": "Preconditions and data",
+          "F6": "Steps",
+          "G6": "Expected outcome",
+          "H6": "Status",
+          "I6": "Evidence or run ID",
+          "J6": "Defect and notes"
+        }
+      ],
+      "formulaCount": 0
+    },
+    {
+      "sheet": "Security Boundaries",
+      "dimension": null,
+      "nonemptyRows": 48,
+      "firstRows": [
+        {
+          "A2": "Security and boundary cases"
+        },
+        {
+          "A4": "45 cases \u2022 Build 0.12 evidence reconciled; partial support is not full acceptance"
+        },
+        {
+          "A6": "Test ID",
+          "B6": "FSD and BRD reference",
+          "C6": "Priority and release",
+          "D6": "Scenario",
+          "E6": "Preconditions and data",
+          "F6": "Steps",
+          "G6": "Expected outcome",
+          "H6": "Status",
+          "I6": "Evidence or run ID",
+          "J6": "Defect and notes"
+        }
+      ],
+      "formulaCount": 0
+    },
+    {
+      "sheet": "Scenarios",
+      "dimension": null,
+      "nonemptyRows": 273,
+      "firstRows": [
+        {
+          "A2": "Functional scenario register"
+        },
+        {
+          "A4": "270 records \u2022 Source FSD version 1.0 dated 24 September 2026"
+        },
+        {
+          "A6": "Scenario ID",
+          "B6": "FSD reference",
+          "C6": "Scenario",
+          "D6": "Priority",
+          "E6": "Release",
+          "F6": "Component",
+          "G6": "Primary cases",
+          "H6": "Acceptance fixture"
+        }
+      ],
+      "formulaCount": 0
+    },
+    {
+      "sheet": "Traceability",
+      "dimension": null,
+      "nonemptyRows": 310,
+      "firstRows": [
+        {
+          "A2": "Requirement traceability"
+        },
+        {
+          "A4": "307 records \u2022 Source FSD version 1.0 dated 24 September 2026"
+        },
+        {
+          "A6": "BRD parent",
+          "B6": "FSD reference",
+          "C6": "Priority",
+          "D6": "Release",
+          "E6": "Component",
+          "F6": "Primary cases",
+          "G6": "Requirement",
+          "H6": "Current coverage",
+          "I6": "Assessment",
+          "J6": "Evidence sources"
+        }
+      ],
+      "formulaCount": 0
+    },
+    {
+      "sheet": "Fixtures",
+      "dimension": null,
+      "nonemptyRows": 13,
+      "firstRows": [
+        {
+          "A2": "Required fixture packs"
+        },
+        {
+          "A4": "10 records \u2022 Source FSD version 1.0 dated 24 September 2026"
+        },
+        {
+          "A6": "Fixture ID",
+          "B6": "Fixture pack",
+          "C6": "Required data",
+          "D6": "Owner",
+          "E6": "Control",
+          "F6": "Expected use"
+        }
+      ],
+      "formulaCount": 0
+    },
+    {
+      "sheet": "Execution records",
+      "dimension": null,
+      "nonemptyRows": 410,
+      "firstRows": [
+        {
+          "A2": "Recorded development qualification for build 0.12.0"
+        },
+        {
+          "A4": "Exact automated identities; one reference-run row represents 143 design assertions."
+        },
+        {
+          "A6": "Run ID",
+          "B6": "Suite",
+          "C6": "Test or workflow",
+          "D6": "Result",
+          "E6": "Evidence file",
+          "F6": "Assessed requirement links",
+          "G6": "Scope limit",
+          "H6": "Recorded run date"
+        }
+      ],
+      "formulaCount": 0
+    }
+  ],
+  "scope": "Read-only OOXML structural/values extraction; no file edits, export, formula recalculation or displayed rendering claim."
+}

@@ -1,0 +1,3 @@
+story,criterion,case,version,automation_locator,interpretation
+US-DX-01a,AC-US-DX-01a-001,TC-IMPRANA-US-DX-01a-001,REV_4f85d88e01dae94d79c7ef07eaa4d10143cec16d2993de038b45c90d961a0c9e,qualification/test_ai_diagnosis_live.py#test_diagnosis_saves_exact_order_stable_ids_and_supporting_evidence,Local case binding; actual runs separate; no parent/307-FSD-requirement acceptance
+US-DX-01a,AC-US-DX-01a-002,TC-IMPRANA-US-DX-01a-002,REV_27f93f742b8a06852b47491b146ef5709d3068d7e9702d193418d5be563d3b21,qualification/test_ai_diagnosis_live.py#test_diagnosis_completion_names_each_incomplete_problem_without_writing,Local case binding; actual runs separate; no parent/307-FSD-requirement acceptance

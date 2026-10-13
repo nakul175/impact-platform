@@ -1,0 +1,19 @@
+{
+  "first_observation": "outputs/imprana-standards-completion-20261011/final-independent-review/FIRST-REVIEWER-ADAPTER-OBSERVATION.json",
+  "first_sha256": "47222085bbbcf93d7fc7a821023deafc39718bbd2300ef9a92f1eac5afcf08da",
+  "changes": [
+    "AST inspection now includes three existing loop-tuple guard declarations. No negative tests were run.",
+    "Exact qualifier matcher now uses actual Unselected capitalization. No product text modified.",
+    "Final reviewer additionally checks all review/publication copies."
+  ],
+  "Native_writes": 0,
+  "repo_writes": 0,
+  "second_observation": {
+    "path": "outputs/imprana-standards-completion-20261011/final-independent-review/SECOND-REVIEWER-ADAPTER-OBSERVATION.json",
+    "sha256": "3f999d3cf7f8bf0257232459dfe96d28fc68a3be20e343c352376ca78e34029b",
+    "changes": [
+      "Compact overview reader uses actual declared snake_case schema and verifies all actual full-readback digests.",
+      "First published prepublication receipt is verified against manifest-declared retained historical source; later final integrity source remains separate. No source/hash waiver."
+    ]
+  }
+}

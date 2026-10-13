@@ -1,16 +1,16 @@
 {
-  "recorded_at": "2026-10-06T05:58:55.968Z",
+  "recorded_at": "2026-10-13T05:54:51.773Z",
   "scope": "Private proposed registered procurement-preview pure-model checks using actual local public catalog generators; no integrated UI/API/current-authority/server-save or accepted requirement claim",
   "runtime": {
-    "node": "22.22.0",
+    "node": "24.21.0",
     "input_method": "local pure Python catalog()/solutions_catalog(), no HTTP or provider",
     "model_method": "actual proposed TS module with Node type stripping"
   },
   "input_editions": {
     "catalog": "nonprofit-2026-10-05.3",
-    "solutions": "nonprofit-solutions-2026-10-05.1"
+    "solutions": "nonprofit-solutions-2026-10-05.2"
   },
-  "generated_public_input_sha256": "7981ec5e28e73d6dbc9bfe226816d2318202f811869182377506f4636c5409a6",
+  "generated_public_input_sha256": "7db5916f2fb51b7f2ebb31e6699d2a17bce694c8dea7c8626d63770b028326a7",
   "results": [
     {
       "name": "Actual current local generators supply the public catalog and valid profile",
@@ -155,17 +155,17 @@
   ],
   "source_fingerprints": {
     "apps/web/src/AIProcurementPreviewModel.ts": "1718d6fec60ba23d3aa6fafe35f49eb0ffc24b47138c60ae90d1b18cf1ffbe09",
-    "tools/browser/ai-procurement-preview-model-check.mjs": "d4fb4d7cfb3e1a73efe5c48878069e9f6680e083862bea03343bdd6de9dd69ea",
-    "apps/api/impact_api/ai_enablement_catalog.py": "e639adbdc51c4518c81d638b390423fcbf11b35d22b31dc4cc5f6e78b9e5d345",
-    "apps/api/impact_api/ai_solutions_catalog.py": "fa66d52dd5b8a7d66f27cae1e1588170eb7b46cc4a5c239e06112dda2b9d57f0",
-    "apps/api/impact_api/ai_learning_content.py": "906fbf78e4311fd9785ffecdee6e1fc854db7ec09754410c3755280c7929a333"
+    "tools/browser/ai-procurement-preview-model-check.mjs": "a617b43fb664effd0c270d385d475cb585d21907292eb6cc8a4ac3a6890215be",
+    "apps/api/impact_api/ai_enablement_catalog.py": "38a5b3e94266c09f13eb6c88aba3c46d2cc3c1b8e1e2e5d5187c4e285b794d01",
+    "apps/api/impact_api/ai_solutions_catalog.py": "675699cdae84d6ae6c89f1e7565ea845ed836d1c0b6543fc10382b7eee068d24",
+    "apps/api/impact_api/ai_learning_content.py": "36987adcbcfeab29b3feba8a75052499864595283ff82b91f5a650f5d708f0a0"
   },
   "current_sources": {
     "apps/web/src/AIProcurementPreviewModel.ts": "1718d6fec60ba23d3aa6fafe35f49eb0ffc24b47138c60ae90d1b18cf1ffbe09",
-    "tools/browser/ai-procurement-preview-model-check.mjs": "d4fb4d7cfb3e1a73efe5c48878069e9f6680e083862bea03343bdd6de9dd69ea",
-    "apps/api/impact_api/ai_enablement_catalog.py": "e639adbdc51c4518c81d638b390423fcbf11b35d22b31dc4cc5f6e78b9e5d345",
-    "apps/api/impact_api/ai_solutions_catalog.py": "fa66d52dd5b8a7d66f27cae1e1588170eb7b46cc4a5c239e06112dda2b9d57f0",
-    "apps/api/impact_api/ai_learning_content.py": "906fbf78e4311fd9785ffecdee6e1fc854db7ec09754410c3755280c7929a333"
+    "tools/browser/ai-procurement-preview-model-check.mjs": "a617b43fb664effd0c270d385d475cb585d21907292eb6cc8a4ac3a6890215be",
+    "apps/api/impact_api/ai_enablement_catalog.py": "38a5b3e94266c09f13eb6c88aba3c46d2cc3c1b8e1e2e5d5187c4e285b794d01",
+    "apps/api/impact_api/ai_solutions_catalog.py": "675699cdae84d6ae6c89f1e7565ea845ed836d1c0b6543fc10382b7eee068d24",
+    "apps/api/impact_api/ai_learning_content.py": "36987adcbcfeab29b3feba8a75052499864595283ff82b91f5a650f5d708f0a0"
   },
   "sources_unchanged": true,
   "limits": [

@@ -1,0 +1,471 @@
+{
+  "review_type": "AI_BOUNDED_SOURCE_DOCUMENT_REVIEW",
+  "product": "Imprana Commons",
+  "recorded_at_utc": "2026-10-11T04:47:50.093539+00:00",
+  "documentation_baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+  "reviewed_inputs": {
+    "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md": {
+      "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+      "bytes": 12412
+    },
+    "outputs/imprana-qa-reconciliation-20261011/PRIMARY-SOURCE-CENSUS.json": {
+      "sha256": "beb6277c245065c57a17f94598c20d6b918e1631d9e923fae089f3da0cde7184",
+      "bytes": 826611
+    }
+  },
+  "checks": [
+    {
+      "check_id": "BRIDGE-01",
+      "result": "PASS",
+      "observation": {
+        "all": 370,
+        "active": 368,
+        "Split": 2
+      }
+    },
+    {
+      "check_id": "BRIDGE-02",
+      "result": "PASS",
+      "observation": {
+        "active_scenarios": 1328,
+        "retained_Split_scenarios": 7,
+        "all_scenarios": 1335
+      }
+    },
+    {
+      "check_id": "BRIDGE-03",
+      "result": "PASS",
+      "observation": "Independent primary-text blocks reconstruct all370 complete Gherkin fields exactly."
+    },
+    {
+      "check_id": "BRIDGE-04",
+      "result": "PASS",
+      "observation": "Current primary CSV bytes match the pinned documentation commit."
+    },
+    {
+      "check_id": "BRIDGE-05",
+      "result": "PASS",
+      "observation": "Primary-source identity set equals all1328 unique alias, matrix and census identities; no substitutions/duplicates."
+    },
+    {
+      "check_id": "BRIDGE-06",
+      "result": "PASS",
+      "observation": {
+        "exact_source_and_alias_mismatches": []
+      }
+    },
+    {
+      "check_id": "BRIDGE-07",
+      "result": "PASS",
+      "observation": "All1328 existing proposed execution fields remain Not run/no evidence."
+    },
+    {
+      "check_id": "BRIDGE-08",
+      "result": "PASS",
+      "observation": "All370 story hashes/statuses/counts and7 historical block identities/offsets/UTF8 lengths are exact."
+    },
+    {
+      "check_id": "BRIDGE-09",
+      "result": "PASS",
+      "observation": {
+        "tasks": 1131,
+        "prerequisite_edges": 779,
+        "complete_task_records_and_edges_equal_pinned_source": true
+      }
+    },
+    {
+      "check_id": "BRIDGE-10",
+      "result": "PASS",
+      "observation": {
+        "primary_missing_Given": 37,
+        "separate_plan_augment_groups": 7,
+        "stories_without_qualification_kind_task": [
+          "FR-PRG-006",
+          "FR-PLN-006",
+          "FR-SEC-011",
+          "FR-TEN-002",
+          "FR-WFL-001",
+          "FR-WFL-003",
+          "FR-AI-002",
+          "FR-AI-004",
+          "US-VC-04",
+          "FR-DQ-001",
+          "FR-INT-005",
+          "FR-MIG-003",
+          "US-PT-01"
+        ]
+      }
+    },
+    {
+      "check_id": "BRIDGE-11",
+      "result": "PASS",
+      "observation": "Primary CSV/alias map declares no per-scenario AC version; content digest is not owner approval."
+    },
+    {
+      "check_id": "BRIDGE-12",
+      "result": "PASS",
+      "observation": {
+        "source_pins": 60,
+        "mismatches": [],
+        "pinned_tree": "f19870c63fba37ee7118b8b394afe203255232cc"
+      }
+    },
+    {
+      "check_id": "BRIDGE-13",
+      "result": "PASS",
+      "observation": {
+        "feature_files": 54,
+        "specification_scenarios_including_history": 1335,
+        "execution_claim": false
+      }
+    },
+    {
+      "check_id": "BRIDGE-14",
+      "result": "PASS",
+      "observation": "Census aggregates/limitations agree with independent bounded source observations; author truth flags are not external authority."
+    },
+    {
+      "check_id": "BRIDGE-15",
+      "result": "PASS",
+      "observation": {
+        "attached_zip_sha256": "26c64346226f660f6a648e5cebcaf2ee893750e1fb8fe50b13821aae631b5e5a",
+        "exact_reference_files": 8
+      }
+    },
+    {
+      "check_id": "BRIDGE-16",
+      "result": "PASS",
+      "observation": "Bridge source/criterion fields and valid-encoding/applicability warning match actual attached source/helper contract."
+    },
+    {
+      "check_id": "BRIDGE-17",
+      "result": "PASS",
+      "observation": "Claimed canonical identity-set/source-byte hashing and candidate-only helper boundary match attachment source; helper not executed."
+    },
+    {
+      "check_id": "BRIDGE-18",
+      "result": "PASS",
+      "observation": {
+        "local_links_checked": 6,
+        "external_link_qualification": "NOT_PERFORMED"
+      }
+    },
+    {
+      "check_id": "BRIDGE-19",
+      "result": "PASS",
+      "observation": {
+        "primary_wrong_active_total_detected": true,
+        "original_word_change_detected": true,
+        "task_edge_loss_detected": true,
+        "alias_id_substitution_detected": true
+      }
+    }
+  ],
+  "pass": 19,
+  "fail": 0,
+  "package_source_pins": [
+    {
+      "path": "templates/criteria-source.json",
+      "sha256": "c69b92abe223a9e8220c4d10df886fbefa85d563fcb69a1989562fdf4de8386d",
+      "bytes": 257,
+      "exact_attached_zip_entry": true
+    },
+    {
+      "path": "templates/case.md",
+      "sha256": "a689807d86453bf0a12bd66aa43faa12d5d46f5d2c093292bd7c88dbc871fd09",
+      "bytes": 1388,
+      "exact_attached_zip_entry": true
+    },
+    {
+      "path": "standards/register-schema.json",
+      "sha256": "4f24182ea4beda4026af524ffe122eaf20c1c09aba2fbc1b3ab0e0f1165cd65e",
+      "bytes": 2006,
+      "exact_attached_zip_entry": true
+    },
+    {
+      "path": "workflow/CRITERIA-SOURCE-PINNING.md",
+      "sha256": "b1efaabd32b331457860b7b0dbd5a5d4db59f518570eb7d7622d1b6621ff55fc",
+      "bytes": 3357,
+      "exact_attached_zip_entry": true
+    },
+    {
+      "path": "workflow/TRACEABILITY.md",
+      "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a",
+      "bytes": 2630,
+      "exact_attached_zip_entry": true
+    },
+    {
+      "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+      "sha256": "b97985d780cd5c30ad665561c7e8c3d53d148df22328136389f451ee8cc43dd4",
+      "bytes": 2495,
+      "exact_attached_zip_entry": true
+    },
+    {
+      "path": "checker/criteria_pin.py",
+      "sha256": "23bdaed08df3454428bbad3a4fd23b8b4a86efe54cbe6fe94fe370d96a9a0920",
+      "bytes": 1696,
+      "exact_attached_zip_entry": true
+    },
+    {
+      "path": "checker/qa_lint.py",
+      "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9",
+      "bytes": 22397,
+      "exact_attached_zip_entry": true
+    }
+  ],
+  "independent_repository_source_pins": {
+    "docs/backlog/backlog.csv": {
+      "sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+      "bytes": 718739
+    },
+    "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md": {
+      "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+      "bytes": 12412
+    },
+    "docs/product/framework-v4-20261011/bundle-review/CRITERION-ALIAS-MAP.json": {
+      "sha256": "279c1bec0920f02dba67f43cb6fcb6ce5f2fa311c79dc98dc18ac0a4f29c99ee",
+      "bytes": 890236
+    },
+    "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json": {
+      "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+      "bytes": 7419410
+    },
+    "docs/product/refinement/backlog-refinement.json": {
+      "sha256": "cbb61315088ee2ecdc2106d8f472ab5ee052bf3034d9172c32973e4c941a7c7e",
+      "bytes": 3146639
+    },
+    "docs/backlog/README.md": {
+      "sha256": "44d0efa01b27103b0819bbd27072f3d2855047f92bed7a2d456c81c77bb897cc",
+      "bytes": 3356
+    },
+    "docs/product/framework-v4-20261011/task-author/README.md": {
+      "sha256": "f56b479bfdaa803b94e72341a7e58e2889b77a858d8f1c4830c6cf2df7344134",
+      "bytes": 3987
+    },
+    "docs/backlog/features/access-control.feature": {
+      "sha256": "354eed86ecc16b4c7189b7abdc72eb732d6a66d752a49684b9df7aed4817f72f",
+      "bytes": 18606
+    },
+    "docs/backlog/features/adoption-adopt.feature": {
+      "sha256": "eced59aeb089b7cac144915b693b17ac60a3a6d322c55a39fc9835ce77d17416",
+      "bytes": 3746
+    },
+    "docs/backlog/features/adoption-assess.feature": {
+      "sha256": "cfe94a4d05db741e1ca4e49c9321ea509f47367d25f435ae7faeb21ff1dd9e65",
+      "bytes": 2839
+    },
+    "docs/backlog/features/adoption-deploy.feature": {
+      "sha256": "2f9753e434e7b71bc4d3dd9de3d89cd787e2ab5bf1d0bebc2aa33e819f94744d",
+      "bytes": 2724
+    },
+    "docs/backlog/features/adoption-diagnose.feature": {
+      "sha256": "da5cd7146f65cba14c0d166c61f8c4c854f12f4dde1c9dadb0eb183268d3ac35",
+      "bytes": 7549
+    },
+    "docs/backlog/features/adoption-discover.feature": {
+      "sha256": "685ea4699b2d438bada128787a8688109cb2fa9a8d7dfa3da94d5ecfa3ec4eda",
+      "bytes": 3851
+    },
+    "docs/backlog/features/adoption-improve.feature": {
+      "sha256": "984d709cec490b37c6fb125dc71a12b31078793ea29956f67283862d4c4d72cb",
+      "bytes": 4702
+    },
+    "docs/backlog/features/adoption-map.feature": {
+      "sha256": "00799763483bceeaa603da096ff76b234b0f48cca0b9c76df7876bbbc8388838",
+      "bytes": 3764
+    },
+    "docs/backlog/features/adoption-value-case.feature": {
+      "sha256": "b72f197ce6422287c47a34c8e154d7dac7016fdc83a9247b7cdbc1b5eb414646",
+      "bytes": 4495
+    },
+    "docs/backlog/features/ai-capabilities.feature": {
+      "sha256": "4cf28dbe95d4673e970921bd6f3f517d4b1530c77b23caee898c37849bbdebb8",
+      "bytes": 29308
+    },
+    "docs/backlog/features/calculations.feature": {
+      "sha256": "4cad981212e71909b5519606b4666c19054157996d047cbc3b7224dc6b81514a",
+      "bytes": 23178
+    },
+    "docs/backlog/features/commercial-and-billing.feature": {
+      "sha256": "b82a4d9860c1f9fd2d8c39216e860d3fba75020ef23d1884ba09019102aeeac2",
+      "bytes": 9146
+    },
+    "docs/backlog/features/dashboards-and-analysis.feature": {
+      "sha256": "78005bf63614552ece274940f42c58e93256403e136bdd301f5ad192a10171c4",
+      "bytes": 15874
+    },
+    "docs/backlog/features/data-import-and-management.feature": {
+      "sha256": "a0876c8485ebad439865c4e9a2ebf7c56213ebf76902c24f2076aed07f401db4",
+      "bytes": 16502
+    },
+    "docs/backlog/features/data-quality.feature": {
+      "sha256": "066ee6933154a2892b4fad1945ab3809bf8da401e75e194a21c7871396d27221",
+      "bytes": 13833
+    },
+    "docs/backlog/features/evaluation.feature": {
+      "sha256": "d5b6ec1bd0402b4d957186c418163d0b652aaed4ff6b0f41bb4c00edd7126d76",
+      "bytes": 12183
+    },
+    "docs/backlog/features/evidence.feature": {
+      "sha256": "d7b49a0456182071d09ed3d93125f29eece909812a41d047bff18304db7c87a6",
+      "bytes": 12329
+    },
+    "docs/backlog/features/finance.feature": {
+      "sha256": "9f249deb6bd002ef3a62b054b19e91107d18d2bc5fb1b720c0896535011be6fc",
+      "bytes": 12079
+    },
+    "docs/backlog/features/forms-and-collection.feature": {
+      "sha256": "56e5185a789ec6b0458cc2a5ac617b5aa6615d04086d5624103a8e236bed00f6",
+      "bytes": 16047
+    },
+    "docs/backlog/features/funder-portfolio.feature": {
+      "sha256": "cfbe02c6ee1deb1a9e3b3f43485fc7c67e4a38584054bc9f3fc74589d161a076",
+      "bytes": 3619
+    },
+    "docs/backlog/features/identity-and-accounts.feature": {
+      "sha256": "3812ae1e84b8c1a1c1e92a25fd0765e0f3d999c955db91924c530509ca13ccbd",
+      "bytes": 24834
+    },
+    "docs/backlog/features/indicators.feature": {
+      "sha256": "3fd3e97feaea341726e71e54d53d612f52da303aaeb29b6de29fff0233079636",
+      "bytes": 21859
+    },
+    "docs/backlog/features/integrations-and-connectors.feature": {
+      "sha256": "b8b3486af6f56f4a1c75db462c6f72299af0a8f0e591299f70d66dd8b19368be",
+      "bytes": 16084
+    },
+    "docs/backlog/features/migration-and-exit.feature": {
+      "sha256": "608c09d81cf2ac2e7df2042a8190034a155c7efbfd0b3a3b58c12c4196010b6b",
+      "bytes": 11199
+    },
+    "docs/backlog/features/nfr-ai-quality.feature": {
+      "sha256": "ae6c7f9b1461f02f7fdf4aa3405d815aee92dd3a7e8a8d0d944e939a81da7e08",
+      "bytes": 7008
+    },
+    "docs/backlog/features/nfr-audit.feature": {
+      "sha256": "b0f858477a5088202f889553b4a187f6d102f6ef1af58fde55e2d74a09617735",
+      "bytes": 1520
+    },
+    "docs/backlog/features/nfr-availability.feature": {
+      "sha256": "9c2af7aa458f41e920ba94373a334ebdf2742b1c66b443a0a97f1cae9c3ed551",
+      "bytes": 2711
+    },
+    "docs/backlog/features/nfr-capacity.feature": {
+      "sha256": "d77a5f725ee67ce380302ddf60f2955d525ee51ed650529f7565c8cbcb28edef",
+      "bytes": 3222
+    },
+    "docs/backlog/features/nfr-compatibility.feature": {
+      "sha256": "7e7b20d9d1674af276a301a9e16b7964850bb45d8b09c7848992ebc77b2c2cb7",
+      "bytes": 1582
+    },
+    "docs/backlog/features/nfr-cost.feature": {
+      "sha256": "f07ece1d3025520dad8364207c64a315eca9240d372376b1c758223308b236b4",
+      "bytes": 1663
+    },
+    "docs/backlog/features/nfr-data-integrity.feature": {
+      "sha256": "3eb868dc965a847d37b3c104d5f2e3149eb18a812de17ff54671ff8394820565",
+      "bytes": 3259
+    },
+    "docs/backlog/features/nfr-localisation.feature": {
+      "sha256": "d4b5dabdeb3dbc0b4a330da8f8ee04a964742a64dcc457da8c3bc556dcb65170",
+      "bytes": 1584
+    },
+    "docs/backlog/features/nfr-maintainability.feature": {
+      "sha256": "451833065767cce80aa278a1a84a8ab72d9103cbec6d83014c6c20a76862e862",
+      "bytes": 1477
+    },
+    "docs/backlog/features/nfr-observability.feature": {
+      "sha256": "2b45218d86062488f27aaa8d168704655381083d6f4cf68b07a4d1091e7240ba",
+      "bytes": 1578
+    },
+    "docs/backlog/features/nfr-performance.feature": {
+      "sha256": "b61ef120759c8138f2fd9412611eeb65fb4abf007a3cab5e74f3591671d5d90c",
+      "bytes": 11069
+    },
+    "docs/backlog/features/nfr-portability.feature": {
+      "sha256": "e9a6888f8e38d24ef22d9735a119c4bee2b277c58016da926839266cd8317521",
+      "bytes": 1721
+    },
+    "docs/backlog/features/nfr-recovery.feature": {
+      "sha256": "a6f0854c6f7fadd001834eb71fe13b2f7b0b4f947d25b5fdc2f1cf7e1eee0eac",
+      "bytes": 4744
+    },
+    "docs/backlog/features/nfr-support.feature": {
+      "sha256": "902ee22e35eabc3d2642c94f7f375928dceda98ee507ce9852417a5e3747b6ca",
+      "bytes": 1695
+    },
+    "docs/backlog/features/non-functional.feature": {
+      "sha256": "836d9e4f8eaa80c98e7e17e84d454864951b144c4d101963e2ff4a35cc59f886",
+      "bytes": 1374
+    },
+    "docs/backlog/features/offline-collection.feature": {
+      "sha256": "1c77b9cb2f68603fd88078c62c832471692ce4cc657c57f69d916b9289c38948",
+      "bytes": 13825
+    },
+    "docs/backlog/features/operators.feature": {
+      "sha256": "9902a5b0af76f448d8169f2a76ea80b5669ff90cd1b273ee126c69cac3bd1348",
+      "bytes": 1884
+    },
+    "docs/backlog/features/participants.feature": {
+      "sha256": "107ffa071402959a27b3bdebe4c014a895632be4b6db016c86ee6a50a48822ea",
+      "bytes": 12783
+    },
+    "docs/backlog/features/partners.feature": {
+      "sha256": "89aae6937bb8e66ed1d5d689b80d472248839c7c490ed5ef33825c918f5f125d",
+      "bytes": 5892
+    },
+    "docs/backlog/features/platform.feature": {
+      "sha256": "992a8a43083331b9a79b9559906abebf33c46e5749db7a2003d565c1a9d80fb2",
+      "bytes": 1189
+    },
+    "docs/backlog/features/privacy.feature": {
+      "sha256": "c59d005ed9b20654082f0a0a93d0663c069fa5c0ca66ea514f2e357bffb26f71",
+      "bytes": 18999
+    },
+    "docs/backlog/features/programmes.feature": {
+      "sha256": "1f21e8584b580c3bb5738a6d484e4c69e2bd6be0a3eb67cac2c69f467b5a0500",
+      "bytes": 16626
+    },
+    "docs/backlog/features/reporting.feature": {
+      "sha256": "d56d53085326414f14a22efc9465667ac3d352ac1d8c64b722c7256501a7508a",
+      "bytes": 19576
+    },
+    "docs/backlog/features/results-planning.feature": {
+      "sha256": "c613bfb280e992ca22a2c9014659e8ac94a197706f143f7ad549a2c6c9b2e660",
+      "bytes": 16488
+    },
+    "docs/backlog/features/security.feature": {
+      "sha256": "29255a3d12ea441807f69627b852a0cdbd1d8df0a19d19a0ef2b05ef46e8a600",
+      "bytes": 24705
+    },
+    "docs/backlog/features/service-operations.feature": {
+      "sha256": "1736e8bec02e8e71f3cb34ec5e35c279585a177394b0313f04f5b25b021dd1d8",
+      "bytes": 15622
+    },
+    "docs/backlog/features/tenancy-and-organisation.feature": {
+      "sha256": "f36f19034f00adca526dafaf359134cb3515af54d98d450c07e79f3f9b96d794",
+      "bytes": 18085
+    },
+    "docs/backlog/features/transition.feature": {
+      "sha256": "758d50319fef96c377137f12beca2d5e25c180e10514bef91c58748ab6619cad",
+      "bytes": 4535
+    },
+    "docs/backlog/features/user-experience.feature": {
+      "sha256": "114cb6f5ecc7bbfb5acc2e6823f47797259fb4cc33eb1d40d4bb59dd2e6224ca",
+      "bytes": 17072
+    },
+    "docs/backlog/features/workflow-and-review.feature": {
+      "sha256": "1e56cec817be503ffed2a6fcedc4a75c7eb57de3a198db6069cd37f651d1490c",
+      "bytes": 16683
+    }
+  },
+  "non_claims": [
+    "Source-owner completeness/applicability review",
+    "Actual AC-version convention or release scope selection",
+    "Human approval",
+    "Product/test execution or qualification",
+    "Package checker gate/adoption",
+    "Live Linear/GitHub review enforcement",
+    "Independent external security or AI assurance"
+  ]
+}

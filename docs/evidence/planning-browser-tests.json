@@ -18,6 +18,10 @@
       "status": "passed"
     },
     {
+      "name": "Download the approved logframe as CSV and Excel",
+      "status": "passed"
+    },
+    {
       "name": "Create and approve a period target",
       "status": "passed"
     },

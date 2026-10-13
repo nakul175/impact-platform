@@ -17,7 +17,7 @@ Holder on the staging server: `/opt/impact/secrets.env` and `compose.env` (root,
 | Keycloak admin / owner temporary password | `KEYCLOAK_ADMIN_PASSWORD`; owner one-time password | operators | Manual; owner reset with `deploy/first-admin.sh --reset` or `deploy/reset-user.sh` | TBD |
 | SMTP credential | `SMTP_PASSWORD` (`IMPACT_SMTP_PASSWORD`) | worker | By the e-mail provider; none configured (loopback capture) | n/a |
 | Alert webhook signing secret | `ALERT_WEBHOOK_SECRET` | ops check | Manual; unset on staging at handover | n/a |
-| AI provider key | `OPENAI_API_KEY` / `IMPACT_AI_API_KEY` | API (advisory only) | Provider console; AI is off by default and no funded key is recorded ([AI-MODEL-CARD](AI-MODEL-CARD.md)) | n/a |
+| AI provider key | `OPENAI_API_KEY` / `IMPACT_AI_API_KEY` | API and restricted worker (advisory only) | Provider console; AI is off by default and no funded key is recorded ([AI-MODEL-CARD](AI-MODEL-CARD.md)) | n/a |
 | Identity-provider token-signing keys | Keycloak realm `impact` | Keycloak | In Keycloak (add a higher-priority `rsa-generated` provider, keep the old one until tokens expire, disable). Untested here | TBD |
 | TLS certificates | Caddy | Caddy | Automatic (Let's Encrypt) | automatic |
 | GitHub deploy read key | on the droplet | `impact-sync` | Manual in GitHub; not described in this repo | TBD |

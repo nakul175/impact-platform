@@ -7,6 +7,25 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "apps/api"))
 from impact_api.administration_contracts import augment, augment_reference  # noqa: E402
 from impact_api.measurement_contracts import augment as augment_measurement  # noqa: E402
+from impact_api.programme_setup_contracts import augment as augment_programme_setup  # noqa: E402
+from impact_api.discoverability_contracts import augment as augment_discoverability  # noqa: E402
+from impact_api.population_overlap_contracts import augment as augment_population_overlap  # noqa: E402
+from impact_api.hierarchical_aggregation_contracts import augment as augment_hierarchical_aggregation  # noqa: E402
+from impact_api.dimension_crosswalk_contracts import augment as augment_dimension_crosswalk  # noqa: E402
+from impact_api.formula_authoring_contracts import augment as augment_formula_authoring  # noqa: E402
+from impact_api.portfolio_attribution_contracts import augment as augment_portfolio_attribution  # noqa: E402
+from impact_api.sponsored_access_contracts import augment as augment_sponsored_access  # noqa: E402
+from impact_api.entitlement_view_contracts import augment as augment_entitlement_view  # noqa: E402
+from impact_api.service_package_contracts import augment as augment_service_packages  # noqa: E402
+from impact_api.tax_invoicing_contracts import augment as augment_tax_invoicing  # noqa: E402
+from impact_api.agreement_coverage_contracts import augment as augment_agreement_coverage  # noqa: E402
+from impact_api.access_check_contracts import augment as augment_access_checks  # noqa: E402
+from impact_api.fine_grained_access_contracts import augment as augment_fine_grained_access  # noqa: E402
+from impact_api.effective_access_contracts import augment as augment_effective_access  # noqa: E402
+from impact_api.permission_safe_derivative_contracts import augment as augment_permission_safe_derivatives  # noqa: E402
+from impact_api.external_share_contracts import augment as augment_external_shares  # noqa: E402
+from impact_api.access_change_contracts import augment as augment_access_changes  # noqa: E402
+from impact_api.ai_trial_contracts import augment as augment_ai_trials  # noqa: E402
 from impact_api.changes_contracts import augment as augment_changes  # noqa: E402
 from impact_api.period_contracts import augment as augment_periods  # noqa: E402
 from impact_api.reporting_contracts import augment as augment_reporting  # noqa: E402
@@ -14,6 +33,9 @@ from impact_api.work_contracts import augment as augment_work  # noqa: E402
 from impact_api.publication_contracts import augment as augment_publication  # noqa: E402
 from impact_api.planning_contracts import augment as augment_planning  # noqa: E402
 from impact_api.calculation_contracts import augment as augment_calculation  # noqa: E402
+from impact_api.calculation_compatibility_contracts import (  # noqa: E402
+    augment as augment_calculation_compatibility,
+)
 from impact_api.forms_contracts import augment as augment_forms  # noqa: E402
 from impact_api.import_contracts import augment as augment_imports  # noqa: E402
 from impact_api.evidence_contracts import augment as augment_evidence  # noqa: E402
@@ -24,6 +46,24 @@ from impact_api.privacy_contracts import augment as augment_privacy  # noqa: E40
 from impact_api.retention_contracts import augment as augment_retention  # noqa: E402
 from impact_api.ai_enablement_contracts import augment as augment_ai_enablement  # noqa: E402
 from impact_api.ai_adoption_contracts import augment as augment_ai_adoption  # noqa: E402
+from impact_api.ai_diagnosis_contracts import augment as augment_ai_diagnosis  # noqa: E402
+from impact_api.ai_diagnosis_contribution_contracts import (  # noqa: E402
+    augment as augment_ai_diagnosis_contributions,
+)
+from impact_api.ai_diagnosis_review_contracts import augment as augment_ai_diagnosis_reviews  # noqa: E402
+from impact_api.ai_solution_shortlist_contracts import augment as augment_ai_solution_shortlist  # noqa: E402
+from impact_api.ai_solution_fit_score_contracts import augment as augment_ai_solution_fit_scores  # noqa: E402
+from impact_api.ai_vetting_contracts import augment as augment_ai_vetting  # noqa: E402
+from impact_api.ai_problem_baseline_contracts import augment as augment_ai_problem_baseline  # noqa: E402
+from impact_api.ai_outcome_observation_contracts import augment as augment_ai_outcome_observation  # noqa: E402
+from impact_api.ai_sponsor_value_report_contracts import augment as augment_ai_sponsor_value_report  # noqa: E402
+from impact_api.ai_quarterly_value_review_contracts import augment as augment_ai_quarterly_value_review  # noqa: E402
+from impact_api.ai_next_opportunity_contracts import augment as augment_ai_next_opportunity  # noqa: E402
+from impact_api.ai_outcome_evidence_contracts import augment as augment_ai_outcome_evidence  # noqa: E402
+from impact_api.ai_opportunity_mapping_contracts import augment as augment_ai_opportunity_mapping  # noqa: E402
+from impact_api.ai_value_case_contracts import augment as augment_ai_value_case  # noqa: E402
+from impact_api.ai_value_case_export_contracts import augment as augment_ai_value_case_export  # noqa: E402
+from impact_api.ai_value_case_version_contracts import augment as augment_ai_value_case_versions  # noqa: E402
 from impact_api.ai_content_contracts import augment as augment_ai_content  # noqa: E402
 from impact_api.ai_impact_reference_contracts import augment as augment_ai_impact  # noqa: E402
 from impact_api.human_advice_contracts import augment as augment_human_advice  # noqa: E402
@@ -143,6 +183,25 @@ event["properties"]["event_type"]["enum"].append("object.changed")
 event["properties"]["schema_version"] = {"const": "1.1"}
 augment(spec, policy)
 augment_measurement(spec, policy)
+augment_programme_setup(spec, policy)
+augment_discoverability(spec, policy)
+augment_population_overlap(spec, policy)
+augment_hierarchical_aggregation(spec, policy)
+augment_dimension_crosswalk(spec, policy)
+augment_formula_authoring(spec, policy)
+augment_portfolio_attribution(spec, policy)
+augment_sponsored_access(spec, policy)
+augment_entitlement_view(spec, policy)
+augment_service_packages(spec, policy)
+augment_tax_invoicing(spec, policy)
+augment_agreement_coverage(spec, policy)
+augment_access_checks(spec, policy)
+augment_fine_grained_access(spec, policy)
+augment_effective_access(spec, policy)
+augment_permission_safe_derivatives(spec, policy)
+augment_external_shares(spec, policy)
+augment_access_changes(spec, policy)
+augment_ai_trials(spec, policy)
 augment_changes(spec, policy)
 augment_periods(spec, policy)
 augment_reporting(spec, policy)
@@ -150,6 +209,7 @@ augment_work(spec, policy)
 augment_publication(spec, policy)
 augment_planning(spec, policy)
 augment_calculation(spec, policy)
+augment_calculation_compatibility(spec, policy)
 augment_forms(spec, policy)
 augment_imports(spec, policy)
 augment_evidence(spec, policy)
@@ -161,6 +221,22 @@ augment_retention(spec, policy)
 augment_ai_enablement(spec, policy)
 augment_ai_planning(spec, policy)
 augment_ai_adoption(spec, policy)
+augment_ai_diagnosis(spec, policy)
+augment_ai_diagnosis_contributions(spec, policy)
+augment_ai_diagnosis_reviews(spec, policy)
+augment_ai_solution_shortlist(spec, policy)
+augment_ai_solution_fit_scores(spec, policy)
+augment_ai_vetting(spec, policy)
+augment_ai_problem_baseline(spec, policy)
+augment_ai_outcome_observation(spec, policy)
+augment_ai_sponsor_value_report(spec, policy)
+augment_ai_quarterly_value_review(spec, policy)
+augment_ai_next_opportunity(spec, policy)
+augment_ai_outcome_evidence(spec, policy)
+augment_ai_opportunity_mapping(spec, policy)
+augment_ai_value_case(spec, policy)
+augment_ai_value_case_export(spec, policy)
+augment_ai_value_case_versions(spec, policy)
 augment_ai_content(spec, policy)
 augment_ai_impact(spec, policy)
 augment_human_advice(spec, policy)

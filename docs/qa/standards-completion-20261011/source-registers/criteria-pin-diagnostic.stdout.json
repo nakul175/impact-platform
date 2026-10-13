@@ -1,0 +1,8 @@
+{
+  "expected_ac_count": 1328,
+  "expected_ac_ids_sha256": "39cff4a4f12169469c6f4af29f6324e7066f97a4dca4676479b3f4ad3b37fff4",
+  "criteria_source_sha256": "3ec514b67c7a931af1d6edf87510a6213c2e4b635992706a9c275e6a471370f6",
+  "criteria_source_review_ref": "source-structure-review.json",
+  "scope_id": "SCOPE-IMPRANA-ALL-ACTIVE-PLANNING-20261011",
+  "notice": "Candidate values only; source completeness/authority must be independently reviewed. This helper does not modify scope."
+}

@@ -1,0 +1,15 @@
+{
+  "phase": "source review before final evidence reconciliation",
+  "reviewer": "root agent; no independent human approval",
+  "observed_at": "2026-10-11T10:15:28.976273+00:00",
+  "source_sha256": "5284cbccd8c010ffd29af81ebf993dbd5992e2ca6a477221b9006e2f53496fb2",
+  "new_oracle": "Real provider admin session creates/completes a diagnosis, preserves exact draft revision and priority, replays unchanged operation, rejects changed payload, denies password-only author with provider role claims and foreign tenant, refuses logged-out cookie replay; only two object revisions remain",
+  "existing_provider_suite": "Unmodified 17 cases retained, run together",
+  "fixture_correction": "Author has no MFA fixture; uses existing strip=(acr_values,) password-only provider flow, preserving capability denials",
+  "product_source_or_migration_changed": false,
+  "limits": [
+    "HTTP authorization flow, not rendered browser or container deployment",
+    "Synthetic local dev-mode Keycloak only",
+    "No human acceptance/current-head hosted CI"
+  ]
+}

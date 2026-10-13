@@ -1,0 +1,315 @@
+{
+  "scope": "Offline source/contract integrity only; not product run/release/human approval",
+  "observed_at_utc": "2026-10-11T09:00:57.566742+00:00",
+  "base": "92341d6d81414be4627c5981363636580f7cbf52",
+  "source_pins": {
+    "apps/api/impact_api/ai_diagnoses.py": {
+      "sha256": "f61f398e83983bbcfa3d6b6452c1f1b92d236820bf7579634cd65c2e558de220",
+      "bytes": 13622
+    },
+    "apps/api/impact_api/ai_diagnosis_contracts.py": {
+      "sha256": "65748a7b44daf535cf68120f414cdad57bb905f8746e3675f3089a6701d05def",
+      "bytes": 7381
+    },
+    "apps/api/impact_api/main.py": {
+      "sha256": "17f98430e9df02d47216271d86d7c5f5533d8bc6c6f9720744846ce633a7bbb5",
+      "bytes": 58352
+    },
+    "apps/api/impact_api/bootstrap_profile.json": {
+      "sha256": "20a6d17e3619472174dbfb575189aa068bf26ed6ca36f38e81e64560634649cf",
+      "bytes": 12532
+    },
+    "scripts/bootstrap.py": {
+      "sha256": "7a5dd1613333fcf4e5771b12ba58cce60dfb465948effb4406981caa9addbb7e",
+      "bytes": 19730
+    },
+    "scripts/build_contracts.py": {
+      "sha256": "df8be77d189d038590d4ff1ff34f6a3570bd60900d797066c96685dc3d7f181a",
+      "bytes": 10577
+    },
+    "scripts/export_implemented_api.py": {
+      "sha256": "1272c5186094f7504f859e1ff448cbc30cb2ec27f0b26651edb768b6e4d1eb15",
+      "bytes": 6307
+    },
+    "packages/contracts/openapi.json": {
+      "sha256": "17f1061ba9b8cd7af08d3ccfedebef802f1a378eb8de67ccad52c2dea0af1cf1",
+      "bytes": 2283112
+    },
+    "packages/contracts/openapi-implemented.json": {
+      "sha256": "968ccba6d10686d404f99ce94abfa9868161323f7151a0e5f99b6bd11e983497",
+      "bytes": 1879856
+    },
+    "packages/contracts/access-policy.json": {
+      "sha256": "5f50af11ed74e17829d765166a97286a524a4bb0454c57ff5971448c5dac5bb2",
+      "bytes": 235527
+    },
+    "infrastructure/migrations/0044_ai_diagnoses.sql": {
+      "sha256": "9f9f136ad38f2ae9e3f280fed0fc10d497716e3875a96e2095e72f24a8b0bd65",
+      "bytes": 10423
+    },
+    "qualification/test_ai_diagnoses_unit.py": {
+      "sha256": "fdd261eeecda0000b6882be746965e3f930d38d9f406e8d0cf6fce8fc8fae236",
+      "bytes": 6456
+    },
+    "qualification/test_ai_diagnosis_live.py": {
+      "sha256": "d95cce99cfea336e2511b175419f9be47fcc99eafa9e0dc3fbf019de58741299",
+      "bytes": 21450
+    },
+    "qualification/test_ai_diagnosis_native.py": {
+      "sha256": "eedddb1205bf65d5a167be06bf4beea6631b795f0d5f458d9a00878ef5ce40ef",
+      "bytes": 5939
+    },
+    "VERSION.json": {
+      "sha256": "898215162b8ccaf8cb58d0b8f8d26ed50738c8ce0aed9a92f6787fe59c33d0cf",
+      "bytes": 214
+    },
+    "docs/backlog/backlog.csv": {
+      "sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+      "bytes": 718739
+    },
+    "docs/qa/standards-completion-20261011/case-design/procedures/US-DX-01a.md": {
+      "sha256": "dc0c6c70260c41671252c0bb85e1ee3d207c1f8000de99a4e615599b4ef8e511",
+      "bytes": 4075
+    },
+    "apps/api/impact_api/store.py": {
+      "sha256": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+      "bytes": 20595
+    },
+    "apps/api/impact_api/contracts.py": {
+      "sha256": "26d2e9165a2a91271cad6b92eadc33d243df123d260fcf0a686799e197a11e65",
+      "bytes": 2119
+    },
+    "infrastructure/migrations/0013_tenant_lifecycle.sql": {
+      "sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a",
+      "bytes": 8712
+    },
+    "infrastructure/migrations/0014_initial_access.sql": {
+      "sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468",
+      "bytes": 4250
+    }
+  },
+  "checks": [
+    {
+      "id": "protected_source_exact:docs/backlog/backlog.csv",
+      "result": "PASS",
+      "observed": {
+        "base_sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+        "candidate_sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd"
+      }
+    },
+    {
+      "id": "protected_source_exact:docs/qa/standards-completion-20261011/case-design/procedures/US-DX-01a.md",
+      "result": "PASS",
+      "observed": {
+        "base_sha256": "dc0c6c70260c41671252c0bb85e1ee3d207c1f8000de99a4e615599b4ef8e511",
+        "candidate_sha256": "dc0c6c70260c41671252c0bb85e1ee3d207c1f8000de99a4e615599b4ef8e511"
+      }
+    },
+    {
+      "id": "protected_source_exact:apps/api/impact_api/store.py",
+      "result": "PASS",
+      "observed": {
+        "base_sha256": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+        "candidate_sha256": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3"
+      }
+    },
+    {
+      "id": "protected_source_exact:apps/api/impact_api/contracts.py",
+      "result": "PASS",
+      "observed": {
+        "base_sha256": "26d2e9165a2a91271cad6b92eadc33d243df123d260fcf0a686799e197a11e65",
+        "candidate_sha256": "26d2e9165a2a91271cad6b92eadc33d243df123d260fcf0a686799e197a11e65"
+      }
+    },
+    {
+      "id": "protected_source_exact:infrastructure/migrations/0013_tenant_lifecycle.sql",
+      "result": "PASS",
+      "observed": {
+        "base_sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a",
+        "candidate_sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a"
+      }
+    },
+    {
+      "id": "protected_source_exact:infrastructure/migrations/0014_initial_access.sql",
+      "result": "PASS",
+      "observed": {
+        "base_sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468",
+        "candidate_sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468"
+      }
+    },
+    {
+      "id": "all_43_prior_migrations_byte_exact",
+      "result": "PASS",
+      "observed": {
+        "count": 43,
+        "changed": []
+      }
+    },
+    {
+      "id": "only_new_contiguous_migration_0044",
+      "result": "PASS",
+      "observed": [
+        "infrastructure/migrations/0044_ai_diagnoses.sql"
+      ]
+    },
+    {
+      "id": "migration_transaction_owner_and_additive_kind",
+      "result": "PASS",
+      "observed": null
+    },
+    {
+      "id": "migration_no_new_roles_or_rls_policies",
+      "result": "PASS",
+      "observed": null
+    },
+    {
+      "id": "profile_only_tenant_admin_two_new_capabilities",
+      "result": "PASS",
+      "observed": null
+    },
+    {
+      "id": "profile_registration_exists",
+      "result": "PASS",
+      "observed": null
+    },
+    {
+      "id": "registered_profile_matches_generated_exact_data",
+      "result": "PASS",
+      "observed": null
+    },
+    {
+      "id": "registered_profile_hash_matches_canonical_source",
+      "result": "PASS",
+      "observed": {
+        "registered": "b385032a00a425caf2cb9c2b5c1e73bf127b6bb6f5dd8317da025a97424ca414",
+        "computed": "b385032a00a425caf2cb9c2b5c1e73bf127b6bb6f5dd8317da025a97424ca414"
+      }
+    },
+    {
+      "id": "openapi.json:existing_paths_unchanged",
+      "result": "PASS",
+      "observed": []
+    },
+    {
+      "id": "openapi.json:existing_schemas_unchanged",
+      "result": "PASS",
+      "observed": []
+    },
+    {
+      "id": "openapi.json:new_paths_diagnosis_only",
+      "result": "PASS",
+      "observed": [
+        "/v1/tenants/{tenant_id}/ai-enablement/diagnoses",
+        "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}",
+        "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/actions/complete",
+        "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/actions/revise",
+        "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions",
+        "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions/{revision_id}"
+      ]
+    },
+    {
+      "id": "openapi.json:new_schemas_diagnosis_only",
+      "result": "PASS",
+      "observed": [
+        "AIDiagnosis",
+        "AIDiagnosisComplete",
+        "AIDiagnosisCreate",
+        "AIDiagnosisData",
+        "AIDiagnosisError",
+        "AIDiagnosisHistory",
+        "AIDiagnosisHistoryItem",
+        "AIDiagnosisList",
+        "AIDiagnosisProblem",
+        "AIDiagnosisReceipt",
+        "AIDiagnosisRevise",
+        "AIDiagnosisStoredData",
+        "AIDiagnosisUpdate"
+      ]
+    },
+    {
+      "id": "openapi-implemented.json:existing_paths_unchanged",
+      "result": "PASS",
+      "observed": []
+    },
+    {
+      "id": "openapi-implemented.json:existing_schemas_unchanged",
+      "result": "PASS",
+      "observed": []
+    },
+    {
+      "id": "openapi-implemented.json:new_paths_diagnosis_only",
+      "result": "PASS",
+      "observed": [
+        "/v1/tenants/{tenant_id}/ai-enablement/diagnoses",
+        "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}",
+        "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/actions/complete",
+        "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/actions/revise",
+        "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions",
+        "/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}/revisions/{revision_id}"
+      ]
+    },
+    {
+      "id": "openapi-implemented.json:new_schemas_diagnosis_only",
+      "result": "PASS",
+      "observed": [
+        "AIDiagnosis",
+        "AIDiagnosisComplete",
+        "AIDiagnosisCreate",
+        "AIDiagnosisData",
+        "AIDiagnosisError",
+        "AIDiagnosisHistory",
+        "AIDiagnosisHistoryItem",
+        "AIDiagnosisList",
+        "AIDiagnosisProblem",
+        "AIDiagnosisReceipt",
+        "AIDiagnosisRevise",
+        "AIDiagnosisStoredData",
+        "AIDiagnosisUpdate"
+      ]
+    },
+    {
+      "id": "existing_policy_operations_unchanged",
+      "result": "PASS",
+      "observed": []
+    },
+    {
+      "id": "eight_new_diagnosis_policy_operations",
+      "result": "PASS",
+      "observed": [
+        "list_ai_diagnoses",
+        "create_ai_diagnosis",
+        "get_ai_diagnosis",
+        "update_ai_diagnosis",
+        "complete_ai_diagnosis",
+        "revise_ai_diagnosis",
+        "list_ai_diagnosis_revisions",
+        "get_ai_diagnosis_revision"
+      ]
+    },
+    {
+      "id": "new_policies_tenant_admin_and_separate_read_manage",
+      "result": "PASS",
+      "observed": null
+    },
+    {
+      "id": "fresh_300_only_complete_revise",
+      "result": "PASS",
+      "observed": null
+    },
+    {
+      "id": "all_write_policies_audited",
+      "result": "PASS",
+      "observed": null
+    },
+    {
+      "id": "source_snapshot_stable_during_read",
+      "result": "PASS",
+      "observed": null
+    }
+  ],
+  "summary": {
+    "checks": 28,
+    "passed": 28,
+    "failed": 0
+  }
+}

@@ -1,0 +1,565 @@
+{
+  "repository_head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+  "sources": [
+    {
+      "source": "reference",
+      "path": "domains/ACCESSIBILITY.md",
+      "bytes": 1335,
+      "sha256": "41fbd2e1eeaecbfa3792f844716ec30f7d34ced10d56a90943f760860ecf2216",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "domains/AI-ML-EVALUATION.md",
+      "bytes": 3121,
+      "sha256": "c35e2e2d38d5b0c8305e73da500017a92ec9d164cb292a2e5864756e5bce5f99",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "domains/FUNCTIONAL-API-E2E.md",
+      "bytes": 1650,
+      "sha256": "b04934113725756a75cd23ba4a0e8061b7b97898d71489bbe63f3e24988ca105",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "domains/PERFORMANCE.md",
+      "bytes": 1102,
+      "sha256": "5b9f4fcdeb98c25a477fed6cc1b010596d2e22f17d26dfb9adb0669dc4d7acd4",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "domains/RELIABILITY.md",
+      "bytes": 1237,
+      "sha256": "0a6b36f7a83b8fc5b5aa011d972af69a8d700a75d36647342d07be39bee9a589",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "domains/SECURITY-PRIVACY.md",
+      "bytes": 1900,
+      "sha256": "74777a88595e3426aeb3010dcc4e9f570f24f48e3694d630f16e42dea07b7874",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "domains/TEST-DATA.md",
+      "bytes": 1359,
+      "sha256": "f44972af1fe7e1d43262ea443b8c8bb1a746bfff57cc03d30a866e759f1e73f3",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "standards/STATUS-MODEL.md",
+      "bytes": 1206,
+      "sha256": "bc9a5dab6119a0d54b75986a2ed7e866fdcd91d39c02b6d2016758beb083a1b7",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "standards/TESTING-STANDARD.md",
+      "bytes": 4479,
+      "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/ai-evaluation.md",
+      "bytes": 937,
+      "sha256": "5481bbf4284529c7d13ae5288488c26add08327bea83f05ba0d52ef741685946",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/case.md",
+      "bytes": 1388,
+      "sha256": "a689807d86453bf0a12bd66aa43faa12d5d46f5d2c093292bd7c88dbc871fd09",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/data-environment.md",
+      "bytes": 734,
+      "sha256": "185bbb292df8c2e1a86210a48ef1afc996fa53ffbbbcd57e4e53e85e742c30a4",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/defect.md",
+      "bytes": 1939,
+      "sha256": "b7e96b4cd68f9aa4b4faffb9df42242fac25b8e6943ae7692125407c70421fa0",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/exception.md",
+      "bytes": 787,
+      "sha256": "4f4079d638d6f5c83eae1fd54ece9d097ea60f2830f2bbf8fd5fcfaa975ad081",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/exploratory-charter.md",
+      "bytes": 573,
+      "sha256": "f5e2daaf34c1ddde9dfcdaf3ba96be3e281ae53aae14af46db6f017b93c9112f",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/provisional-target.md",
+      "bytes": 570,
+      "sha256": "74907b323fa8984c7cceec0a8b0c150f475e5ac241ae8fadd84b61bb347434c6",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/release-decision.md",
+      "bytes": 1689,
+      "sha256": "1ac7220c83db0f2ab82fe2611ad713233bf58e497cb35e644402e89d187e8790",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/release-test-plan.md",
+      "bytes": 1052,
+      "sha256": "0d359d615d2209e406f10fa0787d544783ebe9294671083a697958469b1e5a97",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/risk.md",
+      "bytes": 679,
+      "sha256": "7a5d4366c382e4d74d9e6e0bbb9295d05d3de402f0bb56e47062ded30db12400",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/run-evidence.md",
+      "bytes": 1310,
+      "sha256": "f87e6ccd4f0a0bef84da89be737f35e19b80dcde7b2a5271b44e43dc365f28c4",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/scenario.md",
+      "bytes": 742,
+      "sha256": "88db9f13c6a42594afd9315d618daa0e2baeffdae6ff8691f32473b575d0f91b",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/strategy.md",
+      "bytes": 1127,
+      "sha256": "41f9fd5104c702b3ead2f074079ac3ad9f6a032b19c08376218c8815eec5cf32",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "templates/test-report.md",
+      "bytes": 1098,
+      "sha256": "7cff44a9fb6300f65c503dd1a1fe24b75a3281caa65de9ecf449dc1fb210a72d",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "workflow/CI-CD-GATES.md",
+      "bytes": 3528,
+      "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+      "bytes": 2495,
+      "sha256": "b97985d780cd5c30ad665561c7e8c3d53d148df22328136389f451ee8cc43dd4",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "workflow/CRITERIA-SOURCE-PINNING.md",
+      "bytes": 3357,
+      "sha256": "b1efaabd32b331457860b7b0dbd5a5d4db59f518570eb7d7622d1b6621ff55fc",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "workflow/EVIDENCE-ROOT.md",
+      "bytes": 2124,
+      "sha256": "d7d4d3b170cf7003207a83c525ec6703aca75eba61c0528e64fd2b773c168ef2",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "workflow/PM-INTEGRATION.md",
+      "bytes": 1565,
+      "sha256": "e58d6be4586dd0b39b386a3b415f11a69fbed9bbc7278ed56c64853ae09c6308",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "workflow/RELEASE-READINESS.md",
+      "bytes": 2233,
+      "sha256": "5ce632106e51ef4129f96508ffcad88ed3b27891b22982ab6969dbc46e4b887a",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "workflow/REPETITION-POLICY.md",
+      "bytes": 1235,
+      "sha256": "b4c46d231ecfc8a8fc623c1b1a8cfbf2321d1996603aea2a2e9c781a29c5e4bd",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "workflow/SOURCE-PROTECTION.md",
+      "bytes": 3757,
+      "sha256": "55ea2ad92fc7686e875d3d2bf11635a46d0c010000e01c0416b88d92c7c74bff",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "reference",
+      "path": "workflow/TRACEABILITY.md",
+      "bytes": 2630,
+      "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": ".github/workflows/checks.yml",
+      "bytes": 2553,
+      "sha256": "16817f3fc91126a582cf8c0e6c9cb1dd9eb6d9bb66c2b2d8bed4d8e4a9e6c702",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": ".github/workflows/qualification.yml",
+      "bytes": 33695,
+      "sha256": "a9bc90b3240eb52b125e5bef24a1a76f10647efad0970112d814afab708b1b1f",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "AGENTS.md",
+      "bytes": 20201,
+      "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "CLAUDE.md",
+      "bytes": 6575,
+      "sha256": "88ab571a7ff6a140092ef38e65a1dee75b8e92c4565185f563af7c8c84d80c3a",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "Makefile",
+      "bytes": 5530,
+      "sha256": "c2ebc221b8263562069ae0ee84535866d94388a33053590394679658e3869a54",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "VERSION.json",
+      "bytes": 214,
+      "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/CODEOWNERS",
+      "bytes": 443,
+      "sha256": "f02d2371127f001543067a76f938032e9b579d278d75250731f989b23d3ab68b",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/HANDOVER.md",
+      "bytes": 22606,
+      "sha256": "c69fe2fccf6fc8ad9de84534f9d4a00d4bdbfe35709dde9084da9c598e5de351",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/QA-DEGRADATION-2026-10.md",
+      "bytes": 12877,
+      "sha256": "9731aea9a5db5137b129d7563dece856f8207e68c47442912cb6b8ec0c6eb2a1",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/QA-PERFORMANCE-2026-10.md",
+      "bytes": 13562,
+      "sha256": "fbaaf0b79cf5c392547fd0e8c64153bb994b2ae1bf9dda5b183c1cdbe0daf4ed",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/QUALIFICATION.md",
+      "bytes": 103279,
+      "sha256": "7c1659b848a16966e5c0a10df4e8b0534a60809ccb95b3cb2ad72e84d25a7c44",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/agile/WORKING-AGREEMENT.md",
+      "bytes": 4545,
+      "sha256": "11c7c4e793f73f025975b20e2db9563a36bf3794ff44f2f966b3ce53e5d20332",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/ACCESSIBILITY-STATEMENT.md",
+      "bytes": 8327,
+      "sha256": "d945919ef094f9b11bcb0d39ea3a90cb41ee755571cd5ebcd2f64642f94989ee",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/DATA-GOVERNANCE.md",
+      "bytes": 3965,
+      "sha256": "5b0de1ca5a774e5e53d6f2fa08322bf7f9906e37cfcb4eac8ae367ccf472c0de",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/DOCUMENTATION-INDEX.md",
+      "bytes": 18877,
+      "sha256": "598f414fdc982fe2003980902d1179b94ef7d69c3c2e531515f4308363edef98",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/EXECUTION-REGISTER.csv",
+      "bytes": 963288,
+      "sha256": "bd06ce8e2e43ab159208570643f99c52ea97367db6394c0ed7a5716ff0993f13",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+      "bytes": 19115,
+      "sha256": "9d74e071f779b110ebdb1eec9834f6418d285507da03147918307f0d207a4621",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+      "bytes": 32963,
+      "sha256": "bf7a9bf3ade48366417168970dc6b3dcc6faccb2f24ac12feabeb05f009dd5e6",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/Impact-Management-Test-Catalogue-v1.1.xlsx",
+      "bytes": 249494,
+      "sha256": "1db2338f8577aaebc982367f1c6d19f11ee378821b8e3a9134224235864c1956",
+      "review_scope": "binary hash and root-provided OOXML structure observation only; no visual render or formula recalculation"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/Impact-Management-Test-Strategy-v1.1.docx",
+      "bytes": 51988,
+      "sha256": "73ee84a55a836fa4c651af1da5ce69af71ce4ac7ea3632de948da54953f0af81",
+      "review_scope": "binary hash and root-provided OOXML structure observation only; no visual render or formula recalculation"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+      "bytes": 35965,
+      "sha256": "fe50fe631b15c06bc009b3f2f43b3713b75307944f1bc080d7c5da14ac32c9a9",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/RELEASE-ACCEPTANCE.md",
+      "bytes": 8251,
+      "sha256": "c656dfbb89647d4c35d4506dd18c8b36fb3ca3f7f33c19ca3a8ec990afd3309d",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/TRACEABILITY.csv",
+      "bytes": 389725,
+      "sha256": "a93bfd9d4a13686df08aba831717ef89a04a36698c6de470fa61553b408d71db",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/UAT-PACK.md",
+      "bytes": 38649,
+      "sha256": "d2767d3f8ff368d91e915c95eff3c45a9cc4026c13be5fa38a2783abf45446ee",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/current/threat-register.json",
+      "bytes": 156610,
+      "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+      "bytes": 4051,
+      "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/governance/AI-MODEL-CARD.md",
+      "bytes": 4253,
+      "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/governance/BACKUP-DR.md",
+      "bytes": 4375,
+      "sha256": "4ffb07daa110b9eed7f8b043fffcc90b4b6f8be4f7f30ff6539ec8edb93614be",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/governance/COMPLIANCE-CONTROL-MAPPING.md",
+      "bytes": 4349,
+      "sha256": "420f786eaa996db8c953646e493ce4af3626cc454289106d24d10e3baa83277a",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+      "bytes": 4310,
+      "sha256": "aeadbc90835cdd91269905ada5119639ea5c1d6e026f6d1ae2b9491961c3be61",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/governance/SLOS-AND-ALERTS.md",
+      "bytes": 4558,
+      "sha256": "8e256c8902813fc841fe9400acfc40775cd5d4e8f139fb0f35b2eb4a58f05f99",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/handover/PARALLEL-WORK.md",
+      "bytes": 16912,
+      "sha256": "f7acb85f309636314dff027cfdd4169afd0e7cad02601c53b4960150c589c710",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+      "bytes": 21571,
+      "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/nonprofit-ai/v1.0/test-cases.csv",
+      "bytes": 81743,
+      "sha256": "fbde4346b5829a36832c6a47ad0cade13c1fa6c41b5d9fba16f973177c1735af",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/nonprofit-ai/v1.0/test-run-template.csv",
+      "bytes": 362,
+      "sha256": "02d89451e5d89a33f7755a92e6f75a5668581a26f90ad199239f4c9db13d6419",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/nonprofit-ai/v1.0/test-scenarios.csv",
+      "bytes": 29537,
+      "sha256": "4420e20a6bdf1dc121ea4f39ed54fd7d3c8090d51949cbb48fc84d67ad233b95",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/product/framework-v4-20261011/START-HERE.md",
+      "bytes": 7651,
+      "sha256": "7d6bbf24b1653307657dcfa7b58793445cb1d0981d553dc4c84d73c5424ebdc3",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/product/framework-v4-20261011/quality/README.md",
+      "bytes": 3854,
+      "sha256": "c3de4986aa3e20bf3e522563ce7202b467d597c99227ad4845d15451a181f976",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/product/framework-v4-20261011/task-author/README.md",
+      "bytes": 3987,
+      "sha256": "f56b479bfdaa803b94e72341a7e58e2889b77a858d8f1c4830c6cf2df7344134",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+      "bytes": 7419410,
+      "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/product/framework-v4-20261011/task-author/supplemental-verification-plans.proposed.json",
+      "bytes": 1132335,
+      "sha256": "3e25d95e35156d337aefe4030fbce6c89e17b683343ebb0d294fc97819b3e3d4",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "docs/release-reviews/release-review-0.39.0.json",
+      "bytes": 15468,
+      "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "qualification/perf_harness.py",
+      "bytes": 34661,
+      "sha256": "98c1c885fb79cbe2af47ddffb086cf079e9803b5e3a228293a79e66b9e782acd",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "qualification/test_ai_advisory_provider.py",
+      "bytes": 15010,
+      "sha256": "dbb7b24416fcd1cd9dc5ac86e8c5267582933163c6ffb9e7d375b7672cf53cec",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "qualification/test_ai_enablement_live.py",
+      "bytes": 7822,
+      "sha256": "793436dc9023b611284f78af8b7a7273cc74ead45245d311489234fa1fac01f9",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "qualification/test_ai_policy_live.py",
+      "bytes": 6632,
+      "sha256": "426128431b2b134561f721311310a690bdb05f07d25f49cbb0df5e912472d25b",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "scripts/perf.py",
+      "bytes": 4284,
+      "sha256": "683e0573f2e57a6708494bd92d85a2672f6dfd2ded65ee200dfdd5af08854871",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    },
+    {
+      "source": "repo",
+      "path": "scripts/run.py",
+      "bytes": 32214,
+      "sha256": "b5a1e066af045722856dda37782567efb51d3b96d7449aed9bf326f1aba67e3b",
+      "review_scope": "cited sections/header/source structure; not every line/full runtime qualification"
+    }
+  ]
+}

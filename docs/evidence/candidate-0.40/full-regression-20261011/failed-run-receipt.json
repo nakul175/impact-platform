@@ -1,0 +1,20 @@
+{
+  "head": "27729ec3eb493603c869bb7ca7c60c29cb963acb",
+  "started_at": "2026-10-11T09:24:20.524884+00:00",
+  "finished_at": "2026-10-11T09:28:09.238714+00:00",
+  "exit_code": 1,
+  "mode": "full synthetic PGlite application regression; --perf only relocates JUnit, not a benchmark",
+  "run_dirs": [
+    "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-b19cbf14"
+  ],
+  "generated_historical_observations_preserved_and_original_bytes_restored": [
+    "docs/evidence/nonprofit-ai-content-applied-migrations.json",
+    "docs/evidence/golden-reconciliation.json",
+    "docs/evidence/nonprofit-ai-framework-old-pin-visibility-observation.json",
+    "docs/evidence/sprint-0.34-ai-plan-export-pglite-applied-migrations.json",
+    "docs/evidence/sprint-0.33-listing-visibility-pglite-applied-migrations.json",
+    "docs/evidence/sprint-0.33-retained-visibility-pglite-applied-migrations.json"
+  ],
+  "native_qualified": false,
+  "production_accepted": false
+}

@@ -1,0 +1,7 @@
+{
+  "stage": "loopback port reservation before cluster startup",
+  "error": "PermissionError: sandbox socket bind refused",
+  "tests_run": 0,
+  "pass_credit": false,
+  "cluster_started": false
+}

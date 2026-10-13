@@ -1,0 +1,1435 @@
+{
+  "record": "IMPRANA-CURRENT-QA-INDEPENDENT-SOURCE-REVIEW-20261011",
+  "recorded_at_utc": "2026-10-11T04:51:09.399817+00:00",
+  "scope": "Separate bounded AI document/source-evidence review of six non-owned Imprana current QA documents; not owner approval, adoption, product qualification or release certification",
+  "documentation_baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+  "application_source": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "reviewed_document_pins": [
+    {
+      "path": "docs/qa/current-20261011/README.md",
+      "bytes": 5870,
+      "sha256": "18c40d23d3c53d13460e4eeb1d373175340d9bbaccd7967bcae33e185d3fdea4"
+    },
+    {
+      "path": "docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+      "bytes": 18986,
+      "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157"
+    },
+    {
+      "path": "docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+      "bytes": 14723,
+      "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310"
+    },
+    {
+      "path": "docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+      "bytes": 14040,
+      "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535"
+    },
+    {
+      "path": "docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+      "bytes": 26265,
+      "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8"
+    },
+    {
+      "path": "docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "bytes": 26402,
+      "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef"
+    }
+  ],
+  "authorship_exclusion": [
+    "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+    "PRIMARY-SOURCE-CENSUS.json",
+    "BRIDGE-AUTHORING-RECEIPT.json"
+  ],
+  "authorship_exclusion_note": "Another agent independently reviews these authored artifacts. This receipt uses their previously observed census facts only as references and independently checks unchanged protected source, not own-authored semantics.",
+  "mechanical_source_checks": [
+    {
+      "check": "Documentation HEAD equals declared baseline",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": "c1bcae29718bcae0fac51000d69734a536061fba"
+    },
+    {
+      "check": "All six reviewed documents bind the documentation and application source",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": {
+        "reviewed_documents": 6
+      }
+    },
+    {
+      "check": "Actual source versions and immutable migration population",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": {
+        "versions": {
+          "build": "0.39.0",
+          "domain_api": "1.28.0",
+          "platform_api": "1.11.0",
+          "documentation_edition": "1.1",
+          "schema_rule": "derived: the number of files in infrastructure/migrations (impact_api/version.py)"
+        },
+        "sql_migrations": 43
+      }
+    },
+    {
+      "check": "All protected baseline tracked blobs and modes preserved",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": {
+        "checked_count": 1885,
+        "excluded_additive_index_paths": [
+          "docs/DOCUMENTATION-INDEX.md",
+          "docs/current/DOCUMENTATION-INDEX.md",
+          "docs/qa/README.md"
+        ],
+        "errors": []
+      }
+    },
+    {
+      "check": "Existing index/readme content remains additive",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": [
+        {
+          "path": "docs/qa/README.md",
+          "deleted_content_lines": []
+        },
+        {
+          "path": "docs/DOCUMENTATION-INDEX.md",
+          "deleted_content_lines": []
+        },
+        {
+          "path": "docs/current/DOCUMENTATION-INDEX.md",
+          "deleted_content_lines": []
+        }
+      ]
+    },
+    {
+      "check": "Six-document relative links resolve and remain confined",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": {
+        "checked_count": 98,
+        "errors": [],
+        "external_links_not_fetched": [
+          {
+            "source": "SPECIALIST-VERIFICATION-PLANS.md",
+            "line": 9,
+            "url": "https://www.w3.org/TR/WCAG22/",
+            "network_validation": "NOT_PERFORMED"
+          }
+        ]
+      }
+    },
+    {
+      "check": "Authored current prose stays within Imprana Commons scope",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": {
+        "semantic_scope": "Imprana Commons / impact-platform only"
+      }
+    },
+    {
+      "check": "All six dataset/input SHA claims equal current source bytes",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": [
+        {
+          "path": "specification/fixtures/api-fixture.json",
+          "bytes": 44870,
+          "sha256": "f924482399f0aa9e3a3762cd4f44bf38818655b6a5b3ea2062d41412dd4c131b"
+        },
+        {
+          "path": "specification/fixtures/records.json",
+          "bytes": 370478,
+          "sha256": "a8fe8987567494931e0ac9c225485c91175594c1922076f6736486f8620cabe5"
+        },
+        {
+          "path": "specification/fixtures/grants.json",
+          "bytes": 113545,
+          "sha256": "85c7bcb147f943415ef839bbaa5a29f464e3722a39885b3ad366c6299370f0de"
+        },
+        {
+          "path": "specification/reference-v1/fixtures/vectors.json",
+          "bytes": 37237,
+          "sha256": "573ef231660843d955aec33143988a793a78e7193704c71eeed5cd74a7f68cf7"
+        },
+        {
+          "path": "scripts/fixture_support.py",
+          "bytes": 1126,
+          "sha256": "b66822b21b756cc72a73248248dc596fe5886e2fc69c8afb771125281410fbdb"
+        },
+        {
+          "path": "qualification/perf_support.py",
+          "bytes": 9829,
+          "sha256": "d34c3727509e10921a56199f18aa91c76ca62e3f5b2f655ea5e80b3c1990b49a"
+        }
+      ]
+    },
+    {
+      "check": "Fixture identity, actor count, start and expiry claims match source",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": {
+        "fixture_id": "impact-acceptance-20260925-v1",
+        "actors": 10,
+        "expiry": "2027-09-01T00:00:00Z",
+        "source_start": "2026-01-01T00:00:00Z"
+      }
+    },
+    {
+      "check": "Eight proposed register field sets exactly match unchanged package schema",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": [
+        {
+          "schema": "ac-register",
+          "exact_order_and_fields": true,
+          "field_count": 8
+        },
+        {
+          "schema": "case-register",
+          "exact_order_and_fields": true,
+          "field_count": 7
+        },
+        {
+          "schema": "traceability",
+          "exact_order_and_fields": true,
+          "field_count": 15
+        },
+        {
+          "schema": "run-register",
+          "exact_order_and_fields": true,
+          "field_count": 26
+        },
+        {
+          "schema": "coverage-selection",
+          "exact_order_and_fields": true,
+          "field_count": 2
+        },
+        {
+          "schema": "defect-register",
+          "exact_order_and_fields": true,
+          "field_count": 16
+        },
+        {
+          "schema": "risk-register",
+          "exact_order_and_fields": true,
+          "field_count": 15
+        },
+        {
+          "schema": "exception-register",
+          "exact_order_and_fields": true,
+          "field_count": 12
+        }
+      ]
+    },
+    {
+      "check": "Nine distinct status dimensions exactly match package vocabulary",
+      "passed": false,
+      "kind": "mechanical_source_check",
+      "detail": [
+        {
+          "dimension": "Applicability",
+          "exact_vocabulary": false
+        },
+        {
+          "dimension": "Execution result",
+          "exact_vocabulary": true
+        },
+        {
+          "dimension": "Freshness",
+          "exact_vocabulary": true
+        },
+        {
+          "dimension": "Run purpose",
+          "exact_vocabulary": true
+        },
+        {
+          "dimension": "Quality",
+          "exact_vocabulary": true
+        },
+        {
+          "dimension": "Approval",
+          "exact_vocabulary": true
+        },
+        {
+          "dimension": "Readiness",
+          "exact_vocabulary": true
+        },
+        {
+          "dimension": "Delivery",
+          "exact_vocabulary": true
+        },
+        {
+          "dimension": "Learning",
+          "exact_vocabulary": true
+        }
+      ]
+    },
+    {
+      "check": "Proposed canonical identity digest matches shipped helper contract",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": {
+        "method": "read helper source only; no helper or checker execution"
+      }
+    },
+    {
+      "check": "Open G11/G12 and threat/chain arithmetic remain exact source facts",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": {
+        "G11": "Not passed",
+        "G12": "Not run",
+        "open_critical": 14,
+        "open_other": 13,
+        "chains": [
+          {
+            "id": "CH01",
+            "decision": "BLOCK"
+          },
+          {
+            "id": "CH02",
+            "decision": "BLOCK"
+          }
+        ]
+      }
+    },
+    {
+      "check": "CODEOWNERS location and actual declared owner are correctly distinguished from enforcement",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": {
+        "source": "docs/CODEOWNERS",
+        "owner": "@nakul175",
+        "live_branch_ruleset_enforcement": "NOT_VERIFIED"
+      }
+    },
+    {
+      "check": "Earlier root receipt remains explicitly scoped to its recorded edition",
+      "passed": true,
+      "kind": "mechanical_source_check",
+      "detail": {
+        "earlier_receipt_pin": {
+          "path": "ROOT-INTEGRATION-CHECKS.json",
+          "bytes": 3884,
+          "sha256": "e0dda0072f5e51f758b1cece9e2580d9200647057026010c9ed380384c523ba8"
+        },
+        "recorded_at_utc": "2026-10-11T04:47:25.427591+00:00",
+        "later_strategy_risk_paragraph_is_reviewed_by_this_receipt": [
+          {
+            "path": "docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+            "preceding_sha256": "8701929767549263f000eb8bf8938d37a6677356816657a0b3d97eaf4238dba9",
+            "current_sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157"
+          }
+        ]
+      }
+    }
+  ],
+  "bounded_AI_semantic_review_checks": [
+    {
+      "check": "Source planning and live state remain separate",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "Source pins do not assert built/deployed qualification. Candidate, scope, environment, dates and authority remain unselected.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "line": 15
+        }
+      }
+    },
+    {
+      "check": "Source hierarchy and proposed Sprint 2 are preserved",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "54 epics/368 active stories/1328 source scenarios/1131 tasks/779 edges; R1 172 and proposed four-story 26 points agree with preserved product sources. Four earlier In Review stories are not promoted.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "line": 28
+        }
+      }
+    },
+    {
+      "check": "Criteria and test denominators stay distinct",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "825 designed cases, 50/108 nonprofit designs, 1328 original source scenarios and 1069 supplements are not added or equated; 37/7/13 gaps remain explicit.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "line": 11
+        }
+      }
+    },
+    {
+      "check": "Complete independent source selection and unknown applicability remain open",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "No checker-ready approved export, default criterion versions, mappings, exclusions or complete scope review are invented.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "line": 52
+        }
+      }
+    },
+    {
+      "check": "Original numerical contracts retained exactly",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "Read against retained strategy §§4/7/9/11: ≥90% critical-module branch target; UAT≥90% unassisted/no critical error; AI≥200 where feasible/20% boundary; supported/citation95/98; extraction95/90; abstention95/≤10; official exact; representative200/400 load,60min/8h,RPO15min/RTO4h. Additional original contracts remain referenced, not replaced.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "line": 49
+        }
+      }
+    },
+    {
+      "check": "Risk scoring and tier validation depth agree with unchanged package",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "Impact/likelihood1–4, impact4Critical,High9–16/material irreversible,Medium4–8,Low1–3; provisional unknown likelihood and escalation; mandatory contractual/legal/accessibility requirements nonwaivable. Proposed adoption is not an actual rating/review.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "line": 27
+        }
+      }
+    },
+    {
+      "check": "Meaningful API/native/browser/component evidence is separated",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "Real persisted outcomes/current authority/receipts and concurrent native roles are distinct from pure/reference/provider fakes, browser models, markup and health smoke.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "line": 33
+        }
+      }
+    },
+    {
+      "check": "Supported platforms and accessibility remain unqualified",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "200% text/400% reflow and manual AT/process review address retained statement gaps. Prior Chromium153 synthetic scan and keyboard subset remain historical; no new conformance/support commitment.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "line": 16
+        }
+      }
+    },
+    {
+      "check": "Synthetic data and fixture setup cannot grant authority",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "Private secrets and real personal/participant/supplier data are excluded; distinct synthetic actors model natural-person fences but supply no real approval. Exact expiry/preflight/disposal safeguards match runner/loader/seed source.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "line": 9
+        }
+      }
+    },
+    {
+      "check": "Environment modes and resource boundaries are honest",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "Owned local/UUID/ports, native provisioned roles, pinned local IDP and fake-provider mechanics match Makefile/runner; no installs, provider calls, paid resources or hosted scope authorised. Cleanup retains history and errors.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+          "line": 46
+        }
+      }
+    },
+    {
+      "check": "Immutable attempts and explicit current selection protect failures",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "Unique immutable actual attempts/groups, parent retests, preserved earlier selection, full candidate pins, controlled evidence root and all failures/skips; no latest-timestamp/majority rescue or fictional rows.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "line": 88
+        }
+      }
+    },
+    {
+      "check": "Severity migration and same-case retest remain explicit",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "S1→D4...S4→D1 is proposed explicit migration, not overwritten history; downgraded/closed defects need authentic independent review and same-case current qualification/fixed build. No fake human closure.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "line": 102
+        }
+      }
+    },
+    {
+      "check": "Protected invariants and eligible exceptions remain separate",
+      "passed": false,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "No exception turns FAIL into PASS, supplies missing authority, or waives isolation/current authority/natural-person/history/official decimal/mandatory rights.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "line": null
+        }
+      }
+    },
+    {
+      "check": "Statistical AI and unassisted UAT protocols do not create results",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "Held-out splits/independent labels, all failures/slices/repetitions, provider/model/prompt/tool/corpus pins and real reviewers remain required. Draft charters have no sessions; UAT cohort/consent/acceptance unresolved; no benefit/ROI claim.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "line": 64
+        }
+      }
+    },
+    {
+      "check": "Representative NFR and restore limits are retained",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "Source large-data/cohort/offered-load profile and monthly/quarterly recovery obligations preserved. Sandbox/short/shared/proxy/CI/real-host gaps remain distinct. No target/budget relaxed or measured result supplied.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+          "line": 70
+        }
+      }
+    },
+    {
+      "check": "Existing CI portfolio is described without live enforcement claim",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "Read actual checks15min and qualification30/20/40/45 jobs, docs paths filter, cancel newer PR and explicit stages. No new aggregator/merge-queue/protection installation; exact-head actual results and financial authority remain required.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "line": 101
+        }
+      }
+    },
+    {
+      "check": "Package checker observations are not product tests",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "Prior unchanged package57 regression checks/fictional fixtures are subordinate record/source checks, not Imprana feature, ASVS, human or statistical qualification.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+          "line": 143
+        }
+      }
+    },
+    {
+      "check": "Readiness, delivery, approval and learning are distinct unresolved states",
+      "passed": true,
+      "kind": "bounded_AI_semantic_review",
+      "detail": {
+        "review_observation": "Current source G11 Notpassed/G12 Notrun/14 critical/13other/2BLOCK and missing confirmation preserved; future qualityUNASSESSED,approvalPENDING,readinessNOTREADY,deliveryNOTESTABLISHED. No owner acceptance or runtime action.",
+        "document_citation": {
+          "path": "docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+          "line": 127
+        }
+      }
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 20201,
+      "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922"
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 6575,
+      "sha256": "88ab571a7ff6a140092ef38e65a1dee75b8e92c4565185f563af7c8c84d80c3a"
+    },
+    {
+      "path": "VERSION.json",
+      "bytes": 214,
+      "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 5530,
+      "sha256": "c2ebc221b8263562069ae0ee84535866d94388a33053590394679658e3869a54"
+    },
+    {
+      "path": "scripts/run.py",
+      "bytes": 32214,
+      "sha256": "b5a1e066af045722856dda37782567efb51d3b96d7449aed9bf326f1aba67e3b"
+    },
+    {
+      "path": "scripts/fixture_support.py",
+      "bytes": 1126,
+      "sha256": "b66822b21b756cc72a73248248dc596fe5886e2fc69c8afb771125281410fbdb"
+    },
+    {
+      "path": "specification/fixtures/load.py",
+      "bytes": 809,
+      "sha256": "c1a2120993d3695aeb81a83ea495e36dc5e10b69d68ffabf48989a5518a5c638"
+    },
+    {
+      "path": "specification/fixtures/seed.sql",
+      "bytes": 895095,
+      "sha256": "cd5412284a1b28804b9f838d76a9171e9dceec9e8722bedc7e54e56ff4b221c4"
+    },
+    {
+      "path": "qualification/conftest.py",
+      "bytes": 3376,
+      "sha256": "703f864cbb89eda879fa16976d57be4409fab9d9c60cd14980a4eab40e98c571"
+    },
+    {
+      "path": ".github/workflows/checks.yml",
+      "bytes": 2553,
+      "sha256": "16817f3fc91126a582cf8c0e6c9cb1dd9eb6d9bb66c2b2d8bed4d8e4a9e6c702"
+    },
+    {
+      "path": ".github/workflows/qualification.yml",
+      "bytes": 33695,
+      "sha256": "a9bc90b3240eb52b125e5bef24a1a76f10647efad0970112d814afab708b1b1f"
+    },
+    {
+      "path": "docs/CODEOWNERS",
+      "bytes": 443,
+      "sha256": "f02d2371127f001543067a76f938032e9b579d278d75250731f989b23d3ab68b"
+    },
+    {
+      "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+      "bytes": 35965,
+      "sha256": "fe50fe631b15c06bc009b3f2f43b3713b75307944f1bc080d7c5da14ac32c9a9"
+    },
+    {
+      "path": "docs/current/ACCESSIBILITY-STATEMENT.md",
+      "bytes": 8327,
+      "sha256": "d945919ef094f9b11bcb0d39ea3a90cb41ee755571cd5ebcd2f64642f94989ee"
+    },
+    {
+      "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+      "bytes": 4051,
+      "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9"
+    },
+    {
+      "path": "docs/governance/BACKUP-DR.md",
+      "bytes": 4375,
+      "sha256": "4ffb07daa110b9eed7f8b043fffcc90b4b6f8be4f7f30ff6539ec8edb93614be"
+    },
+    {
+      "path": "docs/release-reviews/release-review-0.39.0.json",
+      "bytes": 15468,
+      "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8"
+    },
+    {
+      "path": "docs/current/threat-register.json",
+      "bytes": 156610,
+      "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa"
+    },
+    {
+      "path": "docs/product/06-NEXT-SPRINT-REFINEMENT.md",
+      "bytes": 28861,
+      "sha256": "43163cac0bae15f0ce82098e0534ee6fce8b69cba98b1528444868f8b040ef39"
+    },
+    {
+      "path": "docs/product/04-RELEASE-GOALS.md",
+      "bytes": 15456,
+      "sha256": "6cf5b50d78e1696e85c051d76f6998bdf007cd05c00b48c7009e982c3ab93fa2"
+    }
+  ],
+  "package_pins": [
+    {
+      "path": "standards/register-schema.json",
+      "bytes": 2006,
+      "sha256": "4f24182ea4beda4026af524ffe122eaf20c1c09aba2fbc1b3ab0e0f1165cd65e"
+    },
+    {
+      "path": "standards/statuses.json",
+      "bytes": 1058,
+      "sha256": "ba979a6ea772cd6e468ce7928c98653f93720b4735e7a1cd66a81d072c966ec1"
+    },
+    {
+      "path": "standards/STATUS-MODEL.md",
+      "bytes": 1206,
+      "sha256": "bc9a5dab6119a0d54b75986a2ed7e866fdcd91d39c02b6d2016758beb083a1b7"
+    },
+    {
+      "path": "standards/RISK-CLASSIFICATION.md",
+      "bytes": 3360,
+      "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+    },
+    {
+      "path": "checker/criteria_pin.py",
+      "bytes": 1696,
+      "sha256": "23bdaed08df3454428bbad3a4fd23b8b4a86efe54cbe6fe94fe370d96a9a0920"
+    },
+    {
+      "path": "workflow/REPETITION-POLICY.md",
+      "bytes": 1235,
+      "sha256": "b4c46d231ecfc8a8fc623c1b1a8cfbf2321d1996603aea2a2e9c781a29c5e4bd"
+    },
+    {
+      "path": "workflow/CRITERIA-SOURCE-PINNING.md",
+      "bytes": 3357,
+      "sha256": "b1efaabd32b331457860b7b0dbd5a5d4db59f518570eb7d7622d1b6621ff55fc"
+    },
+    {
+      "path": "workflow/EVIDENCE-ROOT.md",
+      "bytes": 2124,
+      "sha256": "d7d4d3b170cf7003207a83c525ec6703aca75eba61c0528e64fd2b773c168ef2"
+    },
+    {
+      "path": "workflow/SOURCE-PROTECTION.md",
+      "bytes": 3757,
+      "sha256": "55ea2ad92fc7686e875d3d2bf11635a46d0c010000e01c0416b88d92c7c74bff"
+    },
+    {
+      "path": "checker/README.md",
+      "bytes": 5419,
+      "sha256": "34dd45c0bf49fe95a0b1e5dc7437d07beb00563a05990f5b677d433cb78a6197"
+    }
+  ],
+  "relative_links": [
+    {
+      "source": "README.md",
+      "line": 3,
+      "target": "../APLYD-v1.3-AUDIT-20261011.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "README.md",
+      "line": 9,
+      "target": "CURRENT-TEST-STRATEGY.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "README.md",
+      "line": 10,
+      "target": "RELEASE-TEST-PLAN.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "README.md",
+      "line": 11,
+      "target": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "README.md",
+      "line": 12,
+      "target": "CRITERIA-AND-CASE-BRIDGE.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "README.md",
+      "line": 13,
+      "target": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "README.md",
+      "line": 14,
+      "target": "SPECIALIST-VERIFICATION-PLANS.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "README.md",
+      "line": 16,
+      "target": "../../product/framework-v4-20261011/START-HERE.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "README.md",
+      "line": 36,
+      "target": "evidence/PRIMARY-SOURCE-CENSUS.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "README.md",
+      "line": 36,
+      "target": "evidence/BRIDGE-AUTHORING-RECEIPT.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 7,
+      "target": "../../../VERSION.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 9,
+      "target": "../../../AGENTS.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 9,
+      "target": "../../../CLAUDE.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 9,
+      "target": "../../agile/WORKING-AGREEMENT.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 9,
+      "target": "../../product/framework-v4-20261011/START-HERE.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 9,
+      "target": "../../current/Impact-Management-Test-Strategy-v1.1.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 9,
+      "target": "../../current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 11,
+      "target": "../../product/framework-v4-20261011/task-author/README.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 13,
+      "target": "../APLYD-v1.3-AUDIT-20261011.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 13,
+      "target": "../APLYD-v1.3-RECONCILIATION-20261011.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 31,
+      "target": "../../../Makefile",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 37,
+      "target": "../../current/ACCESSIBILITY-STATEMENT.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 38,
+      "target": "../../current/UAT-PACK.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 39,
+      "target": "../../current/threat-register.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 41,
+      "target": "../../governance/AI-MODEL-CARD.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 41,
+      "target": "../../governance/AI-EVALUATION-AND-LIMITS.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 53,
+      "target": "../../release-reviews/release-review-0.39.0.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 59,
+      "target": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 61,
+      "target": "../../CODEOWNERS",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "CURRENT-TEST-STRATEGY.md",
+      "line": 77,
+      "target": "../APLYD-v1.3-AUDIT-20261011.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 5,
+      "target": "../../../VERSION.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 5,
+      "target": "CURRENT-TEST-STRATEGY.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 15,
+      "target": "../../../specification/fixtures/api-fixture.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 16,
+      "target": "../../../specification/fixtures/records.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 17,
+      "target": "../../../specification/fixtures/grants.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 18,
+      "target": "../../../specification/reference-v1/fixtures/vectors.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 19,
+      "target": "../../../scripts/fixture_support.py",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 20,
+      "target": "../../../qualification/perf_support.py",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 22,
+      "target": "../../nonprofit-ai/v1.0/06-TEST-SCENARIOS-AND-CASES.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 22,
+      "target": "../../nonprofit-ai/v1.0/test-cases.csv",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 58,
+      "target": "../../../Makefile",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 58,
+      "target": "../../../scripts/run.py",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 64,
+      "target": "../../governance/AI-EVALUATION-AND-LIMITS.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 64,
+      "target": "../../release-reviews/release-review-0.39.0.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 70,
+      "target": "../../current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 70,
+      "target": "../../nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 70,
+      "target": "../../QA-PERFORMANCE-2026-10.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "line": 70,
+      "target": "../../governance/BACKUP-DR.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 3,
+      "target": "../APLYD-v1.3-AUDIT-20261011.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 5,
+      "target": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 9,
+      "target": "../../current/ACCESSIBILITY-STATEMENT.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 9,
+      "target": "../../current/Impact-Management-Test-Strategy-v1.1.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 24,
+      "target": "../../current/UAT-PACK.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 24,
+      "target": "../../current/Impact-Management-Test-Strategy-v1.1.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 24,
+      "target": "../../product/04-RELEASE-GOALS.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 48,
+      "target": "../../current/Impact-Management-Test-Strategy-v1.1.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 48,
+      "target": "../../governance/AI-MODEL-CARD.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 48,
+      "target": "../../governance/AI-EVALUATION-AND-LIMITS.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 48,
+      "target": "../../nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 68,
+      "target": "../../current/Impact-Management-Test-Strategy-v1.1.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 68,
+      "target": "../../QA-PERFORMANCE-2026-10.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 68,
+      "target": "../../governance/BACKUP-DR.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 68,
+      "target": "TEST-DATA-AND-ENVIRONMENTS.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 80,
+      "target": "../../current/threat-register.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "SPECIALIST-VERIFICATION-PLANS.md",
+      "line": 80,
+      "target": "../../release-reviews/release-review-0.39.0.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 22,
+      "target": "../audit-v13-20261011/package-audit/QA-V13-REQUIREMENTS-MATRIX.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 24,
+      "target": "../APLYD-v1.3-AUDIT-20261011.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 24,
+      "target": "../APLYD-v1.3-RECONCILIATION-20261011.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 24,
+      "target": "../../product/framework-v4-20261011/START-HERE.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 24,
+      "target": "../../agile/WORKING-AGREEMENT.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 24,
+      "target": "../../../AGENTS.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 24,
+      "target": "../../../CLAUDE.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 24,
+      "target": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 28,
+      "target": "../../product/04-RELEASE-GOALS.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 28,
+      "target": "../../product/framework-v4-20261011/04-RELEASE-GOALS.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 32,
+      "target": "../../product/06-NEXT-SPRINT-REFINEMENT.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 32,
+      "target": "../../product/framework-v4-20261011/06-NEXT-SPRINT-REFINEMENT.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 43,
+      "target": "../../product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 43,
+      "target": "../../product/framework-v4-20261011/task-author/task-contracts.proposed.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 43,
+      "target": "../../product/framework-v4-20261011/bundle-review/CRITERION-ALIAS-MAP.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 79,
+      "target": "../../product/framework-v4-20261011/epic-story-author/STORY-MEASURE-CONTRACTS.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 111,
+      "target": "../../../.github/workflows/checks.yml",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 111,
+      "target": "../../../.github/workflows/qualification.yml",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 123,
+      "target": "../../release-reviews/release-review-0.39.0.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 123,
+      "target": "../../current/threat-register.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 125,
+      "target": "../../QUALIFICATION.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "RELEASE-TEST-PLAN.md",
+      "line": 125,
+      "target": "../../current/RELEASE-ACCEPTANCE.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "line": 7,
+      "target": "RELEASE-TEST-PLAN.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "line": 7,
+      "target": "../APLYD-v1.3-AUDIT-20261011.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "line": 7,
+      "target": "../APLYD-v1.3-RECONCILIATION-20261011.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "line": 7,
+      "target": "../../agile/WORKING-AGREEMENT.md",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "line": 7,
+      "target": "../audit-v13-20261011/package-audit/QA-V13-REQUIREMENTS-MATRIX.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "line": 63,
+      "target": "../../../Makefile",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "line": 63,
+      "target": "../../../scripts/run.py",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "line": 143,
+      "target": "../audit-v13-20261011/package-audit/CHECKER-SUPPORTED-RUN-RECEIPT.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "line": 143,
+      "target": "../audit-v13-20261011/package-audit/CROSSWALK-REVIEW.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "line": 153,
+      "target": "../../release-reviews/release-review-0.39.0.json",
+      "exists": true,
+      "confined": true
+    },
+    {
+      "source": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "line": 153,
+      "target": "../../current/threat-register.json",
+      "exists": true,
+      "confined": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "OBS-01",
+      "severity": "PROVENANCE_LIMITATION",
+      "blocking_document_defect": false,
+      "detail": "Earlier root14/14 receipt predates the added risk scoring paragraph and preserves strategy870192... rather than currentd555.... It must remain a dated earlier-edition observation; this fresh source review explicitly binds currentd555. Parent notified before any correction.",
+      "source": [
+        {
+          "path": "docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "preceding_sha256": "8701929767549263f000eb8bf8938d37a6677356816657a0b3d97eaf4238dba9",
+          "current_sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157"
+        }
+      ]
+    }
+  ],
+  "unresolved_product_decisions": [
+    "Actual complete approved operating source scope/criterion revision identities and independent completeness/applicability review",
+    "Actual reviewed case/code/manual bindings and normalized register/evidence selection adoption",
+    "Actual candidate/artifact/environment/data/tool/model/provider/protocol pins and authorised resource boundary",
+    "Named accountable QA/specialist/domain/operations reviewers, real decisions, participants/data permissions and financial authority",
+    "Current G11/G12 threats/chains and all required actual qualification/acceptance results",
+    "Live target-branch/source protection, required checks/fresh review and bypass enforcement"
+  ],
+  "limitations": [
+    "AI reviewer is not an externally authorised human or appointed specialist.",
+    "No application/unit/API/native/browser/performance/provider/package tests or live CI/protection checks were run.",
+    "No network, credentials, external messages, deployment, release action or source changes occurred.",
+    "External W3C/GitHub URLs are recorded references; no network link/standard verification performed in this bounded local review.",
+    "This is semantic source agreement and document integration evidence, not a proof that future test procedures are implemented or exhaustive.",
+    "Initial read-path/glob misses and output truncation were resolved with bounded exact reads; no product failure inference or fabricated executed check.",
+    "Only reviewed exact document bytes apply. Later content must receive an explicit separate delta review."
+  ],
+  "check_totals": {
+    "passed": 31,
+    "failed": 2,
+    "total": 33
+  },
+  "disposition": "SOURCE_REVIEW_CHECK_FAILURE_REQUIRES_RECONCILIATION",
+  "product_test_result": "NOT_RUN_BY_THIS_REVIEW",
+  "owner_approval": false,
+  "adoption_approval": false,
+  "product_ready": false,
+  "release_approval": false,
+  "repo_or_native_mutations": false
+}

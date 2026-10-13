@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-10-11T09:03:46.592876+00:00",
+  "mode": "Read-only additive documentary/oracle reconciliation",
+  "prior_closure": {
+    "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-delivery-start-20261011/final-code-review/FINAL-CODE-CLOSURE-ADVISORY.json",
+    "sha256": "66fde74c8db82c8f36694df44214dc20ac8df82f0d663b5a719df3322c871418",
+    "unchanged": true
+  },
+  "oracle_adapter_clarification": "Prior closure compact exact-name selector listed AC001 only; AC002 is parameterized. This supplement expands the four actual JUnit nodes without changing original XML, source criteria, prior receipt or pass counts.",
+  "actual_original_criteria_nodes": [
+    {
+      "case": "test_diagnosis_saves_exact_order_stable_ids_and_supporting_evidence",
+      "criterion": "AC-US-DX-01a-001",
+      "result": "PASS"
+    },
+    {
+      "case": "test_diagnosis_completion_names_each_incomplete_problem_without_writing[supporting_evidence]",
+      "criterion": "AC-US-DX-01a-002",
+      "result": "PASS"
+    },
+    {
+      "case": "test_diagnosis_completion_names_each_incomplete_problem_without_writing[priority_order]",
+      "criterion": "AC-US-DX-01a-002",
+      "result": "PASS"
+    },
+    {
+      "case": "test_diagnosis_completion_names_each_incomplete_problem_without_writing[description]",
+      "criterion": "AC-US-DX-01a-002",
+      "result": "PASS"
+    },
+    {
+      "case": "test_diagnosis_completion_names_each_incomplete_problem_without_writing[affected_area]",
+      "criterion": "AC-US-DX-01a-002",
+      "result": "PASS"
+    }
+  ],
+  "original_criteria_observed_both": true,
+  "junit_pin": {
+    "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/docs/evidence/candidate-0.40/api-regression-final.xml",
+    "sha256": "2b3f9b10e1fef65e583851e62f49210b7498658ba11c413ced53a8a7534bce21"
+  },
+  "completion_ledger": {
+    "path": "docs/COMPLETION-LEDGER.json",
+    "sha256": "6c9b49b3976919daf9f35d7c642cf6af4939115ec9940135026c78b3d1732c89",
+    "changed_top_level_fields": [
+      "build"
+    ],
+    "changes_only_build": true,
+    "old_build": "0.33.0",
+    "new_build": "0.40.0",
+    "enterprise_complete": false,
+    "requirements_or_gate_status_promoted": false
+  },
+  "execution_register": {
+    "path": "docs/current/EXECUTION-REGISTER.csv",
+    "sha256": "0dc677b9cb119ea6998cf865d7a5a6166bbda91013efe15775d1bbb6c1740c5e",
+    "historical_rows": 2380,
+    "historical_prefix_byte_exact": true,
+    "historical_rows_exact": true,
+    "appended_rows": 66,
+    "appended_api": 57,
+    "appended_browser": 9,
+    "scope": "Local synthetic actual observations; every new row explicitly denies human/native/release or production acceptance"
+  },
+  "requirements_accepted": 0,
+  "human_security_confirmation": null,
+  "release_acceptance": false,
+  "canonical_edits_by_reviewer": 0
+}

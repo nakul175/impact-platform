@@ -1,0 +1,8 @@
+{
+  "expected_ac_count": 2,
+  "expected_ac_ids_sha256": "0de580fb4366d2f812c7a5269f49dcbe02087d3d8a999e3daf3724564ad47800",
+  "criteria_source_sha256": "962b2a2517dd50b923244bf17a9e93cdfd938943815d2a6e3b6d43e76c4b8a83",
+  "criteria_source_review_ref": "RECORDS.md#requirement",
+  "scope_id": "REL-DEMO-01",
+  "notice": "Candidate values only; source completeness/authority must be independently reviewed. This helper does not modify scope."
+}

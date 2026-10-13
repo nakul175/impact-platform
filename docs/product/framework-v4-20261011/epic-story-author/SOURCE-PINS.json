@@ -1,0 +1,45 @@
+{
+  "schema": "imprana-epic-story-additive-refinement/v1",
+  "authoring_checkout": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform-linear-planning",
+  "authoring_head": "eb194fdbb6fc8247db8429fc23120aa0fe659ed8",
+  "current_engineering_base": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "source_hashes": {
+    "docs/backlog/backlog.csv": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+    "docs/product/refinement/backlog-refinement.json": "cbb61315088ee2ecdc2106d8f472ab5ee052bf3034d9172c32973e4c941a7c7e",
+    "docs/product/linear/import-plan.json": "37e8193c7a6f354faa4b60364120e4efd54af723867f3da6a931723f2b3590e2",
+    "docs/agile/WORKING-AGREEMENT.md": "e0b9d314c1e0153d69d4e8e9d3dcaae6faaf5e0377b7de60b8dc41d5a1481b8f",
+    "docs/product/05-STORY-AND-TASK-STANDARD.md": "a5645d266ad9afc58cf2f81eb5d63f2dfb1809a02891cffa2157041a7c24dbf4"
+  },
+  "source_scope": {
+    "backlog_rows": 370,
+    "active_stories": 368,
+    "split_parents": [
+      "FR-AI-016",
+      "US-DX-01"
+    ],
+    "epics": 54,
+    "original_scenarios": 1328,
+    "original_tasks": 1131
+  },
+  "planning_revision": "2026-10-11.1",
+  "evidence_boundary": "Domain capability contracts are authored recommendations. Story outcomes and all scenario semantics are bound to source records. No research, technical execution, formal framework PASS, readiness, new size estimate, accepted outcome or release is claimed.",
+  "native_publication": "Root must first read current full descriptions/parents/estimates/statuses and preserve human edits; append/update only these uniquely marked blocks using durable canonical IDs. No native write performed by this author.",
+  "bundle_mapping": [
+    "epic.problem",
+    "epic.capability_outcome",
+    "epic.excluded_handoffs",
+    "epic.assumption_test",
+    "epic.priority_rationale",
+    "epic.size_estimate",
+    "epic.completion_boundary",
+    "epic.outcome_learning",
+    "user_story.priority_rationale",
+    "user_story.outcome_learning",
+    "user_story.team_ready_reference",
+    "user_story.team_done_reference",
+    "acceptance_criterion.prohibited_effects",
+    "acceptance_criterion.evaluation_method",
+    "acceptance_criterion.expected_evidence",
+    "acceptance_criterion.actual_execution"
+  ]
+}

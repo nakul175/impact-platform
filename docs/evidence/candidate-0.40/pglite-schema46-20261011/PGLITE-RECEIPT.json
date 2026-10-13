@@ -1,0 +1,136 @@
+{
+  "project": "Imprana Commons",
+  "story": "US-DX-01a / APL-361",
+  "tested_source_head": "d996d7adb847f95d87b29084db60091e88d2255d",
+  "schema": 46,
+  "engine": "PGlite disposable loopback API; not native role/concurrency/recovery evidence",
+  "passed": 82,
+  "skipped": 26,
+  "failures": 0,
+  "errors": 0,
+  "skips": [
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[missing_problems]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[null_problems]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[object_problems]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[scalar_problem]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[missing_id]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[null_id]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[number_id]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[invalid_id]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[uppercase_id]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[duplicate_id]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[too_many_problems]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[missing_order]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[null_order]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[object_order]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[number_priority]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[foreign_priority]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[duplicate_priority]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[too_many_priorities]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[missing_state]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[unknown_state]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[null_state]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[completed_partial_order]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_application_sql_rejects_malformed_diagnosis_problem_order[completed_no_problems]",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_partial_drafts_completion_correction_and_exact_history_remain_valid",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_removed_revision_storage_shape_and_constraint_validation",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    },
+    {
+      "node": "qualification.test_ai_diagnosis_payload_native::test_constraint_helper_has_no_definer_or_identity_data_authority",
+      "reason": "Actual application login SQL constraints require native PostgreSQL"
+    }
+  ],
+  "source_pins_unchanged": 272,
+  "historical_evidence_restored_byte_exact": true,
+  "failed_invocation_preserved": "attempt1 exit2: multiple targets require repeated --pytest-path; no tests run. Corrected wrapper only, no source/test edits.",
+  "reviews": {
+    "code": "Checked actual runner append-style target option and unchanged product/test/migration pins.",
+    "evidence": "Separately parsed108 JUnit nodes:82pass/26 explicit native-only storage skips, zero failures/errors; no native claims from PGlite."
+  },
+  "limits": [
+    "Focused compatibility run, not full suite or hosted CI",
+    "26 native-only storage checks remain skipped here; separate native receipt owns their actual execution",
+    "No independent human review, release acceptance, external export, deployment or new spending"
+  ],
+  "hashes": {
+    "attempt-1/RUN-RECEIPT.json": "0d40e6a34cf1236b8dc0bfe86bc27022b0c1b3764d7e462b33c102f08591ce02",
+    "attempt-1/pglite.log": "450395bdd2fbf640b7b8ddc64eeadff49b90ea9fe57f3253b9dc6fae7c2b23a8",
+    "attempt-2/RUN-RECEIPT.json": "aec216ac4175eddb6bb8f297a134e6d619cc64280ef00e0f5303f3c0f32c8917",
+    "attempt-2/pglite-tests.xml": "7ff0acf8f121dc622567e263d5672d3544b666940881b04ac60ad4a71d4f1e2b",
+    "attempt-2/pglite.log": "3651f192ad3f467f0073b59fa039811281ff3609ad89ff981f244cec60f65906"
+  }
+}

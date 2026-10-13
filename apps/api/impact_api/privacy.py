@@ -103,7 +103,7 @@ class Privacy:
         return member
 
     def owned_objects(self, c, ctx, kind, ids, principal):
-        """Evidence or import batches the privacy officer names must be the subject's own: created
+        """Objects the privacy officer names must be the subject's own: created
         or owned by the subject's principal. Import batches must be finished (Committed/Cancelled)."""
         rows = []
         for obj in ids or []:
@@ -125,11 +125,14 @@ class Privacy:
 
     def check_draft(self, c, ctx, data):
         member = self.subject(c, ctx, data["subject_membership_id"])
-        if data["request_type"] == "ACCESS" and (data.get("evidence_ids") or data.get("import_ids")):
+        if data["request_type"] == "ACCESS" and (
+            data.get("evidence_ids") or data.get("import_ids") or data.get("diagnosis_ids")
+        ):
             refuse("ERASURE_SCOPE_ONLY")
         principal = str(member["principal_id"])
         self.owned_objects(c, ctx, "Evidence", data.get("evidence_ids"), principal)
         self.owned_objects(c, ctx, "ImportJob", data.get("import_ids"), principal)
+        self.owned_objects(c, ctx, "AIDiagnosis", data.get("diagnosis_ids"), principal)
         return member
 
     def erasable(self, c, ctx, member):
@@ -168,11 +171,15 @@ class Privacy:
         revision that is still available uses the same blob."""
         rows = c.execute(
             "SELECT DISTINCT b.blob_id,b.purged_at,EXISTS(SELECT 1 FROM impact.object_revision v2 "
-            "JOIN impact.upload_session u2 ON u2.tenant_id=v2.tenant_id AND u2.upload_id=(v2.payload->>'upload_id')::uuid "
+            "JOIN impact.upload_session u2 ON u2.tenant_id=v2.tenant_id AND u2.upload_id=CASE "
+            "WHEN (v2.payload->>'upload_id') ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' "
+            "THEN (v2.payload->>'upload_id')::uuid END "
             "WHERE v2.tenant_id=b.tenant_id AND v2.object_type='Evidence' AND v2.object_id<>%s "
             "AND v2.restriction_state='AVAILABLE' AND u2.blob_id=b.blob_id) AS shared "
             "FROM impact.object_revision v JOIN impact.upload_session u ON u.tenant_id=v.tenant_id "
-            "AND u.upload_id=(v.payload->>'upload_id')::uuid JOIN impact.file_blob b ON b.tenant_id=u.tenant_id "
+            "AND u.upload_id=CASE "
+            "WHEN (v.payload->>'upload_id') ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' "
+            "THEN (v.payload->>'upload_id')::uuid END JOIN impact.file_blob b ON b.tenant_id=u.tenant_id "
             "AND b.blob_id=u.blob_id WHERE v.tenant_id=%s AND v.object_id=%s AND v.object_type='Evidence' "
             "AND v.payload ? 'upload_id' ORDER BY b.blob_id",
             (str(evidence_id), ctx.tenant_id, str(evidence_id)),
@@ -186,6 +193,8 @@ class Privacy:
         member = self.subject(c, ctx, data["subject_membership_id"])
         membership, principal = str(member["object_id"]), str(member["principal_id"])
         entries, extras = [], {"object_store": {}}
+        diagnosis_revisions = []
+        remaining_diagnosis_revisions = PLAN_LIMIT
         if data["request_type"] == "ERASURE":
 
             def add(store, action, obj, kind, state="APPROVED", reason=None):
@@ -269,6 +278,28 @@ class Privacy:
                 ).fetchone():
                     add("PROJECTION", "REDACT", obj, "ImportJob")
                     add("DATABASE", "DELETE", obj, "ImportJob")
+            for row in self.owned_objects(c, ctx, "AIDiagnosis", data.get("diagnosis_ids"), principal):
+                obj = str(row["object_id"])
+                revisions = c.execute(
+                    "SELECT revision_id,payload_sha256,restriction_state FROM impact.object_revision "
+                    "WHERE tenant_id=%s AND object_id=%s AND restriction_state<>'REMOVED' "
+                    "ORDER BY revision_id LIMIT %s",
+                    (ctx.tenant_id, obj, remaining_diagnosis_revisions + 1),
+                ).fetchall()
+                if len(revisions) > remaining_diagnosis_revisions:
+                    raise DomainError("LIMIT_EXCEEDED", 422, reason="PRIVACY_PLAN_TOO_LARGE")
+                remaining_diagnosis_revisions -= len(revisions)
+                if revisions:
+                    add("DATABASE", "DELETE", obj, "AIDiagnosis")
+                diagnosis_revisions.append(
+                    [
+                        obj,
+                        [
+                            [str(v["revision_id"]), bytes(v["payload_sha256"]).hex(), v["restriction_state"]]
+                            for v in revisions
+                        ],
+                    ]
+                )
             held = self.holds(c, ctx, {e["object_id"] for e in entries})
             for entry in entries:
                 if entry["object_id"] in held:
@@ -288,6 +319,9 @@ class Privacy:
                 "entries": [
                     [e["store"], e["action"], e["object_id"], e["state"], e["reason"]] for e in entries
                 ],
+                # Preserve historical hashes for cases without diagnosis scope.
+                # A new diagnosis revision requires a fresh independent plan approval.
+                **({"diagnosis_revisions": sorted(diagnosis_revisions)} if diagnosis_revisions else {}),
             }
         ).hex()
         return entries, digest, {**extras, "member": member}

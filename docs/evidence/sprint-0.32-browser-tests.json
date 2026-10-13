@@ -1,28 +1,28 @@
 {
   "build": {
-    "build": "0.32.0",
-    "domain_api": "1.23.0",
-    "platform_api": "1.10.0",
+    "build": "1.40.0",
+    "domain_api": "1.130.0",
+    "platform_api": "1.12.0",
     "documentation_edition": "1.1",
     "schema_rule": "derived: the number of files in infrastructure/migrations (impact_api/version.py)"
   },
-  "started_at": "2026-10-05T09:19:10.570Z",
-  "completed_at": "2026-10-05T09:19:21.935Z",
-  "browser_version": "154.0.8037.97",
+  "started_at": "2026-10-13T05:56:35.129Z",
+  "completed_at": "2026-10-13T05:56:44.917Z",
+  "browser_version": "155.0.8059.40",
   "database": "Disposable in-memory PGlite through real FastAPI; this does not establish native-login security",
   "fixture": "Synthetic identities and invented nonprofit facts only",
   "qualification": "Dirty working tree development candidate; bounded evidence only",
   "source_sha256": {
-    "tools/browser/tola-ai-sprint-check.mjs": "d956d0298aaecb394ddc8b0350a4330942d5e1a64b742051a78f639e268b011b",
-    "scripts/run.py": "af087790b51fe75604a6940e1c75461b111c15fba128e54bea98c29e247f8bbd",
-    "VERSION.json": "924dc08c0bf3153969a87b8fd2e1eed3c569490ec8a260021553ee473dce88eb",
+    "tools/browser/tola-ai-sprint-check.mjs": "051bfccd2fd6c5138dad66c158058792783870a98056dc93c8c444df19e2a8a7",
+    "scripts/run.py": "53765e5d8e9f98e7d2e6ffd1d4dfe8ac98c45104dde60c9576f660aedad8f51b",
+    "VERSION.json": "91c9e4c256c4c82ba756180e2c8827b854e004b3e768c11e2927b9aed9302de6",
     "apps/web/src/AccessUpgrade.tsx": "81abe9a54b124cc10af3219ddd7cf7e1098ba7c803c25731705fc0bb55c50fb6",
-    "apps/web/src/AIGuidanceArchive.tsx": "500934f4868c1eced1c2e39f5c2147820fb0061763a415b3ece1a32a654ddd37",
-    "apps/web/src/AIAdoptionWorkspace.tsx": "fc352891019cdbba9624601d15118177cce8f42058774a3c7740b346d2646247",
-    "apps/web/src/ai-enablement.css": "c2e0b3968944d818c637f60c36dd83ef9efe20875900bb38f2386eac3ce2c770",
-    "apps/api/impact_api/access_upgrade.py": "870062a422e45d164b47c6af5e18e68597ebe92cf1fac8e82e81516d87c0856c",
-    "apps/api/impact_api/ai_content_archives.py": "dbd3e9811ed40837d54007299246b4b22498924bfa7523ae31543019a7811e65",
-    "apps/api/impact_api/ai_adoption_plans.py": "29a71c039d5bfce16c424ce7192979b2799da21fd74715fe3c30bfbccd0f6f01",
+    "apps/web/src/AIGuidanceArchive.tsx": "99d72996f1d8beb9f91b44e9156fcb4348764cc4ff5a66f6993b366bcd2182c4",
+    "apps/web/src/AIAdoptionWorkspace.tsx": "9adaf5b427141c4f5060d00048c472da34b445e49580c1faea65746d5ca16934",
+    "apps/web/src/ai-enablement.css": "ab03912cccde721ae73d3bc14d10ae23193f916394271da8d4137bfdfcae6ce2",
+    "apps/api/impact_api/access_upgrade.py": "7b2359ed152b6bf74ae37a1686ca99ed8e6497c408ce48cc56c3203297977907",
+    "apps/api/impact_api/ai_content_archives.py": "80fca9197f8705eac7bc084efdb7da6c963737e71fd5e40f526b62b8204eb689",
+    "apps/api/impact_api/ai_adoption_plans.py": "45aab66ddf57817099cc303f18a276f879d0cf3f8b7fffcd9b7d7ffddb7f37a8",
     "infrastructure/migrations/0036_reviewed_ceiling_widening.sql": "4e4bf01ebee650fb5c910c944e9ee6344f66c540d178f8c673bd54116710a464",
     "infrastructure/migrations/0037_ai_content_snapshots.sql": "668f0fd4e90e3548fcea922a088976e273e9b164cbdcb12fca97f79fca126d7e"
   },
@@ -46,11 +46,11 @@
   ],
   "injectedFailures": [
     {
-      "route": "/v1/platform/tenants/80d98907-9fed-4f57-b344-6cdaa42975ba/access-upgrade",
+      "route": "/v1/platform/tenants/fde0f22c-9c6a-47a5-8789-e33af3b4e35a/access-upgrade",
       "scope": "Actual proposal POST committed before its browser response was deliberately dropped"
     },
     {
-      "route": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/10b04cec-b034-4efe-8ac7-ee132841fa4b/revisions/9b488e41-2a04-4b11-a0e5-ab1b1e5adce8/guidance",
+      "route": "/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/e96a5245-e099-4deb-a7fe-a0958efe77cd/revisions/07cc92fe-3ac1-44f3-9960-20b985a2b525/guidance",
       "scope": "One archive GET deliberately aborted for UI recovery; retry uses the actual backend"
     }
   ],
@@ -161,52 +161,45 @@
   "screenshots": [
     {
       "name": "access-accepted 320px",
-      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-access-accepted-320.png",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-2f5c1f05/tola-ai-sprint-access-accepted-320.png",
       "synthetic": true,
-      "realProduct": true,
-      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-access-accepted-320.png"
+      "realProduct": true
     },
     {
       "name": "Applied access review desktop",
-      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-access-desktop.png",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-2f5c1f05/tola-ai-sprint-access-desktop.png",
       "synthetic": true,
-      "realProduct": true,
-      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-access-desktop.png"
+      "realProduct": true
     },
     {
       "name": "access-applied 390px",
-      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-access-applied-390.png",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-2f5c1f05/tola-ai-sprint-access-applied-390.png",
       "synthetic": true,
-      "realProduct": true,
-      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-access-applied-390.png"
+      "realProduct": true
     },
     {
       "name": "Complete guidance archive desktop",
-      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-archive-desktop.png",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-2f5c1f05/tola-ai-sprint-archive-desktop.png",
       "synthetic": true,
-      "realProduct": true,
-      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-archive-desktop.png"
+      "realProduct": true
     },
     {
       "name": "complete-archive 320px",
-      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-complete-archive-320.png",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-2f5c1f05/tola-ai-sprint-complete-archive-320.png",
       "synthetic": true,
-      "realProduct": true,
-      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-complete-archive-320.png"
+      "realProduct": true
     },
     {
       "name": "complete-archive 390px",
-      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-complete-archive-390.png",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-2f5c1f05/tola-ai-sprint-complete-archive-390.png",
       "synthetic": true,
-      "realProduct": true,
-      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-complete-archive-390.png"
+      "realProduct": true
     },
     {
       "name": "partial-archive 320px",
-      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/impact-platform/.local/test-3722b8ea/tola-ai-sprint-partial-archive-320.png",
+      "file": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-2f5c1f05/tola-ai-sprint-partial-archive-320.png",
       "synthetic": true,
-      "realProduct": true,
-      "saved_evidence_path": "docs/evidence/sprint-0.32-browser-captures/tola-ai-sprint-partial-archive-320.png"
+      "realProduct": true
     }
   ],
   "uncaughtErrors": [],
@@ -214,7 +207,7 @@
     {
       "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
       "location": {
-        "url": "http://127.0.0.1:8183/auth/me",
+        "url": "http://127.0.0.1:8000/auth/me",
         "lineNumber": 0,
         "columnNumber": 0
       }
@@ -222,7 +215,7 @@
     {
       "message": "Failed to load resource: net::ERR_FAILED",
       "location": {
-        "url": "http://127.0.0.1:8183/v1/platform/tenants/80d98907-9fed-4f57-b344-6cdaa42975ba/access-upgrade",
+        "url": "http://127.0.0.1:8000/v1/platform/tenants/fde0f22c-9c6a-47a5-8789-e33af3b4e35a/access-upgrade",
         "lineNumber": 0,
         "columnNumber": 0
       }
@@ -230,7 +223,7 @@
     {
       "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
       "location": {
-        "url": "http://127.0.0.1:8183/auth/me",
+        "url": "http://127.0.0.1:8000/auth/me",
         "lineNumber": 0,
         "columnNumber": 0
       }
@@ -238,7 +231,7 @@
     {
       "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
       "location": {
-        "url": "http://127.0.0.1:8183/auth/me",
+        "url": "http://127.0.0.1:8000/auth/me",
         "lineNumber": 0,
         "columnNumber": 0
       }
@@ -246,7 +239,7 @@
     {
       "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
       "location": {
-        "url": "http://127.0.0.1:8183/auth/me",
+        "url": "http://127.0.0.1:8000/auth/me",
         "lineNumber": 0,
         "columnNumber": 0
       }
@@ -254,7 +247,7 @@
     {
       "message": "Failed to load resource: net::ERR_FAILED",
       "location": {
-        "url": "http://127.0.0.1:8183/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/10b04cec-b034-4efe-8ac7-ee132841fa4b/revisions/9b488e41-2a04-4b11-a0e5-ab1b1e5adce8/guidance",
+        "url": "http://127.0.0.1:8000/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/e96a5245-e099-4deb-a7fe-a0958efe77cd/revisions/07cc92fe-3ac1-44f3-9960-20b985a2b525/guidance",
         "lineNumber": 0,
         "columnNumber": 0
       }
@@ -262,7 +255,7 @@
     {
       "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
       "location": {
-        "url": "http://127.0.0.1:8183/auth/me",
+        "url": "http://127.0.0.1:8000/auth/me",
         "lineNumber": 0,
         "columnNumber": 0
       }
@@ -272,7 +265,7 @@
     {
       "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
       "location": {
-        "url": "http://127.0.0.1:8183/auth/me",
+        "url": "http://127.0.0.1:8000/auth/me",
         "lineNumber": 0,
         "columnNumber": 0
       },
@@ -281,7 +274,7 @@
     {
       "message": "Failed to load resource: net::ERR_FAILED",
       "location": {
-        "url": "http://127.0.0.1:8183/v1/platform/tenants/80d98907-9fed-4f57-b344-6cdaa42975ba/access-upgrade",
+        "url": "http://127.0.0.1:8000/v1/platform/tenants/fde0f22c-9c6a-47a5-8789-e33af3b4e35a/access-upgrade",
         "lineNumber": 0,
         "columnNumber": 0
       },
@@ -290,7 +283,7 @@
     {
       "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
       "location": {
-        "url": "http://127.0.0.1:8183/auth/me",
+        "url": "http://127.0.0.1:8000/auth/me",
         "lineNumber": 0,
         "columnNumber": 0
       },
@@ -299,7 +292,7 @@
     {
       "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
       "location": {
-        "url": "http://127.0.0.1:8183/auth/me",
+        "url": "http://127.0.0.1:8000/auth/me",
         "lineNumber": 0,
         "columnNumber": 0
       },
@@ -308,7 +301,7 @@
     {
       "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
       "location": {
-        "url": "http://127.0.0.1:8183/auth/me",
+        "url": "http://127.0.0.1:8000/auth/me",
         "lineNumber": 0,
         "columnNumber": 0
       },
@@ -317,7 +310,7 @@
     {
       "message": "Failed to load resource: net::ERR_FAILED",
       "location": {
-        "url": "http://127.0.0.1:8183/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/10b04cec-b034-4efe-8ac7-ee132841fa4b/revisions/9b488e41-2a04-4b11-a0e5-ab1b1e5adce8/guidance",
+        "url": "http://127.0.0.1:8000/v1/tenants/ce56220a-32a5-5ca5-a45f-860dc3d9c958/ai-enablement/plans/e96a5245-e099-4deb-a7fe-a0958efe77cd/revisions/07cc92fe-3ac1-44f3-9960-20b985a2b525/guidance",
         "lineNumber": 0,
         "columnNumber": 0
       },
@@ -326,7 +319,7 @@
     {
       "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
       "location": {
-        "url": "http://127.0.0.1:8183/auth/me",
+        "url": "http://127.0.0.1:8000/auth/me",
         "lineNumber": 0,
         "columnNumber": 0
       },
@@ -343,15 +336,5 @@
   "limitations": [
     "Development sign-in fixture; live identity provider and deployment gates remain separate",
     "Passing local checks are development evidence, not production or nonprofit UAT acceptance"
-  ],
-  "visual_review": {
-    "reviewer": "/root/sprint_tracker",
-    "all_seven_captures_inspected": true,
-    "root_spot_check": [
-      "Applied access review desktop",
-      "Complete guidance archive desktop",
-      "complete-archive320px"
-    ],
-    "result": "Legible actual synthetic product captures; no real personal data or credential screens"
-  }
+  ]
 }

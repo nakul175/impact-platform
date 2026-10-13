@@ -1,0 +1,11 @@
+{
+  "scope": "Corrected local structural record check; release review passed remains false",
+  "implementation_commit": "2e9f7841175efea3c5fc7572c6402b1dc89ff811",
+  "actual_result": {
+    "chunk_id": "185b46",
+    "wall_time_seconds": 0.192695292,
+    "exit_code": 0,
+    "original_token_count": 156,
+    "output": "change set: 73 paths since 92341d6d81414be4627c5981363636580f7cbf52 (92341d6d8141)\n  material: apps/api/impact_api/ai_diagnoses.py (ai-module)\n  material: apps/api/impact_api/ai_diagnosis_contracts.py (ai-module, contracts)\n  material: infrastructure/migrations/0044_ai_diagnoses.sql (migration)\n  material: packages/contracts/access-policy.json (access-policy)\n  material: scripts/build_contracts.py (contracts)\nregister: 36 threats, 76 controls, 2 chains; open: 14 critical, 13 other, 2 chains\nopen critical: TH04, TH05, TH06, TH09, TH11, TH13, TH17, TH21, TH25, TH26, TH27, TH28, TH29, TH34\nrelease review check passed\n"
+  }
+}

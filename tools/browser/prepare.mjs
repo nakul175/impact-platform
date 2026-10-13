@@ -11,6 +11,7 @@ for (const name of ["chromium", "al2023.tar", "fonts.tar", "swiftshader.tar"]) {
     await fs.readFile(path.join(bin, name + ".br")),
   );
   const dest = path.join(out, name);
+  if (name === "chromium") await fs.rm(dest, { force: true });
   await fs.writeFile(dest, data);
   if (name.endsWith(".tar"))
     execFileSync(process.env.PYTHON || "python3", [
@@ -26,4 +27,16 @@ await fs.writeFile(
   path.join(out, "fonts.conf"),
   `<?xml version="1.0"?><!DOCTYPE fontconfig SYSTEM "fonts.dtd"><fontconfig><dir>/usr/share/fonts</dir><dir>${out}/fonts</dir><cachedir>${out}/font-cache</cachedir><alias><family>system-ui</family><prefer><family>Open Sans</family></prefer></alias><alias><family>sans-serif</family><prefer><family>Open Sans</family></prefer></alias></fontconfig>`,
 );
+if (process.platform === "darwin") {
+  const browser =
+    process.env.IMPACT_BROWSER_EXECUTABLE ||
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  await fs.access(browser);
+  await fs.rm(path.join(out, "chromium"), { force: true });
+  await fs.writeFile(
+    path.join(out, "chromium"),
+    `#!/bin/sh\nexec ${JSON.stringify(browser)} "$@"\n`,
+    { mode: 0o755 },
+  );
+}
 console.log("Browser prepared.");

@@ -1,0 +1,5 @@
+{
+  "scope": "Root offline new-document/source integrity adapter only",
+  "observation": "First invocation failed exit 1 with Python re.error: unbalanced parenthesis at position 11 because the generated Markdown-link regular expression was double-escaped. No product test ran and no document defect was inferred.",
+  "correction": "Corrected adapter regex escape spelling and output newline before rerun; source documents and frozen member bytes unchanged. Retain this unsuccessful observation separately from the later check."
+}

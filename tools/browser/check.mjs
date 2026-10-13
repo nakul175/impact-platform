@@ -69,6 +69,12 @@ try {
     await page.getByLabel("Programme code", { exact: true }).fill("BROWSER");
     await page.getByLabel("Start date", { exact: true }).fill("2026-01-01");
     await page.getByLabel("End date", { exact: true }).fill("2026-12-31");
+    await page
+      .getByLabel("Reporting calendar", { exact: true })
+      .selectOption({ index: 1 });
+    await page
+      .getByRole("button", { name: "Review complete", exact: true })
+      .click();
     await page.getByRole("button", { name: "Save draft", exact: true }).click();
     await page.getByRole("button", { name: programme, exact: true }).waitFor();
     await page.screenshot({

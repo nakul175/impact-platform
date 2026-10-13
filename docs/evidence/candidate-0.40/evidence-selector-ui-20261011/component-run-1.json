@@ -1,0 +1,98 @@
+{
+  "scope": "ACTUAL_COMPONENT_CLOSURES_WITH_DECLARED_TEST_ONLY_HOOKS_AND_REQUEST_ADAPTER",
+  "status": "passed",
+  "counts": {
+    "cases": 9,
+    "passed": 9,
+    "failed": 0
+  },
+  "source_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/apps/web/src/AIDiagnosis.tsx",
+  "source_sha256": "2825fd5b5f570be7976da944ce62aa55a0aeb38f38eaec43434fa444852859b5",
+  "compiled_sha256": "aedf83d0009bd370b423aa2a9353f1bdcc94a1a8d0f58a13338e4e72e8da41f5",
+  "react_version": "19.3.0",
+  "results": [
+    {
+      "name": "IDEMPOTENCY_EXPIRED preserves frozen uncertain create and exact retry",
+      "status": "passed",
+      "observations": {
+        "adapter_error_code": "IDEMPOTENCY_EXPIRED",
+        "requests_to_adapter": 2,
+        "request_bytes_sha256": "6f43d66f2ff3b21650dbbdf8d3ce5363d1545d3284c45482a187fc14170fb6a4",
+        "operation_id": "4238e79d-248d-4647-914d-d9632a6583d8",
+        "frozen_pending_after_retry": true,
+        "new_create_control_disabled": true
+      }
+    },
+    {
+      "name": "CONFLICT_OPERATION preserves frozen uncertain create and exact retry",
+      "status": "passed",
+      "observations": {
+        "adapter_error_code": "CONFLICT_OPERATION",
+        "requests_to_adapter": 2,
+        "request_bytes_sha256": "65bd2fa4c306fadeaa69fbd8ba6f94c32ee247221385ed8f0ebf04533d00db00",
+        "operation_id": "e7477ab9-8632-4b38-942e-dcb1c8f23dbf",
+        "frozen_pending_after_retry": true,
+        "new_create_control_disabled": true
+      }
+    },
+    {
+      "name": "Known validation refusal releases the refused draft for editing",
+      "status": "passed",
+      "observations": {
+        "adapter_error_code": "VALIDATION_FAILED",
+        "pending_after_refusal": false,
+        "refused_input_preserved": true
+      }
+    },
+    {
+      "name": "Notes-only users do not request or see source choices",
+      "status": "passed",
+      "observations": {
+        "source_reads": 0,
+        "original_notes_only_payload_preserved": true
+      }
+    },
+    {
+      "name": "Exact evidence selection survives frozen uncertain save and exact retry",
+      "status": "passed",
+      "observations": {
+        "exact_selector_only": true,
+        "exact_retry": true
+      }
+    },
+    {
+      "name": "Evidence changed adds no reference",
+      "status": "passed",
+      "observations": {
+        "no_reference_added": true
+      }
+    },
+    {
+      "name": "Evidence hidden adds no reference",
+      "status": "passed",
+      "observations": {
+        "no_reference_added": true
+      }
+    },
+    {
+      "name": "Evidence malformed adds no reference",
+      "status": "passed",
+      "observations": {
+        "no_reference_added": true
+      }
+    },
+    {
+      "name": "Late source response cannot overwrite newer problem edits",
+      "status": "passed",
+      "observations": {
+        "late_response_ignored": true,
+        "newer_input_preserved": true
+      }
+    }
+  ],
+  "limitations": [
+    "No real browser mount, DOM events, React concurrent scheduler, API/DB/server receipt expiry, test clock or production acceptance is claimed.",
+    "Synthetic request-adapter errors exercise actual component command handlers and rendered control state; they are not server responses or HTTP qualification.",
+    "Actual API expired replay requires an approved test clock or actual elapsed retention period; immutable receipts and audit/history must not be edited to manufacture expiry."
+  ]
+}

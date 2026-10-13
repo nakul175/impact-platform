@@ -122,6 +122,7 @@ def openapi():
     from .bootstrap_contracts import add_paths
     from .metrics_contracts import add_paths as add_metrics_paths
     from .operator_contracts import add_paths as add_operator_paths
+    from .partner_revenue_contracts import add_paths as add_partner_revenue_paths
     from .recovery_contracts import add_paths as add_recovery_paths
     from .renewal_contracts import add_paths as add_renewal_paths
     from .requeue_contracts import add_paths as add_requeue_paths
@@ -165,6 +166,7 @@ def openapi():
     add_requeue_paths(paths, operation)
     add_metrics_paths(paths, operation)
     add_operator_paths(paths, operation)
+    add_partner_revenue_paths(paths, operation)
     return {
         "openapi": "3.1.0",
         "info": {"title": "Impact control-plane API", "version": PLATFORM_API},

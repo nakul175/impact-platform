@@ -118,7 +118,7 @@ def value_block(row, places):
     }
 
 
-def target_block(view, places):
+def target_block(view, places, period=None, time_semantic=None):
     if view is None:
         return None
     return {
@@ -140,6 +140,18 @@ def target_block(view, places):
         "displayed_value": shown(view.get("value"), places) if view.get("value_state") == "PRESENT" else None,
         "displayed_low": shown(view.get("low"), places),
         "displayed_high": shown(view.get("high"), places),
+        "version_label": "Revised target"
+        if view.get("target_basis") == "REVISED"
+        else "Original target"
+        if view.get("target_basis") == "ORIGINAL"
+        else "Baseline",
+        "applicable_period": {
+            "period_id": str(period["object_id"]) if period else None,
+            "period_code": (period.get("payload") or {}).get("code") if period else None,
+            "starts_at": (period.get("payload") or {}).get("starts_at") if period else None,
+            "ends_at": (period.get("payload") or {}).get("ends_at") if period else None,
+        },
+        "time_semantic": time_semantic,
     }
 
 
@@ -152,7 +164,7 @@ class Dashboards:
         self.service = service
 
     # Entry -------------------------------------------------------------------------------------
-    def read(self, identity, tenant, op, obj, limit=50, cursor=None, period_id=None):
+    def read(self, identity, tenant, op, obj, limit=50, cursor=None, period_id=None, coverage_threshold=0):
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
             if not any(g["capability"] == "dashboards.read" and g["purpose"] is None for g in ctx.grants):
@@ -160,6 +172,11 @@ class Dashboards:
             authorize(c, ctx, op, obj, hidden=True)
             if not 1 <= limit <= 100:
                 raise DomainError("VALIDATION_FAILED")
+            if not 0 <= coverage_threshold <= 100:
+                raise DomainError(
+                    "VALIDATION_FAILED",
+                    fields=[{"path": "coverage_threshold", "message": "Must be between 0 and 100."}],
+                )
             if op in {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}:
                 if not period_id:
                     raise DomainError(
@@ -170,7 +187,7 @@ class Dashboards:
             if op == "indicator_dashboard_sources":
                 return self.drilldown(c, ctx, obj, period_id, limit, cursor)
             if op == "indicator_definition_portfolio":
-                return self.portfolio(c, ctx, obj, period_id, limit, cursor)
+                return self.portfolio(c, ctx, obj, period_id, limit, cursor, coverage_threshold)
             return self.series(c, ctx, obj, limit, cursor)
 
     # Shared lookups ----------------------------------------------------------------------------
@@ -277,20 +294,54 @@ class Dashboards:
         status = None
         if target is not None:
             actual = compared or {"mode": "NONE", "value_state": "MISSING", "value": None}
+            actual_semantic = definition.get("time_semantic")
+            target_semantic = target.get("time_semantic", actual_semantic)
+            if actual_semantic != target_semantic and not target.get("approved_conversion"):
+                comparison = {
+                    "status": "NOT_COMPUTABLE",
+                    "attainment_percent": None,
+                    "deviation": None,
+                    "displayed_deviation": None,
+                    "change_from_baseline": None,
+                    "change_from_baseline_percent": None,
+                    "change_from_baseline_reason": "INCOMPATIBLE_TIME_SEMANTIC",
+                    "reason_code": "INCOMPATIBLE_TIME_SEMANTIC",
+                }
+                compatibility = "BLOCKED"
+            else:
+                comparison = safe_progress(actual, target, baseline, places)
+                compatibility = "COMPATIBLE"
             status = {
                 **{
                     k: v
-                    for k, v in safe_progress(actual, target, baseline, places).items()
+                    for k, v in comparison.items()
                     if k
-                    in {"status", "attainment_percent", "deviation", "displayed_deviation", "reason_code"}
+                    in {
+                        "status",
+                        "attainment_percent",
+                        "deviation",
+                        "displayed_deviation",
+                        "reason_code",
+                        "change_from_baseline",
+                        "change_from_baseline_percent",
+                        "change_from_baseline_reason",
+                    }
                 },
                 "compared_with": compared["mode"] if compared else None,
+                "direction": target.get("direction"),
+                "deviation_formula": "actual - target",
+                "attainment_formula": "target / actual × 100"
+                if target.get("direction") == "LOWER"
+                else "actual / target × 100",
+                "baseline_change_formula": "(actual - baseline) / baseline × 100; undefined when baseline is zero or negative",
+                "time_semantic": actual_semantic,
+                "time_semantic_compatibility": compatibility,
             }
         cell = {
             "official": official_block,
             "provisional": provisional_block,
-            "target": target_block(target, places),
-            "baseline": target_block(baseline, places),
+            "target": target_block(target, places, period_row, definition.get("time_semantic")),
+            "baseline": target_block(baseline, places, period_row, definition.get("time_semantic")),
             "status": status,
         }
         if not detail:
@@ -363,6 +414,23 @@ class Dashboards:
         else:
             stale, check = bool(reasons), "CHECKED"
         last_change = max((r["updated_at"] for r in rows), default=None) if rows is not None else None
+        official_calculated = (
+            (official["payload"].get("freshness") or {}).get("calculated_at") if official else None
+        )
+        provisional_calculated = (
+            (latest["payload"].get("freshness") or {}).get("calculated_at") if latest else None
+        )
+        calculated = official_calculated or provisional_calculated
+        fetched_at = datetime.now(timezone.utc).isoformat()
+        data_state = (
+            "SNAPSHOT"
+            if official and snapshot
+            else "LIVE_APPROVED"
+            if official
+            else "PROVISIONAL"
+            if latest
+            else "UNAVAILABLE"
+        )
         return {
             "stale": stale,
             "stale_reasons": sorted(set(reasons)),
@@ -370,14 +438,18 @@ class Dashboards:
             "snapshot_id": str(snapshot["snapshot_id"]) if snapshot else None,
             "snapshot_version": snapshot["snapshot_version"] if snapshot else None,
             "locked_at": iso(snapshot["created_at"]) if snapshot else None,
-            "official_calculated_at": (official["payload"].get("freshness") or {}).get("calculated_at")
-            if official
-            else None,
-            "provisional_calculated_at": (latest["payload"].get("freshness") or {}).get("calculated_at")
-            if latest
-            else None,
+            "official_calculated_at": official_calculated,
+            "provisional_calculated_at": provisional_calculated,
             "last_source_change_at": iso(last_change),
-            "checked_at": datetime.now(timezone.utc).isoformat(),
+            "data_state": data_state,
+            "last_source_success_at": iso(last_change),
+            "approval_cutoff_at": iso(snapshot["created_at"]) if snapshot else None,
+            "calculation_at": calculated,
+            "last_valid_data_at": calculated or iso(last_change),
+            # Fetch time is disclosed separately and never participates in stale calculation.
+            "dashboard_fetched_at": fetched_at,
+            "freshness_basis": "SOURCE_AND_CALCULATION_STATE",
+            "checked_at": fetched_at,
         }
 
     def definition(self, c, ctx, pin):
@@ -626,7 +698,7 @@ class Dashboards:
         }
 
     # Portfolio: one indicator definition across every programme (v0.27) -------------------------
-    def portfolio(self, c, ctx, obj, period_id, limit, cursor):
+    def portfolio(self, c, ctx, obj, period_id, limit, cursor, coverage_threshold=0):
         """For one indicator definition and period: the official value of every instance of it in
         the tenant (one row per programme instance, keyset on the instance identifier), grouped by
         definition version, with a pooled total per version only where the version's method pools
@@ -685,8 +757,8 @@ class Dashboards:
         page = [i for i in visible if not key or str(i["object_id"]) > key[0]][: limit + 1]
         more = len(page) > limit
         page = page[:limit]
-        programmes = []
-        for instance in page:
+        comparison_programmes = []
+        for instance in visible:
             pid = str(instance["programme_id"])
             pin = instance["payload"].get("definition_version")
             definition = definitions[pin]
@@ -699,7 +771,7 @@ class Dashboards:
             snapshot = snapshots.get(pid)
             official = cells[str(instance["object_id"])]
             state = self.service.periods.state(c, ctx, pid, str(period["object_id"]))
-            programmes.append(
+            comparison_programmes.append(
                 {
                     **self.indicator_head(instance, definition),
                     "programme_id": pid,
@@ -715,8 +787,10 @@ class Dashboards:
                     ),
                 }
             )
+        comparison_by_indicator = {row["indicator_id"]: row for row in comparison_programmes}
+        programmes = [comparison_by_indicator[str(instance["object_id"])] for instance in page]
         p = period["payload"]
-        return {
+        response = {
             "definition_id": did,
             "definition_name": head["payload"].get("name"),
             "unit": head["payload"].get("unit"),
@@ -734,6 +808,16 @@ class Dashboards:
             "programmes": programmes,
             "next_cursor": self.service.next_cursor(bound, [str(page[-1]["object_id"])]) if more else None,
         }
+        from .portfolio_comparison import build_comparison
+
+        response["comparison"] = build_comparison(
+            versions,
+            comparison_programmes,
+            response["period"],
+            scope,
+            decimal_value(str(coverage_threshold)),
+        )
+        return response
 
 
 PORTFOLIO_LIMIT = 500

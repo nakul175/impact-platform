@@ -1,0 +1,20 @@
+{
+  "phase": "source review",
+  "reviewer": "root agent; not independent agent or human acceptance",
+  "observed_at": "2026-10-11T09:57:44.524857+00:00",
+  "changed_test_sources": [
+    "qualification/test_native_restart.py",
+    "qualification/test_ai_diagnosis_recovery.py"
+  ],
+  "retained_original_restart_assertions": true,
+  "new_oracle": "Three exact versions, exact current/head/history; three original create/complete/revise receipts replay; changed-payload operation refuses CONFLICT_OPERATION; unchanged three revisions/receipts/audit rows",
+  "source_sha256": {
+    "qualification/test_native_restart.py": "1aeb282aff8506f8b0b6202147213f9baa108f30fb39d3ef5a58854d0437d348",
+    "qualification/test_ai_diagnosis_recovery.py": "0c4552c701367510de1e27d5926aef8cfa6a4f56ecad49c50efae0005d79d8ca"
+  },
+  "limits": [
+    "Synthetic development identity on a real native database, not live IdP",
+    "Private restore starts restricted runtime logins and retains current authority/RLS; no production recovery acceptance",
+    "Original private restart state contains a synthetic session and is deliberately not copied to committed evidence"
+  ]
+}

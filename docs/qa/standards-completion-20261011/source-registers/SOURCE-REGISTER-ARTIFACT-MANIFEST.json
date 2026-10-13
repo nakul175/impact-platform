@@ -1,0 +1,135 @@
+{
+  "scope": "Frozen flat authoring-only planning-source artifacts and exact raw diagnostics; manifest self excluded, no qualification or owner authority",
+  "recorded_at_utc": "2026-10-11T05:37:24.375033+00:00",
+  "artifacts": [
+    {
+      "path": "NEGATIVE-RELEASE-RECORD-DIAGNOSTIC-RECEIPT.json",
+      "bytes": 3195,
+      "sha256": "ab1b93b359c1a39720a5cbfa6db9506f94a6e1eeef25309ec4efe420358d8202"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6453,
+      "sha256": "e86538888b0b9c86d3c7aab70753fd21b5b175cfe93035a9771d5fe0bf2c4e36"
+    },
+    {
+      "path": "SOURCE-BASELINE-PRESERVATION-RECEIPT.json",
+      "bytes": 3513,
+      "sha256": "c3d79d42d4f5df57cb7a956db8eb87f30fe58e5d9e5f6e3dd24c79eb5ac2c546"
+    },
+    {
+      "path": "SOURCE-REGISTER-DIAGNOSTIC-RECEIPT.json",
+      "bytes": 8711,
+      "sha256": "31cd3ee993ac7ee9d46aa607a4108ef030e640aac65aef3236334b4e8f8432a2"
+    },
+    {
+      "path": "ac-register.csv",
+      "bytes": 475288,
+      "sha256": "4b42198746e8bd50556986baa197e0f33ec49aa00b277446630aad714f963ee8"
+    },
+    {
+      "path": "adoption-and-open-gates.json",
+      "bytes": 4888,
+      "sha256": "9bf30dd8d24f3e4f9a31a5979da7b63261400fe3b7c466c2d2e9e8b319ce394a"
+    },
+    {
+      "path": "case-register.csv",
+      "bytes": 75,
+      "sha256": "c41c66f79a9d3d4e7cd8a6f0b6d5716770c89214875663e9c9b0781fddff3470"
+    },
+    {
+      "path": "coverage-selection.csv",
+      "bytes": 18,
+      "sha256": "b8293799ab94f2bd9419843b3c2b3a36c414a69419ed3aa41bda989be0daef63"
+    },
+    {
+      "path": "criteria-pin-diagnostic.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "criteria-pin-diagnostic.stdout.json",
+      "bytes": 483,
+      "sha256": "9c417da05f16a0acd77ed9caecda96df5c287477dab1f3735146128605e67284"
+    },
+    {
+      "path": "criteria-provenance.json",
+      "bytes": 2534747,
+      "sha256": "9571577e3f4362828b818dbadb12a523d73a5aca1ab5a3aced795a830ff47dda"
+    },
+    {
+      "path": "criteria-source.json",
+      "bytes": 231604,
+      "sha256": "3ec514b67c7a931af1d6edf87510a6213c2e4b635992706a9c275e6a471370f6"
+    },
+    {
+      "path": "defect-register.csv",
+      "bytes": 184,
+      "sha256": "920a202334d0fc161eed61a4abb09b387b933e6762624b77d7ee58f63729c6d4"
+    },
+    {
+      "path": "exception-register.csv",
+      "bytes": 124,
+      "sha256": "3bd0b21fa931720e0c3ef72475463de9d1fa1ce915973071b7a387f3b6938d80"
+    },
+    {
+      "path": "historical-split-source.json",
+      "bytes": 5344,
+      "sha256": "d3a52fd347f293e9e338dac2e8def9f9ebd10651711395d85d415c886bf8a533"
+    },
+    {
+      "path": "negative-release-record.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "negative-release-record.stdout.json",
+      "bytes": 1516,
+      "sha256": "4e5274d2b165daf19f2525d097d146a8f2b4dd3ac01d54e3fee8e944348e3ea0"
+    },
+    {
+      "path": "provisional-risk-policy.json",
+      "bytes": 351414,
+      "sha256": "46de8a4417f6a02088bcf3082004c33cfbfb5e139f1079d71f64482d5281251b"
+    },
+    {
+      "path": "risk-register.csv",
+      "bytes": 22198,
+      "sha256": "c5e3861dfadf2222eef6a6df558d4fad765bb5743127e3e6eaa7fc39a5932802"
+    },
+    {
+      "path": "run-register.csv",
+      "bytes": 278,
+      "sha256": "362b18c6bca91fb330d8e43a97bd50e4cb757d1206bff8e39c64be9222404df8"
+    },
+    {
+      "path": "scope.json",
+      "bytes": 1105,
+      "sha256": "f44428d0c095df5ab2526bf05e4863425850e12e9f359f7f9adffe18ebf5bad4"
+    },
+    {
+      "path": "source-structure-review.json",
+      "bytes": 3140,
+      "sha256": "9f09005317bbb064831fbc81716cd65ae6c60a9fe83e2c2cfee69b6429af9287"
+    },
+    {
+      "path": "structure-diagnostic.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "structure-diagnostic.stdout.json",
+      "bytes": 1212,
+      "sha256": "82f02c84d01111d67157828c77c6c557175f8da6b8c6883ff427d3cef1fe0137"
+    },
+    {
+      "path": "traceability.csv",
+      "bytes": 151,
+      "sha256": "2ecbe10a0a6ae6b88c156c460bcf870d9cfdb8966c53e4215c382b0d78f31749"
+    }
+  ],
+  "count": 25,
+  "prior_manifest_preserved": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-standards-completion-20261011/source/history/first-source-scaffold-31cd3ee9/SOURCE-REGISTER-ARTIFACT-MANIFEST.json",
+  "owner_approval": false,
+  "qualification_claim": false
+}

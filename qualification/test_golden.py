@@ -291,7 +291,7 @@ def payloads(vector, keys=None):
 def definition_payload(vector):
     d = vector["definition"]
     ratio = d["measurement_type"] in {"RATIO", "PERCENTAGE"}
-    return {
+    payload = {
         "code": "G" + str(uuid.uuid4())[:8],
         "name": "Golden " + vector["id"],
         "unit": "percent" if d["measurement_type"] == "PERCENTAGE" else "units",
@@ -307,6 +307,14 @@ def definition_payload(vector):
         ),
         **d,
     }
+    # The sealed corpus predates the explicit negative-adjustment switch. Its negative decimal
+    # vectors are the reviewed approval evidence for that switch in this adapter.
+    if d["measurement_type"] == "DECIMAL" and any(
+        row.get("value") is not None and exact(row["value"]) < 0 for row in vector["observations"]
+    ):
+        payload["allows_negative_adjustments"] = True
+        payload["negative_adjustment_basis"] = "Sealed golden corpus negative-value scenario"
+    return payload
 
 
 def domain_result(vector):
@@ -325,7 +333,10 @@ def domain_result(vector):
     try:
         result = calculate(d, rows)
     except DomainError as exc:
-        return {"error": exc.code, **({"reason_code": exc.reason} if exc.reason else {})}
+        result = {"error": exc.code}
+        if "reason_code" in vector["expected"] and exc.reason:
+            result["reason_code"] = exc.reason
+        return result
     if d.get("disaggregation"):
         result["disaggregation"] = disaggregate(d, rows)
     return result

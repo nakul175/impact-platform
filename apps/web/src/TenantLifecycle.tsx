@@ -6,6 +6,7 @@ import { AccessUpgrade } from "./AccessUpgrade";
 import { Workers } from "./Workers";
 import { StatusBanner } from "./StatusBanner";
 import { Operators } from "./Operators";
+import { AIOutcomeEvidencePanel } from "./AIOutcomeEvidence";
 
 export type DialogComponent = React.ComponentType<{
   title: string;
@@ -352,7 +353,10 @@ export function TenantLifecycle({
             changed={() => refresh().catch((e) => setError(explain(e)))}
           />
           {directory.operator && (
-            <Workers request={request} explain={explain} />
+            <>
+              <AIOutcomeEvidencePanel request={request} explain={explain} />
+              <Workers request={request} explain={explain} />
+            </>
           )}
         </>
       )}

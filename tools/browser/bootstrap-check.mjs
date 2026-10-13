@@ -208,6 +208,18 @@ try {
       .getByText("Reviewer", { exact: true })
       .waitFor();
   });
+  await test("New administrator deliberately sets up the tenant reference data", async () => {
+    await second
+      .getByRole("button", {
+        name: "Set up the standard reference data",
+        exact: true,
+      })
+      .click();
+    await second
+      .getByRole("status")
+      .filter({ hasText: "Standard reference data set up" })
+      .waitFor();
+  });
   await test("Second administrator requests business access and owner approves", async () => {
     await second
       .locator("tbody tr")
@@ -271,6 +283,12 @@ try {
       .fill("First reviewed programme");
     await second.getByLabel("Start date", { exact: true }).fill("2026-01-01");
     await second.getByLabel("End date", { exact: true }).fill("2026-12-31");
+    await second
+      .getByLabel("Reporting calendar", { exact: true })
+      .selectOption({ index: 1 });
+    await second
+      .getByRole("button", { name: "Review complete", exact: true })
+      .click();
     await second
       .getByRole("button", { name: "Save draft", exact: true })
       .click();

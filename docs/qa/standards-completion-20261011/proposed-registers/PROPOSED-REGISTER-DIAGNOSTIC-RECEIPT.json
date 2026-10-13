@@ -1,0 +1,198 @@
+{
+  "record": "PROPOSED-REGISTER-ACTUAL-OFFLINE-DIAGNOSTIC",
+  "recorded_at_utc": "2026-10-11T05:43:35.047121+00:00",
+  "runtime": "Python 3.12.15",
+  "commands": [
+    {
+      "name": "criteria-pin",
+      "argv": [
+        "/Users/athena/.local/bin/python3.12",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/criteria_pin.py",
+        "--source",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/proposed-registers/criteria-source.json"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "outputs/imprana-standards-completion-20261011/source/proposed-registers/criteria-pin.stdout.json",
+        "sha256": "9c417da05f16a0acd77ed9caecda96df5c287477dab1f3735146128605e67284",
+        "bytes": 483
+      },
+      "stderr": {
+        "path": "outputs/imprana-standards-completion-20261011/source/proposed-registers/criteria-pin.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "name": "structure",
+      "argv": [
+        "/Users/athena/.local/bin/python3.12",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+        "--registers",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/proposed-registers",
+        "--root",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011"
+      ],
+      "exit_code": 1,
+      "stdout": {
+        "path": "outputs/imprana-standards-completion-20261011/source/proposed-registers/structure.stdout.json",
+        "sha256": "6ebdf15657d76f3bbc4c4c864ddeced4955d3f2bbcca1564aa77de6769fd8ef0",
+        "bytes": 518604
+      },
+      "stderr": {
+        "path": "outputs/imprana-standards-completion-20261011/source/proposed-registers/structure.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "name": "negative-release-record",
+      "argv": [
+        "/Users/athena/.local/bin/python3.12",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+        "--registers",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/proposed-registers",
+        "--root",
+        "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011",
+        "--release"
+      ],
+      "exit_code": 1,
+      "stdout": {
+        "path": "outputs/imprana-standards-completion-20261011/source/proposed-registers/negative-release-record.stdout.json",
+        "sha256": "bddfc2eb2dc669eecd65d677bbde6bbbd83135037805097ec2ff8c920d430696",
+        "bytes": 518956
+      },
+      "stderr": {
+        "path": "outputs/imprana-standards-completion-20261011/source/proposed-registers/negative-release-record.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    }
+  ],
+  "case_manifest": {
+    "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/case-design/CASE-DESIGN-MANIFEST.json",
+    "sha256": "4b5de1cc76ea171c34ebb5f3af946af6843d97bf61d620db7e1d88e96094949c",
+    "bytes": 10104521
+  },
+  "source_scaffold_unchanged": true,
+  "source_manifest": {
+    "path": "work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/source-registers/SOURCE-REGISTER-ARTIFACT-MANIFEST.json",
+    "sha256": "54b06a1737ce62a3a37a3654169682eef2c1b3ca9ba90d16888b142391e52daf",
+    "bytes": 4563
+  },
+  "checker": {
+    "path": "outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+    "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9",
+    "bytes": 22397
+  },
+  "helper": {
+    "path": "outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/criteria_pin.py",
+    "sha256": "23bdaed08df3454428bbad3a4fd23b8b4a86efe54cbe6fe94fe370d96a9a0920",
+    "bytes": 1696
+  },
+  "schema": {
+    "path": "outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/register-schema.json",
+    "sha256": "4f24182ea4beda4026af524ffe122eaf20c1c09aba2fbc1b3ab0e0f1165cd65e",
+    "bytes": 2006
+  },
+  "statuses": {
+    "path": "outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/statuses.json",
+    "sha256": "ba979a6ea772cd6e468ce7928c98653f93720b4735e7a1cd66a81d072c966ec1",
+    "bytes": 1058
+  },
+  "exact8headers": {
+    "ac-register": true,
+    "case-register": true,
+    "traceability": true,
+    "run-register": true,
+    "coverage-selection": true,
+    "defect-register": true,
+    "risk-register": true,
+    "exception-register": true
+  },
+  "full_population": {
+    "ACs": 1328,
+    "cases": 1328,
+    "mappings": 1328,
+    "risk_families": 59,
+    "manual_recommendations": 66,
+    "auto_recommendations": 1262,
+    "accepted_bindings": 0,
+    "actual_runs": 0
+  },
+  "structure_exit": 1,
+  "structure_errors": 3786,
+  "structure_warnings": 0,
+  "structure_error_categories": {
+    "missing automation_locator": 1262,
+    "missing marker": 1262,
+    "invalid automation file": 1262
+  },
+  "actual_coverage_report": null,
+  "actual_report_other_fields": {
+    "mode": "STRUCTURE_AND_REPORT",
+    "counts_unit": "selected required AC-to-case mappings (not unique tests)",
+    "result_counts": {
+      "PASS": 0,
+      "FAIL": 0,
+      "BLOCKED": 0,
+      "NOT_RUN": 1328,
+      "SKIPPED": 0,
+      "NOT_APPLICABLE": 0
+    },
+    "freshness_counts": {
+      "CURRENT": 0,
+      "STALE": 0,
+      "UNASSESSED": 1328
+    },
+    "historical_qualification_counts": {},
+    "selected_unique_runs": 0,
+    "unknown_applicability": 1328,
+    "planned_coverage": {
+      "numerator": 1328,
+      "denominator": 1328,
+      "ratio": 1.0
+    },
+    "validated_coverage": {
+      "numerator": 0,
+      "denominator": 1328,
+      "ratio": 0.0
+    },
+    "required_completion": {
+      "numerator": 0,
+      "denominator": 1328,
+      "ratio": 0.0
+    },
+    "selected_pass_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "ratio": null
+    },
+    "resolved_evidence_root": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/proposed-registers",
+    "disclaimer": "Offline structural/coverage check only. Does not authenticate evidence, verify omitted ACs, approvals, numeric thresholds or complete release readiness."
+  },
+  "negative_release_exit": 1,
+  "negative_release_errors": 3794,
+  "release_extra_errors": [
+    "release scope: missing build_sha",
+    "release scope: missing artifact_digest",
+    "release scope: missing environment",
+    "release scope: missing config_version",
+    "release scope: missing data_version",
+    "release: unknown applicability",
+    "release: incomplete validated AC coverage",
+    "release: required mapping not PASS/CURRENT"
+  ],
+  "missing_nonchecker_bindings": {
+    "roadmap_id": 1328,
+    "actual_operating_release_id": 1328,
+    "accepted_mode": 1328,
+    "source_owner_approval": true,
+    "provisional_risk_only": 1328
+  },
+  "disposition": "GENUINE_EXPECTED_UNBOUND_DESIGN_FAILURES_RETAINED; not product execution, accepted coverage or readiness.",
+  "run_selection_defect_exception_rows": 0,
+  "product_tests_run": false,
+  "native_mutation": false,
+  "owner_approval": false
+}

@@ -1,0 +1,25 @@
+{
+  "disposition": "PASS_DOCUMENT_INTEGRITY_ONLY",
+  "artifact_manifest": {
+    "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/ARTIFACT-MANIFEST.json",
+    "sha256": "3964cd4ffc3d39028bfd50b8679b3a393b35fc826b7ccc3c808f385440e4b713"
+  },
+  "integrity_result_sha256": "8a09f8cf887809cda7eea1e9595998f97a098e48a72ebdd25a84f3b3c1378f28",
+  "source_pins_sha256": "446228889914c019c4fbcb258cb5a56bb76476e8a5630a86a0703f36a6ab4470",
+  "builder_sha256": "93b6a25921aeb91911988579e77ec6f26005892a0f1b04e92558c0963529b57d",
+  "validator_sha256": "5390e949c274ae2da3a22a4c0374546fe8a944460a186cbe0ba9734bf9c2b4e9",
+  "counts": {
+    "elements": 2893,
+    "shared_draft_records": 55,
+    "planning_gate_type_contracts": 56,
+    "completion_edges": 779,
+    "design_edges": 5508,
+    "inputs_checked": 24,
+    "corruption_controls": 6
+  },
+  "source_input_revision": "4472cc845b62c32ffd074d2afee49b5d32f98879",
+  "actual_reviews": 0,
+  "trust_or_approval": null,
+  "package_workflow": "Not rerun; retained results still needs_input",
+  "product_tests": "Not run"
+}

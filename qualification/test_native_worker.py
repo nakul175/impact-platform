@@ -81,7 +81,12 @@ def heartbeat(live, worker_id):
 
 def drain(live):
     """Deliver whatever earlier tests left due, so a test's own rows are the only due rows."""
-    Worker(settings(live), worker_id="native-drain-" + uuid4().hex[:8]).run_once()
+    worker = Worker(settings(live), worker_id="native-drain-" + uuid4().hex[:8])
+    for _ in range(100):
+        summary = worker.run_once()
+        if summary["claimed"] == 0:
+            return
+    raise AssertionError("Native delivery backlog did not drain within 100 passes")
 
 
 def test_native_worker_process_sends_over_smtp_with_no_transaction_open(live):
@@ -355,19 +360,21 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
     events = {str(deliveries(live, r["object_id"])[0]["event_id"]) for r in receipts}
     # Each send is shorter than the lease, so the row in flight is renewed and stays with worker A.
     # Rows still waiting keep the original batch expiry and become due during that send. Worker B
-    # claims them in this process at the moment the database clock says so. A second subprocess
-    # cannot: its first pass walks every tenant (several seconds) and either arrives while the
-    # lease is still valid, or the first worker re-claims the rows itself. A send longer than
-    # stop()'s wait also cannot be interrupted — time.sleep returns before SIGTERM is handled.
+    # claims them in this process at the moment the database clock says so.
     delay = 8
-    slow = start(
-        live,
-        "native-batch-a-" + uuid4().hex[:6],
-        batch_size=6,
-        synthetic_delay=delay,
-        lease_seconds=delay + 2,
-        smtp_timeout=1,
+    slow = Worker(
+        settings(
+            live,
+            # A prior native race may leave unexpired leases which drain() cannot yet reclaim.
+            # Claim enough rows to include this test's six, then release every unrelated claim.
+            batch_size=100,
+            synthetic_delay=delay,
+            lease_seconds=delay + 2,
+            smtp_timeout=1,
+        ),
+        worker_id="native-batch-a-" + uuid4().hex[:6],
     )
+    slow.sink = Path(slow.s.synthetic_sink)
     fast = Worker(
         settings(live, batch_size=6, lease_seconds=30, synthetic_delay=0),
         worker_id="native-batch-b-" + uuid4().hex[:6],
@@ -386,27 +393,29 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
         taken["summary"] = summary
         return True
 
-    try:
-        wait_for(
-            lambda: all(deliveries(live, r["object_id"])[0]["state"] != "PENDING" for r in receipts),
-            # The first pass walks every tenant of the shared database before it reaches this one.
-            # A loaded runner needs far longer than one send, so this wait is not the claim itself.
-            timeout=90,
-        )
-        wait_for(take_expired, timeout=delay + 30)
-        assert taken["summary"]["sent"] >= 1
-        wait_for(
-            lambda: (
-                all(deliveries(live, r["object_id"])[0]["state"] == "SENT" for r in receipts)
-                and "skipped: lease expired" in slow.log.read_text()
-            ),
-            timeout=delay + 30,
-        )
-    finally:
-        assert stop(slow, timeout=delay + 15) == 0
+    tenant = live.fixture["tenant_a"]
+    summary = empty_summary()
+    claimed = slow.claim(tenant, summary)
+    batch = [row for row in claimed if str(row["event_id"]) in events]
+    unrelated = [row for row in claimed if str(row["event_id"]) not in events]
+    if unrelated:
+        assert slow.release(tenant, unrelated) == len(unrelated)
+    assert {str(row["event_id"]) for row in batch} == events
+
+    def send_claimed_batch():
+        for row in batch:
+            slow.process(tenant, row, summary)
+
+    sending = threading.Thread(target=send_claimed_batch)
+    sending.start()
+    wait_for(take_expired, timeout=delay + 30)
+    assert taken["summary"]["sent"] >= 1
+    sending.join(timeout=delay * 2 + 10)
+    assert not sending.is_alive()
+    assert summary["stale_refused"] >= 1
+    assert all(deliveries(live, r["object_id"])[0]["state"] == "SENT" for r in receipts)
     sent = [m["event_id"] for w in [slow, fast] for m in sink(w) if m["event_id"] in events]
     assert sorted(sent) == sorted(events), sent
     generations = [deliveries(live, r["object_id"])[0]["lease_generation"] for r in receipts]
     # The scenario really happened: some rows were taken over from the first worker.
     assert max(generations) >= 2 and [m["event_id"] for m in sink(fast) if m["event_id"] in events]
-    assert "skipped: lease expired" in slow.log.read_text()

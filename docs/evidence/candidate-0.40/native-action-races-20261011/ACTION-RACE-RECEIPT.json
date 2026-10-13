@@ -1,0 +1,53 @@
+{
+  "phase": "evidence review after distinct source review",
+  "reviewer": "root agent; not independent human signoff",
+  "observed_at": "2026-10-11T10:25:43.439362+00:00",
+  "parent_head": "18f6615505033a85fdbf22a6ae6634737d2a2fba",
+  "source_sha256": {
+    "qualification/test_ai_diagnosis_native.py": "74c043b9553a147fb87ab925850335c6aae2a5a247232bbf662f7f11f6ceaf06"
+  },
+  "source_changes_during_run": [],
+  "focused_native": {
+    "passed": 18,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "existing_cases": 10,
+    "added_cases": 8,
+    "queued_matrix_cases": 14
+  },
+  "new_case_names": [
+    "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[complete-ai.diagnosis.read]",
+    "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[complete-ai.diagnosis.manage]",
+    "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[revise-ai.diagnosis.read]",
+    "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[revise-ai.diagnosis.manage]",
+    "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[complete_replay-ai.diagnosis.read]",
+    "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[complete_replay-ai.diagnosis.manage]",
+    "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[revise_replay-ai.diagnosis.read]",
+    "test_native_queued_diagnosis_write_rechecks_current_grant_before_mutation_or_replay[revise_replay-ai.diagnosis.manage]"
+  ],
+  "observed_advisory_wait_before_synthetic_authority_withdrawal": true,
+  "unchanged_domain_history_receipt_on_refusal": true,
+  "grant_restored_then_same_operation_succeeds_or_replays": true,
+  "private_cluster_stopped": true,
+  "historical_evidence_overwritten": [],
+  "limits": [
+    "This focused runner uses --perf solely to isolate JUnit output and omit unrelated recovery/upgrade reruns, not a performance measurement",
+    "Actual synthetic current-grant narrowing, not the governed revocation workflow",
+    "Prior full native2484 and identity18 results remain bound to their previous source checkpoints",
+    "Container runtime absent; container gate not run; no system install/spending/hosted CI/release acceptance"
+  ],
+  "story_done": false,
+  "next_story_started": false,
+  "remote_actions": false,
+  "artifact_hashes": {
+    "native-action-races.log": "2433f407d862825b8a4a96bd7016293d0e26730022d903395d7f69ef9c075ce8",
+    "RUN-RECEIPT.json": "f8703051d5e8d0528a1734b52151cbdeb293bbf3ad2f747be9bec0c1ee14e096",
+    "cluster-start.log": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad",
+    "native-action-races-tests.xml": "38b4d3d5243a7cab6cc05c4d014a47c08e0cc769019305757fe61de5cdadc41d",
+    "cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "local-orchestration-source.py": "1063730a794cee94f4d4316311218a24373cd61cac7b68a819b59c9baf8381c8",
+    "SOURCE-REVIEW.json": "58aabaf70ee58ba709e6c7127a0b6eba46deeb9660ac97489ecb8c0ba8d2f89a",
+    "initdb.log": "e9aa796799e6fcb6c15f6df5c5053d5ae500f23e5bfb275b85bc7322d76b42cf"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "record": "IMPRANA-PLANNING-EXPORT-PROTECTED-SOURCE-OBSERVATION",
+  "recorded_at_utc": "2026-10-11T05:37:24.221640+00:00",
+  "scope": "Exact primary source, aliases, task/matrix/779dependency source,0.39 threat/review/version and owner configuration bytes; source-only observation, no live enforcement or product result",
+  "checks": [
+    {
+      "path": "docs/backlog/backlog.csv",
+      "baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+      "baseline_sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+      "current_sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+      "exact": true
+    },
+    {
+      "path": "docs/backlog/README.md",
+      "baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+      "baseline_sha256": "44d0efa01b27103b0819bbd27072f3d2855047f92bed7a2d456c81c77bb897cc",
+      "current_sha256": "44d0efa01b27103b0819bbd27072f3d2855047f92bed7a2d456c81c77bb897cc",
+      "exact": true
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/bundle-review/CRITERION-ALIAS-MAP.json",
+      "baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+      "baseline_sha256": "279c1bec0920f02dba67f43cb6fcb6ce5f2fa311c79dc98dc18ac0a4f29c99ee",
+      "current_sha256": "279c1bec0920f02dba67f43cb6fcb6ce5f2fa311c79dc98dc18ac0a4f29c99ee",
+      "exact": true
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/task-author/task-contracts.proposed.json",
+      "baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+      "baseline_sha256": "c3793154d8a020e883d07d8492e7327515f510427e69efe1136f4ce886ff29a8",
+      "current_sha256": "c3793154d8a020e883d07d8492e7327515f510427e69efe1136f4ce886ff29a8",
+      "exact": true
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+      "baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+      "baseline_sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+      "current_sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+      "exact": true
+    },
+    {
+      "path": "docs/release-reviews/release-review-0.39.0.json",
+      "baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+      "baseline_sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+      "current_sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+      "exact": true
+    },
+    {
+      "path": "docs/current/threat-register.json",
+      "baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+      "baseline_sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+      "current_sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+      "exact": true
+    },
+    {
+      "path": "docs/CODEOWNERS",
+      "baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+      "baseline_sha256": "f02d2371127f001543067a76f938032e9b579d278d75250731f989b23d3ab68b",
+      "current_sha256": "f02d2371127f001543067a76f938032e9b579d278d75250731f989b23d3ab68b",
+      "exact": true
+    },
+    {
+      "path": "VERSION.json",
+      "baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+      "baseline_sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+      "current_sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+      "exact": true
+    }
+  ],
+  "passed": 9,
+  "total": 9,
+  "approved_scope_or_owner_review": false,
+  "product_execution": false
+}

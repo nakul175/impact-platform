@@ -1,0 +1,9 @@
+# Release 0.61 coding candidate: internal champion support
+
+US-AD-02 / APL-356 (frozen Gherkin SHA-256 `104bec33519a1ac254cb681667f73a0050d253626025835dda9d24d00b128de7`) adds a deployment-bound internal champion appointment. The current tenant owner, provisionally representing the Executive Director in the existing identity model, can appoint an active colleague only when that colleague can already read the exact adoption plan and a named support owner can currently read and manage it.
+
+The server owns the `CHAMPION` designation and pinned guide edition. It does not create an IAM role, widen a capability ceiling or grant access. A confirmed appointment requires one to twelve unique future internal check-ins, an available guide and active participant memberships. The immutable appointment pins the current plan revision, deployment attestation, solution, participants, guide hash and check-in IDs. Missing guide access, support ownership or schedule refuses the appointment without writing a falsely complete record.
+
+Participants see only appointments in which they are champion or support owner; currently scoped managers may see the current deployment's appointments. Only the appointed champion can open the guide, and the guide read rechecks current plan authority and the current deployment attestation. Check-ins are internal schedule records, not proof of calendar delivery, reminders, attendance or completed support.
+
+Migration 0055 registers the `AIChampionAppointment` kind in the existing forced-RLS registry and adds restrictive registry/revision policies because the worker has no duty to read participant identities or schedules. It adds no table or runtime grant. This is a coding-only candidate. Contract generation and source parsing are preparation; tests, CI, merge, staging deployment and owner acceptance remain deferred to the combined qualification phase.

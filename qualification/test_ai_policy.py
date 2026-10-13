@@ -15,6 +15,7 @@ import psycopg
 import pytest
 from starlette.requests import Request
 
+from impact_api import ai_enablement as enablement_module, ai_policy
 from impact_api.ai_enablement import AIEnablement
 from impact_api.auth import Auth
 from impact_api.config import Settings
@@ -29,15 +30,21 @@ from test_reporting import package_data
 POLICY = "ai-enablement/policy"
 
 
+@pytest.fixture(autouse=True)
+def passed_advisory_evaluation(monkeypatch):
+    """Policy scenarios isolate a synthetic exact candidate; evaluation fail-closed has its own suite."""
+    monkeypatch.setattr(enablement_module, "require_exposure", lambda use_case, configuration: {})
+
+
 def advisory_rule(**changes):
-    """The scenario's rule: INTERNAL data, destination openai-us, purpose "planning advice", English,
+    """The scenario's rule: INTERNAL data, destination openai-us, the advisory purpose, English,
     human review, a budget of 100 units and no tools."""
     return {
         "use_case": "ADVISORY_DRAFT",
         "enabled": True,
         "data_classes": ["INTERNAL"],
         "destinations": ["openai-us"],
-        "purposes": ["planning advice"],
+        "purposes": ["AI_ADOPTION_ADVISORY"],
         "languages": ["en"],
         "review_mode": "HUMAN_REVIEW",
         "budget_units": 100,
@@ -97,6 +104,7 @@ def counts(live):
 class SpyProvider:
     configured = True
     destination = "openai-us"
+    evaluation_configuration = {}
 
     def __init__(self):
         self.calls = 0
@@ -129,6 +137,7 @@ def advisory_body(version, sensitive=False, **extra):
         "operation_id": str(uuid4()),
         "consent": True,
         "policy_version": version,
+        "purpose": "AI_ADOPTION_ADVISORY",
         "profile": {
             "sector": "GENERAL",
             "team_size": 8,
@@ -170,7 +179,7 @@ def test_administrator_enables_one_use_case_as_a_new_audited_policy_version(live
     assert seen["use_cases"] == [advisory_rule()]
     assert [rule["use_case"] for rule in seen["use_cases"] if rule["enabled"]] == ["ADVISORY_DRAFT"]
     assert seen["created_by"] == live.fixture["actors"]["admin"]["principal_id"]
-    assert seen["reserved_use_cases"] == ["EXTRACTION", "REPORT_DRAFT", "CHAT"]
+    assert seen["reserved_use_cases"] == list(ai_policy.RESERVED_USE_CASES)
     # The server switch is off in qualification runs: the policy alone never makes AI available.
     assert seen["server_enabled"] is False and seen["advisory_available"] is False
     catalog = expect(live.request(live.path("ai-enablement/catalog"), actor="author"), 200)
@@ -375,15 +384,16 @@ def test_request_made_against_an_old_policy_version_is_refused(live):
 # Scenario: Reject implicit tools
 
 
-def test_tools_are_never_implicit_or_grantable(live):
+def test_tools_are_never_implicit_and_need_both_policy_and_runtime_approval(live):
     before = counts(live)
-    tool = put(live, command(live, [advisory_rule(tools=["web_search"])]))
-    assert expect(tool, 422)["code"] == "VALIDATION_FAILED"
-    chat = expect(put(live, command(live, [advisory_rule(), advisory_rule(use_case="CHAT")])), 422)
+    expect(put(live, command(live, [advisory_rule(tools=["web_search"])])), 200)
+    chat = expect(
+        put(live, command(live, [advisory_rule(), advisory_rule(use_case="INDICATOR_DESIGN")])), 422
+    )
     assert chat["reason_code"] == "AI_USE_CASE_RESERVED"
-    assert counts(live)["versions"] == before["versions"]
-    # CHAT may be recorded only as off and with an empty tools list.
-    receipt = enact(live, [advisory_rule(), advisory_rule(use_case="CHAT", enabled=False)])
+    assert counts(live)["versions"] == before["versions"] + 1
+    # A reserved use case may be recorded only as off. A named tool is never implicit.
+    receipt = enact(live, [advisory_rule(), advisory_rule(use_case="INDICATOR_DESIGN", enabled=False)])
     seen = current(live, actor="author")
     assert [rule["tools"] for rule in seen["use_cases"]] == [[], []]
     before = counts(live)
@@ -495,8 +505,8 @@ def test_policy_rows_are_insert_only_and_checked_by_the_database(live):
     )
     valid = [tenant, receipt["policy_version_id"], "CHAT", False, [], [], [], [], "HUMAN_REVIEW", 0, []]
     for change in [
-        {3: True},  # a reserved use case enabled
-        {10: ["web_search"]},  # any tool
+        {2: "INDICATOR_DESIGN", 3: True},  # a reserved use case enabled
+        {10: [f"tool_{i}" for i in range(21)]},  # bounded tool list
         {5: ["openai-eu"]},  # an unreviewed destination
         {4: ["SECRET"]},  # an unknown data class
         {7: ["english"]},  # not a language tag

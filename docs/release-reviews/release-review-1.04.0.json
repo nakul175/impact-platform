@@ -1,0 +1,17 @@
+{
+  "release": "1.04.0",
+  "story": "FR-AI-006",
+  "linear_issue": "APL-538",
+  "state": "CODING_CANDIDATE_ONLY",
+  "scope": "Closed typed pooled-percentage analysis over exact governed results",
+  "policy_activation": "RESERVED_DISABLED",
+  "deterministic_tool": "governed.pool_ratio.v1",
+  "model_recomputed": false,
+  "arbitrary_query_executed": false,
+  "official_claim_requires_exact_match": true,
+  "tests": "NOT_RUN_BY_OWNER_REQUEST",
+  "ci": "NOT_RUN_BY_OWNER_REQUEST",
+  "merge": "NOT_MERGED",
+  "staging": "NOT_DEPLOYED",
+  "acceptance": "PENDING"
+}

@@ -1,0 +1,9 @@
+# Release 0.59 coding candidate: accountable deployment plans
+
+US-DP-03 / APL-360 (frozen story Gherkin SHA-256 `dbef0988cad27800bb1ab125ff2d335bd287577d780884d91993597a8c0075ca`) adds a server-owned deployment template to a saved AI adoption plan with at least one selected solution. Generation requires exact active tenant principals for the PREPARE, PILOT and ROLLOUT milestones. The fixed template supplies bounded titles and acceptance criteria, and stores the exact template version with the immutable adoption-plan revision.
+
+Each milestone owner can update only their own milestone through a dedicated command. Progress is one of NOT_STARTED, IN_PROGRESS, BLOCKED or ACCEPTED, with a bounded note. The command holds the tenant lock, rechecks current plan and management authority, requires the exact head revision and preserves an exact operation receipt. An ordinary plan save cannot supply, clear or directly alter deployment state; it retains the server-owned deployment payload. If any other saved plan context or its pinned impact reference changes, every milestone returns to NOT_STARTED with an empty progress note so acceptance from an older solution or plan cannot complete the new revision.
+
+Completion is a separate exact-revision command. It refuses a plan without a selected solution or the deployment template, any milestone without a named owner or nonblank acceptance criteria, or any milestone not explicitly ACCEPTED. A successful command creates a Completed immutable revision and prevents later ordinary draft edits. The adoption workspace exposes template generation, owner-only progress controls and the completion gate without treating a saved receipt as owner acceptance.
+
+This is a coding-only candidate. Formatting, contract generation and source parsing are allowed preparation checks; tests, CI, merge, staging deployment and owner acceptance remain deferred to the combined qualification phase.

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="4" failures="0" skipped="0" tests="4" time="0.289" timestamp="2026-10-11T16:57:35.366178+05:30" hostname="Athenas-MacBook-Pro.local"><testcase classname="qualification.diagnosis_worker_fence_experiment" name="test_real_worker_login_hides_exact_diagnosis_history_and_refuses_inserts[False]" time="0.063"><error message="failed on setup with &quot;psycopg.errors.InsufficientPrivilege: permission denied for schema impact&#10;LINE 1: SELECT object_id FROM impact.object_revision WHERE revision_...&#10;                              ^&quot;">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108f40a70&gt;
+
+    @pytest.fixture(scope="module", autouse=True)
+    def draft_policy(live):
+        assert os.environ.get("IMPACT_NATIVE_TEST") == "1", "Real native login harness required"
+        row = save(live)
+        with login("WORKER") as c, c.transaction():
+            c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+&gt;           assert c.execute(
+                "SELECT object_id FROM impact.object_revision WHERE revision_id=%s", (row["revision_id"],)
+            ).fetchone(), "Current inherited access must be observed before the draft"
+
+qualification/diagnosis_worker_fence_experiment.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;psycopg.Connection [BAD] at 0x10a5513d0&gt;
+query = 'SELECT object_id FROM impact.object_revision WHERE revision_id=%s'
+params = ('26f3e769-7f43-48a7-a520-a33d816237d2',), prepare = None
+binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -&gt; Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.InsufficientPrivilege: permission denied for schema impact
+E           LINE 1: SELECT object_id FROM impact.object_revision WHERE revision_...
+E                                         ^
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: InsufficientPrivilege</error></testcase><testcase classname="qualification.diagnosis_worker_fence_experiment" name="test_real_worker_login_hides_exact_diagnosis_history_and_refuses_inserts[True]" time="0.000"><error message="failed on setup with &quot;psycopg.errors.InsufficientPrivilege: permission denied for schema impact&#10;LINE 1: SELECT object_id FROM impact.object_revision WHERE revision_...&#10;                              ^&quot;">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108f40a70&gt;
+
+    @pytest.fixture(scope="module", autouse=True)
+    def draft_policy(live):
+        assert os.environ.get("IMPACT_NATIVE_TEST") == "1", "Real native login harness required"
+        row = save(live)
+        with login("WORKER") as c, c.transaction():
+            c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+&gt;           assert c.execute(
+                "SELECT object_id FROM impact.object_revision WHERE revision_id=%s", (row["revision_id"],)
+            ).fetchone(), "Current inherited access must be observed before the draft"
+
+qualification/diagnosis_worker_fence_experiment.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;psycopg.Connection [BAD] at 0x10a5513d0&gt;
+query = 'SELECT object_id FROM impact.object_revision WHERE revision_id=%s'
+params = ('26f3e769-7f43-48a7-a520-a33d816237d2',), prepare = None
+binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -&gt; Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.InsufficientPrivilege: permission denied for schema impact
+E           LINE 1: SELECT object_id FROM impact.object_revision WHERE revision_...
+E                                         ^
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: InsufficientPrivilege</error></testcase><testcase classname="qualification.diagnosis_worker_fence_experiment" name="test_existing_reminders_and_worker_grants_with_draft" time="0.000"><error message="failed on setup with &quot;psycopg.errors.InsufficientPrivilege: permission denied for schema impact&#10;LINE 1: SELECT object_id FROM impact.object_revision WHERE revision_...&#10;                              ^&quot;">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108f40a70&gt;
+
+    @pytest.fixture(scope="module", autouse=True)
+    def draft_policy(live):
+        assert os.environ.get("IMPACT_NATIVE_TEST") == "1", "Real native login harness required"
+        row = save(live)
+        with login("WORKER") as c, c.transaction():
+            c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+&gt;           assert c.execute(
+                "SELECT object_id FROM impact.object_revision WHERE revision_id=%s", (row["revision_id"],)
+            ).fetchone(), "Current inherited access must be observed before the draft"
+
+qualification/diagnosis_worker_fence_experiment.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;psycopg.Connection [BAD] at 0x10a5513d0&gt;
+query = 'SELECT object_id FROM impact.object_revision WHERE revision_id=%s'
+params = ('26f3e769-7f43-48a7-a520-a33d816237d2',), prepare = None
+binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -&gt; Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.InsufficientPrivilege: permission denied for schema impact
+E           LINE 1: SELECT object_id FROM impact.object_revision WHERE revision_...
+E                                         ^
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: InsufficientPrivilege</error></testcase><testcase classname="qualification.diagnosis_worker_fence_experiment" name="test_existing_pinned_export_rendering_with_draft" time="0.000"><error message="failed on setup with &quot;psycopg.errors.InsufficientPrivilege: permission denied for schema impact&#10;LINE 1: SELECT object_id FROM impact.object_revision WHERE revision_...&#10;                              ^&quot;">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x108f40a70&gt;
+
+    @pytest.fixture(scope="module", autouse=True)
+    def draft_policy(live):
+        assert os.environ.get("IMPACT_NATIVE_TEST") == "1", "Real native login harness required"
+        row = save(live)
+        with login("WORKER") as c, c.transaction():
+            c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+&gt;           assert c.execute(
+                "SELECT object_id FROM impact.object_revision WHERE revision_id=%s", (row["revision_id"],)
+            ).fetchone(), "Current inherited access must be observed before the draft"
+
+qualification/diagnosis_worker_fence_experiment.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;psycopg.Connection [BAD] at 0x10a5513d0&gt;
+query = 'SELECT object_id FROM impact.object_revision WHERE revision_id=%s'
+params = ('26f3e769-7f43-48a7-a520-a33d816237d2',), prepare = None
+binary = False
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool = False,
+    ) -&gt; Cursor[Row]:
+        """Execute a query and return a cursor to read its results."""
+        try:
+            cur = self.cursor()
+            if binary:
+                cur.format = BINARY
+    
+            if isinstance(query, Template):
+                if params is not None:
+                    raise TypeError(
+                        "'execute()' with string template query doesn't support parameters"
+                    )
+                return cur.execute(query, prepare=prepare)
+            else:
+                return cur.execute(query, params, prepare=prepare)
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.InsufficientPrivilege: permission denied for schema impact
+E           LINE 1: SELECT object_id FROM impact.object_revision WHERE revision_...
+E                                         ^
+
+../impact-platform/.venv/lib/python3.12/site-packages/psycopg/connection.py:304: InsufficientPrivilege</error></testcase></testsuite></testsuites>

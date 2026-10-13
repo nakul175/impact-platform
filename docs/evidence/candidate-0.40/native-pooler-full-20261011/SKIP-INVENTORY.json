@@ -1,0 +1,132 @@
+{
+  "tests": 2714,
+  "passed": 2690,
+  "skipped": 24,
+  "failures": 0,
+  "errors": 0,
+  "deselected": 1,
+  "warning": "One retained Starlette/httpx deprecation warning",
+  "rule": "Original XML/skip outcomes retained; separately run modes do not reclassify original skips",
+  "cases": [
+    {
+      "class": "qualification.test_ai_diagnosis_idp",
+      "case": "test_diagnosis_provider_session_history_replay_and_logout",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_ai_diagnosis_recovery",
+      "case": "test_exact_diagnosis_history_and_receipts_on_restored_api",
+      "reason": "Requires an actual private native pg_dump/pg_restore copy and replacement unprivileged API"
+    },
+    {
+      "class": "qualification.test_ai_plan_exports_upgrade",
+      "case": "test_actual_old_http_ceiling_requires_three_party_review_and_keeps_revocations",
+      "reason": "Separate actual historical HTTP/native database gate"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_platform_runs_against_the_live_provider",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_authorization_code_with_pkce_establishes_a_session",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_state_replay_and_browser_binding_are_refused",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_nonce_mismatch_is_refused",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_pkce_verifier_mismatch_is_refused",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_disabled_provider_account_cannot_sign_in",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_password_only_session_cannot_perform_fresh_assurance_operations",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_totp_step_up_allows_fresh_assurance_until_300_seconds",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_bearer_tokens_are_validated_through_the_provider_jwks",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_expired_provider_token_is_refused",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_provider_role_claims_grant_nothing",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_logout_revokes_the_session_and_ends_the_provider_session",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_provider_administrator_logout_revokes_exactly_that_session",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_backchannel_logout_refuses_unverified_tokens",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_backchannel_logout_body_is_bounded",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_logout_after_idle_timeout_still_clears_the_cookie",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_live_idp",
+      "case": "test_operator_onboarding_through_the_provider_account_operations",
+      "reason": "Live identity-provider checks need scripts/run.py test --idp keycloak (a local Keycloak); the default suites sign in through the development login"
+    },
+    {
+      "class": "qualification.test_native_nonfunctional",
+      "case": "test_native_database_restart_api_and_worker_recover_without_restart_and_receipts_hold",
+      "reason": "set IMPACT_DB_STOP_COMMAND and IMPACT_DB_START_COMMAND to commands that stop and start the suite's own PostgreSQL cluster (for example pg_ctl on a private initdb cluster); the runner never restarts a server it does not own and CI's service container cannot be restarted from the job"
+    },
+    {
+      "class": "qualification.test_native_restart",
+      "case": "test_phase_1",
+      "reason": "runs only as restart phase 1 of scripts/run.py test --native, which restarts the API between the phases"
+    },
+    {
+      "class": "qualification.test_native_restart",
+      "case": "test_phase_2",
+      "reason": "runs only as restart phase 2 of scripts/run.py test --native, which restarts the API between the phases"
+    },
+    {
+      "class": "qualification.test_worker",
+      "case": "test_worker_refuses_a_privileged_connection_when_unprivileged_is_required",
+      "reason": "PGlite only: the native login is unprivileged by provisioning"
+    }
+  ]
+}

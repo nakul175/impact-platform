@@ -29,7 +29,9 @@ IMPLEMENTED_OPERATIONS = {
 DELEGABLE_CAPABILITIES = frozenset(
     p["capability"]
     for p in OPERATIONS.values()
-    if p["operation_id"] in IMPLEMENTED_OPERATIONS and not p.get("purpose_required")
+    if p["operation_id"] in IMPLEMENTED_OPERATIONS
+    and not p.get("purpose_required")
+    and p["capability"] != "platform.operator"
 )
 REFERENCES = json.loads((ROOT / "specification/database/reference-map.json").read_text())
 

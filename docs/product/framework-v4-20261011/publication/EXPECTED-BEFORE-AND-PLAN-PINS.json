@@ -1,0 +1,681 @@
+{
+  "scope": "Frozen original native inputs and exact publication plan; changes require an explicit new review edition, not silent fallback.",
+  "files": [
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/all-issue-index.json",
+      "sha256": "a2edf70a7df20f3685d4c8d0bde7972ed812cc94f3f30327bcf54ad00809d66b"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/document-0.json",
+      "sha256": "00d2471d1c37f7f4d45b67fd7d9c0169df95e4e48a7c7f24ec42e74186cf1e33"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/document-1.json",
+      "sha256": "3c0fb1089c2d7bcd00449e3f8c24ec57c38186c3e27527b3725c276dded772b6"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/document-2.json",
+      "sha256": "f08c081b065c8e40db4d37d75f1e7740f0a7dc92063222ffde52b37f0bfa9b0a"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/document-3.json",
+      "sha256": "6b23274f34ca9bc94c4d20f9b90095105247dee75ececf626086f5af1178223c"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/document-index.json",
+      "sha256": "93b6e41759dcf165ae969edc65449ddb430f05f4070bee3859cabab51e6b15f0"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/full-documents.json",
+      "sha256": "c35f10a06b85cc92be8b7ed1db39f3c4cc70dbd5882e0a2feebd5deaeeb1937a"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/full-issues.json",
+      "sha256": "145e3cbf0e63a6c9fc0e985e9776918704a59eb8ad760b68267818c5ab888791"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issue-APL-723.json",
+      "sha256": "515f6b62443c0610c9b624a5289620878a4560e228a22b9283fbc452748fd9c1"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issue-index-page-000.json",
+      "sha256": "3a09160a1a936a0588811c5610f9782ef72460a8c49f3e1f070b9cf8ed1682e5"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issue-index-page-001.json",
+      "sha256": "fdc21e63cb6cb132e9ace5b0eb187e1ecc6585ca20105136c6b698166c9690ca"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-000.json",
+      "sha256": "96f8b3efd87643b6030630e7a62e988f5e86d02de8c443caeeaa21e17998fe11"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-001.json",
+      "sha256": "aa9a6d4ba51cf07b85f8108ed68ba19cccb0a119e756fc88990f9d3bd786d104"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-002.json",
+      "sha256": "803cf93e2971082e4915301034caca9cd84ba6762c20c051cb4d3c8b47f559e8"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-003.json",
+      "sha256": "65695342ff197a37fc996c0b5c64c3f7a69f7d896ad44c25f1c0db5cc1cf1706"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-004.json",
+      "sha256": "332ae69a895122bfb765273bc816356c7f3fd07020b6926e25e6c6da75c4a218"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-005.json",
+      "sha256": "73d2654cc6954b1f7d8006cb87f5967ee1b70e56f459018173ce9f215ebf7de5"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-006.json",
+      "sha256": "8119058006ae9f53dd60c72cef4165eb38b99bb3dfa1d6795b633e79ee1e5671"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-007.json",
+      "sha256": "4d5a571c1df08396006442337814dd8194a61ed4a679559c18de631d6c07f442"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-008.json",
+      "sha256": "06747b3889844eefae2b4be7ca9bccbe81a721b2f7c036690f99d38981b00790"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-009.json",
+      "sha256": "796317267f6714d73d705a1f7d8f429affc381092f69cb8f891204c971093569"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-010.json",
+      "sha256": "b4ef1dccc72b28d87eb65274d5a91ec8d794760a36a0915a69bc87c3a715662b"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-011.json",
+      "sha256": "362d4832e6267fb514a5eb4a76728af99a0f844f12db09e9c2bcf103f902cf2b"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-012.json",
+      "sha256": "eca6db5ac695fa463103ae756cfffd0c08d3b8afebf66c5b4a789b704224fa45"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-013.json",
+      "sha256": "edf25af2021b2e89a92b3770d8e4232909d7229bcb63596711dcfccf3fa7d21a"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-014.json",
+      "sha256": "575a25a860ee46ba28bed7dcc35aa939d0d26b7e6f42a1c5157adb1bca05368a"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-015.json",
+      "sha256": "100f80657f32e9cd205ffabad1dffbbf6b2ae3d1989db0b7c171404b02098459"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-016.json",
+      "sha256": "fbabdf67bc1628adaf6acb1e14c5241314d686a88e6a9d50da1e812cf70409c7"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-017.json",
+      "sha256": "c92fa1ff423bfbe9fb8d395b4e9dd86a845b51634015f51ec3aa9c28126d2dfb"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-018.json",
+      "sha256": "7c0978d92bddca946ef790f8ebef4ee500b2fbd5fd2ec2e89448a1c8b2b545c3"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-019.json",
+      "sha256": "611c147185168f797341d55ec20a9a1257236068bbeff5524a997fa2d14031fb"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-020.json",
+      "sha256": "a23e9ca76a3426572821ffd5d2dac3e33b3909779222fa56b6bb5c1bb1f3f67e"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-021.json",
+      "sha256": "d3471e956f15c2b333e4ca11ba8bc0c677b95cf0d50a39a3d1524bb46fe7adad"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-022.json",
+      "sha256": "58b5a8268b8824f1481267518d4545e3227a9306ab73fada7629cabf8eeae615"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-023.json",
+      "sha256": "83fb8aad0d43d1d3a057efc4072cf614884c4604ccb3bc256cd58a45033fbfb8"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-024.json",
+      "sha256": "8b43be52e305bb1222b929a9f418e14887ffe04a6923b4dcf3d3f584735ab249"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-025.json",
+      "sha256": "e16964c2b87fa7577de3bcef96ac5915bfe879f4526e96656966215a1af8566e"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-026.json",
+      "sha256": "571b8bda9fc02a1d45757d2b2d37d6a26d00cd9bcc09fa380a3c47a711e7584c"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-027.json",
+      "sha256": "a666f6e027f9359769148984685bcf4e4bda2ba5e7ec8bece31102522c5a4891"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-028.json",
+      "sha256": "1efa9cc28041e47101f44de11c93f34a17105da937a2d8af4d662c6a5055045e"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-029.json",
+      "sha256": "1a7cc9f78890f727fdd03ec1aba3f6cd6713c1b45721d4e02a2b032af274a9e6"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-030.json",
+      "sha256": "4278fd871ce810d2256d4a3985c9f16c71b0c6ae04571a680455a61b9ca9973c"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-031.json",
+      "sha256": "0eceaa4942c9368bd0b0209687f41246e6709b39763e3641c5ca9b1a7c016688"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-032.json",
+      "sha256": "76673217e313bcf317e0ab43428731f01d0509d02dedf5335940347d71f74875"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-033.json",
+      "sha256": "1cf576dfac6da167edc2132efb317efa9b07772541ad8c5477ea332a0fb140f9"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-034.json",
+      "sha256": "28b467b3be76b83a5cdb24c3ba755613de1f07b06b8b15cdc2c3b0c5ca81ed0e"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-035.json",
+      "sha256": "856338b4ab52b1313ce7911aa487f787b502fefcad7d64452dcb73c9390d60fc"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-036.json",
+      "sha256": "cbaf5e360e0a49a5bd04c7ede4472b6a834fe42cc05b40dbb790747c6ca3c5a8"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-037.json",
+      "sha256": "1bb41590b7dae07082b417a6d7a125e8b089bb8dc812ba252d4e1a8ba3c7e092"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-038.json",
+      "sha256": "f3810a379e7187c4b2fe150ad35b000693508fd63ab7cf39ae3a7eabcf28c8e8"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-039.json",
+      "sha256": "9870217594e3f3a601650dfceeb4527feb2aa2ed4b48c413caad096a684f81da"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-040.json",
+      "sha256": "356452ce0e67e23ce769009a1c82df07066d2db440fed96df0a3e98edde1b877"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-041.json",
+      "sha256": "af81ac209a10f7e014074dd03b45517a5fd9d14d9a33a1cc5ea4d57aa136e27f"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-042.json",
+      "sha256": "16bfc4f022ddf9e8b069d3c844feee5bf80f9964d1ba45bb9f760a13f719db2d"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-043.json",
+      "sha256": "2ee9ed7ed0fa2b23f44fb0cc12473a1713645d6d92d29aecadb1d25246df7019"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-044.json",
+      "sha256": "ef3558f8480df1c6eec1145f983d7c529f3b7d30992aebe24f22a36de9fe1c96"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-045.json",
+      "sha256": "29f094c44ba0cc564ab9894bd281571909372702b7be368f8777dcedaf8c1cd2"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-046.json",
+      "sha256": "cf61fa1b27c37a01f76922801754804928ad4b2fddab2ab7ab5de984aed8da8c"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-047.json",
+      "sha256": "631d16c3fad338a04fba9d7b51e1b129a23a08fb89ec9b84b2b084788569781a"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-048.json",
+      "sha256": "0440d55f4a0ef916229f1d4638eebe010451197155289cde44a42a916019fb73"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-049.json",
+      "sha256": "637a3fb1384edae08d55d0b1d67aaade778476365213fad65869e7c3d313ae58"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-050.json",
+      "sha256": "953ea9ba13869aa1e35c62465e94df66219b002b297395df82256f16c5229991"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-051.json",
+      "sha256": "658f682db13448b6cdc1fc707e59cf9f470191947f473df6968c86cf0d870d68"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-052.json",
+      "sha256": "646a075688c629119ebf767ca559ab29abb4e045a84f4c184305b6ec8697a0a7"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-053.json",
+      "sha256": "8a4bea29590dadedde5c8d4496c4a3f65596ff9e226ea96506a9b3646149679b"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-054.json",
+      "sha256": "8004a5669b802c57bfdda79411b2fbe4d3045f2771cf48343f1bef4bb58db4ff"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-055.json",
+      "sha256": "51f86cae5656f9208e736d3b576c62afeb7b232c2c4e350b67b77e1be8f55ce1"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-056.json",
+      "sha256": "bb6360c7688781c0024661b1a59dbd0d9561ae4d75cb77b0d4732e2cf5cf1313"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-057.json",
+      "sha256": "29abb2cca5e8e11dd06db42321162d2fa50eb040c24374d2ddf878f0e9a7a367"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-058.json",
+      "sha256": "c8bb8f3cd10d2a50b7cbca37934bac1de68cfb6dbf9b9a5fa92fc9ff611cdcf7"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-059.json",
+      "sha256": "b8db6d6c8c5e03fc4453007c50b13965e5f7b26ac3761b160a106cee6374f196"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-060.json",
+      "sha256": "fcf1f4e0dd2cda0110fbbe3c086044d877eb38562817839c696b20ed812318e4"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-061.json",
+      "sha256": "4b1f8e893b9b87e654c09dc13c774552d27d02e1b9ec24df059fcac99651726b"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-062.json",
+      "sha256": "2760d0ddb7359d052a87eedf19126a5cb82ebc49c79de8c854e96577b83d279f"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-063.json",
+      "sha256": "089d2dafe7f8db1dd08b0d51ef08fb6e58fcef6ec6cc69178ff276e099d7f3a4"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-064.json",
+      "sha256": "e4d5cfe74be04a4c877d70d5728150ceaaac85f7247344c9c9c1bc5d2750dc65"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-065.json",
+      "sha256": "98e28e04a1c20156db641bada854637c901acb6a5bd3ada0eadaca8c7610896e"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-066.json",
+      "sha256": "21b20cdae8d4d41d33472c6a8d4e8926553b112c0cc2d852d394738e43c882f7"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-067.json",
+      "sha256": "a4c6d99780069048ce6608c5281bd4876e69f95da37ec5264e69d428977c3f5a"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-068.json",
+      "sha256": "6fe5674c5d166e2efc4ee0e8a2c9559d19b73440374e5599dea08c87a9c88272"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-069.json",
+      "sha256": "a492d5fcd5faca94498dbc579cd069d2189fcf2a6bc618988fe42498044675fe"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-070.json",
+      "sha256": "b8f43ce3ad7b7832adf278aab052e563d671025ff55b6133528fafe553a6c419"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-071.json",
+      "sha256": "9335af0ad87bf7e92d2955e9655744b28c9f09317c36e01a84b3a89050f8769a"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-072.json",
+      "sha256": "4ee3aacecf101c35d4d84a1fedffa5fa74e2b081cb1c06ccce788769cb39ad34"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-073.json",
+      "sha256": "0cbf02b42fbf901ce296b17d1c2c769cad18281ad3503ffe55d98d6c17a9280f"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-074.json",
+      "sha256": "c8bf0e188aac84faf33622e170bfba61006450a54945e95febd86a68c2714298"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-075.json",
+      "sha256": "54aafa1946be4c4b7298c9f31c805a5f7f0b2c1f3d8d80ef61af9d2f67b28f5f"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-076.json",
+      "sha256": "080027fb7704ab962650cf1ef49dca57a66ed9d703bdb51c2cd970cd0b7cc230"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-077.json",
+      "sha256": "a9b20f947aa3a7a04011c5791503c7bc87b385e1f161fd111cfede57ff5149b5"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-078.json",
+      "sha256": "72d5a173e2c8375b335bf59d4395e47cf21fb324a9304d190b3e2281ad419b78"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-079.json",
+      "sha256": "9a4833f53a66644edc970e5f2f1cc88d6733dc57acbc7a8c70a158986a5227f1"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-080.json",
+      "sha256": "02efae01bd50bbca82ffd9026ed05a7ed4cabe2b3019a9ccbe69b95bf7f6bd34"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-081.json",
+      "sha256": "a8181ceb5b9eb7f2397a9f1ae2b2b54ea0eb5bbeb95aca593b4e3d33d6520d45"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-082.json",
+      "sha256": "bed78bbcc8c5844759a3a696a23a3f5cfcdcfcac21ed3add62a47e84f57649f0"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-083.json",
+      "sha256": "c8116d5efb56a17504e2879cf3602ac4758d09097f5cfe9f999bbaf016097fd3"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-084.json",
+      "sha256": "3465afeaf8a9e9dd0d7996b8e6d214616fe232df22d4cab2f7f2179997009382"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-085.json",
+      "sha256": "c78e703dc9c4b33230244a32472305b691eb559f94870bc5df421be0f24cce5c"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-086.json",
+      "sha256": "07519847de04f3e5a2cc2b879f5ca7f20e7c4172d3174ed24cdc99ca2141c160"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-087.json",
+      "sha256": "310d35f15cd8348483985b7386e98b5a0da646324e0f0bc35c92f227d8cb9ed1"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-088.json",
+      "sha256": "a0c4672464294e6f82d47459e57fbb6334e010ea6c149e195c02711b809ea109"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-089.json",
+      "sha256": "4e39adb57896f45afa5ad0cd9d39095241a12aadb0e71bc485fc219afb832dec"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-090.json",
+      "sha256": "c9ab6adc8ea8ad8706e7af95bc7e18f271b1139dd89ae3d86d6413ea7185ed13"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-091.json",
+      "sha256": "4709ff033503293bff931a7f761d859692a52c31e21fdadb6d757062d3a68269"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-092.json",
+      "sha256": "1062ec424cbe01c0e2fa9db27c44c71fe9e924dd8fd75e6c48ce9600fd45c7f6"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-093.json",
+      "sha256": "952d555ff248c66583ace007bc925f92c31f808263e0afe25239bf132c85639d"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-094.json",
+      "sha256": "f0197cbb3dd5202b4e1cd8c00daf9b5b4139268c055fd78fddb932a45442a45e"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-095.json",
+      "sha256": "eeb167d9b97447b99267f6de01e4c6564a8c657e8e66b8b2c0c6ac4b79f96e29"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-096.json",
+      "sha256": "e05ba70d0ea13eb6bd780d7b70e47b276d54aea96735015b25a473ab4b773282"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-097.json",
+      "sha256": "4a0cbcdcea334b4a557f71c1cd6b750cc5a491d64fec5127a5e13851c1516efb"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-098.json",
+      "sha256": "e32a15dd020f9cc2a5a7efcfe2e86627b3b03047fcea47062276f33e7653ff47"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-099.json",
+      "sha256": "4c53b302ea6f6bba09060ece86f1f08387a022916f74c9d2347e388f386cbfe2"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-100.json",
+      "sha256": "e1f7f255c833ef250586e13a92683e3d6e3afe526f8f78a4ee08088fba62105a"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-101.json",
+      "sha256": "ce284ec0d9d4848159e68d6c26e76b051bd721a87b964bf76bb870a961b9fa09"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-102.json",
+      "sha256": "de496be5bada31353c3fdb04bf5f7a096f77033a9bac9cbdfc44de6c7c323d13"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-103.json",
+      "sha256": "85891a3497bf929eb9dbdc419dfe860bf5ff7d469aa85a13da8a3f8b91c43f56"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-104.json",
+      "sha256": "3c5c3d2f325c528dbbbe7c2faf3179b2f7e4aae2e888c4344a4f90271e21921c"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-105.json",
+      "sha256": "bc5c48f43fcd49d255c2e473a1f163d34a8722f431ef2fe051b1c1b6f663f47e"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-106.json",
+      "sha256": "ed722961ed1336fe070d7a9a5f1f0bb129c7301553b04f7288cedf39dd76399b"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-107.json",
+      "sha256": "a95c0e9f1b268cb8aef513abb344ea1dda551273aa177e7367778fa1aa9ae0a5"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-108.json",
+      "sha256": "ab40d4261e4e3a90d5dcd53e40e4ed86657852820df96f78a93f7d90e8c894a8"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-109.json",
+      "sha256": "2d709e99467d17c9e59c7d03b31d9a9c92c7912d529f469f34875baca2147746"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-110.json",
+      "sha256": "21bee46d632145936bbebba710b97d0fc16cf37dc8030309d1871c03f65c5186"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-111.json",
+      "sha256": "8135b7cb3b127246c40cc3937554b9b436eaf98df39bbbbc5848928b50809413"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-112.json",
+      "sha256": "9724e05ee43f15dcf982a2020f0fc400dfe996e7c3e18c288a60695442959358"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-113.json",
+      "sha256": "72d5c3669ebeeafcbcc2c222616c5cce0f828dbb436962fee37694190c76114c"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-114.json",
+      "sha256": "267b0c864564b8375dfaccde1d509eb84455d84ff38ba068ecfaaf67cdd05ccd"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-115.json",
+      "sha256": "2e7db60d971dce923ec76c4c21f17d96ae21c280217cc2f1b25264b82a048d50"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-116.json",
+      "sha256": "537e8117b92b691fd1c5eca8984013705c04902c84c55087fd4ae47046cdee23"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-117.json",
+      "sha256": "385f7d51c6f940d2a35e7f10082bb5508d689a16915776aa6b3d9ca07ba5056c"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-118.json",
+      "sha256": "1cffa4d319364e7f30fd7177dd826d17e19a151dd17c607cb2a4e130e46ee6d9"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-119.json",
+      "sha256": "6cb4045d3b25237bbb661edfe38db85b4fc63cf949b5143020ff593df92cdb92"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-120.json",
+      "sha256": "549e2b14a42f08a077a928b78c58f944c1400b2e7ed1c4feda69656d09a40c85"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-121.json",
+      "sha256": "dac898079fcd19668b3eb949650136b8b1ed30052d33aeb7f0235162f6d64401"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-122.json",
+      "sha256": "65691ddb44876127837b57702ca4d32483d1bc2086d7b20c136782cee62db4a8"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-123.json",
+      "sha256": "49cdae84533ae5e12a09a02f792bf7bb64eda670b61270cd52e9f2187291a0be"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-124.json",
+      "sha256": "a234132c2ff4ecd0cfcdb50dec0fddfdf741715a03606e0d495f2e53977da494"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-125.json",
+      "sha256": "f3c9e9dae0a86c6e62956a6a19932b5a0b6e604bf21aa7541a04a1b4e434e73c"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-126.json",
+      "sha256": "ac3e9cb0088fab6f348f8bb98bdead25de3a6569c0e10bcd0617692c0b4a92a6"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-127.json",
+      "sha256": "a564064fcf557b250204f4e897227f5700bf08344c767829940f58fcb6bf966b"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-128.json",
+      "sha256": "b772f3c3edf78bda0248a9bb4354915b4f1edde2fbe36114b547aac389d1b043"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-129.json",
+      "sha256": "404fb5384cc13c7e9f9e921ec0c9c879d1b13231b64aea5236e8020411fec9ec"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-130.json",
+      "sha256": "f628237b0288fdc2bf27b6168d7935cad900dcd5c809563d60497fa5dbdd1481"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-131.json",
+      "sha256": "fd06c5e04423e62535aba125a42633b016be08d3bb0c170e72442e1eced8f15c"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-132.json",
+      "sha256": "17d9e91b1301f1ca97d114169acaca2243752831229656a3edef506d697b0375"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-133.json",
+      "sha256": "cfcf223e918a779f044e3a3e18e4ea080810eaa185771662d4976b5b5650266d"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-134.json",
+      "sha256": "5bffd3cc320b5eeb05e4c15f7e9d3bc6c409b9d5e06e20c6a305e5edd64f5ee5"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-135.json",
+      "sha256": "3ba4fcf3444730f5df6df2ba276e6ff2c7289255ca30bf8f7ee73c3cdebf2fe7"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-136.json",
+      "sha256": "9008084f1995106ba38785586d0e2d2d360fe6873f259832d64a04ca445ad8ec"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-137.json",
+      "sha256": "4786554a0be26e8705bd00caafc7f46187730432f69656fa2f3eb0917ce5651e"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-138.json",
+      "sha256": "e79673ec8ca30ef19e2aeb04911252b5a49ae9dbf4907c71cd926b49d7395bc4"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-139.json",
+      "sha256": "c566e462a5f6a257a58b652da0d1acc903bf0aacbfa1523889b1d16d2bdaa294"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-140.json",
+      "sha256": "f1a8e1de878bf9550b11a745c63d84c8376ccbeca93015f3171f3d88e303b267"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-141.json",
+      "sha256": "1b835718701a664ff0580d7535e31e947d551044d832c8a25df5b9d65e93479d"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-142.json",
+      "sha256": "3440ca0f244ed1174bce59fc3894debca2fe1e5a48c86e63aa12f87b71a47bfd"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-143.json",
+      "sha256": "d289108358536dd9fe4b3f79617a7c18683f68b60283bd99891fca7e8d785055"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-144.json",
+      "sha256": "35e40810555692f5ed9eb7ef4b6a67c7f5344a182d454649ecc2f4ab9a390d90"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-145.json",
+      "sha256": "a159f7419c4b7c04a4392c382f6250f76c373d33078723000bc4768125aeed8f"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-146.json",
+      "sha256": "f22ed4584281b22392286251bda83143866f91542e787918f4a7d2e0eeee2821"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-147.json",
+      "sha256": "42c4bd9a4913ed51c5678cf10c9543fa03361f61eb0328512be92ed757b48120"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-148.json",
+      "sha256": "160920a93250dee9717e3e1505c9934991c6d6a11e2fb826f5c042ecab847524"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-149.json",
+      "sha256": "eff147ba701d173bf7f71cd9755a1f88f84c2c10ae26904b63e809d3ae9f043e"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-150.json",
+      "sha256": "003231482281cc8becdc31576592caf224c448520609c986c43a0ed88ac67d6e"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-151.json",
+      "sha256": "9ea2f94b720e719ca6e6747210e9364315fab4c3eadb9a5ab4e7f1b6ad0f4245"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-152.json",
+      "sha256": "104ad141f10e7981cf831951a48c2c0cc3cb5e0e86b57117646a31b52c5d94ab"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-153.json",
+      "sha256": "94402a03365f3e49e8563a341ea06046ff9adf146826465ff2550d6bad119066"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-154.json",
+      "sha256": "a2015831411e5bbf112640d9aa9a02255391f4fbef933ec54d4ed2964ae9c0e6"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/issues-batch-155.json",
+      "sha256": "6200522eea568148347586e854ce9fb9a37d95eb1cac55dfd8734f4a2e91d58f"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/project.json",
+      "sha256": "ea63127c89acf8931829ea44076570c47b575d8951c50f84063d0c3264f99735"
+    },
+    {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-publication-plan.json",
+      "sha256": "4bd0adde457322c429a1471e70f99d0eadc78b12366c9280e51f0a932220567b"
+    }
+  ]
+}

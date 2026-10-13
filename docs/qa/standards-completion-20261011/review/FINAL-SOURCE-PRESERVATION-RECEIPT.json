@@ -1,0 +1,81 @@
+{
+  "record": "IMPRANA-FINAL-SOURCE-PRESERVATION-CHECK",
+  "recorded_at_utc": "2026-10-11T06:24:56.579689+00:00",
+  "disposition": "PASS_SOURCE_PRESERVATION_ONLY",
+  "baseline": "4472cc845b62c32ffd074d2afee49b5d32f98879",
+  "observed_head": "4472cc845b62c32ffd074d2afee49b5d32f98879",
+  "checks": [
+    {
+      "id": "source_frozen_exact_bytes",
+      "passed": true,
+      "expected_members": 25,
+      "actual_members": 25,
+      "mismatches": []
+    },
+    {
+      "id": "PM_frozen_exact_bytes",
+      "passed": true,
+      "expected_members": 62,
+      "actual_members": 62,
+      "mismatches": []
+    },
+    {
+      "id": "proposed_frozen_exact_bytes",
+      "passed": true,
+      "expected_members": 394,
+      "actual_members": 394,
+      "mismatches": []
+    },
+    {
+      "id": "design_frozen_exact_bytes",
+      "passed": true,
+      "expected_members": 375,
+      "actual_members": 375,
+      "mismatches": []
+    },
+    {
+      "id": "1910_original_protected_tracked_paths_exact_against_baseline",
+      "passed": true,
+      "baseline_commit": "4472cc845b62c32ffd074d2afee49b5d32f98879",
+      "protected_paths": 1910,
+      "raw_git_differences": [],
+      "absent_paths": [],
+      "explicit_integration_index_exclusions": [
+        "docs/DOCUMENTATION-INDEX.md",
+        "docs/product/framework-v4-20261011/START-HERE.md"
+      ],
+      "scope": "All original tracked paths except the two explicitly authorized index/entry documents; new authoring/copy files are not original protected paths."
+    }
+  ],
+  "failures": [],
+  "frozen_group_total_checked": 856,
+  "manifest_pins": [
+    {
+      "path": "outputs/imprana-standards-completion-20261011/source/SOURCE-FREEZE-RECEIPT.json",
+      "sha256": "0aa40c76febec3ce79c7bc61502aa1856770c0e717484521b03b27b63a44e832",
+      "bytes": 5068
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/standards-completion/ARTIFACT-MANIFEST.json",
+      "sha256": "3964cd4ffc3d39028bfd50b8679b3a393b35fc826b7ccc3c808f385440e4b713",
+      "bytes": 11698
+    },
+    {
+      "path": "outputs/imprana-standards-completion-20261011/source/proposed-registers/FINAL-PROPOSED-REGISTER-FREEZE.json",
+      "sha256": "a8b7de3c515b61f01693be09c936213c7c1c2eac83d3fea3721066df757aa7d3",
+      "bytes": 103582
+    },
+    {
+      "path": "outputs/imprana-standards-completion-20261011/cases/ACTUAL-CASE-DESIGN-VALIDATION.json",
+      "sha256": "2a90d77918173c4f781b181f4e6ffee743cf800e8ef8f3cdf51e466130945db9",
+      "bytes": 102537
+    }
+  ],
+  "protected_tree_entries_sha256": "b5cb915f639f9763a271de1122ea5e9383dc67f90f81813b09d8dd6fe151ccc5",
+  "limits": [
+    "Read-only working-tree preservation observation during final integration; no staging, commit, repo, Native or source/history mutations performed.",
+    "Four groups checked against their original hash/length pins; original tracked source/history checked against Git baseline. Explicitly authorized index/entry edits are excluded and not claimed immutable.",
+    "New review copies and final commit mechanics are outside this preservation check; no later state freshness or remote export claimed.",
+    "AI source preservation only; no runtime/package/product/CI/provider tests, human trust/approval, acceptance, readiness, main merge/deployment or spending authority."
+  ]
+}

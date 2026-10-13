@@ -1,0 +1,733 @@
+{
+  "schema_version": 1,
+  "release": "0.40.0",
+  "register": "docs/current/threat-register.json",
+  "prepared_by": "Codex agent, unconfirmed local candidate for Nakul Jain",
+  "prepared_on": "2026-10-11",
+  "passed": false,
+  "gates": {
+    "G11": {
+      "status": "Not passed",
+      "reason": "Review started; no independent assessment recorded."
+    },
+    "G12": {
+      "status": "Not run",
+      "reason": "No AI evaluation recorded for this build."
+    }
+  },
+  "open_critical": [
+    {
+      "id": "TH04",
+      "title": "Confused identity token",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH05",
+      "title": "Invitation and recovery takeover",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH06",
+      "title": "Stale grant after revocation",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH09",
+      "title": "Lost update or close race",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH11",
+      "title": "Unsafe expressions and imports",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH13",
+      "title": "Outbound request forgery",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH17",
+      "title": "Plaintext on a lost device",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH21",
+      "title": "Prompt injection in retrieved content",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH25",
+      "title": "Privileged support escalation",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH26",
+      "title": "Incomplete privacy deletion",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH27",
+      "title": "Backup resurrects deleted records",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH28",
+      "title": "Audit modification or truncation",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH29",
+      "title": "Compromised dependency or build",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH34",
+      "title": "AI data leaving the boundary contrary to policy",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PARTIAL",
+      "reason": "BLOCKED"
+    }
+  ],
+  "open_other": [
+    {
+      "id": "TH12",
+      "title": "Malicious evidence and previews",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH16",
+      "title": "Small cell and differencing inference",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH18",
+      "title": "Clock rollback extends offline authority",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH19",
+      "title": "Media chunk substitution",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH20",
+      "title": "Stale worker commits after takeover",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH22",
+      "title": "Unsupported official AI claims",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH23",
+      "title": "Stale AI proposal application",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH24",
+      "title": "AI budget or queue abuse",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH30",
+      "title": "Cross site and browser persistence attacks",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH31",
+      "title": "Noisy tenant starvation",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PENDING",
+      "reason": "VERIFICATION_PENDING"
+    },
+    {
+      "id": "TH32",
+      "title": "Migration changes historic meaning",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH33",
+      "title": "Prompt injection through the advisory brief",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH36",
+      "title": "Undisclosed commercial influence on tool listings",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    }
+  ],
+  "open_chains": [
+    {
+      "id": "CH01",
+      "title": "Document injection to export",
+      "decision": "BLOCK",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "CH02",
+      "title": "Support escalation",
+      "decision": "BLOCK",
+      "reason": "BLOCKED"
+    }
+  ],
+  "impact_reviews": [
+    {
+      "id": "IR-0.40-01",
+      "change_id": "US-DX-01a",
+      "change": "Manual organisation diagnosis with stable problem identity, evidence notes, priority, guarded completion and immutable correction history",
+      "paths": [
+        "apps/api/impact_api/ai_diagnoses.py",
+        "apps/api/impact_api/ai_diagnosis_contracts.py",
+        "infrastructure/migrations/0044_ai_diagnoses.sql",
+        "packages/contracts/access-policy.json",
+        "apps/api/impact_api/bootstrap_profile.json",
+        "apps/api/impact_api/main.py",
+        "scripts/bootstrap.py",
+        "apps/web/src/AIDiagnosis.tsx",
+        "apps/web/src/main.tsx"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy",
+        "ai-module"
+      ],
+      "threats": [
+        "TH01",
+        "TH02",
+        "TH03",
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH30",
+        "TH32"
+      ],
+      "summary": "Agent proposal only. New bounded manual AIDiagnosis kind reuses forced tenant fences and immutable revisions. Only explicit purpose-less TENANT diagnosis read/manage capabilities authorise these routes; new onboarding profile limits them to TENANT_ADMIN and does not widen existing ceilings. Closed canonical UUID DTOs refuse unknown fields and duplicate JSON. Complete/revise require current verified authentication within300seconds. Tenant advisory lock precedes current context and all writes; current read/manage/assurance precede exact receipt replay. Head, revision, audit, outbox and receipt commit atomically. Completed revisions remain byte-preserved across explicit correction. Browser memory is scope-keyed and clears on read loss; ambiguous outcomes retain the exact request for retry, not automatic rebase. No model, provider, protected reference fetch, official calculation, new worker privilege or cloud resource. Local PGlite and browser evidence are bounded; native concurrent/revocation/login-role, live identity, restart/restore/upgrade, security human assessment and all required exact-head CI remain outstanding. Existing threat/residual decisions remain unchanged.",
+      "prepared_by": "Codex agent; independent agent reviews are advisory, no human confirmation",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-02",
+      "change_id": "US-DX-01a",
+      "change": "Independent review fixes and observed cursor-error contract correction",
+      "paths": [
+        "apps/api/impact_api/ai_diagnosis_contracts.py",
+        "apps/web/src/AIDiagnosis.tsx"
+      ],
+      "areas": [
+        "contracts",
+        "ai-module"
+      ],
+      "threats": [
+        "TH03",
+        "TH06",
+        "TH30"
+      ],
+      "summary": "Separate closed AIDiagnosisError admits actual INVALID_CURSOR and IDEMPOTENCY_EXPIRED runtime responses for diagnosis routes, preserving all older published Error schemas and paths. Independent source review found and root corrected late-response privacy after actual read loss (terminal per-scope invalidation, abort/epoch guards, protected metadata clearing) and uncertain expired/conflicting receipt retry (retain frozen pending request; no replacement save). Actual cursor, receipt, scope and browser evidence is recorded separately; first failure receipts retained. No human security confirmation or release gate promotion.",
+      "prepared_by": "Codex root agent; advisory review by separate delivery controls agent",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-03",
+      "change_id": "US-DX-01a",
+      "change": "Add diagnosis augmentation to existing contract generation and implemented API export",
+      "paths": [
+        "scripts/build_contracts.py",
+        "scripts/export_implemented_api.py",
+        "packages/contracts/openapi.json",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "areas": [
+        "contracts"
+      ],
+      "threats": [
+        "TH03",
+        "TH06",
+        "TH30"
+      ],
+      "summary": "Post-commit structural review found that the existing two-line diagnosis import/augment wiring in scripts/build_contracts.py was not named in the initial impact record. This additive entry covers that already tested wiring and implemented-API export addition. The reviewed generated contracts add eight diagnosis operations and thirteen schemas including a separately closed AIDiagnosisError; all older published schemas and paths stay exact. No runtime authority, worker, credential, provider, database or spending change is introduced by this record. Actual local source pins and unit/API/browser outcomes stay unchanged. Prior impact entries, residual threat decisions and failure evidence are preserved; native/current-head CI and human security/release gates remain held.",
+      "prepared_by": "Codex root agent; local documentation correction, no human confirmation",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-04",
+      "change_id": "US-DX-01a-worker-fence",
+      "change": "Narrow worker access to shared diagnosis registry and revisions",
+      "paths": [
+        "infrastructure/migrations/0045_diagnosis_worker_fence.sql",
+        "qualification/test_ai_diagnosis_worker_native.py"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH02",
+        "TH10"
+      ],
+      "summary": "Additive restrictive worker-only policies exclude AIDiagnosis without changing tenant fences, table grants, prior migrations, history or app capabilities. Existing worker reminder/audit and pinned export duties remain required. Native experiment is historical; integrated schema45 qualification, recovery and release/human gates remain before delivery. No account widening, paid resource or production action.",
+      "prepared_by": "Codex root agent; separate source/evidence advisory reviews only",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-05",
+      "change_id": "US-DX-01a-problem-order",
+      "change": "Enforce diagnosis problem identities and priority order at storage boundary",
+      "paths": [
+        "infrastructure/migrations/0046_diagnosis_problem_order.sql",
+        "qualification/test_ai_diagnosis_payload_native.py"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Additive validated diagnosis-only revision CHECK with pure immutable invoker helper and pure helper execution for existing app/worker/platform/privacy revision writers (PostgreSQL checks execution even for other-kind branches); no new table/identity authority. Reject malformed IDs/order at SQL independently of HTTP. Draft partial order and governed SQL NULL removal preserved; no previous migration, history, tenant RLS or capability change. Full JSON key/text/completion metadata remain API validation; native, upgrade/recovery and human release qualification must be recorded separately.",
+      "prepared_by": "Codex root agent; source/evidence review phases are not human signoff",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-06",
+      "change_id": "US-DX-01a-evidence-resolver",
+      "change": "Prepare a native-qualified protected Evidence revision resolver without route integration",
+      "paths": [
+        "apps/api/impact_api/ai_diagnosis_evidence.py",
+        "qualification/test_ai_diagnosis_evidence_unit.py",
+        "qualification/test_ai_diagnosis_evidence_native.py"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Unintegrated helper validates recommended closed bounded canonical selectors and resolves fresh current Evidence authority under tenant lock using existing app capabilities and exact AVAILABLE revision identity. CLEAN/unpurged upload or nonempty external-source metadata required; never fetch content or return metadata. No route/DTO/capability/profile/migration/UI change, human approval or task completion. Caller must authenticate identity and perform diagnosis authorization. Native helper tests and shape tests do not supply API/read/history/replay/completion integration or release acceptance.",
+      "prepared_by": "Codex root agent; separate code/evidence self-review is not human signoff",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-07",
+      "change_id": "US-DX-01a-evidence-api",
+      "change": "Integrate compatible optional Evidence references and current disclosure checks",
+      "paths": [
+        "apps/api/impact_api/ai_diagnoses.py",
+        "apps/api/impact_api/ai_diagnosis_evidence.py",
+        "apps/api/impact_api/ai_diagnosis_contracts.py",
+        "packages/contracts/access-policy.json",
+        "packages/contracts/openapi.json",
+        "packages/contracts/openapi-implemented.json",
+        "qualification/test_ai_diagnosis_evidence_live.py",
+        "qualification/test_ai_diagnosis_evidence_paging_unit.py"
+      ],
+      "areas": [
+        "ai-module",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Optional closed canonical per-problem Evidence selectors retain mandatory notes and untouched historical payloads. Fresh current capability/source checks under tenant lock precede command effects and current/historical/list/receipt replay disclosure. Hidden list rows filter with scanned-row continuation. No default grants, capabilities, profiles, accounts, prior migrations, provider calls or metadata fetch. Synthetic object-read grant is bounded disposable fixture setup, not governed authority acceptance. References persist only in revision JSON; tenant-keyed SQL linkage, UI, privacy/retention races, recovery and release/human gates remain. No task Done or accepted criterion.",
+      "prepared_by": "Codex root agent; separate source/evidence self-review, no human confirmation",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-08",
+      "change_id": "US-DX-01a-evidence-races",
+      "change": "Qualify source authority changes while diagnosis operations actually wait",
+      "paths": [
+        "qualification/test_ai_diagnosis_evidence_races_native.py"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH10"
+      ],
+      "summary": "Native-only supporting qualification observes actual API advisory-lock waits before narrowing a fresh disposable object-only evidence.read fixture grant. Read/named/history/list/create/complete/exact replay must recheck current source authority, refuse/filter without domain effects, and permit the same request after fixture authority restoration. No application, migration, capability, default profile/role, production identity or historical payload change. Not governed revocation or privacy-removal qualification, independent human review or acceptance.",
+      "prepared_by": "Codex root agent; separate source/evidence self-review, no human confirmation",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-09",
+      "change_id": "US-DX-01a-source-shape",
+      "change": "Prepare and qualify an unregistered pure optional-reference storage predicate",
+      "paths": [
+        "docs/engineering/delivery-system-20261011/diagnosis-evidence-shape.DRAFT.sql",
+        "qualification/test_ai_diagnosis_evidence_shape_experiment_native.py"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Disposable experiment only: restricted migrator installs a pure invoker optional-reference CHECK, restricted APP SQL rejects malformed selectors, then teardown removes prototype. No registered migration, schema bump, relation or runtime application change. Existing writer-only pure predicate execution is bounded to app/worker/platform/privacy; no data or identity grant. Existing worker_tenant_directory policy permits owner tenant inventory without disabling forced RLS; per-tenant revision access remains fenced. Native reminder/export and cleanup evidence are separate, not binding/backfill/recovery/privacy workflow acceptance.",
+      "prepared_by": "Codex root agent; separate source/evidence self-review, no human confirmation",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-10",
+      "change_id": "US-DX-01a-typed-linkage",
+      "change": "Implement and qualify unregistered typed diagnosis linkage and safe privacy upload selectors",
+      "paths": [
+        "docs/engineering/delivery-system-20261011/diagnosis-evidence-linkage.CANDIDATE.sql",
+        "qualification/test_ai_diagnosis_linkage_candidate_native.py",
+        "apps/api/impact_api/privacy.py"
+      ],
+      "areas": [
+        "migration",
+        "ai-module"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Complete unregistered linkage candidate adds tenant/object/revision/type FKs, exact immutable JSON tuple guards, atomic insert trigger, owner-directory per-tenant backfill and guarded cleanup hook; no active migration or default account/profile/role change. Ordinary owner deletion refuses. Source privacy API erasure with existing independent approval preserves linkage/history and hides diagnosis. Integrated malformed-source fixture exposed unsafe UUID cast in privacy blob planning: CASE now validates UUID transport before cast, preserving correct shared-blob checks. No new privacy target or approved-plan waiver. Positive diagnosis-removal cleanup and invalid populated upgrade/recovery gates remain before registration; no human approval or release acceptance.",
+      "prepared_by": "Codex root agent; separate code/evidence self-review, no human confirmation",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-11",
+      "change": "Add optional protected Evidence selection to diagnosis worksheet",
+      "paths": [
+        "apps/web/src/AIDiagnosis.tsx",
+        "tools/browser/ai-diagnosis-check.mjs",
+        "tools/browser/ai-diagnosis-uncertain-command-check.cjs"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Canonical exact selectors only; notes required and no default permission widening. Bounded current-authority Evidence metadata pages; source GET before selecting, changed-version refusal, late response invalidation, capability/session/tenant keyed remount. Actual adapter10 and native browser9 groups295 assertions scoped separately; positive selector browser path and external gates pending.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null,
+      "change_id": "DX-EVIDENCE-SELECTOR-UI"
+    },
+    {
+      "id": "IR-0.40-12",
+      "change_id": "DX-EVIDENCE-SELECTOR-NATIVE-BROWSER",
+      "change": "Qualify actual linked Evidence selection and source-read loss",
+      "paths": [
+        "tools/browser/ai-diagnosis-check.mjs"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Existing9 groups preserved; actual native linked source group adds changed-version refusal, keyboard selection/save/reload/completion/correction exact pins, current/historical404 and browser clearing after fresh bounded object-only fixture source grant narrows. All360 pins and46 migrations unchanged;10 groups316 assertions and9 bounded axe scans. Raw fixture sequencing failures retained. No default role/profile/ceiling or production changes, governed grant-flow or human approval credit.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-13",
+      "change_id": "DX-LINKAGE-POPULATED-UPGRADE",
+      "change": "Qualify sealed linkage candidate populated upgrade and atomic refusal",
+      "paths": [
+        "qualification/test_ai_diagnosis_linkage_upgrade_native.py"
+      ],
+      "areas": [
+        "migration",
+        "ai-module"
+      ],
+      "threats": [
+        "TH03",
+        "TH10"
+      ],
+      "summary": "Restricted migrator on fresh populated synthetic databases; no SQL or applied migration change. Valid two-tenant3-revision exact typed binding and unchanged history/ledger/worker fences. Six malformed current/older cases refuse twice with complete DDL rollback. Native10 passes separate7new+3retained;281stable pins. Candidate remains unregistered and reapply refusal is not checksum retry. Positive supported cleanup/registration/recovery and release gates held.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-14",
+      "change_id": "DX-SOURCE-ERASURE-RACE",
+      "change": "Qualify actual source-erasure serialization with diagnosis requests",
+      "paths": [
+        "qualification/test_ai_diagnosis_linkage_candidate_native.py"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH10",
+        "TH26"
+      ],
+      "summary": "Existing independent synthetic erasure API retains original assertions; delay-only disposable trigger observes actual erasure tenant lock with7queued diagnosis routes. Six404 denials and filtered list after actual source removal, exact history/bindings and no diagnosis/revision/receipt effects.124native passes twice,281stable pins. No role widening, manufactured plan, diagnosis cleanup credit or migration promotion.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-15",
+      "change_id": "DX-LINKAGE-NATIVE-RESTORE",
+      "change": "Qualify unregistered typed linkage through real native backup/restore",
+      "paths": [
+        "qualification/test_ai_diagnosis_linkage_restore_native.py"
+      ],
+      "areas": [
+        "ai-module",
+        "migration"
+      ],
+      "threats": [
+        "TH10"
+      ],
+      "summary": "Actual custom pg_dump/pg_restore with candidate active; generic golden/security/rowcount checks, exact3-version JSON/hash/history/linkage, restored APP tenant fences, population trigger rollback/FK refusal and worker/platform/identity table denial.125native passes,282stablepins. Initial test rollback failure retained. Schema46 registered runner no-op is not candidate registration or restored API/release acceptance.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-16",
+      "change_id": "DX-LINKAGE-RESTORED-API",
+      "change": "Qualify linked diagnosis on replacement restored API and restart",
+      "paths": [
+        "qualification/test_ai_diagnosis_linkage_api_restore_native.py"
+      ],
+      "areas": [
+        "ai-module",
+        "migration"
+      ],
+      "threats": [
+        "TH06",
+        "TH10"
+      ],
+      "summary": "Actual custom native restore and2 restricted-config uvicorn processes with synthetic signed fixture tokens. Existing capture/verify exact3-version history/receipt replay/no effects and changed-body409 assertions preserved. Copy-only bounded source grant narrowing causes reads/all3 oldreceipt retries404; original API unchanged.126native passes twice,283stablepins. No governed revocation/human approval/registration/hosted/live-provider/full-suite/deployment credit.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-17",
+      "change_id": "DX-CURRENT-NATIVE-FULL",
+      "change": "Qualify current diagnosis candidate in the full native platform suite",
+      "paths": [
+        "docs/evidence/candidate-0.40/current-head-native-full-20261011/FULL-NATIVE-RECEIPT.json"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH06",
+        "TH10",
+        "TH26"
+      ],
+      "summary": "No executable change: tested1a47253 full native2609pass28skip1existingIT018deselection1warning0failure/error. Restart2phases, actual generic restore and45-to46upgradePASS;283pins stable and9historical artifacts restored. Skip inventory explicit; no browser/provider/hosted/container/registration/privacy-target/human acceptance credit.",
+      "prepared_by": "Codex root integration; separate code/evidence self-review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-18",
+      "change_id": "DX-DIAGNOSIS-PRIVACY-SCOPE",
+      "change": "Prepare supported explicitly selected owned diagnosis erasure with revision-bound independent approval",
+      "paths": [
+        "apps/api/impact_api/privacy.py",
+        "apps/api/impact_api/privacy_contracts.py",
+        "docs/engineering/delivery-system-20261011/diagnosis-privacy-scope.CANDIDATE.sql",
+        "qualification/test_ai_diagnosis_privacy_candidate_native.py",
+        "qualification/test_ai_diagnosis_privacy_scope_unit.py"
+      ],
+      "areas": [
+        "contracts",
+        "migration",
+        "ai-module"
+      ],
+      "threats": [
+        "TH06",
+        "TH10",
+        "TH26"
+      ],
+      "summary": "Unregistered explicitly selected owned diagnosis erasure candidate: existing actual independent privacy API removes payloads/bindings, retained immutable metadata/source/official numbers. AllnonREMOVED revisionID/hash/state pins;2000globalbudget; earlier hashes exact.130native(6new+124retained)0failure/skip;56separateunits;287stablepins. Newcandidatecolumn notregistered; no schema47/release/acceptance/deployment. Supporting review3defects fixed before run; code/evidence phases separate.",
+      "prepared_by": "Codex root integration and supporting code review; separate root evidence review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-19",
+      "change_id": "DX-REGISTERED-LINKAGE-PRIVACY",
+      "change": "Register atomic typed diagnosis linkage and explicit privacy scope with preserved candidate cores",
+      "paths": [
+        "infrastructure/migrations/0047_diagnosis_evidence_privacy.sql",
+        "VERSION.json",
+        "qualification/test_ai_diagnosis_linkage_candidate_native.py",
+        "qualification/test_ai_diagnosis_privacy_candidate_native.py",
+        "qualification/test_ai_diagnosis_linkage_restore_native.py",
+        "qualification/test_ai_diagnosis_linkage_api_restore_native.py",
+        "qualification/test_ai_diagnosis_registered_linkage_upgrade_native.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "ai-module",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH10",
+        "TH26"
+      ],
+      "summary": "Registered47/domain1.31 atomicprivacycolumn+exactsealedlinkagecore.190native affected0fail/skip incl8registeredupgrade/noop/checksum/6faults\u00d72rollback;old46experimentsretained;registeredprivacy/RLS/worker/shape/payload/actualrestore47checksums/replacementAPI2processes.56separateunitsPASS after2metadatafailuresretained;289stablepins. Agentcode/root evidence reviews separate, nohuman signoff. LiveDDLquiescence/currentheadfull/browser/provider/hosted/container/export/financial/release gatesheld.0/50.",
+      "prepared_by": "Codex rootintegration/supporting source review; separate root evidence review",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-20",
+      "change_id": "DX-Migration-Quiescence",
+      "change": "Bounded local diagnosis47 deployment writer-quiescence precaution and current registered application qualification",
+      "paths": [
+        "deploy/check_writer_quiescence.py",
+        "deploy/lib.sh",
+        "deploy/update.sh",
+        "deploy/Dockerfile",
+        "qualification/test_deployment_quiescence_unit.py"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH06",
+        "TH26"
+      ],
+      "summary": "StopsComposewritersbeforemigration;read-onlycompletevisibilityprobe refusessessions/preparedtransactions;failed ordinarydeployretainsprivate0600checkpoint/noautomaticoldimage restart.198finalaffectedunits incl27newhelpercases,95retaineddeploy; firstBashfailurepreserved.5actualnativeprobeobservations; probePythonexact, later shellbytes separatelyunitqualified. Current79bapplication2626pass28skip/native recovery/provider18/browser10-318 retained. NoDocker/globalwriterfence/hosted/human/operational acceptance;0deployed.",
+      "prepared_by": "Codex integration; separate supporting code and evidence reviews",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-0.40-21",
+      "change_id": "DX-Quiescence-Lock-Refusal",
+      "change": "Refuse surviving writers before querying locked migration ledger; bound probe statements and locks",
+      "paths": [
+        "deploy/check_writer_quiescence.py",
+        "qualification/test_deployment_quiescence_unit.py",
+        "qualification/test_deployment_sequence_unit.py"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH06",
+        "TH26"
+      ],
+      "summary": "Actual old probe hang reproduced with held native ledger lock; fixed check refuses before ledger. Four source-pinned native observations incl actual10s timeout/redactedfailure and recovery.127 affecteddeploymentunits0failure/skip; sandbox/collection failures retained. NoDocker/hosted/globalwriterfence/release/human/deployment acceptance;0/50.",
+      "prepared_by": "Codex integration; separate supporting code and evidence reviews",
+      "prepared_on": "2026-10-11",
+      "confirmed_by": null
+    }
+  ],
+  "evidence": [
+    "docs/current/threat-register.json",
+    "docs/RELEASE-0.40-ai-diagnosis.md",
+    "qualification/test_ai_diagnosis_live.py",
+    "qualification/test_ai_diagnoses_unit.py",
+    "qualification/test_ai_diagnosis_faults_live.py",
+    "qualification/test_ai_diagnosis_native.py"
+  ],
+  "notes": [
+    "Current story is local coding/test candidate only. G11/G12 and every existing unresolved threat remain held. Package reference integrity does not activate engineering or workflow enforcement."
+  ]
+}

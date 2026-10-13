@@ -1,0 +1,10 @@
+test_exact_positive_and_only_explicit_observed_final_lf (__main__.PostPublicationGuards.test_exact_positive_and_only_explicit_observed_final_lf) ... ok
+test_frozen_v1_pin_or_false_pass_counts_cannot_be_rewritten (__main__.PostPublicationGuards.test_frozen_v1_pin_or_false_pass_counts_cannot_be_rewritten) ... ok
+test_overview_and_same_count_project_resource_or_milestone_damage_fails (__main__.PostPublicationGuards.test_overview_and_same_count_project_resource_or_milestone_damage_fails) ... ok
+test_prefix_word_number_and_duplicate_marker_damage_fails (__main__.PostPublicationGuards.test_prefix_word_number_and_duplicate_marker_damage_fails) ... ok
+test_wrong_target_broad_plan_or_failed_native_readback_fails_closed (__main__.PostPublicationGuards.test_wrong_target_broad_plan_or_failed_native_readback_fails_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.060s
+
+OK

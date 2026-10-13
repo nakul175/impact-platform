@@ -30,13 +30,13 @@ TENANT = "ce56220a-32a5-5ca5-a45f-860dc3d9c958"
 
 def rule(**changes):
     """The Gherkin example: ADVISORY_DRAFT for INTERNAL data, destination openai-us, purpose
-    "planning advice", languages en, human review, budget 100 units, no tools."""
+    "AI_ADOPTION_ADVISORY", languages en, human review, budget 100 units, no tools."""
     return {
         "use_case": "ADVISORY_DRAFT",
         "enabled": True,
         "data_classes": ["INTERNAL"],
         "destinations": ["openai-us"],
-        "purposes": ["planning advice"],
+        "purposes": ["AI_ADOPTION_ADVISORY"],
         "languages": ["en"],
         "review_mode": "HUMAN_REVIEW",
         "budget_units": 100,
@@ -81,7 +81,7 @@ def test_policy_change_is_a_fresh_assurance_tenant_admin_capability_and_audited(
     assert set(spec["paths"][path + "/revisions"]) == {"get"}
 
 
-def test_policy_command_and_rules_are_closed_with_empty_tools():
+def test_policy_command_and_rules_are_closed_with_explicit_reviewed_tools():
     spec, _ = generated()
     schemas = spec["components"]["schemas"]
     command = schemas["AIPolicyCommand"]
@@ -90,13 +90,8 @@ def test_policy_command_and_rules_are_closed_with_empty_tools():
     assert schemas["AIPolicyData"]["additionalProperties"] is False
     use_case = schemas["AIUseCasePolicy"]
     assert use_case["additionalProperties"] is False and set(use_case["required"]) == set(module.FIELDS)
-    assert use_case["properties"]["tools"]["maxItems"] == 0
-    assert use_case["properties"]["use_case"]["enum"] == [
-        "ADVISORY_DRAFT",
-        "EXTRACTION",
-        "REPORT_DRAFT",
-        "CHAT",
-    ]
+    assert use_case["properties"]["tools"]["maxItems"] == 20
+    assert use_case["properties"]["use_case"]["enum"] == contracts.USE_CASES
     assert use_case["properties"]["data_classes"]["items"]["enum"] == [
         "PUBLIC",
         "INTERNAL",
@@ -171,7 +166,7 @@ def test_web_area_lists_ai_enablement_for_policy_holders_and_card_precedes_reque
     assert '"ai.policy."' in area and '"ai.enablement.read"' in area
     panel = (ROOT / "apps/web/src/AIEnablement.tsx").read_text()
     # The read-only "Policy in force" card is rendered before the advisory request button.
-    assert panel.index("<AIPolicyInForce") < panel.index("Request AI advisory draft")
+    assert panel.index("<AIPolicyInForce") < panel.index("Queue AI advisory draft")
 
 
 # Policy validation
@@ -195,10 +190,10 @@ def test_valid_policy_is_normalised_in_closed_list_order():
 @pytest.mark.parametrize(
     "change,reason",
     [
-        ({"tools": ["web_search"]}, "AI_TOOLS_NOT_ALLOWED"),
-        ({"use_case": "CHAT"}, "AI_USE_CASE_RESERVED"),
-        ({"use_case": "EXTRACTION"}, "AI_USE_CASE_RESERVED"),
-        ({"use_case": "REPORT_DRAFT"}, "AI_USE_CASE_RESERVED"),
+        ({"tools": ["Invalid Tool"]}, "AI_TOOLS_INVALID"),
+        ({"use_case": "INDICATOR_DESIGN"}, "AI_USE_CASE_RESERVED"),
+        ({"use_case": "IMPORT_CLEANING"}, "AI_USE_CASE_RESERVED"),
+        ({"use_case": "EVIDENCE_QUESTION"}, "AI_USE_CASE_RESERVED"),
         ({"destinations": []}, "AI_POLICY_INCOMPLETE"),
         ({"data_classes": []}, "AI_POLICY_INCOMPLETE"),
         ({"purposes": []}, "AI_POLICY_INCOMPLETE"),
@@ -209,7 +204,7 @@ def test_valid_policy_is_normalised_in_closed_list_order():
         ({"data_classes": ["INTERNAL", "INTERNAL"]}, "AI_POLICY_INVALID"),
         ({"languages": ["english"]}, "AI_POLICY_INVALID"),
         ({"languages": ["en", "EN"]}, "AI_POLICY_INVALID"),
-        ({"purposes": ["planning advice", "Planning advice"]}, "AI_POLICY_INVALID"),
+        ({"purposes": ["AI_ADOPTION_ADVISORY", "ai_adoption_advisory"]}, "AI_POLICY_INVALID"),
         ({"purposes": [" padded"]}, "AI_POLICY_INVALID"),
         ({"purposes": ["x" * 201]}, "AI_POLICY_INVALID"),
         ({"purposes": ["line\nbreak"]}, "AI_POLICY_INVALID"),
@@ -282,25 +277,64 @@ def test_advisory_ceiling_below_internal_is_refused_only_when_enabled():
 def test_allowed_classes_are_a_ceiling_in_the_gate(allowed, passes):
     for data_class in contracts.DATA_CLASSES:
         if data_class in passes:
-            require(policy(1, data_classes=allowed), "ADVISORY_DRAFT", 1, data_class, "openai-us", "en")
+            require(
+                policy(1, data_classes=allowed),
+                "ADVISORY_DRAFT",
+                1,
+                data_class,
+                "openai-us",
+                "en",
+                purpose="AI_ADOPTION_ADVISORY",
+            )
             continue
         with pytest.raises(DomainError) as blocked:
-            require(policy(1, data_classes=allowed), "ADVISORY_DRAFT", 1, data_class, "openai-us", "en")
+            require(
+                policy(1, data_classes=allowed),
+                "ADVISORY_DRAFT",
+                1,
+                data_class,
+                "openai-us",
+                "en",
+                purpose="AI_ADOPTION_ADVISORY",
+            )
         assert blocked.value.reason == "AI_POLICY_BLOCKED"
         assert data_class.lower() + " data is above the highest allowed data class" in blocked.value.message
 
 
 def test_gate_order_version_then_enablement_then_rules():
     with pytest.raises(DomainError) as stale:
-        require(policy(2, enabled=False), "ADVISORY_DRAFT", 1, "CONFIDENTIAL", "openai-us", "en")
+        require(
+            policy(2, enabled=False),
+            "ADVISORY_DRAFT",
+            1,
+            "CONFIDENTIAL",
+            "openai-us",
+            "en",
+            purpose="AI_ADOPTION_ADVISORY",
+        )
     assert (stale.value.status, stale.value.reason) == (409, "AI_POLICY_CHANGED")
     with pytest.raises(DomainError) as disabled:
-        require(policy(2, enabled=False), "ADVISORY_DRAFT", 2, "CONFIDENTIAL", "openai-us", "en")
+        require(
+            policy(2, enabled=False),
+            "ADVISORY_DRAFT",
+            2,
+            "CONFIDENTIAL",
+            "openai-us",
+            "en",
+            purpose="AI_ADOPTION_ADVISORY",
+        )
     assert (disabled.value.status, disabled.value.reason) == (503, "AI_USE_CASE_DISABLED")
     with pytest.raises(DomainError) as blocked:
-        require(policy(2), "ADVISORY_DRAFT", 2, "CONFIDENTIAL", "openai-us", "en")
+        require(
+            policy(2), "ADVISORY_DRAFT", 2, "CONFIDENTIAL", "openai-us", "en", purpose="AI_ADOPTION_ADVISORY"
+        )
     assert (blocked.value.status, blocked.value.reason) == (422, "AI_POLICY_BLOCKED")
-    assert require(policy(2), "ADVISORY_DRAFT", 2, "INTERNAL", "openai-us", "en")["budget_units"] == 100
+    assert (
+        require(
+            policy(2), "ADVISORY_DRAFT", 2, "INTERNAL", "openai-us", "en", purpose="AI_ADOPTION_ADVISORY"
+        )["budget_units"]
+        == 100
+    )
 
 
 def test_gate_names_every_unmet_rule_and_refuses_any_tool():
@@ -313,6 +347,7 @@ def test_gate_names_every_unmet_rule_and_refuses_any_tool():
             "openai-us",
             "en",
             ["web_search"],
+            "AI_ADOPTION_ADVISORY",
         )
     message = blocked.value.message
     for fragment in ("restricted data", "destination", "language (en)", "no budget", "tools"):
@@ -467,7 +502,7 @@ def test_first_save_stores_version_1_with_exactly_that_use_case_and_audits(saver
     view = api.get(None, TENANT)
     assert view["policy_version"] == 1 and view["use_cases"] == [rule()]
     assert view["advisory_available"] is True and view["server_enabled"] is True
-    assert view["reserved_use_cases"] == ["EXTRACTION", "REPORT_DRAFT", "CHAT"]
+    assert view["reserved_use_cases"] == list(module.RESERVED_USE_CASES)
     assert view["destinations"] == [{"id": "openai-us", "provider": "OpenAI", "region": "United States"}]
 
 
@@ -564,7 +599,7 @@ def test_policy_tables_are_tenant_keyed_fenced_insert_only_and_narrowly_granted(
 def test_migration_checks_match_the_closed_contract_lists():
     text = sql()
     quoted = lambda items: ",".join("'" + item + "'" for item in items)  # noqa: E731
-    assert "use_case IN (" + quoted(contracts.USE_CASES) + ")" in text
+    assert "use_case IN (" + quoted(contracts.USE_CASES[:4]) + ")" in text
     assert "ARRAY[" + quoted(contracts.DATA_CLASSES) + "]::text[]" in text
     assert "ARRAY[" + quoted(contracts.DESTINATIONS) + "]::text[]" in text
     assert "review_mode IN (" + quoted(contracts.REVIEW_MODES) + ")" in text

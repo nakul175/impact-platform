@@ -1,0 +1,736 @@
+{
+  "scope": "Imprana Commons source-only QA-v1.3 traceability audit",
+  "observed_at_utc": "2026-10-11T04:20:19.998918+00:00",
+  "repository_head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+  "repository_tree": "c15d52d24710a9c93905b6822838d168e9c7a5dc",
+  "inventory": {
+    "active_stories": 368,
+    "epics": 54,
+    "original_criteria": 1328,
+    "proposed_tasks": 1131,
+    "task_dependency_edges": 779,
+    "backlog_rows_including_two_historical_split_records": 370,
+    "criterion_alias_records": 1328,
+    "criterion_execution_state_counts": {
+      "Not run": 1328
+    }
+  },
+  "source_integrity_checks": {
+    "criterion_ids_unique": true,
+    "task_ids_unique": true,
+    "story_ids_unique": true,
+    "matrix_source_blocks_match_pinned_hash": true,
+    "matrix_source_full_gherkin_matches_original_csv": true,
+    "criterion_story_parent_exists": true,
+    "primary_verification_task_exists": true,
+    "primary_verification_task_sibling_story": true,
+    "supporting_tasks_exist_and_sibling_story": true,
+    "task_sources_match_original_manifest_task_ids": true,
+    "task_parent_story_matches_original_manifest": true,
+    "779_edges_have_real_task_endpoints": true,
+    "aliases_are_same_scenario_not_extra_criteria": true,
+    "all_proposed_criterion_execution_not_run_no_result_or_evidence": true
+  },
+  "legacy_populations": {
+    "docs/current/TRACEABILITY.csv": {
+      "rows": 307,
+      "headers": [
+        "Requirement",
+        "BRD parent",
+        "Title",
+        "Priority",
+        "Baseline release",
+        "Status",
+        "Current assessment",
+        "Behavior retained",
+        "Recovery retained",
+        "Acceptance retained",
+        "Implementation and test sources",
+        "Evidence interpretation"
+      ],
+      "status_counts": {
+        "PARTIAL": 113,
+        "PENDING": 194
+      },
+      "evidence_status_counts": {
+        "null": 307
+      },
+      "source_pin": {
+        "path": "docs/current/TRACEABILITY.csv",
+        "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+        "bytes": 389725,
+        "sha256": "a93bfd9d4a13686df08aba831717ef89a04a36698c6de470fa61553b408d71db"
+      }
+    },
+    "docs/backlog/backlog.csv": {
+      "rows": 370,
+      "headers": [
+        "ID",
+        "Title",
+        "Release",
+        "Epic / area",
+        "Type",
+        "Priority",
+        "Built today",
+        "Persona",
+        "User story",
+        "Acceptance and rejection criteria (Gherkin)",
+        "Rejection summary",
+        "Source",
+        "Merged BRD stories",
+        "Related",
+        "Original requirement",
+        "Original acceptance",
+        "Story points",
+        "Sprint",
+        "Status"
+      ],
+      "status_counts": {
+        "Backlog": 364,
+        "In review": 4,
+        "Split": 2
+      },
+      "evidence_status_counts": {
+        "null": 370
+      },
+      "source_pin": {
+        "path": "docs/backlog/backlog.csv",
+        "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+        "bytes": 718739,
+        "sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd"
+      }
+    },
+    "docs/nonprofit-ai/v1.0/test-cases.csv": {
+      "rows": 108,
+      "headers": [
+        "case_id",
+        "scenario_id",
+        "br_ids",
+        "fr_ids",
+        "title",
+        "layer",
+        "priority",
+        "phase",
+        "status",
+        "evidence_status",
+        "prerequisites",
+        "steps",
+        "expected_result",
+        "test_data",
+        "evidence",
+        "decision_dependencies",
+        "negative_case",
+        "execution_notes"
+      ],
+      "status_counts": {
+        "SPECIFIED_NOT_RUN": 108
+      },
+      "evidence_status_counts": {
+        "RELATED_LOCAL_EVIDENCE": 37,
+        "NONE": 69,
+        "PENDING_NATIVE_NOT_RUN": 1,
+        "INCOMPLETE_REQUIRES_MANUAL_REVIEW": 1
+      },
+      "source_pin": {
+        "path": "docs/nonprofit-ai/v1.0/test-cases.csv",
+        "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+        "bytes": 81743,
+        "sha256": "fbde4346b5829a36832c6a47ad0cade13c1fa6c41b5d9fba16f973177c1735af"
+      }
+    },
+    "docs/nonprofit-ai/v1.0/test-run-template.csv": {
+      "rows": 0,
+      "headers": [
+        "run_id",
+        "case_id",
+        "requirement_ids",
+        "candidate_commit",
+        "build",
+        "schema",
+        "domain_api_version",
+        "platform_api_version",
+        "environment",
+        "database_engine",
+        "database_version",
+        "harness",
+        "harness_version",
+        "fixture_ids",
+        "content_versions",
+        "executor_name",
+        "executor_role",
+        "executed_at_utc",
+        "result",
+        "actual_result",
+        "evidence_path",
+        "defect_id",
+        "blocker_reason",
+        "scope_decision",
+        "reviewer_name",
+        "reviewer_role",
+        "reviewed_at_utc"
+      ],
+      "status_counts": {},
+      "evidence_status_counts": {},
+      "source_pin": {
+        "path": "docs/nonprofit-ai/v1.0/test-run-template.csv",
+        "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+        "bytes": 362,
+        "sha256": "02d89451e5d89a33f7755a92e6f75a5668581a26f90ad199239f4c9db13d6419"
+      }
+    },
+    "docs/nonprofit-ai/v1.0/test-scenarios.csv": {
+      "rows": 50,
+      "headers": [
+        "scenario_id",
+        "title",
+        "br_ids",
+        "fr_ids",
+        "layer",
+        "priority",
+        "phase",
+        "status",
+        "prerequisites",
+        "steps",
+        "expected_result",
+        "test_data",
+        "evidence",
+        "decision_dependencies",
+        "case_ids"
+      ],
+      "status_counts": {
+        "SPECIFIED_NOT_RUN": 50
+      },
+      "evidence_status_counts": {
+        "null": 50
+      },
+      "source_pin": {
+        "path": "docs/nonprofit-ai/v1.0/test-scenarios.csv",
+        "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+        "bytes": 29537,
+        "sha256": "4420e20a6bdf1dc121ea4f39ed54fd7d3c8090d51949cbb48fc84d67ad233b95"
+      }
+    },
+    "docs/nonprofit-ai/v1.0/traceability.csv": {
+      "rows": 40,
+      "headers": [
+        "fr_id",
+        "br_ids",
+        "title",
+        "phase",
+        "current_state",
+        "acceptance_status",
+        "fsd_section",
+        "hld_components",
+        "lld_section",
+        "scenario_ids",
+        "case_ids",
+        "test_status",
+        "wireframes",
+        "dictionary_fields",
+        "decision_dependencies",
+        "work_packages"
+      ],
+      "status_counts": {
+        "null": 40
+      },
+      "evidence_status_counts": {
+        "null": 40
+      },
+      "source_pin": {
+        "path": "docs/nonprofit-ai/v1.0/traceability.csv",
+        "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+        "bytes": 25029,
+        "sha256": "e1046b40876d6fe7711bcd49d87ce1b290500fcdbadacaa32435da4b86e8f0c9"
+      }
+    }
+  },
+  "existing_code_case_marker_census": {
+    "scope": "tracked qualification/ and tools/browser/ Python/JavaScript/TypeScript source at exact HEAD only",
+    "files_scanned": 150,
+    "literal_qa_TC_version_marker_matches": [],
+    "match_count": 0,
+    "existing_named_test_function_examples": [
+      {
+        "path": "qualification/perf_harness.py",
+        "line": 473,
+        "symbol": "def test_performance_workload"
+      },
+      {
+        "path": "qualification/prepared_dashboard_visibility_repro.py",
+        "line": 106,
+        "symbol": "def test_compare_current_scope_and_classification_with_returned_snapshot_blocks"
+      },
+      {
+        "path": "qualification/prepared_human_advice_anchor_availability.py",
+        "line": 21,
+        "symbol": "def test_unavailable_exact_plan_pin_hides_case_history_list_replay_and_all_pointers"
+      },
+      {
+        "path": "qualification/prepared_retained_label_visibility_repro.py",
+        "line": 109,
+        "symbol": "def test_observe_current_definition_and_framework_visibility"
+      },
+      {
+        "path": "qualification/test_access_bootstrap.py",
+        "line": 59,
+        "symbol": "def test_onboarding_to_first_programme_requires_two_reviews"
+      },
+      {
+        "path": "qualification/test_access_bootstrap.py",
+        "line": 127,
+        "symbol": "def test_request_is_owner_only_and_unknown_fields_are_closed"
+      },
+      {
+        "path": "qualification/test_access_bootstrap.py",
+        "line": 146,
+        "symbol": "def test_invalid_initial_authority_packages"
+      },
+      {
+        "path": "qualification/test_access_bootstrap.py",
+        "line": 150,
+        "symbol": "def test_same_natural_person_cannot_be_second_admin"
+      },
+      {
+        "path": "qualification/test_access_bootstrap.py",
+        "line": 155,
+        "symbol": "def test_approval_independence_applies_across_identity_aliases"
+      },
+      {
+        "path": "qualification/test_access_bootstrap.py",
+        "line": 162,
+        "symbol": "def test_private_inbox_nominee_binding_and_fresh_assurance"
+      },
+      {
+        "path": "qualification/test_access_bootstrap.py",
+        "line": 181,
+        "symbol": "def test_idempotent_once_only_and_replay_cannot_restore_revoked_grants"
+      },
+      {
+        "path": "qualification/test_access_bootstrap.py",
+        "line": 224,
+        "symbol": "def test_approval_rechecks_pinned_context_and_consent"
+      }
+    ],
+    "meaning": "Zero canonical marker matches does not mean absent tests or untested product; no code-to-1328-criteria mapping coverage is inferred."
+  },
+  "normalized_qa_at_pinned_head": {
+    "docs_qa_tracked_paths": [],
+    "exact_schema_register_paths_present": [],
+    "assessment": "Normalized v1.3 registers are not installed at b01a628. Root newly authored working-tree docs/qa audit documents are outside this historical census and are not registers."
+  },
+  "source_control_configuration": {
+    "codeowners_locations_present": [
+      "docs/CODEOWNERS"
+    ],
+    "actual_supported_codeowners": "docs/CODEOWNERS",
+    "global_owner": "@nakul175",
+    "live_branch_ruleset_codeowner_review_freshness_bypass_required_check_state": "NOT_VERIFIED / UNKNOWN; no live settings queried",
+    "existing_workflows": [
+      ".github/workflows/checks.yml",
+      ".github/workflows/qualification.yml"
+    ],
+    "qa_lint_reference_in_tracked_workflows": false
+  },
+  "package_schemas": {
+    "ac-register": [
+      "ac_id",
+      "ac_version",
+      "scope_id",
+      "source_ref",
+      "applicability",
+      "applicability_rationale",
+      "review_ref",
+      "risk_tier"
+    ],
+    "case-register": [
+      "case_id",
+      "case_version",
+      "scope_id",
+      "mode",
+      "procedure_ref",
+      "automation_locator",
+      "marker"
+    ],
+    "traceability": [
+      "mapping_id",
+      "vision_id",
+      "strategy_id",
+      "roadmap_id",
+      "release_goal_id",
+      "release_id",
+      "epic_id",
+      "story_id",
+      "ac_id",
+      "ac_version",
+      "task_id",
+      "risk_id",
+      "case_id",
+      "case_version",
+      "required"
+    ],
+    "run-register": [
+      "run_id",
+      "case_id",
+      "case_version",
+      "ac_id",
+      "ac_version",
+      "scope_id",
+      "build_sha",
+      "artifact_digest",
+      "environment",
+      "config_version",
+      "data_version",
+      "tool_versions",
+      "start_time",
+      "end_time",
+      "executor",
+      "purpose",
+      "protocol_ref",
+      "result",
+      "freshness",
+      "expected",
+      "observed",
+      "evidence_ref",
+      "parent_attempt",
+      "defect_id",
+      "rationale",
+      "review_ref"
+    ],
+    "coverage-selection": [
+      "mapping_id",
+      "run_id"
+    ],
+    "defect-register": [
+      "event_id",
+      "defect_id",
+      "previous_event_id",
+      "severity",
+      "priority",
+      "status",
+      "case_id",
+      "run_id",
+      "build_sha",
+      "owner",
+      "details_ref",
+      "fix_pr",
+      "retest_run",
+      "close_evidence",
+      "severity_change_rationale",
+      "severity_review_ref"
+    ],
+    "risk-register": [
+      "risk_id",
+      "scope_id",
+      "failure_mode",
+      "impact",
+      "likelihood",
+      "inherent_tier",
+      "rationale_source",
+      "controls",
+      "required_cases",
+      "evidence_refs",
+      "residual_risk",
+      "owner",
+      "reviewer",
+      "decision",
+      "expiry"
+    ],
+    "exception-register": [
+      "exception_id",
+      "scope_id",
+      "gate_id",
+      "unmet_condition",
+      "eligibility",
+      "risk",
+      "controls_evidence",
+      "owner",
+      "authority",
+      "approval_ref",
+      "expiry",
+      "status"
+    ]
+  },
+  "pm_static_compatibility": {
+    "catalogue_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+    "catalogue_raw_sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+    "package_mapping_catalogue_sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+    "byte_hash_matches": true,
+    "mapping_fields_count": 23,
+    "missing_canonical_fields": [],
+    "reference_only_not_input_schema": true,
+    "source_review_only": true,
+    "owner_review_or_quality_certificate": false,
+    "root_reported_actual_check_pm_mapping_exit": 0,
+    "root_reported_command_scope": "canonical full catalogue membership, alias and gate-prefix compatibility only"
+  },
+  "core_source_pins": [
+    {
+      "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 7419410,
+      "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208"
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/task-author/task-contracts.proposed.json",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 13484732,
+      "sha256": "c3793154d8a020e883d07d8492e7327515f510427e69efe1136f4ce886ff29a8"
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/bundle-review/CRITERION-ALIAS-MAP.json",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 890236,
+      "sha256": "279c1bec0920f02dba67f43cb6fcb6ce5f2fa311c79dc98dc18ac0a4f29c99ee"
+    },
+    {
+      "path": "docs/product/refinement/backlog-refinement.json",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 3146639,
+      "sha256": "cbb61315088ee2ecdc2106d8f472ab5ee052bf3034d9172c32973e4c941a7c7e"
+    },
+    {
+      "path": "docs/backlog/backlog.csv",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 718739,
+      "sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd"
+    },
+    {
+      "path": "docs/current/TRACEABILITY.csv",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 389725,
+      "sha256": "a93bfd9d4a13686df08aba831717ef89a04a36698c6de470fa61553b408d71db"
+    },
+    {
+      "path": "docs/current/Impact-Management-Test-Catalogue-v1.1.xlsx",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 249494,
+      "sha256": "1db2338f8577aaebc982367f1c6d19f11ee378821b8e3a9134224235864c1956"
+    },
+    {
+      "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 35965,
+      "sha256": "fe50fe631b15c06bc009b3f2f43b3713b75307944f1bc080d7c5da14ac32c9a9"
+    },
+    {
+      "path": "docs/current/DOCUMENTATION-QA.md",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 9501,
+      "sha256": "cf7814721304e440b5f55204b45ba0837681611ebc3d070fabfa5396afb2aaa7"
+    },
+    {
+      "path": "docs/QUALIFICATION.md",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 103279,
+      "sha256": "7c1659b848a16966e5c0a10df4e8b0534a60809ccb95b3cb2ad72e84d25a7c44"
+    },
+    {
+      "path": "docs/CODEOWNERS",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 443,
+      "sha256": "f02d2371127f001543067a76f938032e9b579d278d75250731f989b23d3ab68b"
+    },
+    {
+      "path": "AGENTS.md",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 20201,
+      "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922"
+    },
+    {
+      "path": "CLAUDE.md",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 6575,
+      "sha256": "88ab571a7ff6a140092ef38e65a1dee75b8e92c4565185f563af7c8c84d80c3a"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 21571,
+      "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/06-TEST-SCENARIOS-AND-CASES.md",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 104925,
+      "sha256": "cb222097c8a19f75977d4fb66726d1bcb7596554358afbb4dbf4a4e165f93a70"
+    },
+    {
+      "path": "docs/product/05-STORY-AND-TASK-STANDARD.md",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 18577,
+      "sha256": "a6d5d79f1924ebe80447f3f6476c26a5fde091ccb9df123565d36f6dab806dcb"
+    },
+    {
+      "path": ".github/workflows/checks.yml",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 2553,
+      "sha256": "16817f3fc91126a582cf8c0e6c9cb1dd9eb6d9bb66c2b2d8bed4d8e4a9e6c702"
+    },
+    {
+      "path": ".github/workflows/qualification.yml",
+      "head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+      "bytes": 33695,
+      "sha256": "a9bc90b3240eb52b125e5bef24a1a76f10647efad0970112d814afab708b1b1f"
+    }
+  ],
+  "package_source_pins": [
+    {
+      "path": "ADOPTION-CHECKLIST.md",
+      "bytes": 3444,
+      "sha256": "bd652fafd7a9f93a87f965d59f136e490eded3ae4e548c8773976638a71bf66d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4572,
+      "sha256": "007b43c194e2486047d9dc3fea35da1370112df9559dd7a5504b8011e8dfce52"
+    },
+    {
+      "path": "checker/QUALIFICATION.json",
+      "bytes": 772,
+      "sha256": "8eb8a59705bd4cb68112010bdd8991779e73fb38383be65979e023dfd4c919fd"
+    },
+    {
+      "path": "checker/README.md",
+      "bytes": 5419,
+      "sha256": "34dd45c0bf49fe95a0b1e5dc7437d07beb00563a05990f5b677d433cb78a6197"
+    },
+    {
+      "path": "checker/check_pm_mapping.py",
+      "bytes": 2288,
+      "sha256": "24d1629d8608ce723f64baabb02e2d1b80aef98650c8ba0d2b13958275fedf80"
+    },
+    {
+      "path": "checker/criteria_pin.py",
+      "bytes": 1696,
+      "sha256": "23bdaed08df3454428bbad3a4fd23b8b4a86efe54cbe6fe94fe370d96a9a0920"
+    },
+    {
+      "path": "checker/qa_lint.py",
+      "bytes": 22397,
+      "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+    },
+    {
+      "path": "checker/tests/test_pm_mapping.py",
+      "bytes": 1562,
+      "sha256": "03f132f3deef700b374ecedaa2ba32aca8ff0c0c71beafb2945a6d5eded5892a"
+    },
+    {
+      "path": "checker/tests/test_qa_lint.py",
+      "bytes": 12920,
+      "sha256": "58375597c28eaceae86739c558f683522ca4e8de41d9748af933a4ccce5dc139"
+    },
+    {
+      "path": "standards/PROVISIONAL-TARGETS.md",
+      "bytes": 1602,
+      "sha256": "7c412880c11936e38224ef74702db6241158b99ee87ad181a8c00ca5f4800476"
+    },
+    {
+      "path": "standards/RISK-CLASSIFICATION.md",
+      "bytes": 3360,
+      "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+    },
+    {
+      "path": "standards/STATUS-MODEL.md",
+      "bytes": 1206,
+      "sha256": "bc9a5dab6119a0d54b75986a2ed7e866fdcd91d39c02b6d2016758beb083a1b7"
+    },
+    {
+      "path": "standards/TESTING-STANDARD.md",
+      "bytes": 4479,
+      "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+    },
+    {
+      "path": "standards/register-schema.json",
+      "bytes": 2006,
+      "sha256": "4f24182ea4beda4026af524ffe122eaf20c1c09aba2fbc1b3ab0e0f1165cd65e"
+    },
+    {
+      "path": "standards/statuses.json",
+      "bytes": 1058,
+      "sha256": "ba979a6ea772cd6e468ce7928c98653f93720b4735e7a1cd66a81d072c966ec1"
+    },
+    {
+      "path": "workflow/AGENT-DETAILS.md",
+      "bytes": 2926,
+      "sha256": "e0086857aac9628c3cf9b438987f709c5f1bfe4ab8bda09e3edbe499db203aa1"
+    },
+    {
+      "path": "workflow/CI-CD-GATES.md",
+      "bytes": 3528,
+      "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+    },
+    {
+      "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+      "bytes": 2495,
+      "sha256": "b97985d780cd5c30ad665561c7e8c3d53d148df22328136389f451ee8cc43dd4"
+    },
+    {
+      "path": "workflow/CRITERIA-SOURCE-PINNING.md",
+      "bytes": 3357,
+      "sha256": "b1efaabd32b331457860b7b0dbd5a5d4db59f518570eb7d7622d1b6621ff55fc"
+    },
+    {
+      "path": "workflow/EVIDENCE-ROOT.md",
+      "bytes": 2124,
+      "sha256": "d7d4d3b170cf7003207a83c525ec6703aca75eba61c0528e64fd2b773c168ef2"
+    },
+    {
+      "path": "workflow/LINEAR-GITHUB.md",
+      "bytes": 2314,
+      "sha256": "b1b354abe72242161c70cb7aa850d31b1235dc8930f27916f5d26082fda13c7f"
+    },
+    {
+      "path": "workflow/PM-INTEGRATION.md",
+      "bytes": 1565,
+      "sha256": "e58d6be4586dd0b39b386a3b415f11a69fbed9bbc7278ed56c64853ae09c6308"
+    },
+    {
+      "path": "workflow/PM-MAPPING.json",
+      "bytes": 3192,
+      "sha256": "e1f1c9476c864193ccf545c29134b95a8ec6d221cfc921ffe1bd50569bf55625"
+    },
+    {
+      "path": "workflow/RELEASE-READINESS.md",
+      "bytes": 2233,
+      "sha256": "5ce632106e51ef4129f96508ffcad88ed3b27891b22982ab6969dbc46e4b887a"
+    },
+    {
+      "path": "workflow/REPETITION-POLICY.md",
+      "bytes": 1235,
+      "sha256": "b4c46d231ecfc8a8fc623c1b1a8cfbf2321d1996603aea2a2e9c781a29c5e4bd"
+    },
+    {
+      "path": "workflow/REPORTING.md",
+      "bytes": 1735,
+      "sha256": "a8780050d47d9b45d21e5954d46e68237d95cecef989012f274fa502a999b6a3"
+    },
+    {
+      "path": "workflow/SOURCE-PROTECTION.md",
+      "bytes": 3757,
+      "sha256": "55ea2ad92fc7686e875d3d2bf11635a46d0c010000e01c0416b88d92c7c74bff"
+    },
+    {
+      "path": "workflow/TASK-ROUTING.md",
+      "bytes": 1956,
+      "sha256": "eef7f29fb03486d0e845f14af24aeb9494392893c6c33176d5d022920d8635c2"
+    },
+    {
+      "path": "workflow/TRACEABILITY.md",
+      "bytes": 2630,
+      "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+    },
+    {
+      "path": "workflow/pm-catalogue-index.json",
+      "bytes": 13170,
+      "sha256": "58d6fb5c27163a9ef5795b5afbc5daca3817ceb6bcf58b85fc0d4a93d863fdc8"
+    }
+  ],
+  "method_limitations": [
+    "No application tests, browser, native database, package qa_lint, provider, cloud or hosted CI were run.",
+    "No source, native Linear or GitHub settings were changed.",
+    "825 legacy cases are a dated documentation assertion; XLSX bytes are pinned, workbook rows were not independently parsed.",
+    "No freshness/current acceptance is inferred from historical execution labels or original core requirement statuses.",
+    "Source control workflow presence is not proof of live required-check enforcement or authorised human approval.",
+    "The initial false suggestion that docs/CODEOWNERS was unsupported was corrected; GitHub recognizes docs/ location."
+  ]
+}

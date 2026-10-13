@@ -1,0 +1,27 @@
+{
+  "completedAtUtc": "2026-10-11T03:03:40.861551+00:00",
+  "scope": "Partial real eight-tier connected planning assessment only, 8 assessed + 9 contextual elements; 56 mandatory planning gates. Not the full 2,893-item assessment.",
+  "inputSha256": "145ef5f90a094277eb704c07e525b44876f24c8daf9a90eec4c6da9e4261a341",
+  "invocationSha256": "00d865ed944fe70d18d923e3d9385cb4afb11a5f59c7dc7ea22697dc0e178869",
+  "commands": {
+    "loop": {
+      "exitCode": 2,
+      "stdoutSha256": "ba5747e4ebcf38fac2cfda2a55a266b7c079c73a6aabac883f2f0f733a006285",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "summary": {
+      "exitCode": 0,
+      "stdoutSha256": "eb95092e8ed464f7482e762325a4bf24d1981397792a32a4d44e111ab494c15a",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "next": {
+      "exitCode": 0,
+      "stdoutSha256": "fc85ac6c69eaf7d4a2c3344763b2862e0f8e8a6a7a55320f8a0168624a12d75c",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "reportExists": true,
+  "reportSha256": "492c2a8375db8a2fc8afc754a8d685042bb6e598cf1c1a490d6b3c918def98d9",
+  "noAuthorisedExternalTrustOrIndependentReviewFabricated": true,
+  "limitations": "Local advisory source/schema checks and honest missing reviews/trust only. No Ready/Done, delivery, acceptance or whole-product quality PASS is inferred."
+}

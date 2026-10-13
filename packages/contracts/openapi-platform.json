@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Impact control-plane API",
-    "version": "1.11.0"
+    "version": "1.12.0"
   },
   "paths": {
     "/v1/platform/tenants": {
@@ -19108,6 +19108,341 @@
                   "operation_id",
                   "expected_revision",
                   "data"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/partner-revenue-entries": {
+      "post": {
+        "operationId": "record_partner_revenue",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "entry_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "partner_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "tenant_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "invoice_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "amount": {
+                      "type": "string",
+                      "pattern": "^(?=.*[1-9])(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "pattern": "^[A-Z]{3}$"
+                    },
+                    "occurred_on": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "reconciled": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "entry_id",
+                    "partner_id",
+                    "tenant_id",
+                    "invoice_id",
+                    "amount",
+                    "currency",
+                    "occurred_on",
+                    "reconciled"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "pattern": "\\S"
+                  },
+                  "partner_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "tenant_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "invoice_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "amount": {
+                    "type": "string",
+                    "pattern": "^(?=.*[1-9])(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "pattern": "^[A-Z]{3}$"
+                  },
+                  "occurred_on": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "reason",
+                  "partner_id",
+                  "tenant_id",
+                  "invoice_id",
+                  "amount",
+                  "currency",
+                  "occurred_on"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/partner-statements": {
+      "post": {
+        "operationId": "generate_partner_statement",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "statement_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "partner_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "month": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "pattern": "^[A-Z]{3}$"
+                    },
+                    "amount": {
+                      "type": "string",
+                      "pattern": "^(?:0|[1-9][0-9]{0,25})(?:\\.[0-9]{1,12})?$"
+                    },
+                    "entry_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "minItems": 1,
+                      "uniqueItems": true
+                    },
+                    "reconciled": {
+                      "type": "boolean"
+                    },
+                    "settled": {
+                      "const": false
+                    }
+                  },
+                  "required": [
+                    "statement_id",
+                    "partner_id",
+                    "month",
+                    "currency",
+                    "amount",
+                    "entry_ids",
+                    "reconciled",
+                    "settled"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "pattern": "\\S"
+                  },
+                  "partner_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "month": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "^[0-9]{4}-(?:0[1-9]|1[0-2])-01$"
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "reason",
+                  "partner_id",
+                  "month"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/platform/partner-statements/{statement_id}/actions/settle": {
+      "parameters": [
+        {
+          "name": "statement_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "settle_partner_statement",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Control-plane authority or nominated identity; never tenant role inheritance. Cookie mutations require Origin and X-CSRF-Token. Mutations require fresh MFA assurance. Activation requires an independent natural identity.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "statement_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "reconciled": {
+                      "const": true
+                    },
+                    "settled": {
+                      "const": true
+                    },
+                    "settled_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "statement_id",
+                    "reconciled",
+                    "settled",
+                    "settled_at"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured domain error: code, message, retryable, correlation_id, permitted_actions, field_errors, optional reason_code."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "operation_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "pattern": "\\S"
+                  }
+                },
+                "required": [
+                  "operation_id",
+                  "reason"
                 ]
               }
             }

@@ -1,0 +1,21 @@
+{
+  "candidate": "e020eeb5305e6d073ba30606e96d5f906205128b",
+  "run": 38206494722,
+  "job": 114671561253,
+  "suite": {
+    "passed": 2691,
+    "failed": 4,
+    "skipped": 29,
+    "deselected": 1,
+    "warning": 1
+  },
+  "failures": {
+    "diagnosis_restore_cases": 3,
+    "diagnosis_restore_cause": "Missing IMPACT_PG_BIN; matching PG17 tools installed only after fullsuite",
+    "worker_batch_takeover": 1,
+    "worker_cause": "All6sent once but all lease_generation1; intended takeover not observed before slow finished"
+  },
+  "other_four_required_jobs": "PASS_ON_e020eeb",
+  "not_billing": true,
+  "revised_head_requires_fresh_CI": true
+}

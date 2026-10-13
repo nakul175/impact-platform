@@ -1,0 +1,96 @@
+{
+  "schema": "imprana-independent-diagnosis-error-contract-review-v1",
+  "observed_at_utc": "2026-10-11T08:57:01.325188+00:00",
+  "base_commit": "92341d6d81414be4627c5981363636580f7cbf52",
+  "reviewer": "commons_test_baseline",
+  "canonical_changes_by_reviewer": false,
+  "conclusion": "ACCEPTABLE_BOUNDED_NEW_READER: legacy schemas/paths/access operations unchanged; only new diagnosis refusal reader admits exact runtime cursor and expiry codes.",
+  "checks": [
+    {
+      "contract": "packages/contracts/openapi.json",
+      "sha256": "17f1061ba9b8cd7af08d3ccfedebef802f1a378eb8de67ccad52c2dea0af1cf1",
+      "legacy_schemas_unchanged": 772,
+      "legacy_paths_unchanged": 289,
+      "new_diagnosis_operations": 8,
+      "bounded_error_code_additions": [
+        "IDEMPOTENCY_EXPIRED",
+        "INVALID_CURSOR"
+      ],
+      "validation_shape_besides_code_enum": "EXACT_LEGACY_SHAPE",
+      "annotation_difference": "AIDiagnosisError copy predates a later build/export annotation on legacy Error.code.description; validation semantics unchanged."
+    },
+    {
+      "contract": "packages/contracts/openapi-implemented.json",
+      "sha256": "968ccba6d10686d404f99ce94abfa9868161323f7151a0e5f99b6bd11e983497",
+      "legacy_schemas_unchanged": 772,
+      "legacy_paths_unchanged": 213,
+      "new_diagnosis_operations": 8,
+      "bounded_error_code_additions": [
+        "IDEMPOTENCY_EXPIRED",
+        "INVALID_CURSOR"
+      ],
+      "validation_shape_besides_code_enum": "EXACT_LEGACY_SHAPE",
+      "annotation_difference": "AIDiagnosisError copy predates a later build/export annotation on legacy Error.code.description; validation semantics unchanged."
+    }
+  ],
+  "legacy_access_operations_unchanged": 388,
+  "new_unit_oracle_review": {
+    "test": "test_diagnosis_error_reader_admits_actual_cursor_expiry_refusals_but_stays_closed",
+    "expanded_nodes": 2,
+    "assertions": [
+      "Accept actual INVALID_CURSOR and IDEMPOTENCY_EXPIRED errors under AIDiagnosisError.",
+      "Reject unreviewed enum code.",
+      "Reject private_payload extra field."
+    ],
+    "execution": "New unit execution not claimed by this review."
+  },
+  "release_review_risk_record": {
+    "id": "IR-0.40-02",
+    "change_id": "US-DX-01a",
+    "change": "Independent review fixes and observed cursor-error contract correction",
+    "paths": [
+      "apps/api/impact_api/ai_diagnosis_contracts.py",
+      "apps/web/src/AIDiagnosis.tsx"
+    ],
+    "areas": [
+      "contracts",
+      "ai-module"
+    ],
+    "threats": [
+      "TH03",
+      "TH06",
+      "TH30"
+    ],
+    "summary": "Separate closed AIDiagnosisError admits actual INVALID_CURSOR and IDEMPOTENCY_EXPIRED runtime responses for diagnosis routes, preserving all older published Error schemas and paths. Independent source review found and root corrected late-response privacy after actual read loss (terminal per-scope invalidation, abort/epoch guards, protected metadata clearing) and uncertain expired/conflicting receipt retry (retain frozen pending request; no replacement save). Actual cursor, receipt, scope and browser evidence is recorded separately; first failure receipts retained. No human security confirmation or release gate promotion.",
+    "prepared_by": "Codex root agent; advisory review by separate delivery controls agent",
+    "prepared_on": "2026-10-11",
+    "confirmed_by": null
+  },
+  "source_pins": {
+    "apps/api/impact_api/ai_diagnosis_contracts.py": "65748a7b44daf535cf68120f414cdad57bb905f8746e3675f3089a6701d05def",
+    "qualification/test_ai_diagnoses_unit.py": "fdd261eeecda0000b6882be746965e3f930d38d9f406e8d0cf6fce8fc8fae236",
+    "qualification/test_ai_diagnosis_live.py": "d95cce99cfea336e2511b175419f9be47fcc99eafa9e0dc3fbf019de58741299",
+    "qualification/test_ai_diagnosis_visibility_live.py": "e151007132e9747b30950de6b17f849b9dac150be3b90965a6b6ee6c0e9a8486",
+    "qualification/test_ai_diagnosis_faults_live.py": "9dd1ca35b4a46d299390502592a0837aa4f27106152a4a2fe5a1391783722fad",
+    "docs/release-reviews/release-review-0.40.0.json": "c0fc5411542624fa8d02111f92f0e556e5f29581c8305db9567015a0363ab91b"
+  },
+  "preserved_failure": {
+    "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-delivery-start-20261011/diagnosis-api-regression-second-failed.xml",
+    "sha256": "068b782eb649633b1f208897fc9e8e0d1929dd5b9fded9ff011442f0015689eb",
+    "tests": 148,
+    "passed": 135,
+    "failed": 1,
+    "skipped": 12,
+    "failed_node": "test_history_cursor_binds_object_route_scope_and_current_grant",
+    "meaning": "Expected400 INVALID_CURSOR observed; new helper correctly validated the entire closed Error and exposed its missing documented enum. No asserted refusal or current-authority oracle weakened."
+  },
+  "next_evidence_requirements": [
+    "Preserve final actual JUnit and input manifest after all source/test/UI fixes settle.",
+    "Verify corrected cursor test, all six supplemental visibility nodes, original two AC nodes and rollback boundaries are actually present with no failures.",
+    "Reconcile each historical failed batch additively; never rewrite failure XML or prior source pins.",
+    "Bind actual final artifact bytes to candidate head at qualification time; earlier exploratory manifests are not final-head qualification.",
+    "Native PostgreSQL/concurrency and browser acceptance remain separate gates;12 skip is not12 pass."
+  ],
+  "application_run_by_reviewer": false,
+  "native_execution_by_reviewer": false
+}

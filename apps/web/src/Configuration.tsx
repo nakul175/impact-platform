@@ -10,6 +10,7 @@ const METHODS: Record<string, [string[], string[]]> = {
     ["COUNT", "DECIMAL", "RATIO", "PERCENTAGE"],
     ["STOCK", "CUMULATIVE"],
   ],
+  CUMULATIVE_DIFFERENCE: [["COUNT", "DECIMAL"], ["CUMULATIVE"]],
   MEAN: [
     ["COUNT", "DECIMAL", "RATIO", "PERCENTAGE"],
     ["FLOW", "STOCK"],
@@ -32,6 +33,7 @@ const METHOD_LABELS: Record<string, string> = {
   POOLED_RATIO: "pooled numerator / denominator",
   COUNT: "count of approved events",
   LAST_VALID: "latest approved position",
+  CUMULATIVE_DIFFERENCE: "approved cumulative difference",
   MEAN: "unweighted mean",
   MEDIAN: "median of approved values",
   MIN: "minimum approved value",
@@ -79,6 +81,12 @@ export function CoverageSummary({ data }: { data: Record<string, any> }) {
         </strong>{" "}
         · {data.complete ? "Complete collection" : "Incomplete collection"}
       </p>
+      {data.coverage_state && (
+        <p className="muted">
+          <strong>{data.coverage_state.replaceAll("_", " ")}</strong> ·{" "}
+          {data.coverage_reason}
+        </p>
+      )}
       {data.plan_revision && (
         <p className="muted">
           Approved plan revision {data.plan_revision.slice(0, 8)} · Counts and
@@ -418,6 +426,22 @@ function ConfigurationEditor({
     [measure, setMeasure] = useState(row?.data.measurement_type || "COUNT"),
     [semantic, setSemantic] = useState(row?.data.time_semantic || "FLOW"),
     [method, setMethod] = useState(row?.data.combination_rule || "SUM"),
+    [negativeAdjustments, setNegativeAdjustments] = useState(
+      row?.data.allows_negative_adjustments || false,
+    ),
+    [sampleBasis, setSampleBasis] = useState(
+      row?.data.statistical_interpretation?.sample_basis || "RAW_VALUES",
+    ),
+    [weighting, setWeighting] = useState(
+      row?.data.statistical_interpretation?.weighting || "NONE",
+    ),
+    [uncertainty, setUncertainty] = useState(
+      row?.data.statistical_interpretation?.uncertainty_method || "NONE",
+    ),
+    [populationInterpretation, setPopulationInterpretation] = useState(
+      row?.data.statistical_interpretation?.population_interpretation ||
+        "SAMPLE",
+    ),
     [dimension, setDimension] = useState<any>(
       row?.data.disaggregation?.dimensions?.[0] || null,
     );
@@ -522,6 +546,23 @@ function ConfigurationEditor({
         time_semantic: semantic,
         combination_rule: method,
         display_decimals: Number(data.display_decimals),
+        allows_negative_adjustments: negativeAdjustments,
+        statistical_interpretation: {
+          sample_basis: sampleBasis,
+          weighting,
+          uncertainty_method: uncertainty,
+          uncertainty_level:
+            uncertainty === "NONE" ? null : data.uncertainty_level || null,
+          population_interpretation: populationInterpretation,
+          expansion_method:
+            populationInterpretation === "POPULATION"
+              ? {
+                  code: data.expansion_code,
+                  basis: data.expansion_basis,
+                  factor: data.expansion_factor,
+                }
+              : null,
+        },
         ...(dimension
           ? {
               disaggregation: {
@@ -539,6 +580,10 @@ function ConfigurationEditor({
           : {}),
       });
     delete data.dimension_categories;
+    delete data.uncertainty_level;
+    delete data.expansion_code;
+    delete data.expansion_basis;
+    delete data.expansion_factor;
     if (route === "indicator-definitions" && methodError) {
       setError(methodError);
       return;
@@ -752,6 +797,124 @@ function ConfigurationEditor({
                   {METHOD_LABELS[method]}. Drafts require independent approval
                   before use.
                 </p>
+              )}
+              <fieldset>
+                <legend>Statistical interpretation</legend>
+                <div className="form-grid">
+                  <label>
+                    Sample basis
+                    <select
+                      aria-label="Sample basis"
+                      value={sampleBasis}
+                      onChange={(e) => setSampleBasis(e.target.value)}
+                    >
+                      <option value="RAW_VALUES">Raw values</option>
+                      <option value="SUBGROUP_MEDIANS">Subgroup medians</option>
+                      <option value="SAMPLE_ESTIMATE">Sample estimate</option>
+                    </select>
+                  </label>
+                  <label>
+                    Weighting
+                    <select
+                      aria-label="Statistical weighting"
+                      value={weighting}
+                      onChange={(e) => setWeighting(e.target.value)}
+                    >
+                      <option value="NONE">No weights</option>
+                      <option value="FREQUENCY">Frequency weights</option>
+                    </select>
+                  </label>
+                  <label>
+                    Uncertainty
+                    <select
+                      aria-label="Uncertainty method"
+                      value={uncertainty}
+                      onChange={(e) => setUncertainty(e.target.value)}
+                    >
+                      <option value="NONE">Not estimated</option>
+                      <option value="STANDARD_ERROR">Standard error</option>
+                      <option value="CONFIDENCE_INTERVAL">
+                        Confidence interval
+                      </option>
+                    </select>
+                  </label>
+                  {uncertainty !== "NONE" &&
+                    input("uncertainty_level", "Uncertainty level")}
+                  <label>
+                    Interpretation
+                    <select
+                      aria-label="Population interpretation"
+                      value={populationInterpretation}
+                      onChange={(e) =>
+                        setPopulationInterpretation(e.target.value)
+                      }
+                    >
+                      <option value="SAMPLE">Sample statistic</option>
+                      <option value="POPULATION">
+                        Expanded population count
+                      </option>
+                    </select>
+                  </label>
+                </div>
+                {populationInterpretation === "POPULATION" && (
+                  <>
+                    {input("expansion_code", "Reviewed expansion method code")}
+                    {input(
+                      "expansion_basis",
+                      "Reviewed expansion basis",
+                      true,
+                      true,
+                    )}
+                    {input("expansion_factor", "Expansion factor")}
+                  </>
+                )}
+                <p className="muted">
+                  Pooled medians require raw values. A mean of subgroup medians
+                  is labelled separately. Population counts require a reviewed
+                  expansion method in the approved definition.
+                </p>
+              </fieldset>
+              {method === "CUMULATIVE_DIFFERENCE" && (
+                <fieldset>
+                  <legend>Approved cumulative baseline</legend>
+                  {input("cumulative_baseline", "Starting cumulative value")}
+                  {input(
+                    "cumulative_baseline_basis",
+                    "Why this baseline is valid",
+                    true,
+                    true,
+                  )}
+                  <p className="muted">
+                    The result is the latest approved position minus this
+                    reviewed baseline. A decline is refused until a correction
+                    or explicit reset method is approved.
+                  </p>
+                </fieldset>
+              )}
+              {measure === "DECIMAL" && (
+                <fieldset>
+                  <legend>Negative adjustments</legend>
+                  <label className="checkbox">
+                    <input
+                      type="checkbox"
+                      checked={negativeAdjustments}
+                      onChange={(e) => setNegativeAdjustments(e.target.checked)}
+                    />
+                    Permit reviewed negative adjustment values
+                  </label>
+                  {negativeAdjustments &&
+                    input(
+                      "negative_adjustment_basis",
+                      "Approved adjustment meaning and basis",
+                      true,
+                      true,
+                    )}
+                  <p className="muted">
+                    Counts and ratio quantities cannot be negative. Decimal
+                    adjustments require this rule and basis in the approved
+                    definition; values are never clipped automatically.
+                  </p>
+                </fieldset>
               )}
               <label className="checkbox">
                 <input

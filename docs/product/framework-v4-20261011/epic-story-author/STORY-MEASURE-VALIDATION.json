@@ -1,0 +1,20 @@
+{
+  "scope": "Source/structure only; no semantic certification, product evidence or Ready decision",
+  "checks": {
+    "stories": 368,
+    "unique_ids": 368,
+    "original_criterion_ids": 1328,
+    "manual_story_specific_overrides": 65,
+    "all_baselines_unknown": true,
+    "all_experiments_unrun": true
+  },
+  "failures": [],
+  "sealed_first_edition_untouched": true,
+  "source_backlog_sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+  "input_story_refinement_sha256": "dedfa3f1d13410c3abdfda1b3a09c281df1c49a011084241bdab78408c813f45",
+  "input_criterion_annotation_sha256": "53f4f7c6091590e1b373a71375666138c4a047d3ff90e7e769335cf0b86a60e4",
+  "outputs": {
+    "STORY-MEASURE-CONTRACTS.json": "daf3ee76a691e48e7f41364cf62cf67f095066b48815f94686092308e79926f0",
+    "STORY-MEASURE-TABLES.json": "6a833a725c26d25ad930718a0068675073433b96c94a72daec12ffa1a5662b32"
+  }
+}

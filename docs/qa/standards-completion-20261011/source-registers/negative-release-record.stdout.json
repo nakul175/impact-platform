@@ -1,0 +1,52 @@
+{
+  "mode": "RELEASE_RECORD_GATE",
+  "errors": [
+    "release scope: missing build_sha",
+    "release scope: missing artifact_digest",
+    "release scope: missing environment",
+    "release scope: missing config_version",
+    "release scope: missing data_version",
+    "release: unknown applicability",
+    "release: incomplete validated AC coverage"
+  ],
+  "warnings": [],
+  "counts_unit": "selected required AC-to-case mappings (not unique tests)",
+  "result_counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "BLOCKED": 0,
+    "NOT_RUN": 0,
+    "SKIPPED": 0,
+    "NOT_APPLICABLE": 0
+  },
+  "freshness_counts": {
+    "CURRENT": 0,
+    "STALE": 0,
+    "UNASSESSED": 0
+  },
+  "historical_qualification_counts": {},
+  "selected_unique_runs": 0,
+  "unknown_applicability": 1328,
+  "planned_coverage": {
+    "numerator": 0,
+    "denominator": 1328,
+    "ratio": 0.0
+  },
+  "validated_coverage": {
+    "numerator": 0,
+    "denominator": 1328,
+    "ratio": 0.0
+  },
+  "required_completion": {
+    "numerator": 0,
+    "denominator": 0,
+    "ratio": null
+  },
+  "selected_pass_rate": {
+    "numerator": 0,
+    "denominator": 0,
+    "ratio": null
+  },
+  "resolved_evidence_root": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/docs/qa/standards-completion-20261011/source-registers",
+  "disclaimer": "Offline structural/coverage check only. Does not authenticate evidence, verify omitted ACs, approvals, numeric thresholds or complete release readiness."
+}

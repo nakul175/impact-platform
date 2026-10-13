@@ -1,0 +1,96 @@
+{
+  "scope_id": "SCOPE-IMPRANA-ALL-ACTIVE-PLANNING-20261011",
+  "record_status": "DESIGN_ONLY",
+  "approval": "PENDING",
+  "quality": "UNASSESSED",
+  "readiness": "NOT_READY",
+  "source_export_design_saved": true,
+  "source_owner_approval": false,
+  "qualification_selected": false,
+  "register_status": {
+    "ac-register": "1328 source-derived UNKNOWN applicability rows; valid proposed authoring revisions",
+    "risk-register": "59 source-ID family conservative provisional hypotheses with rationale, no approved ratings or observed residual controls",
+    "case-register": "HEADER_ONLY_NO_CASE_BINDING; separate case-agent manifest is pending",
+    "traceability": "HEADER_ONLY_NO_CASE_MAPPING; task/story/779edges retained in provenance/source",
+    "run-register": "HEADER_ONLY_NO_ACTUAL_ATTEMPTS",
+    "coverage-selection": "HEADER_ONLY_NO_SELECTED_RUNS",
+    "defect-register": "HEADER_ONLY_NO_NEW_OBSERVED_DEFECT_EVENTS",
+    "exception-register": "HEADER_ONLY_NO_APPROVED_EXCEPTIONS"
+  },
+  "case_design_agent_manifest": {
+    "status": "PENDING_FROZEN_REFERENCE",
+    "ref": null,
+    "boundary": "Separate owned case design will be referenced here when actually frozen; do not duplicate its rows or treat proposed future automation as MANUAL for structure success."
+  },
+  "threshold_adoption": {
+    "ref": "../../current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+    "source": "Retained Impact-Management-Test-Strategy-v1.1.md and original scenario/NFR contracts; no target recalibration",
+    "status": "DESIGN_REFERENCES_ONLY; actual applicable measurement populations/protocols/owners/approval and unknown new targets remain unresolved"
+  },
+  "dataset_environment_adoption": {
+    "ref": "../../current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+    "status": "SOURCE_PINNED_SYNTHETIC_PREPARATION_DESIGN_ONLY; no selected/provisioned/qualified environment"
+  },
+  "defect_adoption": {
+    "ref": "../../current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md#7-defect-events-severity-and-retest",
+    "status": "SAME_CASE_CURRENT_RETEST_APPEND_ONLY_POLICY; no fake observed defect, historical severity/pins or closed event"
+  },
+  "open_gates": [
+    {
+      "id": "GATE-SOURCE-OWNER",
+      "status": "UNRESOLVED",
+      "required": "Actual complete source/applicability/revision-convention and operating scope decision; separate independently authorised review"
+    },
+    {
+      "id": "GATE-PROVISIONAL-RISK",
+      "status": "UNRESOLVED",
+      "required": "Actual per-story/criterion harm/likelihood/slices/cases and residual independent review; proposals are not approved risks"
+    },
+    {
+      "id": "GATE-CASE-BINDINGS",
+      "status": "NOT_CONFIGURED",
+      "required": "Actual reviewed source-to-case mappings and implemented AUTO locators/markers or genuine MANUAL procedures; no partial population substituted for1328"
+    },
+    {
+      "id": "GATE-CANDIDATE-ENVIRONMENT",
+      "status": "NOT_SELECTED",
+      "required": "Actual source/artifact/schema/config/data/tool/device/provider/environment and resource-authority pins"
+    },
+    {
+      "id": "GATE-EXECUTION-SELECTION",
+      "status": "NOT_RUN",
+      "required": "Actual immutable meaningful attempts, failures/retests and explicit CURRENT QUALIFICATION selection; no invented rows"
+    },
+    {
+      "id": "GATE-THRESHOLDS-SPECIALISTS",
+      "status": "UNRESOLVED",
+      "required": "Retained targets, applicable protocols and actual manual/accessibility/UAT/security/performance/recovery/model/domain reviews"
+    },
+    {
+      "id": "GATE-SOURCE-PROTECTION",
+      "status": "NOT_VERIFIED",
+      "required": "Actual live required/fresh human owner review/trusted check/bypass or independent canonical-source reconciliation; existing docs/CODEOWNERS alone is insufficient"
+    },
+    {
+      "id": "GATE-G11",
+      "status": "NOT_PASSED",
+      "required": "Preserved0.39:14critical13other open threats and2BLOCK chains; real independent impact/residual evidence"
+    },
+    {
+      "id": "GATE-G12",
+      "status": "NOT_RUN",
+      "required": "Actual permitted held-out model/data/prompt/tool/corpus evaluations and independent review"
+    },
+    {
+      "id": "GATE-FINANCIAL-DATA-AUTHORITY",
+      "status": "NOT_GRANTED_BY_THIS_ARTIFACT",
+      "required": "Applicable actual hosted/provider/cloud/data/participant resources and terms before dependent actions"
+    },
+    {
+      "id": "GATE-RELEASE-DELIVERY",
+      "status": "NOT_READY",
+      "required": "Actual complete candidate gates, human acceptance/approval, operational cohort/support/rollback and separate release permission"
+    }
+  ],
+  "nonwaivable": "Tenant/current-authority/natural-person/immutable history/official Decimal/mandatory privacy/legal/accessibility requirements unchanged. Unknown applicability, missing review, source omission, failed or stale required evidence cannot become a waiver or PASS."
+}

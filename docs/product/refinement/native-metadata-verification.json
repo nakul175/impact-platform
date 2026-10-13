@@ -1,0 +1,215 @@
+{
+  "schema_version": "imprana-refinement-native-metadata/v1",
+  "verified_at": "2026-10-10T13:29:09.251909+00:00",
+  "result": "PASS",
+  "scope": "Existing native project, documents and milestones after verified issue refinement; no product-test or acceptance claim",
+  "project": {
+    "id": "P-APL-2",
+    "uuid": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046",
+    "url": "https://linear.app/aplyd-sandbox/project/imprana-commons-cf62fc3d7e9d"
+  },
+  "counts": {
+    "native_project_issues": 1553,
+    "epics": 54,
+    "stories": 368,
+    "technical_tasks": 1131,
+    "task_prerequisites": 779,
+    "existing_documents": 11,
+    "existing_documents_updated": 5,
+    "release_milestones": 5,
+    "project_resources": 13,
+    "new_overview_documents_created": 0
+  },
+  "project_checks": {
+    "description_exact": true,
+    "id_unchanged": true,
+    "uuid_unchanged": true,
+    "name_unchanged": true,
+    "summary_unchanged": true,
+    "priority_unchanged": true,
+    "labels_unchanged": true,
+    "lead_unchanged": true,
+    "status_unchanged": true,
+    "teams_unchanged": true,
+    "startDate_unchanged": true,
+    "targetDate_unchanged": true,
+    "eleven_documents": true,
+    "resource_ids_unchanged": true,
+    "five_milestones": true
+  },
+  "documents": [
+    {
+      "id": "37cd9321-6f7d-4df8-973d-557a199de68b",
+      "title": "Imprana Commons — Retained split-parent history",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-retained-split-parent-history-705cbab9e83a",
+      "existing_status_updated": false,
+      "expected_content_matches": true,
+      "identity_and_destination_preserved": true,
+      "original_code_blocks_exact": true,
+      "unintended_literal_autolinks": false,
+      "content_sha256": "25ef678bb289c4f990f74f41c86fb1d9dabcae73bba439e4e2507992137f315a"
+    },
+    {
+      "id": "f5b2a111-e190-4dc5-81aa-8a98ff9a7939",
+      "title": "Imprana Commons — Complete backlog catalogue",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-complete-backlog-catalogue-1bafcc6cdc27",
+      "existing_status_updated": true,
+      "expected_content_matches": true,
+      "identity_and_destination_preserved": true,
+      "original_code_blocks_exact": true,
+      "unintended_literal_autolinks": false,
+      "content_sha256": "aa469dd3b23c859099d68775b338bb63b6cb6fad89ffc12be06b6e53aa09ac40"
+    },
+    {
+      "id": "f4659ba9-d9c7-45ac-862b-5add3eda10c1",
+      "title": "Imprana Commons — Import status and Claude handover",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-import-status-and-claude-handover-6d6b871e639e",
+      "existing_status_updated": true,
+      "expected_content_matches": true,
+      "identity_and_destination_preserved": true,
+      "original_code_blocks_exact": true,
+      "unintended_literal_autolinks": false,
+      "content_sha256": "7643954f4122d2a9bdef7a3be05d5f4e8ba919dd06204ab9958e6562093ec039"
+    },
+    {
+      "id": "2bd0cf2a-20cf-4e58-be47-5394bcc2dac5",
+      "title": "Imprana Commons — Linear integration and recovery",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-linear-integration-and-recovery-3216ee41f95f",
+      "existing_status_updated": true,
+      "expected_content_matches": true,
+      "identity_and_destination_preserved": true,
+      "original_code_blocks_exact": true,
+      "unintended_literal_autolinks": false,
+      "content_sha256": "10d95d88dc03ac860a8d795be21118026da8fcafe57aca0d6518eea6d857f5b6"
+    },
+    {
+      "id": "346b4fa1-3d8f-436c-83be-ad8951aaea1e",
+      "title": "Imprana Commons — Proposed next-sprint refinement",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-proposed-next-sprint-refinement-430351139033",
+      "existing_status_updated": false,
+      "expected_content_matches": true,
+      "identity_and_destination_preserved": true,
+      "original_code_blocks_exact": true,
+      "unintended_literal_autolinks": false,
+      "content_sha256": "39e28f64fdda0381c4f7742e47e11a859baf188d841affbafdaeb347be3cd10f"
+    },
+    {
+      "id": "e76b87bb-1dae-4752-acbc-4f1ad7a779fd",
+      "title": "Imprana Commons — Story and task standard",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-story-and-task-standard-cda48d6d0517",
+      "existing_status_updated": true,
+      "expected_content_matches": true,
+      "identity_and_destination_preserved": true,
+      "original_code_blocks_exact": true,
+      "unintended_literal_autolinks": false,
+      "content_sha256": "6f6ab0a21db1d29974f1d618247f9553be8ce25e2705be9cd73fc644ad26581c"
+    },
+    {
+      "id": "f16e5ce3-5544-4b29-a5f7-7066ea29fea0",
+      "title": "Imprana Commons release goals",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-release-goals-e4378e16f5e1",
+      "existing_status_updated": false,
+      "expected_content_matches": true,
+      "identity_and_destination_preserved": true,
+      "original_code_blocks_exact": true,
+      "unintended_literal_autolinks": false,
+      "content_sha256": "f7e6a35255e82bc65109ef4e3f38bd69b330a18c4b88cc4f4af6c821c4c55480"
+    },
+    {
+      "id": "41cf9cd4-17ef-4ebb-8f59-5a26504b2d5e",
+      "title": "Imprana Commons outcome roadmap",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-outcome-roadmap-0ebbc1f64613",
+      "existing_status_updated": false,
+      "expected_content_matches": true,
+      "identity_and_destination_preserved": true,
+      "original_code_blocks_exact": true,
+      "unintended_literal_autolinks": false,
+      "content_sha256": "8671b490d1feb768fd578acd353f0dc00bc93b47bfa3972f1ecd34dc2f988d31"
+    },
+    {
+      "id": "3520d765-ed97-4901-ae89-7996b8d15bd9",
+      "title": "Imprana Commons product strategy",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-product-strategy-e8966d3c4bf9",
+      "existing_status_updated": false,
+      "expected_content_matches": true,
+      "identity_and_destination_preserved": true,
+      "original_code_blocks_exact": true,
+      "unintended_literal_autolinks": false,
+      "content_sha256": "3bbd277929366c705e07bce571de5cd23b47109b692e513ef1320803d9228287"
+    },
+    {
+      "id": "bc33da1e-7fae-4f4e-81a6-9ff5076c43df",
+      "title": "Imprana Commons product vision",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-product-vision-4b7dec9426f2",
+      "existing_status_updated": false,
+      "expected_content_matches": true,
+      "identity_and_destination_preserved": true,
+      "original_code_blocks_exact": true,
+      "unintended_literal_autolinks": false,
+      "content_sha256": "6677a5a3ee5e2cc33eb776ac977a97b12b618c2fc2d9b3c616ffaf342f287726"
+    },
+    {
+      "id": "6586ed0a-2090-4180-92b3-5eec159688c1",
+      "title": "Imprana Commons planning structure",
+      "url": "https://linear.app/aplyd-sandbox/document/imprana-commons-planning-structure-2a261deb25ad",
+      "existing_status_updated": true,
+      "expected_content_matches": true,
+      "identity_and_destination_preserved": true,
+      "original_code_blocks_exact": true,
+      "unintended_literal_autolinks": false,
+      "content_sha256": "6ec251d35324adacf7ba276da92338752e2fa95a9543483e78f288280c8280dd"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "ceef6ef6-bd96-4543-8145-ab7eb78f4e30",
+      "name": "Foundation",
+      "description_and_target_preserved": true,
+      "description_sha256": "f1bb74c7a0fd424b9e5d42e1d38e3caa9a2dcbb2a4e6f6d6ab287ae3d44073d9"
+    },
+    {
+      "id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "name": "R1 Pilot",
+      "description_and_target_preserved": true,
+      "description_sha256": "5db9f2b0a41a284230042733c64acf03541ff35ecf50d85e8b4a6f0d83712c4d"
+    },
+    {
+      "id": "48bd70e1-4335-4936-b98b-1b23470b5e83",
+      "name": "R2 Scale",
+      "description_and_target_preserved": true,
+      "description_sha256": "b6632bcdc8a16a2a2c35d5f4049ad6022937af32a55ae2ac7939bf542c0c1ff3"
+    },
+    {
+      "id": "2f3fd9c6-ad77-4eb4-bf79-d66c7a0a7760",
+      "name": "R3 Ecosystem",
+      "description_and_target_preserved": true,
+      "description_sha256": "9dc06c0c4342c63e56b9fcd477bf794409c64eb7c5ec1a61cef8cd730394d03e"
+    },
+    {
+      "id": "fb1076eb-94f7-4c2f-8a6d-899538f33407",
+      "name": "Later",
+      "description_and_target_preserved": true,
+      "description_sha256": "2b54449707d5fecca8a5bcb62d943333a4b7027be079ee0730266522d20978a9"
+    }
+  ],
+  "issue_verification": {
+    "path": "readback-verification.json",
+    "sha256": "87429ad970ace7baac3414016e9f6efe276c2359d55dc71558f18df7d2acf2ed",
+    "result": "PASS"
+  },
+  "additional_overview": {
+    "record": "document-import.json",
+    "status": "AWAITING_DIRECT_DOCUMENT_APPROVAL",
+    "created": false
+  },
+  "failures": [],
+  "resolved_formatting_incident": {
+    "document_id": "f4659ba9-d9c7-45ac-862b-5add3eda10c1",
+    "unintended_links_removed": 2,
+    "literal_names": [
+      "ai.usage.read",
+      "delivery.py"
+    ],
+    "actual_full_readback_verified": true
+  }
+}

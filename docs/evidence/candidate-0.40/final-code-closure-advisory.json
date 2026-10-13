@@ -1,0 +1,463 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-10-11T09:02:49.001346+00:00",
+  "project": "Imprana Commons",
+  "story": "US-DX-01a",
+  "criteria": [
+    "AC-US-DX-01a-001",
+    "AC-US-DX-01a-002"
+  ],
+  "candidate": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011",
+  "base_commit": "92341d6d81414be4627c5981363636580f7cbf52",
+  "candidate_head_observed": "92341d6d81414be4627c5981363636580f7cbf52",
+  "review_mode": "independent read-only source/evidence closure, no product execution by reviewer",
+  "outcome": "NO_REMAINING_MATERIAL_CODE_DEFECT_OBSERVED_AT_QUALIFIED_BYTES_WITH_REQUIRED_GATES_HELD",
+  "source_pins": {
+    "apps/web/src/AIDiagnosis.tsx": {
+      "sha256": "2b45b4e29cf003982271d5bdd791c8f8ba90e90c2ad8e1790e1fced5e9866fc3",
+      "bytes": 40262
+    },
+    "apps/web/src/main.tsx": {
+      "sha256": "8564c99e4ed32c042fca263c8a96839ea1dc56c00b43ada8fa666e2b426fa98b",
+      "bytes": 84456
+    },
+    "apps/web/src/ai-diagnosis.css": {
+      "sha256": "af84ed95ea5a872bfeea3ef8f0c7b1dbf94e9062f28a130dba6bc734433b736b",
+      "bytes": 1580
+    },
+    "apps/api/impact_api/ai_diagnoses.py": {
+      "sha256": "f61f398e83983bbcfa3d6b6452c1f1b92d236820bf7579634cd65c2e558de220",
+      "bytes": 13622
+    },
+    "apps/api/impact_api/ai_diagnosis_contracts.py": {
+      "sha256": "65748a7b44daf535cf68120f414cdad57bb905f8746e3675f3089a6701d05def",
+      "bytes": 7381
+    },
+    "apps/api/impact_api/main.py": {
+      "sha256": "17f98430e9df02d47216271d86d7c5f5533d8bc6c6f9720744846ce633a7bbb5",
+      "bytes": 58352
+    },
+    "packages/contracts/access-policy.json": {
+      "sha256": "5f50af11ed74e17829d765166a97286a524a4bb0454c57ff5971448c5dac5bb2",
+      "bytes": 235527
+    },
+    "infrastructure/migrations/0044_ai_diagnoses.sql": {
+      "sha256": "9f9f136ad38f2ae9e3f280fed0fc10d497716e3875a96e2095e72f24a8b0bd65",
+      "bytes": 10423
+    },
+    "qualification/test_ai_diagnoses_unit.py": {
+      "sha256": "fdd261eeecda0000b6882be746965e3f930d38d9f406e8d0cf6fce8fc8fae236",
+      "bytes": 6456
+    },
+    "qualification/test_ai_diagnosis_live.py": {
+      "sha256": "d95cce99cfea336e2511b175419f9be47fcc99eafa9e0dc3fbf019de58741299",
+      "bytes": 21450
+    },
+    "qualification/test_ai_diagnosis_faults_live.py": {
+      "sha256": "9dd1ca35b4a46d299390502592a0837aa4f27106152a4a2fe5a1391783722fad",
+      "bytes": 7272
+    },
+    "qualification/test_ai_diagnosis_visibility_live.py": {
+      "sha256": "e151007132e9747b30950de6b17f849b9dac150be3b90965a6b6ee6c0e9a8486",
+      "bytes": 13050
+    },
+    "qualification/test_ai_diagnosis_native.py": {
+      "sha256": "eedddb1205bf65d5a167be06bf4beea6631b795f0d5f458d9a00878ef5ce40ef",
+      "bytes": 5939
+    },
+    "tools/browser/ai-diagnosis-check.mjs": {
+      "sha256": "85a9ac947b51f10e29dd3f866c6c5269db3ea0187d3007c7c57e498ece5223a1",
+      "bytes": 58388
+    },
+    "tools/browser/ai-diagnosis-uncertain-command-check.cjs": {
+      "sha256": "69df9929513a3c1af1ac1e7faf2337c930ede14505e2651895f51f51490458d5",
+      "bytes": 10473
+    }
+  },
+  "manifest_reconciliation": {
+    "path": "docs/evidence/candidate-0.40/tested-source-manifest.json",
+    "pin": {
+      "sha256": "cf75f4e09a0ca806034d4f561a44566bde8f5b2303fdc3e3c50f07aa021f3529",
+      "bytes": 40817
+    },
+    "entries": 356,
+    "current_mismatches": [],
+    "browser_entries": 344,
+    "browser_overlap": 341,
+    "browser_extra_inputs_verified_current": {
+      "apps/web/dist/index.html": {
+        "sha256": "f464d2994fa518275ea8d68c0ebe98639d1d1e9a850270c1a498df36005a1713",
+        "bytes": 628
+      },
+      "specification/fixtures/api-fixture.json": {
+        "sha256": "f924482399f0aa9e3a3762cd4f44bf38818655b6a5b3ea2062d41412dd4c131b",
+        "bytes": 44870
+      },
+      "specification/fixtures/records.json": {
+        "sha256": "a8fe8987567494931e0ac9c225485c91175594c1922076f6736486f8620cabe5",
+        "bytes": 370478
+      }
+    },
+    "browser_current_mismatches": [],
+    "not_hosted_exact_head_ci": true
+  },
+  "offline_integrity": {
+    "path": "FINAL-CODE-CLOSURE-INTEGRITY-CHECK.json",
+    "pin": {
+      "sha256": "59f1d6084ac7d31458f7eb7293c75934c0ff295e24e4b1045aa08f0b77beff69",
+      "bytes": 10487
+    },
+    "summary": {
+      "checks": 28,
+      "passed": 28,
+      "failed": 0
+    },
+    "comparison_adjustment": "Only checker expected additive new schema count updated12\u219213 for separately closed AIDiagnosisError; prior twelve-schema receipts unchanged."
+  },
+  "protected_history": {
+    "docs/backlog": {
+      "base_file_count": 57,
+      "changed": [],
+      "unchanged_byte_comparison": true
+    },
+    "docs/qa/standards-completion-20261011": {
+      "base_file_count": 835,
+      "changed": [],
+      "unchanged_byte_comparison": true
+    },
+    "docs/evidence": {
+      "base_file_count": 717,
+      "changed": [],
+      "unchanged_byte_comparison": true
+    },
+    "specification": {
+      "base_file_count": 66,
+      "changed": [],
+      "unchanged_byte_comparison": true
+    },
+    ".github/workflows": {
+      "base_file_count": 2,
+      "changed": [],
+      "unchanged_byte_comparison": true
+    }
+  },
+  "frozen_story_gherkin_sha256": "6568f4b80844144e6398bde82db86533faaa15862a1d9e54e2dbf9df79b59d73",
+  "contract_review": [
+    {
+      "path": "packages/contracts/openapi.json",
+      "pin": {
+        "sha256": "17f1061ba9b8cd7af08d3ccfedebef802f1a378eb8de67ccad52c2dea0af1cf1",
+        "bytes": 2283112
+      },
+      "legacy_error_exact": true,
+      "legacy_schema_count": 772,
+      "legacy_path_count": 289,
+      "added_schema_count": 13,
+      "added_schema_names": [
+        "AIDiagnosis",
+        "AIDiagnosisComplete",
+        "AIDiagnosisCreate",
+        "AIDiagnosisData",
+        "AIDiagnosisError",
+        "AIDiagnosisHistory",
+        "AIDiagnosisHistoryItem",
+        "AIDiagnosisList",
+        "AIDiagnosisProblem",
+        "AIDiagnosisReceipt",
+        "AIDiagnosisRevise",
+        "AIDiagnosisStoredData",
+        "AIDiagnosisUpdate"
+      ],
+      "diagnosis_operation_count": 8,
+      "bounded_error_additions": [
+        "IDEMPOTENCY_EXPIRED",
+        "INVALID_CURSOR"
+      ],
+      "error_validation_shape_other_than_code_exact": true,
+      "diagnosis_error_closed": true,
+      "all_diagnosis_refusal_refs_separate_error": true,
+      "historical_paths_and_schemas_exact": true
+    },
+    {
+      "path": "packages/contracts/openapi-implemented.json",
+      "pin": {
+        "sha256": "968ccba6d10686d404f99ce94abfa9868161323f7151a0e5f99b6bd11e983497",
+        "bytes": 1879856
+      },
+      "legacy_error_exact": true,
+      "legacy_schema_count": 772,
+      "legacy_path_count": 213,
+      "added_schema_count": 13,
+      "added_schema_names": [
+        "AIDiagnosis",
+        "AIDiagnosisComplete",
+        "AIDiagnosisCreate",
+        "AIDiagnosisData",
+        "AIDiagnosisError",
+        "AIDiagnosisHistory",
+        "AIDiagnosisHistoryItem",
+        "AIDiagnosisList",
+        "AIDiagnosisProblem",
+        "AIDiagnosisReceipt",
+        "AIDiagnosisRevise",
+        "AIDiagnosisStoredData",
+        "AIDiagnosisUpdate"
+      ],
+      "diagnosis_operation_count": 8,
+      "bounded_error_additions": [
+        "IDEMPOTENCY_EXPIRED",
+        "INVALID_CURSOR"
+      ],
+      "error_validation_shape_other_than_code_exact": true,
+      "diagnosis_error_closed": true,
+      "all_diagnosis_refusal_refs_separate_error": true,
+      "historical_paths_and_schemas_exact": true
+    }
+  ],
+  "ui_terminal_and_sync_guard_review": {
+    "qualified_ui_pin_matches_manifest_and_adapter": true,
+    "terminal_authority_ref_and_active_guard_present": true,
+    "synchronous_change_switch_command_move_guarded": true,
+    "unknown_expired_conflicting_outcomes_retain_exact_command": true,
+    "no_persistence_or_html_injection": true,
+    "initial_advisory_unchanged": true,
+    "first_fix_reconciliation_unchanged": true
+  },
+  "actual_preserved_test_evidence": {
+    "unit-regression-final.xml": {
+      "pin": {
+        "sha256": "4eeb7d8e8462ac6685672ea3eb5e9f13fb0a8bbf48ca442e2a1aff4b2829c383",
+        "bytes": 272325
+      },
+      "actual_junit_nodes": {
+        "collected": 1584,
+        "passed": 1522,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 62
+      },
+      "diagnosis_nodes": {
+        "qualification.test_ai_diagnoses_unit": {
+          "passed": 25
+        }
+      },
+      "original_oracles": []
+    },
+    "api-regression-final.xml": {
+      "pin": {
+        "sha256": "2b3f9b10e1fef65e583851e62f49210b7498658ba11c413ced53a8a7534bce21",
+        "bytes": 29264
+      },
+      "actual_junit_nodes": {
+        "collected": 148,
+        "passed": 136,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 12
+      },
+      "diagnosis_nodes": {
+        "qualification.test_ai_diagnosis_live": {
+          "passed": 44
+        },
+        "qualification.test_ai_diagnosis_faults_live": {
+          "passed": 7
+        },
+        "qualification.test_ai_diagnosis_visibility_live": {
+          "passed": 6
+        }
+      },
+      "original_oracles": [
+        {
+          "name": "test_diagnosis_saves_exact_order_stable_ids_and_supporting_evidence",
+          "result": "passed"
+        }
+      ]
+    }
+  },
+  "browser_evidence": {
+    "pin": {
+      "sha256": "f329007d846e4bfcc6e42f1d18208495ad66a2096e460c457ef7ae32d7734077",
+      "bytes": 129554
+    },
+    "status": "passed",
+    "counts": {
+      "cases": 9,
+      "passed": 9,
+      "failed": 0,
+      "not_run": 0,
+      "assertions": 289
+    },
+    "current_runtime": {
+      "environment": "test",
+      "build_id": "impact-0.40.0",
+      "schema_version": "44",
+      "api_version": "1.29.0",
+      "fixture_id": "impact-acceptance-20260925-v1",
+      "mutation_tests_allowed": true
+    },
+    "sources_changed": [],
+    "assets_changed": [],
+    "external_requests": [],
+    "forbidden_requests": [],
+    "case_DX_B07_actual_race": {
+      "case": "authentic delayed authorised object 200 after actual collection 404",
+      "captured_revision_id": "dafcc9f4-0f49-4c2e-8fcd-a73235dd27d1",
+      "captured_object_sha256": "fe457d977989eda2f7458e01b420bf55ba0b7bd60483ef282b9000e23484e580",
+      "actual_collection_status": 404,
+      "late_transport_outcome": "Authentic old 200 delivered after actual list refusal",
+      "authority_dom_samples": [
+        {
+          "revision": "",
+          "state": "Unsaved"
+        }
+      ],
+      "observed_revision_after_release": "",
+      "observed_state_after_release": "Unsaved"
+    },
+    "manual_accessibility_acceptance": false
+  },
+  "uncertain_component_adapter_evidence": {
+    "pin": {
+      "sha256": "71385829d4380ffbbe0df7da3e660e1047503500e97bae79bdfdd87401aa0f57",
+      "bytes": 2354
+    },
+    "status": "passed",
+    "counts": {
+      "cases": 3,
+      "passed": 3,
+      "failed": 0
+    },
+    "source_sha256": "2b45b4e29cf003982271d5bdd791c8f8ba90e90c2ad8e1790e1fced5e9866fc3",
+    "limits": [
+      "No real browser mount, DOM events, React concurrent scheduler, API/DB/server receipt expiry, test clock or production acceptance is claimed.",
+      "Synthetic request-adapter errors exercise actual component command handlers and rendered control state; they are not server responses or HTTP qualification.",
+      "Actual API expired replay requires an approved test clock or actual elapsed retention period; immutable receipts and audit/history must not be edited to manufacture expiry."
+    ]
+  },
+  "finding_closure": [
+    {
+      "id": "DX-UI-F01",
+      "severity": "P2",
+      "state": "CLOSED_AS_LOCAL_CODE_FINDING_AT_REVIEWED_BYTES",
+      "basis": [
+        "Terminal/synchronous/await guards reviewed at2b45 source pin",
+        "Actual browser DX-B07 collection404 and late authorised200 leave no head metadata"
+      ]
+    },
+    {
+      "id": "DX-UI-F02",
+      "severity": "P2",
+      "state": "CLOSED_AS_LOCAL_CODE_FINDING_AT_REVIEWED_BYTES",
+      "basis": [
+        "Expired/conflicting outcomes retain frozen pending lock",
+        "Actual component adapter3/3 with explicit limits; synthetic error adapter is not HTTP receipt expiry"
+      ],
+      "remaining_qualification": "Native/full protocol gates held; no human acceptance inferred"
+    }
+  ],
+  "release_risk_review": {
+    "pin": {
+      "sha256": "c0fc5411542624fa8d02111f92f0e556e5f29581c8305db9567015a0363ab91b",
+      "bytes": 10449
+    },
+    "passed": false,
+    "G11": "Not passed",
+    "G12": "Not run",
+    "impact_reviews": [
+      {
+        "id": "IR-0.40-01",
+        "confirmed_by": null
+      },
+      {
+        "id": "IR-0.40-02",
+        "confirmed_by": null
+      }
+    ],
+    "open_critical_count": 14,
+    "open_chain_count": 2,
+    "human_security_confirmation": null
+  },
+  "tracked_boundary": {
+    "index_staged_paths_at_review": [],
+    "venv_currently_untracked": true,
+    "venv_is_symlink": true,
+    "credential_filename_candidates": [],
+    "planned_future_staging_not_certified": true,
+    "required_exclusion": ".venv symlink, .local run credentials/data, .env/private keys and generated runtime dependencies; root must stage explicit reviewed files."
+  },
+  "prior_advisory_copies_byte_exact": {
+    "ui-initial-advisory.json": true,
+    "ui-fix-reconciliation.json": true
+  },
+  "preserved_receipt_pins": {
+    "QUALIFICATION-RECEIPT.json": {
+      "sha256": "2548ac566b0b6f8dd975091b8d2255feb23eda902f59390b84eddda08bd773ad",
+      "bytes": 2193
+    },
+    "tested-source-manifest.json": {
+      "sha256": "cf75f4e09a0ca806034d4f561a44566bde8f5b2303fdc3e3c50f07aa021f3529",
+      "bytes": 40817
+    },
+    "browser-final.json": {
+      "sha256": "f329007d846e4bfcc6e42f1d18208495ad66a2096e460c457ef7ae32d7734077",
+      "bytes": 129554
+    },
+    "uncertain-component-final.json": {
+      "sha256": "71385829d4380ffbbe0df7da3e660e1047503500e97bae79bdfdd87401aa0f57",
+      "bytes": 2354
+    },
+    "api-regression-final.xml": {
+      "sha256": "2b3f9b10e1fef65e583851e62f49210b7498658ba11c413ced53a8a7534bce21",
+      "bytes": 29264
+    },
+    "unit-regression-final.xml": {
+      "sha256": "4eeb7d8e8462ac6685672ea3eb5e9f13fb0a8bbf48ca442e2a1aff4b2829c383",
+      "bytes": 272325
+    },
+    "attempt-history.json": {
+      "sha256": "2986c7cd81942d60bd8df6ecf080d24dc9e5048eb5a5b85793bc6a0a2be948da",
+      "bytes": 2247
+    },
+    "error-contract-advisory.json": {
+      "sha256": "59704048e8e52cb867a7103b96983a474712185d0f784d09c92b4b292b737dbc",
+      "bytes": 5486
+    },
+    "diagnosis-api-regression-first-failed.xml": {
+      "sha256": "acc9df21de38caaa72dee4105a46bd207d07dee4ba4f78edcb92e1e1a9bab1df",
+      "bytes": 37264
+    },
+    "diagnosis-api-regression-second-failed.xml": {
+      "sha256": "068b782eb649633b1f208897fc9e8e0d1929dd5b9fded9ff011442f0015689eb",
+      "bytes": 31465
+    },
+    "browser-first.json": {
+      "sha256": "4f06a9d4cd8708bc59df6423c9ab53cb83c9c1bfdb4550ddf682bc22d6b3b337",
+      "bytes": 107417
+    },
+    "browser-second.json": {
+      "sha256": "422daa7a9b90d5d2fe18cba78cb2541ad800820cc9e5542843899cdab22b0cd4",
+      "bytes": 113448
+    }
+  },
+  "requirements_accepted": 0,
+  "native_tests_not_run": 4,
+  "formal_adoption_or_native_binding_certification": false,
+  "required_remaining_gates": [
+    "Native PostgreSQL real-role/concurrency, populated upgrade, API restart and restore",
+    "Full application regression, live identity and container deployment-path qualification",
+    "Current-head required hosted CI and checks",
+    "Human accessibility/security and owner release acceptance",
+    "Reviewed access upgrade for existing tenants before use",
+    "Workflow/engineering package profile, financial, named human/operational enforcement activation"
+  ],
+  "canonical_edits_by_reviewer": 0,
+  "provider_or_ci_calls_by_reviewer": 0,
+  "human_approval_inferred": false,
+  "limitations": [
+    "Evidence files independently parsed and matched to current source bytes; reviewer did not rerun API/browser/unit programs.",
+    "Synthetic disposable PGlite and Chrome pass counts are bounded; skips remain skips and no requirement/status approval is inferred.",
+    "Final local commit can preserve the reviewed bytes; no hosted exact candidate-head CI, remote PR, merge or deployment authority established.",
+    "Known held native-role/concurrency/upgrade/restart/restore/identity/container, human security/accessibility/owner and financial/formal activation gates remain."
+  ],
+  "source_stable_during_review": true
+}

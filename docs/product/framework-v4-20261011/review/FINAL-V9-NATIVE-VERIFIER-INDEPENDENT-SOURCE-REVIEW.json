@@ -1,0 +1,139 @@
+{
+  "reviewedAtUtc": "2026-10-11T03:34:55.170941+00:00",
+  "reviewType": "Independent source/actualreport input-integrity review; no native or repository mutation and no app/owner qualification.",
+  "sourcePins": {
+    "verify_refinement_publication.py": {
+      "sha256": "d25759cca892e152e8f443c6b17aa8fe1485418aff3ddb30796964a649a3a23a",
+      "bytes": 61132
+    },
+    "DECLARED-ALL-OBJECT-FORMATTING-POLICY.json": {
+      "sha256": "191be095c73728010e641fcd229f808384d905c7e1ff0181bbb51bb27b5dc3ce",
+      "bytes": 231328
+    },
+    "test_verify_refinement_publication.py": {
+      "sha256": "df147474940d81cf7b80113faa5c42f4fd18358f922bf3af5450aeb232d045c5",
+      "bytes": 21423
+    },
+    "GUARD-TEST-RESULT.log": {
+      "sha256": "664572663227837e85a45944d1c1f9d73dce89a7c49ea29a52b4325ce11d5e83",
+      "bytes": 2797
+    },
+    "PUBLICATION-VERIFICATION-REPORT.json": {
+      "sha256": "c2a50b143c97273242b92037563c9b80ff8cb35e3aabcff5cdeebb40cae2649d",
+      "bytes": 356014
+    },
+    "VERIFIER-AUTHORING-RECEIPT-V9.json": {
+      "sha256": "b2e6ab0bb5f9610f17bd9a6fdab19b342c3d5a6abd63bab889ff9b358454b2ce",
+      "bytes": 5224
+    },
+    "verify_post_publication_overview.py": {
+      "sha256": "d7a166d6bdbb06a7a3033a84cb6e932e07255db6b71f280dcca9f937b64c930a",
+      "bytes": 12172
+    },
+    "test_verify_post_publication_overview.py": {
+      "sha256": "df51ccc5b240e6f63e3ce7390a08b4afcb1280fb261e9564762f5c975aa193b6",
+      "bytes": 7577
+    },
+    "POST-V1-GUARD-TEST-RESULT.log": {
+      "sha256": "35bc2daa59223b314af4787bbd9c5418cb052e39ed860c77b281577fc67990f2",
+      "bytes": 926
+    }
+  },
+  "all8ActualReportInputHashChecks": [
+    {
+      "name": "before_issues",
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/full-issues.json",
+      "sha256": "145e3cbf0e63a6c9fc0e985e9776918704a59eb8ad760b68267818c5ab888791",
+      "actualHashExact": true
+    },
+    {
+      "name": "after_issues",
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-after/full-issues.json",
+      "sha256": "fd2c1f7c03231e7e56727ce62a2a0db01ddeea294c40cabeef54b32dce080afe",
+      "actualHashExact": true
+    },
+    {
+      "name": "plan",
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-publication-plan.json",
+      "sha256": "4bd0adde457322c429a1471e70f99d0eadc78b12366c9280e51f0a932220567b",
+      "actualHashExact": true
+    },
+    {
+      "name": "before_docs",
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/full-documents.json",
+      "sha256": "c35f10a06b85cc92be8b7ed1db39f3c4cc70dbd5882e0a2feebd5deaeeb1937a",
+      "actualHashExact": true
+    },
+    {
+      "name": "after_docs",
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-after/full-documents.json",
+      "sha256": "4216be9f8c2a4a0c9eecf248e8ba399ff134fcc02d604a572eb28b847e7571b6",
+      "actualHashExact": true
+    },
+    {
+      "name": "before_project",
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-before/project.json",
+      "sha256": "ea63127c89acf8931829ea44076570c47b575d8951c50f84063d0c3264f99735",
+      "actualHashExact": true
+    },
+    {
+      "name": "after_project",
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-product-refinement-20261011/native-after/project.json",
+      "sha256": "c9fc2e4e44d10c0833b8fc0158f2e0ee5e7a6837794717a7fabf986589390819",
+      "actualHashExact": true
+    },
+    {
+      "name": "source_csv",
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-framework-refinement-20261011/docs/backlog/backlog.csv",
+      "sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+      "actualHashExact": true
+    }
+  ],
+  "actualGlobalV1ReportObserved": {
+    "sha256": "c2a50b143c97273242b92037563c9b80ff8cb35e3aabcff5cdeebb40cae2649d",
+    "result": "PASS",
+    "errors": 0,
+    "counts": {
+      "issues_before": 1553,
+      "issues_after": 1553,
+      "issue_types": {
+        "epic": 54,
+        "story": 368,
+        "task": 1131
+      },
+      "original_scenarios": 1328,
+      "task_blocked_by_edges_before": 779,
+      "task_blocked_by_edges_after": 779,
+      "updated_documents": 10,
+      "protected_history_documents": 1,
+      "new_overview_documents": 1,
+      "milestones": 5,
+      "missing_given_supplements": 37,
+      "supplementary_assertion_classifications": 7,
+      "qualification_duty_supplements": 13,
+      "in_review_before": 4,
+      "in_review_after": 4,
+      "nonmissing_estimates_before": 10,
+      "nonmissing_estimates_after": 10
+    },
+    "verifierAndPolicyCurrentPinsMatch": true
+  },
+  "narrowProjectionRuleDisposition": "Source V9 restricts updatedAt projection handling to exactly10frozen planned amendeddocs; both before/after resource strings must be nonempty and equal correspondingfullDocupdatedAt, allotherresourcefields exact. Historical37cd explicitlyprotected fullrecord/resource;two links wholeobjectexact. No broadtimestampignore. Independent actualprojection observation separately pins all13resources,10onlytimestampchanges,history/links exact.",
+  "actualCorruptionGuardEvidence": {
+    "publication16Groups": "Author actualretained log16testgroupsOK; source tests include expectedprojectionpositive plus wrongaftertimestamp/title/history/link negatives. Reviewer source-read, did not rerun.",
+    "postV1FiveGroups": "Author actualretained log5syntheticgroupsOK; these are corruptionguards, not actualv2publicationproof."
+  },
+  "postV1SourceDisposition": "Source b668 protects exactlysevenv1filehashes and actualPASScounts1553/54/368/1131/1328/779/10+1+1/5. Only fixed existingoverview may append exact v2marker/body; originalprefix and capturedmetadata protected. Both overviewprojectiontimestamps require correspondingfullGETupdatedAt, all13otherprojectresources/milestones/projectdescription/metadata exact. Rechecks allv1pins aftercheck; outputcannotoverwriteinputs. No introduced broadweakening found. Actualv2nativeexecution not yet observed.",
+  "limitations": [
+    "Actualglobalv1 report is capturedNative source/description/visiblemetadata/relationship preservation only, not independentexternalreviewtrust, productreadiness/Done, app test or owneracceptance.",
+    "Provider fields omittedby fullGET remain unobserved, not separately certifiednull.",
+    "Per-object capturedv1collection is not an atomic point-in-time crossproject snapshot; later edits require new freshcapture.",
+    "Post-v1 scope intentionally does not re-read/requalify all1553liveobjects; frozenv1proof plus narrowoverview/projectdelta remain separate.",
+    "Wholeframework59MBqualitylongrun remainsrunning; no qualityPASS inferred."
+  ],
+  "scopeOfReviewerExecution": "Readexisting files/source/logs and hashinputs only; no authoredverifier/app/guard rerun.",
+  "independentDisposition": "No sourceblocker for narrowV9projection or declaredpost-v1checker. Actualglobalv1PASSreport/source/hashscope now observed; finaldocumentation tree and actualv2receipt still pending.",
+  "networkOrNativeWrites": false,
+  "repoMutation": false,
+  "productApprovalGranted": false
+}

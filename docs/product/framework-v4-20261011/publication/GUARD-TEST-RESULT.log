@@ -1,0 +1,21 @@
+test_actual_six_new_suffix_observations_do_not_allow_semantic_or_scope_changes (__main__.PublicationGuards.test_actual_six_new_suffix_observations_do_not_allow_semantic_or_scope_changes) ... ok
+test_actual_three_readbacks_match_only_the_declared_supplement_syntax (__main__.PublicationGuards.test_actual_three_readbacks_match_only_the_declared_supplement_syntax) ... ok
+test_actual_ux004_classification_code_heading_and_semantic_rejection (__main__.PublicationGuards.test_actual_ux004_classification_code_heading_and_semantic_rejection) ... ok
+test_additional13_exact_task_lines_and_two_actual_heading_cases (__main__.PublicationGuards.test_additional13_exact_task_lines_and_two_actual_heading_cases) ... ok
+test_all_185_observed_empty_source_labels_and_two_dq_cases_remain_strict (__main__.PublicationGuards.test_all_185_observed_empty_source_labels_and_two_dq_cases_remain_strict) ... ok
+test_current_actual_duty_heading_readbacks_and_tampering_controls (__main__.PublicationGuards.test_current_actual_duty_heading_readbacks_and_tampering_controls) ... ok
+test_exact_complete_positive (__main__.PublicationGuards.test_exact_complete_positive) ... ok
+test_explicit_fresh_document_collection_wrapper_preserves_records (__main__.PublicationGuards.test_explicit_fresh_document_collection_wrapper_preserves_records) ... ok
+test_final_actual_classification_headings_reject_words_numbers_and_fences (__main__.PublicationGuards.test_final_actual_classification_headings_reject_words_numbers_and_fences) ... ok
+test_known_platform_formatting_is_explicit_and_never_hides_substantive_change (__main__.PublicationGuards.test_known_platform_formatting_is_explicit_and_never_hides_substantive_change) ... ok
+test_metadata_changes_or_disappearing_fields_cannot_pass (__main__.PublicationGuards.test_metadata_changes_or_disappearing_fields_cannot_pass) ... ok
+test_missing_append_history_or_milestone_damage_cannot_pass (__main__.PublicationGuards.test_missing_append_history_or_milestone_damage_cannot_pass) ... ok
+test_one_observed_roadmap_table_rule_is_scoped_and_rejects_semantic_changes (__main__.PublicationGuards.test_one_observed_roadmap_table_rule_is_scoped_and_rejects_semantic_changes) ... ok
+test_planned_document_resource_timestamp_projection_is_bound_to_full_document (__main__.PublicationGuards.test_planned_document_resource_timestamp_projection_is_bound_to_full_document) ... ok
+test_same_count_dependency_substitution_cannot_pass (__main__.PublicationGuards.test_same_count_dependency_substitution_cannot_pass) ... ok
+test_source_gherkin_corruption_cannot_be_hidden_by_repeating_it_later (__main__.PublicationGuards.test_source_gherkin_corruption_cannot_be_hidden_by_repeating_it_later) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 5.288s
+
+OK

@@ -1,0 +1,69 @@
+{
+  "mode": "read-only documentation audit",
+  "repository_head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+  "requirement_rows": 48,
+  "assessment_counts": {
+    "PARTIAL": 37,
+    "MET": 7,
+    "MISSING": 2,
+    "UNKNOWN": 2
+  },
+  "package_requirements_crosswalk_count": 54,
+  "package_requirements_crosswalk_status_counts": {
+    "PARTIAL": 45,
+    "ALIGNED": 3,
+    "NOT_VERIFIED": 5,
+    "MISSING": 1
+  },
+  "cited_line_ranges_exist": true,
+  "source_files_pinned": 80,
+  "baseline_byte_comparison_ref": "BASELINE-APPLICABILITY.json",
+  "baseline_repo_sources_compared": 48,
+  "baseline_repo_sources_exact": 48,
+  "correction": {
+    "finding": "QA-41 and linked QA13-017/018/019/049 projections",
+    "corrected_observation": "docs/CODEOWNERS exists, lists @nakul175 and is a supported ownership location; actual enforcement remains UNKNOWN/NOT_VERIFIED.",
+    "prior_sealed_outputs": "prior-observation/initial-sealed-codeowners-location-finding/",
+    "originals_preserved": true
+  },
+  "product_tests_executed": false,
+  "repository_modified_by_this_lane": false,
+  "root_new_docs_qa_addendum_excluded": true,
+  "artifacts": [
+    {
+      "path": "BASELINE-APPLICABILITY.json",
+      "bytes": 13815,
+      "sha256": "a2e64055b6c9da74e63ad7c83e3cf48bda92b011068ae742681ab77be749d758"
+    },
+    {
+      "path": "SUMMARY.md",
+      "bytes": 7288,
+      "sha256": "23a857c5d6d357cb989ff110f48d46355b148f64f24d21dbfa82c823cc89175a"
+    },
+    {
+      "path": "build_audit.py",
+      "bytes": 48459,
+      "sha256": "22d7cb25a0010188068902860cef3b06141b86135e4ba3ed7f59abd44cdf6966"
+    },
+    {
+      "path": "current-inventory.json",
+      "bytes": 7741,
+      "sha256": "ced615634567483c2eb58c2de9de38b4e0e9bc2f106be2175ffcf274ceea80f6"
+    },
+    {
+      "path": "package-to-repo-alignment-54.json",
+      "bytes": 149020,
+      "sha256": "4ebf7037f49170d0628f0017522ff13288c7a41b7f0cf46c5fe079d205e6a5a6"
+    },
+    {
+      "path": "requirement-matrix.json",
+      "bytes": 81192,
+      "sha256": "ef44a8304caa06af6c044ac77079cedc63818648af46436e852a9064fd8f2733"
+    },
+    {
+      "path": "reviewed-source-pins.json",
+      "bytes": 24196,
+      "sha256": "11ae4d130357654c3dff0fc8089082bb6e81576f12c0efa7217a3365bfd27d5a"
+    }
+  ]
+}

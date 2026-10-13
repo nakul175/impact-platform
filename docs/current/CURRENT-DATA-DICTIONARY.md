@@ -1,5 +1,35 @@
 # Current data dictionary and schema evolution
 
+Local proposed build 1.23.0, schema 94 (FR-ANA-006 / APL-616; coding candidate only): MAP dashboard widgets pin an exact calculated-result revision, period, geographic dimension and boundary revision plus approved layer, granularity, legend and missingness treatment. One coordinate-free disclosure-filtered projection supplies both the map request and sortable equivalent table. District aggregates contain no latitude, longitude or coordinate field in values, tooltips or request payloads; data/selected boundary mismatch is explicit. This release adds no migration or privilege change. Tests and CI are deferred.
+
+Local proposed build 1.22.0, schema 94 (FR-ANA-005 / APL-613; coding candidate only): governed dashboard pivots bind one exact currently readable CalculatedResult revision, allow only compatible distinct-count, sum or mean statistics, retain suppressed and nonadditive cell state and derive grand totals from governed unrounded source semantics. Cardinality above 100 routes to a tenant-bounded cancellable DASHBOARD_PIVOT job. Migration 0094 exposes due tenant identifiers/counts to the existing worker without widening tenant data access. Tests and CI are deferred.
+
+Local proposed build 1.21.0, schema 93 (FR-ANA-004 / APL-437; coding candidate only): each programme result card now carries an explicit snapshot, live-approved, provisional or unavailable state plus last valid source data, approval cutoff, calculation time, coverage and stale reasons. Dashboard fetch time is separate and cannot make failed source state fresh. Browser print/save retains the visible material context and provisional labels. This release adds no migration or database privilege change. Tests and CI are deferred.
+
+Local proposed build 1.20.0, schema 93 (FR-ANA-003 / APL-435; coding candidate only): programme dashboard comparisons expose the exact approved target/baseline revision, original or revised label, applicable period, direction, time semantic and explicit formulas. Lower-is-better uses inverse uncapped attainment; zero or negative baseline change is undefined; incompatible time semantics without an approved conversion are blocked. This release adds no migration or database privilege change. Tests and CI are deferred.
+
+Local proposed build 1.19.0, schema 93 (FR-ANA-002 / APL-434; coding candidate only): authored dashboard widgets now declare compatible filters, approved exact-revision disclosure slices and permitted portfolio/partner/programme drill levels. Current filter values and non-applicable fields are explicit. Applicable unmatched filters and unsupported drill levels fail closed with no value or hidden count. Saved views retain and disclose their exact pinned definition revision after the current binding changes. This release adds no migration or database privilege change. Tests and CI are deferred.
+
+Local proposed build 1.18.0, schema 93 (FR-ANA-001 / APL-610; coding candidate only): the existing Dashboard projection is activated for governed private drafts with up to ten exact-revision widgets. Each widget freezes its view, period, dimensions, disclosure and mandatory quality context. Copy always creates a private draft. Desktop, mobile and table previews share one server value package; current authority or revision loss returns unavailable with no stale value. This release adds no migration or database privilege change. Tests and CI are deferred.
+
+Local proposed build 1.17.0, schema 93 (FR-CAL-016 / APL-611; coding candidate only): approved indicator definitions now freeze sample basis, weighting, uncertainty and sample-versus-population interpretation. Pooled medians require eligible raw values; subgroup medians may only produce an explicit mean-of-medians claim. Sample statistics cannot be presented as population counts without a named, explained and positive reviewed expansion method, limited to count measures. Result and lineage formula metadata disclose the interpretation and reproduction retains statistical weights. This release adds no migration or database privilege change. Tests and CI are deferred.
+
+Local proposed build 1.16.0, schema 93 (FR-CAL-015 / APL-424; coding candidate only): authorised Analysts can open a permission-safe explanation of a calculated result and compare two runs. Explanation pins the rule revision, lineage execution, formula, filters, included/excluded aggregates, adjustments, coverage and approval state without returning excluded source records. Comparison uses exact permitted source revisions to separate a source-value bridge from changed inclusion/filter effects and labels rule, period, target, permission or disclosure changes separately. Withheld source access prevents a reconciled claim. Approval of a revised report is refused when a changed numerical binding does not reconcile completely to stated causes. This release adds no migration or database privilege change. Tests and CI are deferred.
+
+Local proposed build 1.15.0, schema 93 (FR-CAL-013 / APL-607; coding candidate only): formula definitions may now pin a governed weighted composite with two to twenty exact approved indicator-definition revisions, explicit normalization ranges, weights totalling one, required-component flags, a closed missing-component policy and written interpretation. Preview returns each normalized component, effective weight and contribution plus a deterministic sensitivity score after a ten-percent relative increase to each present component weight. Required missing inputs block the result; optional inputs are renormalized only under the explicit approved policy. Approved formula revisions preserve the complete configuration and source pins. This release adds no migration or database privilege change. Tests and CI are deferred.
+
+Local proposed build 1.14.0, schema 93 (FR-CAL-011 / APL-421; coding candidate only): migration 0093 adds the insert-only, tenant-fenced `calculation_invalidation_dependency` register. At invalidation time each stale provisional result records its exact result revision, its live-dashboard dependency and each current unpublished Report revision that exactly pins it. Recalculation work exposes counts by dependency type without leaking report content; replacement results resolve the existing invalidation while frozen snapshots and published artifacts remain pinned. `impact_app` receives SELECT/INSERT only. Tests and CI are deferred.
+
+Local proposed build 1.13.0, schema 92 (FR-CAL-010 / APL-415; coding candidate only): calculation now refuses negative counts, negative ratio quantities and percentages above their denominator with distinct reason codes. Negative decimal adjustments are admitted only when the independently approved definition explicitly enables them and pins a written adjustment basis; that policy is frozen in result and lineage formula metadata. Zero denominators remain `UNDEFINED` rather than a successful zero. This release adds no migration or privilege change.
+
+Local proposed build 1.12.0, schema 92 (FR-CAL-009 / APL-411; coding candidate only): each new calculation formula now freezes the accepted 12-decimal input scale, 100-digit intermediate precision, 12-decimal stored scale, `HALF_UP` rule, output-only rounding boundary, requested display decimals and the 10,000-contributor arithmetic limit. Larger eligible source sets fail explicitly with `CALCULATION_INPUT_LIMIT` before arithmetic or lineage writes. Raw stored decimals remain the source for display and export. This release adds no migration or privilege change.
+
+Local proposed build 1.11.0, schema 92 (FR-CAL-008 / APL-408; coding candidate only): every new calculated result now labels coverage as `COMPLETE`, `PARTIAL` or `NOT_CONFIGURED` with a bounded explanation. A result with an approved plan but missing, pending or excluded mandatory obligations retains its approved eligible arithmetic and gains the explicit `PARTIAL_COVERAGE` limitation. Existing obligation-snapshot counts and historical expected membership remain unchanged. This release adds no migration or privilege change.
+
+Local proposed build 1.10.0, schema 92 (FR-CAL-005 / APL-405; coding candidate only): indicator definitions may select `CUMULATIVE_DIFFERENCE` for cumulative count or decimal measures only. The reviewed definition must pin a decimal starting baseline and its justification. Calculation orders approved positions by event time, refuses conflicting latest positions and any unreviewed decline, and returns the latest position minus the frozen baseline without summing cumulative totals. The formula and lineage retain the baseline and basis. This release adds no migration or database privilege change.
+
+Local proposed build 1.09.0, schema 92 (FR-CAL-003 / APL-402; coding candidate only): pooled-ratio result and lineage formula documents now disclose `POOLED_RATIO`, denominator weighting, the numerator-and-denominator requirement and multiplier-after-pooling order. Unweighted means are explicitly labelled with equal contributor weighting and cannot be mistaken for a pooled percentage. Missing ratio quantities are refused with `RATIO_QUANTITIES_REQUIRED`; a zero pooled denominator remains `UNDEFINED`. This release changes no table, grant, role, policy, trigger or function and adds no migration.
+
 Local proposed build 0.39.0, schema 43 (branch `sprint-1/us-dc-04`, US-DC-04; not merged or deployed): migration 0043 replaces the `ai_content_snapshot_schema_version_check` of 0037 (same name) so that archived guidance snapshots may be labelled `nonprofit-ai-guidance-v1` or `nonprofit-ai-guidance-v2`. Edition v2 (`apps/api/impact_api/ai_content_schema_v2.json`) adds a required `commercial_disclosure` to every tool listing of the archived solutions component; v1 rows are unchanged and stay readable by the retained v1 reader. New saved plan revisions are captured in v2. No table, column, grant, role, policy, trigger or function is added or changed; snapshots stay insert-only and tenant-fenced. It also replaces 0040's `ai_plan_export_issuance_package_schema_version_check` (same name) with `IN ('nonprofit-ai-plan-export-v1', 'nonprofit-ai-plan-export-v2')`: an internal plan copy whose archived guidance is v2 is issued as package v2; copies of v1 or unarchived guidance keep package v1 and its published shape.
 
 Local proposed build 0.38.0, schema 42 (branch `sprint-1/us-mp-03`, US-MP-03; not merged or deployed): migration 0042 adds the registry kind `AIRankingWeights` (the `object_registry_object_type_check` is widened by appending the kind, preserving every earlier kind, as 0034, 0035 and 0038 did) and the partial unique index `ai_ranking_weights_one_per_tenant`, so each tenant has at most one weights object; every change of weights is its next immutable revision in the existing forced-RLS `object_registry`/`object_revision` with audit event, outbox intent and receipt. It also registers the generated onboarding profile `8664a1b707cb…` with a read-only FINANCE bundle (`ai.enablement.read`, `notifications.read`, `uploads.read`; the Operations Head persona). No projection table, grant, role, policy or function is added; existing tenant ceilings are unchanged and an existing tenant obtains the FINANCE role template only through the reviewed access upgrade.
@@ -76,6 +106,9 @@ Build 0.24.0; schema 26 (0.24.0 adds 0022: the import batch payload columns of `
 | 0041_ai_policy.sql | 46da4315e5bd13fede31dae08cb186f6588774046108e2d2779324c36f8822c2 |
 | 0042_ai_ranking_weights.sql | 67b308dc30d41ddbf8f33db0e802299e4196478c172ceaa63539fb2e27782636 |
 | 0043_ai_guidance_v2.sql | b720055ac8e9c3f005b8a0e505b53221d9ac443d8c881b4924ab5ecbc7169095 |
+| 0044_ai_diagnoses.sql | 9f9f136ad38f2ae9e3f280fed0fc10d497716e3875a96e2095e72f24a8b0bd65 |
+| 0045_diagnosis_worker_fence.sql | 603f4a2914b21a1686a28baa0d7f7b8a0e5228c0f0615fc63ef64561817d87f2 |
+| 0046_diagnosis_problem_order.sql | 953337b70fa70138bbd19c2ad445d6d666f10beb3a85d42bfffd1cd5fde4b80f |
 
 ## Executable schema definitions
 
@@ -6340,3 +6373,830 @@ ALTER TABLE impact.ai_plan_export_issuance ADD CONSTRAINT ai_plan_export_issuanc
 -- No table, column, grant, role, policy, trigger or function change; both tables stay insert-only.
 COMMIT;
 ```
+
+## 0044_ai_diagnoses.sql
+
+Source: infrastructure/migrations/0044_ai_diagnoses.sql. SHA-256: `9f9f136ad38f2ae9e3f280fed0fc10d497716e3875a96e2095e72f24a8b0bd65`. Local build 0.40.0 candidate; no migration 0001–0043 changed. Adds the allowed registry kind `AIDiagnosis` and registers the generated initial-access profile; no table, runtime grant, RLS policy or historic row changes.
+
+Diagnoses reuse tenant-keyed forced-RLS `object_registry` and insert-only `object_revision`. Head, revision, audit, outbox and operation receipt share one transaction. Payload: required `title` (1–150 characters, nonblank), `problems` (0–20 closed entries: canonical UUID `problem_id`, `description` ≤1000, `affected_area` ≤150, `supporting_evidence` ≤4000) and explicit `priority_order` (unique canonical problem IDs from the same draft, ≤20). Evidence is manual text only; protected-object selectors and attachments are refused. Completion needs at least one problem, nonblank description/area/evidence and one priority for every problem.
+
+`diagnosis_state`, completion time/person and correction reason are server-owned revision metadata. Completed content is immutable; reason-bound correction creates a later Draft revision. Prior Completed revisions preserve their exact payload/state. Tenant read/manage capabilities are separate and granted in the new profile only to TENANT_ADMIN; OWNER custody alone gives no diagnosis access. Existing tenants are not automatically widened. New profile SHA-256: `b385032a00a425caf2cb9c2b5c1e73bf127b6bb6f5dd8317da025a97424ca414`. Native login-role, populated upgrade, restart and restore qualifications remain unrun for this candidate.
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- Reuse forced-RLS registry/revisions/receipts. Preserve every existing kind and grant fence.
+DO $$ DECLARE original_check text;
+BEGIN
+ SELECT pg_get_constraintdef(oid) INTO STRICT original_check FROM pg_constraint
+ WHERE conrelid='impact.object_registry'::regclass AND conname='object_registry_object_type_check';
+ ALTER TABLE impact.object_registry DROP CONSTRAINT object_registry_object_type_check;
+ EXECUTE 'ALTER TABLE impact.object_registry ADD CONSTRAINT object_registry_object_type_check '
+   || regexp_replace(original_check, '\)$', ' OR object_type = ''AIDiagnosis'')');
+END $$;
+-- The generated profile is registered below after local contract generation. Existing ceilings
+-- stay unchanged; existing tenants need the independently reviewed access-upgrade path.
+INSERT INTO impact.platform_access_profile(profile_hash,manifest,source_migration)
+ VALUES('b385032a00a425caf2cb9c2b5c1e73bf127b6bb6f5dd8317da025a97424ca414',$profile_0044${"purpose_bound":["audit.export","privacy-cases.draft.create","privacy-cases.draft.edit","privacy-cases.read","privacy.approve","privacy.execute","privacy.export"],"roles":{"ANALYST":["ai.enablement.read","calculated-results.read","dashboards.read","decisions.read","evidence.download","evidence.read","framework.export","frameworks.read","imports.read","indicator-definitions.read","indicator-instances.read","notifications.acknowledge","notifications.read","observations.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","reports.read","snapshots.read","targets.read","uploads.read","work-items.read","workflows.read"],"AUDIT_READER":["audit-events.read","notifications.read","uploads.read"],"AUTHOR":["ai.enablement.read","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.read","dashboards.read","decisions.read","disclosure.request","evidence.attach","evidence.download","evidence.draft.create","evidence.draft.edit","evidence.read","form.submit","forms.draft.create","forms.draft.edit","forms.read","framework.submit","frameworks.draft.create","frameworks.draft.edit","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.draft.create","indicator-definitions.draft.edit","indicator-definitions.read","indicator-instances.draft.create","indicator-instances.draft.edit","indicator-instances.read","indicator.submit","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observation.submit","observations.draft.create","observations.draft.edit","observations.read","period-closes.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","report.submit","reporting-calendars.read","reports.draft.create","reports.draft.edit","reports.read","restatement-requests.read","snapshots.read","submission.correct","submission.submit","submissions.draft.create","submissions.draft.edit","submissions.read","target.submit","targets.draft.create","targets.draft.edit","targets.read","upload.create","upload.write","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"DATA_STEWARD":["ai.enablement.read","assignments.read","calculated-results.read","dashboards.read","decisions.read","evidence.attach","evidence.download","evidence.draft.create","evidence.draft.edit","evidence.read","forms.read","frameworks.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.read","indicator-instances.read","notifications.read","observations.draft.create","observations.draft.edit","observations.read","periods.read","programmes.read","publication.download","report-templates.read","reports.read","snapshots.read","submissions.read","targets.read","upload.create","upload.write","uploads.read","work-items.read","workflows.read"],"ENUMERATOR":["assignments.read","collection-rounds.read","forms.read","notifications.read","submission.correct","submission.submit","submissions.draft.create","submissions.draft.edit","submissions.read","upload.create","upload.write","uploads.read"],"EXTERNAL":["calculated-results.read","dashboards.read","decisions.read","evidence.read","frameworks.read","indicator-definitions.read","indicator-instances.read","invitation.accept","notifications.acknowledge","notifications.read","observations.read","periods.read","programmes.read","publication.download","report-templates.read","reports.read","snapshots.read","targets.read","uploads.read","work-items.read","workflows.read"],"FINANCE":["ai.enablement.read","notifications.read","uploads.read"],"MEL_ADMIN":["ai.advisory.request","ai.enablement.export","ai.enablement.manage","ai.enablement.read","assignments.draft.create","assignments.draft.edit","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.draft.create","collection-rounds.draft.edit","collection-rounds.read","dashboards.read","decisions.read","disclosures.read","evidence.read","form.publish","form.submit","forms.draft.create","forms.draft.edit","forms.read","framework.export","framework.submit","frameworks.draft.create","frameworks.draft.edit","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.draft.create","indicator-definitions.draft.edit","indicator-definitions.read","indicator-instances.draft.create","indicator-instances.draft.edit","indicator-instances.read","indicator.activate","indicator.calculate","indicator.submit","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observations.read","period-closes.read","period.close","period.restate","periods.read","programme.activate","programmes.draft.create","programmes.draft.edit","programmes.read","publication.download","report-templates.read","report.export","report.publish","report.withdraw","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","target.submit","targets.draft.create","targets.draft.edit","targets.read","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"PRIVACY":["disclosure.request","disclosures.read","notifications.read","publication.download","report.withdraw","reports.read","retention-holds.read","retention-policies.draft.create","retention-policies.draft.edit","retention-policies.read","retention-policy.approve","retention.hold","retention.read","retention.release","uploads.read"],"PROGRAMME_MANAGER":["ai.advisory.request","ai.enablement.export","ai.enablement.manage","ai.enablement.read","assignment.reassign","assignments.draft.create","assignments.draft.edit","assignments.read","calculated-results.read","collection-plan.submit","collection-plans.draft.create","collection-plans.draft.edit","collection-plans.read","collection-rounds.draft.create","collection-rounds.draft.edit","collection-rounds.read","dashboards.read","decisions.read","evidence.read","form.submit","forms.read","framework.export","frameworks.read","geographies.read","import.cancel","import.commit","import.preview","imports.draft.create","imports.draft.edit","imports.read","indicator-definitions.read","indicator-instances.read","indicator.activate","indicator.calculate","lineage-manifests.read","measurement-changes.draft.create","measurement-changes.draft.edit","measurement-changes.read","measurement-changes.submit","measurement-members.read","notifications.acknowledge","notifications.read","observation.submit","observations.read","period-closes.read","period.close","period.restate","periods.read","programme.activate","programmes.draft.create","programmes.draft.edit","programmes.read","publication.download","report-templates.read","report.export","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","targets.read","uploads.read","work-items.read","workflow-templates.read","workflows.read"],"REVIEWER":["ai.enablement.read","assignments.read","calculated-results.read","collection-plans.read","collection-rounds.read","dashboards.read","decisions.read","evidence.download","evidence.read","forms.read","frameworks.read","geographies.read","imports.read","indicator-definitions.read","indicator-instances.read","lineage-manifests.read","measurement-changes.read","measurement-members.read","notifications.acknowledge","notifications.read","observations.read","period-closes.read","periods.read","programmes.read","publication.download","report-templates.read","report.export","reporting-calendars.read","reports.read","restatement-requests.read","snapshots.read","submissions.read","targets.read","uploads.read","work-items.read","workflow-templates.read","workflow.approve","workflow.reject","workflow.return","workflows.read"],"TENANT_ADMIN":["access-denials.read","access-requests.read","access-scopes.create","access-scopes.read","ai.advisory.request","ai.diagnosis.manage","ai.diagnosis.read","ai.enablement.export","ai.enablement.manage","ai.enablement.read","ai.policy.manage","connections.read","grant.approve","grant.request","grant.revoke","grants.read","groups.approve","groups.manage","groups.read","groups.request","member-invitations.read","member.invite","membership.reactivate","membership.renew.approve","membership.renew.request","membership.revoke","membership.suspend","memberships.read","notifications.read","organisation-units.manage","organisation-units.read","ownership.transfer","reference-data.manage","retention-holds.read","retention-policies.draft.create","retention-policies.draft.edit","retention-policies.read","retention-policy.approve","retention.hold","retention.read","retention.release","role-templates.read","roles.manage","uploads.read"]},"version":"initial-access-v2"}$profile_0044$::jsonb,'0044_ai_diagnoses.sql');
+COMMIT;
+```
+
+
+## Migration0045 — diagnosis worker isolation (local0.40 candidate follow-up)
+
+`0045_diagnosis_worker_fence.sql` SHA256 `603f4a2914b21a1686a28baa0d7f7b8a0e5228c0f0615fc63ef64561817d87f2`. Schema45 derives from45 contiguous migrations. All0001–0044 remain byte-exact. Two RESTRICTIVE worker policies exclude AIDiagnosis on shared registry/revision SELECT and INSERT while retaining existing forced tenant fences and grants. No payload, history or capability profile changes; app/platform/identity/privacy roles are not granted new access. This narrows the current candidate; it is not a deployed change or release acceptance.
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- The worker needs shared registry/revision access for reminders, audit and pinned exports.
+-- Narrow only the diagnosis kind; keep grants, tenant fences and historical rows unchanged.
+CREATE POLICY worker_diagnosis_registry_fence
+ ON impact.object_registry AS RESTRICTIVE FOR ALL TO impact_worker
+ USING (object_type <> 'AIDiagnosis')
+ WITH CHECK (object_type <> 'AIDiagnosis');
+CREATE POLICY worker_diagnosis_revision_fence
+ ON impact.object_revision AS RESTRICTIVE FOR ALL TO impact_worker
+ USING (object_type <> 'AIDiagnosis')
+ WITH CHECK (object_type <> 'AIDiagnosis');
+COMMIT;
+```
+
+
+## Migration0046 — diagnosis problem identity and priority order
+
+Additive local0.40 candidate follow-up; derived schema46. The pure immutable invoker function validates canonical unique problem IDs, bounded arrays, unique member priorities and full nonempty coverage for Completed records. Draft permits empty problems and partial order. This is a bounded identity/order constraint, not full JSON-schema or semantic completion validation; the closed API retains text/key/metadata checks. Existing SQL NULL governed removal stays valid. Existing rows must validate atomically without rewriting history. No table or tenant authority grants change; pure helper execution is granted to existing app/worker/platform/privacy revision writers, because PostgreSQL checks this even for other-kind CHECK branches; no table or identity authority is added. All0001–0045 stay byte-exact. Not deployed or accepted.
+
+SHA256 `953337b70fa70138bbd19c2ad445d6d666f10beb3a85d42bfffd1cd5fde4b80f`.
+
+```sql
+BEGIN;
+SET LOCAL ROLE impact_owner;
+-- A pure invoker function: no table reads, identity lookup or authority bypass.
+-- Draft priorities may be partial; Completed priorities must cover every problem.
+CREATE FUNCTION impact.diagnosis_problem_order_valid(p jsonb) RETURNS boolean
+ LANGUAGE plpgsql IMMUTABLE SET search_path=pg_catalog AS $$
+DECLARE
+ item jsonb;
+ id text;
+ problems text[] := ARRAY[]::text[];
+ priorities text[] := ARRAY[]::text[];
+BEGIN
+ IF jsonb_typeof(p) IS DISTINCT FROM 'object'
+    OR jsonb_typeof(p->'problems') IS DISTINCT FROM 'array'
+    OR jsonb_typeof(p->'priority_order') IS DISTINCT FROM 'array'
+    OR jsonb_typeof(p->'diagnosis_state') IS DISTINCT FROM 'string'
+    OR p->>'diagnosis_state' NOT IN ('Draft','Completed') THEN
+  RETURN false;
+ END IF;
+ IF jsonb_array_length(p->'problems')>20 OR jsonb_array_length(p->'priority_order')>20 THEN
+  RETURN false;
+ END IF;
+ FOR item IN SELECT value FROM jsonb_array_elements(p->'problems') LOOP
+  IF jsonb_typeof(item) IS DISTINCT FROM 'object'
+     OR jsonb_typeof(item->'problem_id') IS DISTINCT FROM 'string' THEN
+   RETURN false;
+  END IF;
+  id := item->>'problem_id';
+  IF id !~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+     OR id=ANY(problems) THEN
+   RETURN false;
+  END IF;
+  problems := array_append(problems,id);
+ END LOOP;
+ FOR item IN SELECT value FROM jsonb_array_elements(p->'priority_order') LOOP
+  IF jsonb_typeof(item) IS DISTINCT FROM 'string' THEN
+   RETURN false;
+  END IF;
+  id := item #>> '{}';
+  IF NOT id=ANY(problems) OR id=ANY(priorities) THEN
+   RETURN false;
+  END IF;
+  priorities := array_append(priorities,id);
+ END LOOP;
+ RETURN p->>'diagnosis_state'='Draft'
+        OR (cardinality(problems)>0 AND cardinality(problems)=cardinality(priorities));
+END;
+$$;
+REVOKE ALL ON FUNCTION impact.diagnosis_problem_order_valid(jsonb) FROM PUBLIC;
+-- PostgreSQL checks helper execution privilege even for another kind's CHECK
+-- branch. Existing revision writers need only this pure predicate, no new data grant.
+GRANT EXECUTE ON FUNCTION impact.diagnosis_problem_order_valid(jsonb)
+ TO impact_app,impact_worker,impact_platform,impact_privacy;
+-- Existing governed removal uses SQL NULL, never a JSON null/tombstone payload.
+-- Validate all existing revisions; invalid historical data blocks the migration
+-- atomically rather than being rewritten or silently waived.
+ALTER TABLE impact.object_revision ADD CONSTRAINT diagnosis_problem_order_valid
+ CHECK(CASE WHEN object_type<>'AIDiagnosis' THEN true
+            WHEN restriction_state='REMOVED' AND payload IS NULL THEN true
+            ELSE COALESCE(impact.diagnosis_problem_order_valid(payload),false) END);
+COMMIT;
+```
+
+
+Unregistered local diagnosis privacy projection candidate (not a schema migration): `docs/engineering/delivery-system-20261011/diagnosis-privacy-scope.CANDIDATE.sql`, SHA256`4d789d420f900673abe3399e72c6e934bf798b0cbbd7aacc48a245e835db329d`. Nullable `privacy_case_current.diagnosis_ids` JSONarray; no new grant/table/definer. Actual130native candidate qualification includes install/remove; registered46migration bytes unchanged. Newoptional API selector requires registered promotion beforedeployment.
+
+
+Registered candidate migration `0047_diagnosis_evidence_privacy.sql`, SHA256 `57c137c15f124a6aab7936074779c4ea3634091f9c20d6b2392ff9fe85eca6d7`: atomic nullable diagnosis_ids projection column; immutable typed tenant/object/revision/kind Evidence bindings; shapecheck,forcedRLS,narrowappSELECT/INSERT,invokerpopulation/guardedprivacycleanup,ownerpertenantbackfill. Sealedsourcecores copied byte-exact; earlier46migration bytesunchanged. Native registeredqualification pending; no deployed schema claim. Quiescentwriters requiredforliveDDL.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0047_diagnosis_evidence_privacy.sql | 57c137c15f124a6aab7936074779c4ea3634091f9c20d6b2392ff9fe85eca6d7 |
+
+## Migration0048 — immutable diagnosis problem baselines (local0.41 coding candidate)
+
+`0048_ai_problem_baselines.sql` SHA256 `09305957c1565c455ab8f5f4037d379f9a026b863697330129d0dc8ce06f8e13`.
+Schema48 derives from48 contiguous additive migrations; all0001–0047 remain byte-exact. The
+`problem_baseline_lock` register is forced-RLS and tenant-fenced. It binds one
+`AIProblemBaseline` locked revision to the exact `AIDiagnosis` revision and stable problem ID,
+with server-owned principal/time metadata. The runtime app receives SELECT/INSERT only. A guard
+trigger refuses update/delete and refuses inserts whose selectors or actor do not match the
+immutable locked revision payload. This is a self-reported baseline lock, not independent approval
+or an official MEL result. It is untested, unreviewed, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0048_ai_problem_baselines.sql | 09305957c1565c455ab8f5f4037d379f9a026b863697330129d0dc8ce06f8e13 |
+
+
+## Migration0049 — governed diagnosis collaboration (local0.43 coding candidate)
+
+`0049_ai_diagnosis_contributions.sql` SHA256 `a885f58ac705643b5252677fa5c44ef16ffebcc3d4b56927ec2e1cfc2798b18d`. Schema49 adds immutable,
+forced-RLS tenant-fenced contributor assignments, scoped proposals and lead decisions for one
+existing AIDiagnosis. The app receives SELECT/INSERT only. The registered access profile applies
+to governed future/bootstrap upgrades and does not activate authority for existing tenants. Role
+labels and section mappings are provisional; the candidate is untested, unreviewed, unmerged and
+undeployed. All0001–0048 remain byte-exact.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0049_ai_diagnosis_contributions.sql | a885f58ac705643b5252677fa5c44ef16ffebcc3d4b56927ec2e1cfc2798b18d |
+
+```sql
+-- Governed, scoped contributions to one existing diagnosis.
+BEGIN;
+SET LOCAL ROLE impact_owner;
+
+-- Registered for governed future/bootstrap upgrades only. Existing tenants are
+-- not widened or auto-activated by this migration.
+WITH previous AS (
+ SELECT manifest FROM impact.platform_access_profile
+ WHERE source_migration='0048_ai_problem_baselines.sql'
+), first_roles AS (
+ SELECT jsonb_set(
+  jsonb_set(
+   jsonb_set(previous.manifest,'{roles,TENANT_ADMIN}',
+    (SELECT jsonb_agg(to_jsonb(capability) ORDER BY capability) FROM (
+      SELECT jsonb_array_elements_text(previous.manifest->'roles'->'TENANT_ADMIN') capability
+      UNION VALUES('ai.diagnosis.contribute'),('ai.diagnosis.contributors.manage')
+    ) x)),
+   '{roles,MEL_ADMIN}',
+    (SELECT jsonb_agg(to_jsonb(capability) ORDER BY capability) FROM (
+      SELECT jsonb_array_elements_text(previous.manifest->'roles'->'MEL_ADMIN') capability
+      UNION VALUES('ai.diagnosis.contribute'),('ai.diagnosis.contributors.manage')
+    ) x)),
+  '{roles,PROGRAMME_MANAGER}',
+    (SELECT jsonb_agg(to_jsonb(capability) ORDER BY capability) FROM (
+      SELECT jsonb_array_elements_text(previous.manifest->'roles'->'PROGRAMME_MANAGER') capability
+      UNION VALUES('ai.diagnosis.contribute'),('ai.diagnosis.contributors.manage')
+    ) x)) AS manifest
+ FROM previous
+), expanded AS (
+ SELECT jsonb_set(
+  jsonb_set(first_roles.manifest,'{roles,AUTHOR}',
+   (SELECT jsonb_agg(to_jsonb(capability) ORDER BY capability) FROM (
+     SELECT jsonb_array_elements_text(first_roles.manifest->'roles'->'AUTHOR') capability
+     UNION VALUES('ai.diagnosis.contribute')
+   ) x)),
+  '{roles,REVIEWER}',
+   (SELECT jsonb_agg(to_jsonb(capability) ORDER BY capability) FROM (
+     SELECT jsonb_array_elements_text(first_roles.manifest->'roles'->'REVIEWER') capability
+     UNION VALUES('ai.diagnosis.contribute')
+   ) x)) AS manifest
+ FROM first_roles
+)
+INSERT INTO impact.platform_access_profile(profile_hash,manifest,source_migration)
+ SELECT 'd58e9f971a4fb2c0d5aa4813cfeabd9edc612a6c61eae9dd2c83b9b1606c32ed',
+  manifest,'0049_ai_diagnosis_contributions.sql' FROM expanded;
+
+CREATE TABLE impact.ai_diagnosis_contributor_assignment(
+ tenant_id uuid NOT NULL,
+ assignment_id uuid NOT NULL,
+ diagnosis_id uuid NOT NULL,
+ diagnosis_revision uuid NOT NULL,
+ diagnosis_kind text GENERATED ALWAYS AS ('AIDiagnosis') STORED,
+ member_invitation_id uuid NOT NULL,
+ contribution_role text NOT NULL CHECK(contribution_role IN
+  ('PROBLEM_OWNER','EVIDENCE_CONTRIBUTOR','PRIORITISATION_CONTRIBUTOR')),
+ problem_ids uuid[] NOT NULL CHECK(cardinality(problem_ids) BETWEEN 1 AND 20),
+ sections text[] NOT NULL CHECK(cardinality(sections) BETWEEN 1 AND 4),
+ inviter_id uuid NOT NULL,
+ created_at timestamptz NOT NULL DEFAULT statement_timestamp(),
+ PRIMARY KEY(tenant_id,assignment_id),
+ UNIQUE(tenant_id,diagnosis_id,member_invitation_id),
+ FOREIGN KEY(tenant_id,diagnosis_id,diagnosis_revision)
+  REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+ FOREIGN KEY(tenant_id,diagnosis_revision,diagnosis_kind)
+  REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+ FOREIGN KEY(tenant_id,member_invitation_id)
+  REFERENCES impact.member_invitation(tenant_id,invitation_id),
+ FOREIGN KEY(tenant_id,inviter_id)
+  REFERENCES impact.tenant_principal(tenant_id,principal_id),
+ CHECK(sections <@ ARRAY['PROBLEM_DESCRIPTION','AFFECTED_AREA','SUPPORTING_EVIDENCE','PRIORITY_ORDER']::text[])
+);
+
+CREATE TABLE impact.ai_diagnosis_contribution(
+ tenant_id uuid NOT NULL,
+ contribution_id uuid NOT NULL,
+ assignment_id uuid NOT NULL,
+ diagnosis_id uuid NOT NULL,
+ base_revision uuid NOT NULL,
+ diagnosis_kind text GENERATED ALWAYS AS ('AIDiagnosis') STORED,
+ contributor_principal_id uuid NOT NULL,
+ contributor_membership_id uuid NOT NULL,
+ patch jsonb NOT NULL CHECK(jsonb_typeof(patch)='object'),
+ submitted_at timestamptz NOT NULL DEFAULT statement_timestamp(),
+ PRIMARY KEY(tenant_id,contribution_id),
+ FOREIGN KEY(tenant_id,assignment_id)
+  REFERENCES impact.ai_diagnosis_contributor_assignment(tenant_id,assignment_id),
+ FOREIGN KEY(tenant_id,diagnosis_id,base_revision)
+  REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+ FOREIGN KEY(tenant_id,base_revision,diagnosis_kind)
+  REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+ FOREIGN KEY(tenant_id,contributor_principal_id)
+  REFERENCES impact.tenant_principal(tenant_id,principal_id),
+ FOREIGN KEY(tenant_id,contributor_membership_id)
+  REFERENCES impact.membership_current(tenant_id,object_id)
+);
+
+CREATE TABLE impact.ai_diagnosis_contribution_decision(
+ tenant_id uuid NOT NULL,
+ contribution_id uuid NOT NULL,
+ decision text NOT NULL CHECK(decision IN ('ACCEPTED','REJECTED')),
+ reason text,
+ diagnosis_id uuid NOT NULL,
+ diagnosis_before_revision uuid NOT NULL,
+ diagnosis_after_revision uuid NOT NULL,
+ diagnosis_kind text GENERATED ALWAYS AS ('AIDiagnosis') STORED,
+ decided_by uuid NOT NULL,
+ decided_at timestamptz NOT NULL DEFAULT statement_timestamp(),
+ PRIMARY KEY(tenant_id,contribution_id),
+ FOREIGN KEY(tenant_id,contribution_id)
+  REFERENCES impact.ai_diagnosis_contribution(tenant_id,contribution_id),
+ FOREIGN KEY(tenant_id,diagnosis_id,diagnosis_before_revision)
+  REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+ FOREIGN KEY(tenant_id,diagnosis_id,diagnosis_after_revision)
+  REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+ FOREIGN KEY(tenant_id,diagnosis_before_revision,diagnosis_kind)
+  REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+ FOREIGN KEY(tenant_id,diagnosis_after_revision,diagnosis_kind)
+  REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+ FOREIGN KEY(tenant_id,decided_by)
+  REFERENCES impact.tenant_principal(tenant_id,principal_id),
+ CHECK((decision='REJECTED' AND reason IS NOT NULL AND length(btrim(reason)) BETWEEN 1 AND 1000)
+    OR (decision='ACCEPTED' AND reason IS NULL))
+);
+
+ALTER TABLE impact.ai_diagnosis_contributor_assignment ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_diagnosis_contributor_assignment FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_diagnosis_contributor_assignment
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.ai_diagnosis_contribution ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_diagnosis_contribution FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_diagnosis_contribution
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.ai_diagnosis_contribution_decision ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_diagnosis_contribution_decision FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_diagnosis_contribution_decision
+ USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+
+GRANT SELECT,INSERT ON impact.ai_diagnosis_contributor_assignment TO impact_app;
+GRANT SELECT,INSERT ON impact.ai_diagnosis_contribution TO impact_app;
+GRANT SELECT,INSERT ON impact.ai_diagnosis_contribution_decision TO impact_app;
+
+CREATE FUNCTION impact.guard_ai_diagnosis_contribution_immutable() RETURNS trigger
+ LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+BEGIN
+ IF TG_OP<>'INSERT' THEN
+  RAISE EXCEPTION 'diagnosis collaboration records are immutable' USING ERRCODE='42501';
+ END IF;
+ RETURN NEW;
+END;
+$$;
+REVOKE ALL ON FUNCTION impact.guard_ai_diagnosis_contribution_immutable() FROM PUBLIC;
+CREATE TRIGGER ai_diagnosis_assignment_immutable BEFORE UPDATE OR DELETE
+ ON impact.ai_diagnosis_contributor_assignment FOR EACH ROW
+ EXECUTE FUNCTION impact.guard_ai_diagnosis_contribution_immutable();
+CREATE TRIGGER ai_diagnosis_contribution_immutable BEFORE UPDATE OR DELETE
+ ON impact.ai_diagnosis_contribution FOR EACH ROW
+ EXECUTE FUNCTION impact.guard_ai_diagnosis_contribution_immutable();
+CREATE TRIGGER ai_diagnosis_decision_immutable BEFORE UPDATE OR DELETE
+ ON impact.ai_diagnosis_contribution_decision FOR EACH ROW
+ EXECUTE FUNCTION impact.guard_ai_diagnosis_contribution_immutable();
+
+COMMIT;
+```
+
+
+## Migration0050 — exact diagnosis advisor review (local0.44 coding candidate)
+
+`0050_ai_diagnosis_reviews.sql` SHA256 `405c0704a332ca2f102dc242458e54425e6b802c99bb1d17da270926678b629f`. Schema50 adds forced-RLS, tenant-fenced,
+insert-only exact-revision review assignments and public review events. Runtime app authority is
+SELECT/INSERT only. The generated future/bootstrap profile adds the provisional REVIEWER capability
+without widening existing tenants. All0001–0049 stay byte-exact. Candidate is untested, unreviewed,
+unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0050_ai_diagnosis_reviews.sql | 405c0704a332ca2f102dc242458e54425e6b802c99bb1d17da270926678b629f |
+
+```sql
+-- Assigned, immutable human review of exact completed diagnosis revisions.
+BEGIN;
+SET LOCAL ROLE impact_owner;
+
+WITH previous AS (
+ SELECT manifest FROM impact.platform_access_profile WHERE source_migration='0049_ai_diagnosis_contributions.sql'
+), expanded AS (
+ SELECT jsonb_set(previous.manifest,'{roles,REVIEWER}',
+  (SELECT jsonb_agg(to_jsonb(capability) ORDER BY capability) FROM (
+    SELECT jsonb_array_elements_text(previous.manifest->'roles'->'REVIEWER') capability
+    UNION VALUES('ai.diagnosis.review')
+  ) x)) AS manifest FROM previous
+)
+INSERT INTO impact.platform_access_profile(profile_hash,manifest,source_migration)
+ SELECT 'a06bc846eba18f57ace5c13e7b74268e38a869a33f834c975c20377d4bd5f316',manifest,'0050_ai_diagnosis_reviews.sql' FROM expanded;
+
+CREATE TABLE impact.ai_diagnosis_review_request(
+ tenant_id uuid NOT NULL, review_id uuid NOT NULL, diagnosis_id uuid NOT NULL,
+ diagnosis_revision uuid NOT NULL, diagnosis_kind text GENERATED ALWAYS AS ('AIDiagnosis') STORED,
+ requester_principal_id uuid NOT NULL, requester_membership_id uuid NOT NULL,
+ advisor_principal_id uuid NOT NULL, advisor_membership_id uuid NOT NULL,
+ advisor_natural_identity_id uuid NOT NULL, requested_at timestamptz NOT NULL,
+ PRIMARY KEY(tenant_id,review_id), UNIQUE(tenant_id,diagnosis_id,diagnosis_revision,advisor_principal_id),
+ FOREIGN KEY(tenant_id,diagnosis_id,diagnosis_revision) REFERENCES impact.object_revision(tenant_id,object_id,revision_id),
+ FOREIGN KEY(tenant_id,diagnosis_revision,diagnosis_kind) REFERENCES impact.object_revision(tenant_id,revision_id,object_type),
+ FOREIGN KEY(tenant_id,requester_principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id),
+ FOREIGN KEY(tenant_id,requester_membership_id) REFERENCES impact.membership_current(tenant_id,object_id),
+ FOREIGN KEY(tenant_id,advisor_principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id),
+ FOREIGN KEY(tenant_id,advisor_membership_id) REFERENCES impact.membership_current(tenant_id,object_id)
+);
+CREATE TABLE impact.ai_diagnosis_review_event(
+ tenant_id uuid NOT NULL, event_id uuid NOT NULL, review_id uuid NOT NULL,
+ kind text NOT NULL CHECK(kind IN ('STARTED','COMMENTED','VALIDATED')),
+ comment text, actor_principal_id uuid NOT NULL, actor_membership_id uuid NOT NULL,
+ actor_natural_identity_id uuid NOT NULL, recorded_at timestamptz NOT NULL,
+ PRIMARY KEY(tenant_id,event_id), FOREIGN KEY(tenant_id,review_id) REFERENCES impact.ai_diagnosis_review_request(tenant_id,review_id),
+ FOREIGN KEY(tenant_id,actor_principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id),
+ FOREIGN KEY(tenant_id,actor_membership_id) REFERENCES impact.membership_current(tenant_id,object_id),
+ CHECK((kind='COMMENTED' AND comment IS NOT NULL AND length(btrim(comment)) BETWEEN 1 AND 4000) OR (kind<>'COMMENTED' AND comment IS NULL))
+);
+CREATE INDEX ai_diagnosis_review_queue ON impact.ai_diagnosis_review_request(tenant_id,advisor_principal_id,requested_at,review_id);
+CREATE INDEX ai_diagnosis_review_history ON impact.ai_diagnosis_review_request(tenant_id,diagnosis_id,requested_at,review_id);
+ALTER TABLE impact.ai_diagnosis_review_request ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_diagnosis_review_request FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_diagnosis_review_request USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+ALTER TABLE impact.ai_diagnosis_review_event ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_diagnosis_review_event FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_diagnosis_review_event USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+GRANT SELECT,INSERT ON impact.ai_diagnosis_review_request,impact.ai_diagnosis_review_event TO impact_app;
+CREATE FUNCTION impact.guard_ai_diagnosis_review_immutable() RETURNS trigger LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+BEGIN
+ IF TG_OP<>'INSERT' THEN RAISE EXCEPTION 'diagnosis review records are immutable' USING ERRCODE='42501'; END IF;
+ RETURN NEW;
+END;
+$$;
+REVOKE ALL ON FUNCTION impact.guard_ai_diagnosis_review_immutable() FROM PUBLIC;
+CREATE TRIGGER ai_diagnosis_review_request_immutable BEFORE UPDATE OR DELETE ON impact.ai_diagnosis_review_request FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_diagnosis_review_immutable();
+CREATE TRIGGER ai_diagnosis_review_event_immutable BEFORE UPDATE OR DELETE ON impact.ai_diagnosis_review_event FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_diagnosis_review_immutable();
+COMMIT;
+```
+
+
+## Migration0051 — advisor-scored option fit (local0.46 coding candidate)
+
+`0051_ai_solution_fit_scores.sql` SHA256 `90e576526903025052fbda2e9cedfd70c6c497c649d201c16ca851249be20a40`. Schema51 adds immutable, forced-RLS, tenant-fenced advisor-authored pilot fit scores. Every accepted record has all six required dimensions, a 1–5 value and a nonblank advisor explanation; incomplete payloads are refused and therefore never presented as complete. The record pins its catalogue content and rubric versions plus current advisor principal, membership and natural-person identity. Runtime authority is SELECT/INSERT only; existing tenants are unchanged until the reviewed access-profile upgrade. All0001–0050 remain byte-exact. Candidate is untested, unreviewed, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0051_ai_solution_fit_scores.sql | 90e576526903025052fbda2e9cedfd70c6c497c649d201c16ca851249be20a40 |
+
+```sql
+-- Immutable advisor-authored six-dimensional fit scores for source-backed options.
+BEGIN;
+SET LOCAL ROLE impact_owner;
+
+WITH previous AS (
+ SELECT manifest FROM impact.platform_access_profile WHERE source_migration='0050_ai_diagnosis_reviews.sql'
+), expanded AS (
+ SELECT jsonb_set(previous.manifest,'{roles,REVIEWER}',
+  (SELECT jsonb_agg(to_jsonb(capability) ORDER BY capability) FROM (
+    SELECT jsonb_array_elements_text(previous.manifest->'roles'->'REVIEWER') capability
+    UNION VALUES('ai.solution-fit.score')
+  ) x)) AS manifest FROM previous
+)
+INSERT INTO impact.platform_access_profile(profile_hash,manifest,source_migration)
+ SELECT '873961b446fcb46219703d05cfbde78868783355d27304f0d38bcafafb2f3653',manifest,'0051_ai_solution_fit_scores.sql' FROM expanded;
+
+CREATE TABLE impact.ai_solution_fit_score(
+ tenant_id uuid NOT NULL, score_id uuid NOT NULL,
+ opportunity_id text NOT NULL CHECK(length(btrim(opportunity_id)) BETWEEN 1 AND 120),
+ solution_id text NOT NULL CHECK(length(btrim(solution_id)) BETWEEN 1 AND 120),
+ catalogue_content_version text NOT NULL CHECK(length(btrim(catalogue_content_version)) BETWEEN 1 AND 120),
+ rubric_version text NOT NULL CHECK(rubric_version='pilot-fit-v1'),
+ size smallint NOT NULL CHECK(size BETWEEN 1 AND 5),
+ budget smallint NOT NULL CHECK(budget BETWEEN 1 AND 5),
+ context smallint NOT NULL CHECK(context BETWEEN 1 AND 5),
+ language smallint NOT NULL CHECK(language BETWEEN 1 AND 5),
+ data_sensitivity smallint NOT NULL CHECK(data_sensitivity BETWEEN 1 AND 5),
+ existing_systems smallint NOT NULL CHECK(existing_systems BETWEEN 1 AND 5),
+ explanations jsonb NOT NULL CHECK(jsonb_typeof(explanations)='object' AND
+  explanations ?& ARRAY['size','budget','context','language','data_sensitivity','existing_systems'] AND
+  explanations-ARRAY['size','budget','context','language','data_sensitivity','existing_systems']='{}'::jsonb),
+ advisor_principal_id uuid NOT NULL, advisor_membership_id uuid NOT NULL,
+ advisor_natural_identity_id uuid NOT NULL, scored_at timestamptz NOT NULL,
+ PRIMARY KEY(tenant_id,score_id),
+ FOREIGN KEY(tenant_id,advisor_principal_id) REFERENCES impact.tenant_principal(tenant_id,principal_id),
+ FOREIGN KEY(tenant_id,advisor_membership_id) REFERENCES impact.membership_current(tenant_id,object_id)
+);
+CREATE INDEX ai_solution_fit_latest ON impact.ai_solution_fit_score(tenant_id,opportunity_id,solution_id,scored_at DESC,score_id DESC);
+ALTER TABLE impact.ai_solution_fit_score ENABLE ROW LEVEL SECURITY;
+ALTER TABLE impact.ai_solution_fit_score FORCE ROW LEVEL SECURITY;
+CREATE POLICY tenant_fence ON impact.ai_solution_fit_score USING(tenant_id=impact.current_tenant()) WITH CHECK(tenant_id=impact.current_tenant());
+GRANT SELECT,INSERT ON impact.ai_solution_fit_score TO impact_app;
+CREATE FUNCTION impact.guard_ai_solution_fit_immutable() RETURNS trigger LANGUAGE plpgsql SET search_path=pg_catalog,impact AS $$
+BEGIN
+ RAISE EXCEPTION 'solution fit scores are immutable' USING ERRCODE='42501';
+END;
+$$;
+REVOKE ALL ON FUNCTION impact.guard_ai_solution_fit_immutable() FROM PUBLIC;
+CREATE TRIGGER ai_solution_fit_immutable BEFORE UPDATE OR DELETE ON impact.ai_solution_fit_score FOR EACH ROW EXECUTE FUNCTION impact.guard_ai_solution_fit_immutable();
+COMMIT;
+```
+
+## Migration0052 — deterministic calculation provenance (local0.57 coding candidate)
+
+`0052_calculation_provenance.sql` SHA256 `72d78a08b8e85b6dc6ae8cc07bc576b4819dde45d6adb062b3cd1a71b4881d27`. Schema52 adds three optional projection columns to `calculated_result_current` and the reviewed negative-adjustment switch and basis to `indicator_definition_current`. The immutable generic `LineageManifest` revision carries execution, approved definition, period, formula and per-source inclusion/exclusion metadata; it has no mutable projection table. Existing typed `rule_version` and `input_snapshot_id` columns remain reserved for actual `CalculationRule` and `Snapshot` objects. All0001–0047 remain byte-exact. Candidate is under local qualification, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0052_calculation_provenance.sql | 72d78a08b8e85b6dc6ae8cc07bc576b4819dde45d6adb062b3cd1a71b4881d27 |
+
+## Migration0053 — durable calculation failures (local0.57 coding candidate)
+
+`0053_calculation_failures.sql` SHA256 `cea6f86bc18ecd90fd709695416ce9c16df3f266916fb989af0a1443c959f348`. Schema53 adds immutable, forced-RLS, tenant-fenced failure records for authorised calculation attempts. Each record pins the actor, exact operation and payload hash, typed indicator/definition/source revisions, period, original attempt time, safe error fields, correlation and retry expiry. Runtime authority is SELECT/INSERT only. An exact retry returns the saved error, a changed payload is refused, and a later failed attempt can mark the prior result stale without replacing it with zero. All0001–0052 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0053_calculation_failures.sql | cea6f86bc18ecd90fd709695416ce9c16df3f266916fb989af0a1443c959f348 |
+
+## Migration0054 — role-training completion kind (local0.60 coding candidate)
+
+`0054_ai_training_completion_kind.sql` SHA256 `1a33ae4ecf7a1c257d2ae264540d0497c3181b6e7f3402d95308b01f929e3253`. Schema54 extends only the existing registry object-type check with `AITrainingCompletion`. Completion payloads remain immutable generic revisions protected by the existing forced tenant RLS and runtime grants; the migration creates no table and grants no additional authority. All0001–0053 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0054_ai_training_completion_kind.sql | 1a33ae4ecf7a1c257d2ae264540d0497c3181b6e7f3402d95308b01f929e3253 |
+
+## Migration0055 — internal champion appointment kind (local0.61 coding candidate)
+
+`0055_ai_champion_appointment_kind.sql` SHA256 `7d943816514b6948d6dd07dc2528e91a681fb4960e2ca5ba787a024e0845a003`. Schema55 extends the existing registry object-type check with `AIChampionAppointment` and adds restrictive registry/revision policies that withhold this participant-and-schedule payload from the worker role. Appointment records use immutable generic revisions and existing forced tenant RLS; no table or runtime grant is added. All0001–0054 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0055_ai_champion_appointment_kind.sql | 7d943816514b6948d6dd07dc2528e91a681fb4960e2ca5ba787a024e0845a003 |
+
+## Migration0056 — current outcome observation kind (local0.62 coding candidate)
+
+`0056_ai_current_outcome_observations.sql` SHA256 `a7a0344bfe0fdbd5d934ba9ec6b970bfaf09751f80cc1598924629283f16641a`. Schema56 extends the registry object-type check with `AICurrentOutcomeObservation` and adds restrictive registry/revision worker policies because observations contain organizational usage and outcome measures. Observations use immutable generic revisions and existing forced tenant RLS. The application pins the current completed plan revision, deployment attestation, exact locked baseline revision, diagnosis problem and mapped opportunity edition. All0001–0055 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0056_ai_current_outcome_observations.sql | a7a0344bfe0fdbd5d934ba9ec6b970bfaf09751f80cc1598924629283f16641a |
+
+## Migration0057 — sponsor value report kind (local0.63 coding candidate)
+
+`0057_ai_sponsor_value_report_kind.sql` SHA256 `75134f2d48434bf9b6a46ffa71f0dae05df7485504c6e5ea43ed6cc32cd36012`. Schema57 extends the registry object-type check with `AISponsorValueReport` and adds restrictive registry/revision worker policies because reports contain sponsor-bound realised financial and outcome values. Reports use immutable generic revisions and existing forced tenant RLS. Creation pins one current locked value-case revision, one current locked-baseline outcome observation and one active named external sponsor membership. The downloadable artifact contains only selected report items and mandatory context; internal source, recipient and source-note selectors remain outside the sponsor response. All0001–0056 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0057_ai_sponsor_value_report_kind.sql | 75134f2d48434bf9b6a46ffa71f0dae05df7485504c6e5ea43ed6cc32cd36012 |
+
+## Migration0058 — quarterly value review kind (local0.64 coding candidate)
+
+`0058_ai_quarterly_value_reviews.sql` SHA256 `e9f6a5540d2ad4f6c5ea51ab58c88b5a99b1db5a58180c4367db7c3104379638`. Schema58 extends the registry object-type check with `AIQuarterlyValueReview` and adds restrictive registry/revision worker policies. Reviews use confidential immutable generic revisions. They pin one current outcome observation and its exact plan, deployment, baseline and opportunity selectors, one server-owned template edition and the starting advisor identity. Explicit agreements are separate from linked tracked actions, so completion can refuse any agreement without exactly one action. All0001–0057 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0058_ai_quarterly_value_reviews.sql | e9f6a5540d2ad4f6c5ea51ab58c88b5a99b1db5a58180c4367db7c3104379638 |
+
+## Migration0059 — Improve-to-Diagnose cycle binding (local0.65 coding candidate)
+
+`0059_ai_improve_diagnosis_cycles.sql` SHA256 `1a1d5d837d61f1ca0e4bf2208da07740e6fdf834d28d44e33950da3b5b8473ca`. Schema59 adds `AIImproveDiagnosisCycle` and a forced-tenant-RLS immutable binding table. The binding preserves exact completed quarterly-review, prior diagnosis/problem, created Draft diagnosis, current owner membership revision, operation hash and audit correlation. A durable tenant/suggestion uniqueness fence prevents uptake from creating two Diagnose cycles, including after privacy restriction of a generic payload; workers receive no table grant and restrictive policies fence the cycle payload. All0001–0058 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0059_ai_improve_diagnosis_cycles.sql | 1a1d5d837d61f1ca0e4bf2208da07740e6fdf834d28d44e33950da3b5b8473ca |
+
+## Migration0060 — anonymised outcome evidence (local0.66 coding candidate)
+
+`0060_ai_anonymised_outcome_evidence.sql` SHA256 `95639887b5a90083e46358af82d1820c33319616179c53d9c4d1877a870be30b`. Schema60 adds immutable tenant-fenced consent decisions, safe platform-visible publication metadata, owner-only fixed source sets, and immutable approval/publish events. Fixed metric/unit/quarter cells reduce to one contribution per organisation. Cells with fewer than five organisations or unsafe small changes against prior publications expose neither value nor count. Shared artifacts exclude tenant identities, source-set fingerprints, notes and actor identifiers. Platform preparation and transitions use security-definer functions with current operator authority, exact retry, natural-person-independent approval, and source-current rechecks. Workers and tenant application roles receive no cross-organisation source authority. All0001–0059 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0060_ai_anonymised_outcome_evidence.sql | 95639887b5a90083e46358af82d1820c33319616179c53d9c4d1877a870be30b |
+
+## Migration0061 — personal saved-view kind (local0.68 coding candidate)
+
+`0061_saved_view_kind.sql` SHA256 `28010472675e50438056c340e2599d634a6fad1ec8a8ed24be778e2a6e993a33`. Schema61 adds only the `SavedView` registry kind and restrictive worker policies. Saved views use the existing forced tenant RLS, immutable generic revisions and owner attribution. Each payload pins an exact approved indicator-definition revision plus a bounded search term. Runtime visibility additionally restricts listing and reads to the current owner; a retired, changed or forbidden definition requires an explicit reviewed rebind rather than silent query mutation. Workers receive no saved-view registry or revision visibility. All0001–0060 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0061_saved_view_kind.sql | 28010472675e50438056c340e2599d634a6fad1ec8a8ed24be778e2a6e993a33 |
+
+## Migration0062 — governed population overlap (local0.69 coding candidate)
+
+`0062_population_overlap.sql` SHA256 `1e9c4db677d8df793ebefdb58e8a185737e2b1deaf8a8ef58cc2f05b24b3dcc2`. Schema62 adds `PopulationMatchingScope` and `PopulationReachResult` to the immutable registry/revision model. Both remain tenant-fenced by forced RLS and restrictive worker policies. Matching scopes declare one exact programme/project, entity type, population, time window and exact-pseudonym method. Results preserve the exact approved scope and source revisions, reach kind, count and either the computed overlap or literal `UNKNOWN`. All0001–0061 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0062_population_overlap.sql | 1e9c4db677d8df793ebefdb58e8a185737e2b1deaf8a8ef58cc2f05b24b3dcc2 |
+
+## Migration0063 — hierarchical aggregation (local0.70 coding candidate)
+
+`0063_hierarchical_aggregation.sql` SHA256 `949c900ccbd6d713a37a47b4a7aa1d8038df3023a38e1973ed6b497aad9cd95d`. Schema63 adds revisioned `AggregationHierarchy` definitions and immutable `HierarchicalAggregationResult` records. Hierarchy drafts persist explicit contribution, combination rule and attribution scope per edge. Runtime validation rejects cycles, disconnected graphs, ambiguous repeated additive sources, inconsistent unique-source values, and weighted parents without exact non-negative reconciliation. Both kinds inherit forced tenant RLS and restrictive worker fences. All0001–0062 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0063_hierarchical_aggregation.sql | 949c900ccbd6d713a37a47b4a7aa1d8038df3023a38e1973ed6b497aad9cd95d |
+
+## Migration0064 — dimension crosswalks (local0.71 coding candidate)
+
+`0064_dimension_crosswalk.sql` SHA256 `eb9fa3b15a62ae5774a1570a4604ced355d12f649b09e0eee1269a6ec9768cb0`. Schema64 adds revisioned `DimensionCrosswalk` definitions that pin exact approved source and target indicator-definition revisions and dimension codes. Mapping rows distinguish exact, many-to-one pooling and reviewed proportional estimation while preserving information-loss, suppression and estimation metadata. The projection is forced-tenant-RLS protected and its registry/revision payloads are fenced from workers. All0001–0063 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0064_dimension_crosswalk.sql | eb9fa3b15a62ae5774a1570a4604ced355d12f649b09e0eee1269a6ec9768cb0 |
+
+## Migration0065 — typed formula definitions (local0.72 coding candidate)
+
+`0065_formula_definitions.sql` SHA256 `f2568e02cb4539f394d51b7f6938c4c98a39b092715ca26efdcbdda785a0bc72`. Schema65 adds revisioned `FormulaDefinition` objects with a target indicator definition, declared output unit and closed JSON AST. Runtime validation admits only typed literals, exact approved indicator-definition references, category filters and the bounded arithmetic/aggregate catalogue; scripts, URLs, filesystem references, SQL and dynamic queries have no representable node. Forced tenant RLS and restrictive worker policies apply. All0001–0064 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0065_formula_definitions.sql | f2568e02cb4539f394d51b7f6938c4c98a39b092715ca26efdcbdda785a0bc72 |
+
+## Migration0066 — cross-portfolio allocation views (local0.73 coding candidate)
+
+`0066_portfolio_allocation_views.sql` SHA256 `9a6da429533465f48059985487be4341a5926dbb8012baa9499bbf5587ddb4fa`. Schema66 adds revisioned `PortfolioAllocationView` objects with bounded portfolio membership, exact result-revision allocation shares, an explicit basis and a remainder policy. Runtime validation ties each result lineage to its project, rejects duplicate allocations and requires explicit nonadditive labelling before total shares may exceed one. Preview filters hidden projects and dependent results before calculating the organisation-wide unique project count. Funding allocation never asserts causal ownership. Forced tenant RLS and restrictive worker policies apply. All0001–0065 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0066_portfolio_allocation_views.sql | 9a6da429533465f48059985487be4341a5926dbb8012baa9499bbf5587ddb4fa |
+
+## Migration0067 — sponsored cohort access (local0.74 coding candidate)
+
+`0067_sponsored_cohorts.sql` SHA256 `9a2d7b072bed94336a2240183e69487aad0cf052b285d239e6c75813f2032014`. Schema67 adds sponsor-owned cohort terms, cross-tenant grantee enrolments and append-only acceptance events. Sponsor creation requires duration and positive budget; invited enrolments confer no access. Only the named grantee tenant can accept, and a trigger freezes sponsor, grantee, terms, budget and duration while deriving the bounded access interval. Accepted access is always no-charge and creates no data grant. Tables use forced RLS with explicit sponsor/grantee command policies. All0001–0066 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0067_sponsored_cohorts.sql | 9a2d7b072bed94336a2240183e69487aad0cf052b285d239e6c75813f2032014 |
+
+## Migration0068 — service package invoice lines (local0.76 coding candidate)
+
+`0068_service_package_invoices.sql` SHA256 `726e5282cb343a8967574b7e917fdf5d2816b6ef01319de1d0207418a795f6b9`. Schema68 adds one tenant-fenced open commercial invoice per subscription and immutable fixed-fee service-package lines. Every line pins server-owned package scope, positive price, currency, purchaser and time. Application roles receive select/insert only; no update or delete grant exists. All0001–0067 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0068_service_package_invoices.sql | 726e5282cb343a8967574b7e917fdf5d2816b6ef01319de1d0207418a795f6b9 |
+
+## Migration0069 — partner revenue statements (local0.77 coding candidate)
+
+`0069_partner_revenue_statements.sql` SHA256 `7ff97d70e50301d8950080a8a45d73c8a830524dae41e42eed8ae9b4274e12b2`. Schema69 adds platform-only invoice-linked partner revenue entries and one monthly statement per partner. A narrowly granted security-definer function returns an exact tenant invoice line total to the platform role for reconciliation; tenant roles receive no access. Statement settlement fields remain server-owned. All0001–0068 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0069_partner_revenue_statements.sql | 7ff97d70e50301d8950080a8a45d73c8a830524dae41e42eed8ae9b4274e12b2 |
+
+
+## Migration0070 — local-currency tax invoices (local0.78 coding candidate)
+
+`0070_local_currency_tax_invoices.sql` SHA256 `dc41850907c2084bda7a30ca85713845c434107c53f8e02957b79f19b6263ca9`. Schema70 adds the active billing-market catalogue, a forced-RLS tenant billing profile and an immutable issue snapshot on commercial invoices. India launches with INR and positive GST; issuance refuses missing/inactive markets, a market/invoice currency mismatch, empty invoices and INR without GST. Issued invoices pin subtotal, tax name/rate/amount, total, issuer and time so later configuration cannot rewrite them. All0001–0069 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0070_local_currency_tax_invoices.sql | dc41850907c2084bda7a30ca85713845c434107c53f8e02957b79f19b6263ca9 |
+
+
+## Migration0071 — organisation agreement coverage (local0.79 coding candidate)
+
+`0071_organisation_agreement_coverage.sql` SHA256 `e8010ef732d0cda8348d75f8677d22f5fd729729c4d3a9b83fce3e863331fa69`. Schema71 adds immutable tenant agreement revisions, one current master-agreement/DPA pointer and per-deployment coverage pinned to the exact agreement revision. New deployment attestations record master-agreement flow-down and server-owned false separate-contract/DPA flags in the same tenant-locked transaction. Tenant tables use composite tenant keys and forced RLS. All0001–0070 remain byte-exact. Candidate is untested, unmerged and undeployed; references and authorised confirmation are records, not legal approval.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0071_organisation_agreement_coverage.sql | e8010ef732d0cda8348d75f8677d22f5fd729729c4d3a9b83fce3e863331fa69 |
+
+
+## Migration0072 — advisor-led option trials (local0.80 coding candidate)
+
+`0072_ai_option_trials.sql` SHA256 `a8c2d4eebedba3a452609279a1e726bc77e1b387515dcd4673f4e7baeb68585d`. Schema72 adds immutable tenant-fenced advisor-led trials tied to an exact opportunity/solution catalogue edition. A trial lasts1–28days and uses either one exact governed Evidence revision or the fixed synthetic sample; database checks reject any other data shape and application disclosure rechecks current source authority. No update grant exists, so a trial cannot be extended. All0001–0071 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0072_ai_option_trials.sql | a8c2d4eebedba3a452609279a1e726bc77e1b387515dcd4673f4e7baeb68585d |
+
+
+## Migration0073 — opportunity-bound trial results (local0.81 coding candidate)
+
+`0073_ai_trial_results.sql` SHA256 `fc2a8481746ffe3a245a2a2974813aa02671322813b595aa8ea562f9b9a5e118`. Schema73 stores one immutable result per completed advisor-led trial, pins its opportunity and optional exact governed Evidence revision, and exposes no update/delete grant. The value-case-from-trial command selects this server-owned result by trial, supplies its opportunity and trial source without manual re-entry, and records the exact result pointer in the immutable value-case revision. Cross-opportunity substitution is structurally unavailable. All0001–0072 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0073_ai_trial_results.sql | fc2a8481746ffe3a245a2a2974813aa02671322813b595aa8ea562f9b9a5e118 |
+
+
+## Migration0074 — fine-grained grant facets (local0.84 coding candidate)
+
+`0074_fine_grained_grant_facets.sql` SHA256 `bcb46a4230d8208d3a65b1c2b63cb37b94e6ef2660bfd24549a4da1edc3a14d6`. Schema74 adds an attach-once, tenant-fenced narrowing facet for an existing active grant: exact record allowlist plus separate readable and writable field categories, with writable constrained to a subset of readable. Shared single-record scope checks and pre-filter list visibility apply the record condition. The helper `field_allowed` applies the same row gate before a server-owned field category. All0001–0073 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0074_fine_grained_grant_facets.sql | bcb46a4230d8208d3a65b1c2b63cb37b94e6ef2660bfd24549a4da1edc3a14d6 |
+
+
+## Migration0078 — named AI use cases and separate tools (local0.90 coding candidate)
+
+`0078_named_ai_use_cases_and_tools.sql` SHA256 `a80e69526e3c5484c2acbcd9ee34529243e0fc33542c27f94b5e02486721654c`. Schema78 widens the existing immutable AI-policy revision rows so every closed named use case may be configured and each may carry at most20 distinct reviewed tool identifiers. This does not create a runtime: the shared pre-transmission policy gate must still match the exact use case and every requested tool. All0001–0077 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0078_named_ai_use_cases_and_tools.sql | a80e69526e3c5484c2acbcd9ee34529243e0fc33542c27f94b5e02486721654c |
+
+
+## Migration0079 — AI advisory source dependencies (local0.93 coding candidate)
+
+`0079_ai_advisory_sources.sql` SHA256 `5993b9623735ccbc4db80b259dd25ba3fd75fd9214a8bf5515623dd0e406ada5`. Schema79 adds immutable tenant-fenced links from an advisory request to at most20 exact source object/revision pairs and the capability required to disclose each source. Composite foreign keys prevent invented revisions; current object authority and exact revision availability are rechecked before reservation and every exact replay. The saved advisory revision records its creator-only permitted audience. All0001–0078 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0079_ai_advisory_sources.sql | 5993b9623735ccbc4db80b259dd25ba3fd75fd9214a8bf5515623dd0e406ada5 |
+
+
+## Migration0080 — AI advisory jobs and budget reservations (local0.96 coding candidate)
+
+`0080_ai_advisory_jobs.sql` SHA256 `b3e4796db9d40b55143a8e6292f0d77716450dc855dcc801f5c6296567bdc152`. Schema80 adds tenant-fenced durable advisory-job metadata with encrypted input and an exact immutable policy-version pin, plus one reservation ledger row per job. Reservations move only from RESERVED to SETTLED or RELEASED; estimated and actual units are non-negative and settlement fields reconcile with state. The shared job row provides queued/running/cancellation lifecycle. All0001–0079 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0080_ai_advisory_jobs.sql | b3e4796db9d40b55143a8e6292f0d77716450dc855dcc801f5c6296567bdc152 |
+
+
+## Migration0081 — bounded AI advisory-job execution (local0.97 coding candidate)
+
+`0081_ai_advisory_job_execution.sql` SHA256 `d29371b82ca36860edbe34d0905d22da44c756563c43c40b9ef34c573b64dbd9`. Schema81 adds worker-owned attempt/deadline metadata, immutable terminal outputs and a restricted due-tenant enumerator. A successful output is complete and labelled `Advisory draft`; every timed-out, cancelled or failed output is incomplete, labelled `Incomplete draft`, and cannot be represented as publishable final. Budget reservations settle with non-negative actual units. All0001–0080 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0081_ai_advisory_job_execution.sql | d29371b82ca36860edbe34d0905d22da44c756563c43c40b9ef34c573b64dbd9 |
+
+
+## Migration0082 — versioned forecast scenarios (local0.98 coding candidate)
+
+`0082_ai_forecast_scenarios.sql` SHA256 `77015adc122ae2cc7354d60430832106944fa582fc8f9d04eeed300e961636bd`. Schema82 adds immutable scenario versions, exact CalculatedResult input-revision pins and pending-only adoption reviews. Actual and projection series remain distinct; no table path updates approved targets. Exploratory scenarios are structurally labelled separately from sufficient projections. All0001–0081 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0082_ai_forecast_scenarios.sql | 77015adc122ae2cc7354d60430832106944fa582fc8f9d04eeed300e961636bd |
+
+
+## Migration0083 — AI safety feedback and scoped shutdown (local0.99 coding candidate)
+
+`0083_ai_safety_shutdown.sql` SHA256 `2b207f95eb22d7df2be21f2568a7a1b72e25a1f8751c6256ec3c09c7a7bfefed`. Schema83 adds tenant-fenced payload-minimal feedback and append-only scoped shutdown events. Disable carries no source payload and re-enable structurally requires an exact fix-evidence revision plus a regression approver. Only AI execution reads the worker grant; independent core tables and workflows receive no new shutdown dependency. All0001–0082 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA-256 |
+| --- | --- |
+| 0083_ai_safety_shutdown.sql | 2b207f95eb22d7df2be21f2568a7a1b72e25a1f8751c6256ec3c09c7a7bfefed |
+
+## Migration0084 — traceable AI extraction drafts (local1.00 coding candidate)
+
+`0084_ai_extraction_drafts.sql` SHA256 `0e117f7f457382fdb948a74d99fab53d5809ccc54a5685d6b807aab69af14b09`. Schema84 adds tenant-fenced extraction drafts, field proposals and one immutable review. Every proposal pins an exact Evidence revision and location/span; conflicting values remain separate, unsupported commitments remain missing, and review records only selected proposals plus explicit human additions. The review endpoint rechecks current Evidence authority, exact source head and policy version. It changes no framework, target or other domain object. All0001–0083 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0084_ai_extraction_drafts.sql | 0e117f7f457382fdb948a74d99fab53d5809ccc54a5685d6b807aab69af14b09 |
+
+## Migration0085 — reserved indicator-design AI policy label (local1.01 coding candidate)
+
+`0085_ai_indicator_design_policy.sql` SHA256 `a773e22baf4c8a6c2bd0f34c4a14e1b6a536c201f646278c0e3325b9cef68834`. Schema85 extends only the closed `ai_use_case_policy.use_case` vocabulary with `INDICATOR_DESIGN`. Current application policy validation and the runtime gate keep that use case reserved-disabled, so this candidate cannot activate indicator-design execution. No historical policy row or domain object is rewritten. All0001–0084 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0085_ai_indicator_design_policy.sql | a773e22baf4c8a6c2bd0f34c4a14e1b6a536c201f646278c0e3325b9cef68834 |
+
+## Migration0086 — reserved import-cleaning AI policy label (local1.02 coding candidate)
+
+`0086_ai_import_cleaning_policy.sql` SHA256 `eb5ffacca2e658bc313b248af3ae6e68e2a3e5d17f9f360755373d575bc55bc4`. Schema86 extends only the closed `ai_use_case_policy.use_case` vocabulary with `IMPORT_CLEANING`. Current application policy validation and the runtime gate keep that use case reserved-disabled, so this candidate cannot activate import-cleaning execution. No historical policy row, import content or approved observation is rewritten. All0001–0085 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0086_ai_import_cleaning_policy.sql | eb5ffacca2e658bc313b248af3ae6e68e2a3e5d17f9f360755373d575bc55bc4 |
+
+## Migration0087 — reserved evidence-question AI policy label (local1.03 coding candidate)
+
+`0087_ai_evidence_question_policy.sql` SHA256 `27d00e7897a9b49ebfc97901105b9951a399b00182b523b1e68f3eb719981595`. Schema87 extends only the closed `ai_use_case_policy.use_case` vocabulary with `EVIDENCE_QUESTION`. Current application policy validation and the runtime gate keep that use case reserved-disabled. No policy row, governed result, evidence object or official value is rewritten. All0001–0086 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0087_ai_evidence_question_policy.sql | 27d00e7897a9b49ebfc97901105b9951a399b00182b523b1e68f3eb719981595 |
+
+## Migration0088 — reserved numerical-analysis AI policy label (local1.04 coding candidate)
+
+`0088_ai_numeric_analysis_policy.sql` SHA256 `7edc6de3226bc105836a9a7b002a07c872f131ba8d0ae1566103386575abe3ea`. Schema88 extends only the closed `ai_use_case_policy.use_case` vocabulary with `NUMERIC_ANALYSIS`. Current application policy validation and the runtime gate keep that use case reserved-disabled. No policy row, governed result, calculation receipt or official value is rewritten. All0001–0087 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0088_ai_numeric_analysis_policy.sql | 7edc6de3226bc105836a9a7b002a07c872f131ba8d0ae1566103386575abe3ea |
+
+## Migration0089 — snapshot-bound AI report drafts (local1.05 coding candidate)
+
+`0089_ai_report_drafts.sql` SHA256 `98c9e9563040d4e19bdab05e35b82b156ab37f8a46aec17dd64d7ff68bc30626`. Schema89 adds tenant-fenced immutable AI report draft and human review rows. Drafts pin exact locked Snapshot and approved ReportTemplate revisions, policy, requester and operation. Reviews retain exact corrections, final human wording and mandatory caveat codes. No Report, Snapshot, CalculatedResult, Evidence or publication row is changed. All0001–0088 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0089_ai_report_drafts.sql | 98c9e9563040d4e19bdab05e35b82b156ab37f8a46aec17dd64d7ff68bc30626 |
+
+## Migration0090 — traceable AI qualitative assistance (local1.06 coding candidate)
+
+`0090_ai_qualitative_assistance.sql` SHA256 `26df65381b9b5721f284fb63423eab228c55f21c60c45e0fdfd8e577381a62f5`. Schema90 adds tenant-fenced, insert-only qualitative runs, source-verifiable suggestions and individual review receipts. Each suggestion pins an exact Evidence revision, approved Codebook revision, exact character span, excerpt digest, source classification, language and viewpoint. Accepted suggestions create ordinary QualitativeExtract revisions through the governed domain path and inherit the source classification; rejected suggestions create no domain object. Machine translations remain explicitly labelled until human review. All0001–0089 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0090_ai_qualitative_assistance.sql | 26df65381b9b5721f284fb63423eab228c55f21c60c45e0fdfd8e577381a62f5 |
+
+## Migration0091 — governed proactive finding suggestions (local1.07 coding candidate)
+
+`0091_ai_proactive_findings.sql` SHA256 `0c3a6d1c8570bff2e1c816baa97fc9d3aa0bcf3d6f8aba1a4afce8e82a5a38a9`. Schema91 adds tenant-fenced, insert-only detection-task configurations, suggested findings and individual feedback. Tasks pin exact Programme revisions, active human owners, cooldown and rolling noise limits. Suggestions pin exact CalculatedResult and Evidence revisions and remain explicitly unconfirmed. Review writes feedback or assignment only and never changes source values. All0001–0090 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0091_ai_proactive_findings.sql | 0c3a6d1c8570bff2e1c816baa97fc9d3aa0bcf3d6f8aba1a4afce8e82a5a38a9 |
+
+## Migration0092 — inspectable AI action proposals (local1.08 coding candidate)
+
+`0092_ai_action_proposals.sql` SHA256 `6252948898c956839a5f62705b7401fd0a9fdd4df1cc9be9b84a1a13af042732`. Schema92 adds tenant-fenced, insert-only draft action proposals, exact source links and confirmation receipts. The closed command vocabulary permits only WorkItem draft creation. Proposals retain exact Programme scope, before/after values, source revisions, policy, consequences and a stable execution operation ID. Confirmation records the ordinary domain command outcome atomically; no protected direct-write route exists. All0001–0091 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0092_ai_action_proposals.sql | 6252948898c956839a5f62705b7401fd0a9fdd4df1cc9be9b84a1a13af042732 |
+
+## Migration0093 — recalculation dependency inventory (local1.14 coding candidate)
+
+`0093_recalculation_dependencies.sql` SHA256 `0f3a5594bb7a8f4fa5e194122386efad6f26a1c86ffdfe99bbf3e48b11d9ea9a`. Schema93 adds one tenant-fenced, insert-only dependency register keyed by an existing calculation invalidation. It retains exact stale result, live-dashboard and unpublished-report revision dependencies without modifying snapshots, reports or published artifacts. `impact_app` receives SELECT/INSERT only. All0001–0092 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0093_recalculation_dependencies.sql | 0f3a5594bb7a8f4fa5e194122386efad6f26a1c86ffdfe99bbf3e48b11d9ea9a |
+
+
+## Migration0094 — cancellable dashboard pivot jobs (local1.22 coding candidate)
+
+`0094_dashboard_pivot_jobs.sql` SHA256 `efab89e3c3533acd1618d5f90e1d6e9c0850cdc81a3ca09f067112a4f69b9744`. Schema94 adds only a SECURITY DEFINER directory returning active tenant identifiers and due pivot counts to `impact_worker`; pivot inputs and outputs use the existing tenant-fenced job tables. All0001–0093 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0094_dashboard_pivot_jobs.sql | efab89e3c3533acd1618d5f90e1d6e9c0850cdc81a3ca09f067112a4f69b9744 |
+
+
+## Migration0095 — exact current access profile registration (qualification repair)
+
+`0095_current_access_profile.sql` SHA256 `efda30171156ad49a117bb68ca7941098725ec434435698919e85609ef38647c`. Schema95 registers the exact generated current access-profile manifest and fingerprint for governed bootstrap and upgrade selection. Registration does not activate the profile or widen an existing tenant automatically. All0001–0047 remain byte-exact; the previously unqualified0048–0051 profile registrations were converted to the required static, independently verifiable seed shape. Candidate is under local qualification, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0095_current_access_profile.sql | efda30171156ad49a117bb68ca7941098725ec434435698919e85609ef38647c |
+
+## Restored migration ledger entries discovered during qualification
+
+These already-present coding candidates were missing from the checksum table. Recording them does not claim qualification, merge or deployment.
+
+| Migration | SHA256 |
+|---|---|
+| 0075_permission_safe_derivatives.sql | 74b8179d26a627d61207d0bae98d4708e94b1358264978fe8fd4677cdb588f68 |
+| 0076_versioned_external_shares.sql | 74ebd669443a17ef62414c8750e91d725b1eff3a4a7157779a420f8197724890 |
+| 0077_access_change_propagation.sql | 153559e2abe337b5990c46807cc5891192716b6de9d1d8f7f3f0fd551475c0da |
+
+## Migration0096 — explicit programme setup defaults (qualification repair)
+
+`0096_programme_setup_defaults.sql` SHA256 `233f1cd3177a9d0f7f0255c7aa3a6558d78c33fbf63960060774c956e8f34a34`. Schema96 adds the `template_code` and closed JSON `setup_defaults` columns required by the SIMPLE programme contract. A SIMPLE programme must pin a reporting calendar and explicit setup defaults; existing programmes remain valid without inferred defaults. All0001–0095 remain byte-exact. Candidate is under local qualification, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0096_programme_setup_defaults.sql | 233f1cd3177a9d0f7f0255c7aa3a6558d78c33fbf63960060774c956e8f34a34 |
+
+## Migration0097 — indicator statistical interpretation (qualification repair)
+
+`0097_indicator_statistical_interpretation.sql` SHA256 `b71e7826a12642b58407d43b2d612707f1bd675a706848cc97418fe7730000b5`. Schema97 adds the closed JSON `statistical_interpretation` column required by the indicator-definition contract and calculation domain. Existing definitions remain valid with no inferred interpretation. All0001–0096 remain byte-exact. Candidate is under local qualification, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0097_indicator_statistical_interpretation.sql | b71e7826a12642b58407d43b2d612707f1bd675a706848cc97418fe7730000b5 |

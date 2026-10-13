@@ -1,0 +1,493 @@
+{
+  "schema": "imprana-independent-final-local-evidence-reconciliation-v1",
+  "reviewed_at_utc": "2026-10-11T09:03:03.291875+00:00",
+  "reviewer": "commons_test_baseline",
+  "candidate_checkout": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011",
+  "candidate_git_head_at_review": "92341d6d81414be4627c5981363636580f7cbf52",
+  "base_commit": "92341d6d81414be4627c5981363636580f7cbf52",
+  "canonical_changes_by_reviewer": false,
+  "conclusion": "VERIFIED_BOUNDED_LOCAL_CANDIDATE: actual final unit/API/browser and declared component-adapter outcomes reconcile with retained artifacts and current source bytes; no native, fullCI, production, human or release acceptance inferred.",
+  "artifact_sha256": {
+    "tested-source-manifest.json": "cf75f4e09a0ca806034d4f561a44566bde8f5b2303fdc3e3c50f07aa021f3529",
+    "QUALIFICATION-RECEIPT.json": "2548ac566b0b6f8dd975091b8d2255feb23eda902f59390b84eddda08bd773ad",
+    "unit-regression-final.xml": "4eeb7d8e8462ac6685672ea3eb5e9f13fb0a8bbf48ca442e2a1aff4b2829c383",
+    "api-regression-final.xml": "2b3f9b10e1fef65e583851e62f49210b7498658ba11c413ced53a8a7534bce21",
+    "browser-final.json": "f329007d846e4bfcc6e42f1d18208495ad66a2096e460c457ef7ae32d7734077",
+    "uncertain-component-final.json": "71385829d4380ffbbe0df7da3e660e1047503500e97bae79bdfdd87401aa0f57"
+  },
+  "source_binding": {
+    "manifest_paths": 356,
+    "missing_paths": [],
+    "current_hash_mismatches": [],
+    "browser_start_paths": 344,
+    "browser_end_paths": 344,
+    "browser_source_changes": [],
+    "browser_manifest_overlap": 341,
+    "overlap_hash_mismatches": 0,
+    "manifest_additional_paths_not_captured_by_browser": [
+      "Makefile",
+      "apps/web/package-lock.json",
+      "apps/web/package.json",
+      "qualification/drafts/0039_human_advice_anchor_availability.sql",
+      "qualification/drafts/human_advice_anchor_fixture_before.py",
+      "qualification/drafts/human_advice_cases.sql",
+      "qualification/golden/calculation-corpus-v1.json",
+      "requirements.lock",
+      "scripts/bootstrap.py",
+      "scripts/build_access_profile.py",
+      "scripts/build_contracts.py",
+      "scripts/export_implemented_api.py",
+      "tools/browser/ai-diagnosis-uncertain-command-check.cjs",
+      "tools/browser/package-lock.json",
+      "tools/browser/package.json"
+    ],
+    "browser_additional_paths": [
+      "apps/web/dist/index.html",
+      "specification/fixtures/api-fixture.json",
+      "specification/fixtures/records.json"
+    ],
+    "all_browser_pins_match_current_files": true,
+    "served_assets": [
+      {
+        "asset": "/",
+        "sha256": "f464d2994fa518275ea8d68c0ebe98639d1d1e9a850270c1a498df36005a1713",
+        "matches_retained_built_file": true
+      },
+      {
+        "asset": "/assets/app-oCzie5Uc.js",
+        "sha256": "1ec67bc24762dd6dcc100e8f244ba7f203e1047bff0a863ae37db635f8cb11ca",
+        "matches_retained_built_file": true
+      },
+      {
+        "asset": "/assets/ai-enablement-CSwwYvb3.js",
+        "sha256": "47648797cba36cc59acd5e7f3805aaa16ea6e302f68b872950739bd4a3e7e930",
+        "matches_retained_built_file": true
+      },
+      {
+        "asset": "/assets/ai-enablement-n6teyxlY.css",
+        "sha256": "2f884779bc760e828fdfadbecf478d06ab0a2e67a9a273a595d837a32ea2c52f",
+        "matches_retained_built_file": true
+      },
+      {
+        "asset": "/assets/app-B2e0ZU2P.css",
+        "sha256": "8830270fb7d347e11a012ebca41f4b3496cd9a9423d1c7f7e7003cf4b54d6866",
+        "matches_retained_built_file": true
+      }
+    ],
+    "served_asset_changes": [],
+    "meaning": "341 source pins have observed browser start/end continuity. All356 manifest pins match current candidate;15 additional current pins are not browser-boundary observations. Manifest captured after the unit/API/browser runs and names a local dirty candidate, not a pre-run exact commit or hosted CI proof. Documentation-only updates outside this source manifest do not retrospectively alter tested implementation bytes."
+  },
+  "junit": {
+    "unit-regression-final.xml": {
+      "path": "docs/evidence/candidate-0.40/unit-regression-final.xml",
+      "sha256": "4eeb7d8e8462ac6685672ea3eb5e9f13fb0a8bbf48ca442e2a1aff4b2829c383",
+      "counts": {
+        "tests": 1584,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 62,
+        "passed": 1522
+      },
+      "observed_timestamps": [
+        "2026-10-11T14:25:35.012816+05:30"
+      ],
+      "observed_seconds": [
+        "28.715"
+      ],
+      "diagnosis_nodes": 25,
+      "diagnosis_failed_or_skipped": 0,
+      "skip_reasons": [
+        {
+          "message": "Real login-role boundaries require native PostgreSQL",
+          "count": 1
+        },
+        {
+          "message": "Use scripts/run.py test for provisioned live tests",
+          "count": 61
+        }
+      ]
+    },
+    "api-regression-final.xml": {
+      "path": "docs/evidence/candidate-0.40/api-regression-final.xml",
+      "sha256": "2b3f9b10e1fef65e583851e62f49210b7498658ba11c413ced53a8a7534bce21",
+      "counts": {
+        "tests": 148,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 12,
+        "passed": 136
+      },
+      "observed_timestamps": [
+        "2026-10-11T14:26:03.266435+05:30"
+      ],
+      "observed_seconds": [
+        "13.626"
+      ],
+      "diagnosis_nodes": 57,
+      "diagnosis_failed_or_skipped": 0,
+      "skip_reasons": [
+        {
+          "message": "Native provisioned platform login is required; PGlite SET ROLE is separate evidence",
+          "count": 1
+        },
+        {
+          "message": "Native provisioned platform login required; SET ROLE has separate bounded evidence",
+          "count": 2
+        },
+        {
+          "message": "Parallel transaction contention requires native PostgreSQL, not serialized PGlite",
+          "count": 1
+        },
+        {
+          "message": "Provisioned login-role boundaries require native PostgreSQL",
+          "count": 1
+        },
+        {
+          "message": "Provisioned native logins required; no native role evidence is inferred from PGlite",
+          "count": 1
+        },
+        {
+          "message": "Real login-role boundaries require native PostgreSQL",
+          "count": 6
+        }
+      ]
+    }
+  },
+  "original_criteria_binding": {
+    "story": "US-DX-01a",
+    "original_criteria_count": 2,
+    "original_story_gherkin_field_sha256": "6568f4b80844144e6398bde82db86533faaa15862a1d9e54e2dbf9df79b59d73",
+    "case_register_sha256": "01dd3b884e4ddb1ef6315520bce3ffc152baeebc48660355067898c500ce2e7d",
+    "original_criteria_nodes_passed": [
+      "test_diagnosis_saves_exact_order_stable_ids_and_supporting_evidence",
+      "test_diagnosis_completion_names_each_incomplete_problem_without_writing[supporting_evidence]",
+      "test_diagnosis_completion_names_each_incomplete_problem_without_writing[priority_order]"
+    ],
+    "supplemental_missing_description_affected_area_nodes": "Also present and passed; they do not replace evidence/priority oracles.",
+    "markers": [
+      "qa:TC-IMPRANA-US-DX-01a-001@REV_4f85d88e01dae94d79c7ef07eaa4d10143cec16d2993de038b45c90d961a0c9e",
+      "qa:TC-IMPRANA-US-DX-01a-002@REV_27f93f742b8a06852b47491b146ef5709d3068d7e9702d193418d5be563d3b21"
+    ],
+    "case_versions_match_frozen_register": true,
+    "protected_source_files": [
+      {
+        "path": "docs/backlog/backlog.csv",
+        "sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "docs/backlog/features/adoption-diagnose.feature",
+        "sha256": "da5cd7146f65cba14c0d166c61f8c4c854f12f4dde1c9dadb0eb183268d3ac35",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "docs/qa/standards-completion-20261011/proposed-registers/case-register.csv",
+        "sha256": "01dd3b884e4ddb1ef6315520bce3ffc152baeebc48660355067898c500ce2e7d",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "docs/qa/standards-completion-20261011/proposed-registers/procedures/US-DX-01a.md",
+        "sha256": "dc0c6c70260c41671252c0bb85e1ee3d207c1f8000de99a4e615599b4ef8e511",
+        "unchanged_from_base": true
+      },
+      {
+        "path": "specification/fixtures/api-fixture.json",
+        "sha256": "f924482399f0aa9e3a3762cd4f44bf38818655b6a5b3ea2062d41412dd4c131b",
+        "unchanged_from_base": true
+      }
+    ],
+    "immutable_historical_migrations": 43,
+    "permission_persona_limit": "Synthetic qualification uses real existing TENANT_ADMIN diagnosis capabilities. It is not evidence of a named Executive Director human persona or approved new role mapping.",
+    "binding_state": "PROPOSED_LOCAL_BINDING_NO_HUMAN_QUALIFICATION",
+    "requirements_accepted": 0,
+    "parent_story_or_all_FSD_acceptance": false
+  },
+  "supplemental_boundaries": {
+    "rollback_fault_nodes": 3,
+    "receipt_current_read_manage_nodes": 2,
+    "append_only_expiry_comparison_node": 1,
+    "visibility_cursor_nodes": 6,
+    "actual_all_present_passed": true,
+    "expiry_limit": "API expiry case advances only the command comparison clock in the test process, not an elapsed retention period, native restart or operated privacy fixture."
+  },
+  "browser": {
+    "runtime": {
+      "environment": "test",
+      "build_id": "impact-0.40.0",
+      "schema_version": "44",
+      "api_version": "1.29.0",
+      "fixture_id": "impact-acceptance-20260925-v1",
+      "mutation_tests_allowed": true
+    },
+    "migration_count": 44,
+    "all_applied_migration_hashes_match_current_sql": true,
+    "applied_migrations_unchanged_during_run": true,
+    "engine": "154.0.8037.98",
+    "playwright_version": "1.58.0",
+    "platform": "darwin",
+    "counts": {
+      "cases": 9,
+      "passed": 9,
+      "failed": 0,
+      "not_run": 0,
+      "assertions": 289
+    },
+    "groups": [
+      {
+        "id": "DX-B01",
+        "name": "Actual loopback runtime, served assets and migration/source pins",
+        "criterion": null,
+        "status": "passed",
+        "assertions": 97
+      },
+      {
+        "id": "DX-B02",
+        "name": "Keyboard priority movement, exact evidence save and reopen",
+        "criterion": "AC-US-DX-01a-001",
+        "status": "passed",
+        "assertions": 16
+      },
+      {
+        "id": "DX-B03",
+        "name": "Missing evidence and priority name the incomplete problem and do not complete",
+        "criterion": "AC-US-DX-01a-002",
+        "status": "passed",
+        "assertions": 23
+      },
+      {
+        "id": "DX-B04",
+        "name": "Actual completion is read-only; explicit correction preserves completed history",
+        "criterion": null,
+        "status": "passed",
+        "assertions": 30
+      },
+      {
+        "id": "DX-B05",
+        "name": "A real stale revision preserves local edits until explicit current-version review",
+        "criterion": null,
+        "status": "passed",
+        "assertions": 20
+      },
+      {
+        "id": "DX-B06",
+        "name": "A lost actual committed response retries exact bytes with one set of effects",
+        "criterion": null,
+        "status": "passed",
+        "assertions": 24
+      },
+      {
+        "id": "DX-B07",
+        "name": "Current read-grant loss refuses receipt replay and clears private details",
+        "criterion": null,
+        "status": "passed",
+        "assertions": 50
+      },
+      {
+        "id": "DX-B08",
+        "name": "Sign-out, different-tenant sign-in and a delayed old read reset all diagnosis state",
+        "criterion": null,
+        "status": "passed",
+        "assertions": 18
+      },
+      {
+        "id": "DX-B09",
+        "name": "Responsive diagnosis accessibility and stable final evidence pins",
+        "criterion": null,
+        "status": "passed",
+        "assertions": 11
+      }
+    ],
+    "actual_commit_lost_response_replay": {
+      "same_request_byte_sha256": "af6628f02411ae40669e5237694e77bbfeeae129ada052408ec215db7ddccf07",
+      "same_actual_receipt_observed": true,
+      "first_committed_effect_sets": 1,
+      "replay_effect_sets": 0,
+      "transport": "Driver awaits actual server200 and reads durable state, then aborts response delivery; retry reaches actual server, not fabricated success."
+    },
+    "late_authority_case": {
+      "case": "authentic delayed authorised object 200 after actual collection 404",
+      "captured_revision_id": "dafcc9f4-0f49-4c2e-8fcd-a73235dd27d1",
+      "captured_object_sha256": "fe457d977989eda2f7458e01b420bf55ba0b7bd60483ef282b9000e23484e580",
+      "actual_collection_status": 404,
+      "late_transport_outcome": "Authentic old 200 delivered after actual list refusal",
+      "authority_dom_samples": [
+        {
+          "revision": "",
+          "state": "Unsaved"
+        }
+      ],
+      "observed_revision_after_release": "",
+      "observed_state_after_release": "Unsaved"
+    },
+    "late_authority_code_review": "Driver captures actual authorized object200 before purpose narrowing, delivers real collection404 after actual grant loss, then releases the retained authentic200. DOM revision/state samples and visible private content/controls are checked after transport completion. No manufactured success/refusal or late visibility assertion substituted.",
+    "advisory_counts_start": {
+      "ai_advisory_request": 0,
+      "ai_advisory_result": 0
+    },
+    "advisory_counts_end": {
+      "ai_advisory_request": 0,
+      "ai_advisory_result": 0
+    },
+    "external_request_count": 0,
+    "forbidden_request_count": 0,
+    "uncaught_error_count": 0,
+    "transport_request_failures_retained": {
+      "net::ERR_ABORTED": 44,
+      "net::ERR_CONNECTION_FAILED": 1
+    },
+    "transport_limit": "45 observed failed requests are retained:44 ERR_ABORTED and1 ERR_CONNECTION_FAILED. Passing groups do not mean every transport succeeded; response-loss and scope cancellation are explicit test behavior.",
+    "accessibility_scans": {
+      "scans": 8,
+      "observed_violations": 0,
+      "observed_incomplete": 0,
+      "human_acceptance": false
+    },
+    "captures": [
+      {
+        "name": "diagnosis-completed.png",
+        "sha256": "c6c22af6d120a7187305a2cde80e566d03a1dec0e67a255f8f9b1e2f0c0da770",
+        "size_bytes": 1025672
+      },
+      {
+        "name": "diagnosis-completion-refused.png",
+        "sha256": "2e2e559e59a8963af50a13bdfe86c0c30cb5bec8702e50d90a6f05d013140b07",
+        "size_bytes": 1025345
+      },
+      {
+        "name": "diagnosis-mobile.png",
+        "sha256": "d269aa1b53ad91395137a3ab03f97eb6856b7adc8c9bf37477737a7efe97ac0c",
+        "size_bytes": 1012944
+      },
+      {
+        "name": "diagnosis-saved-draft.png",
+        "sha256": "09d3a5e20d589af8696eb2426d3bc06aa07920b8ad2ed27e304e9dc817d146b0",
+        "size_bytes": 1016505
+      }
+    ],
+    "visual_review": "Completion-refused and mobile full-page captures inspected as supporting local screenshots. Long-image display resizing limits detailed mobile readability review; no manual accessibility or comprehensive visual acceptance inferred.",
+    "limitations": [
+      "Synthetic disposable loopback data only; no nonprofit owner acceptance, production use or deployment claim.",
+      "Disposable preexisting read-grant purpose narrowing and restoration qualifies an actual refusal; it is not ordinary grant/role creation.",
+      "PGlite fixture runs do not qualify native-role RLS/concurrency. Native qualification remains a separate gate.",
+      "Outbox rows are transaction intents, not external messages or provider deliveries.",
+      "Automated axe serious/critical results are bounded scans; incomplete findings are retained and manual assistive-technology acceptance is not inferred.",
+      "Actual server response transport is deliberately lost or delayed in two groups; server success, conflict, completion, replay and refusal are never fabricated."
+    ]
+  },
+  "component_adapter": {
+    "status": "passed",
+    "counts": {
+      "cases": 3,
+      "passed": 3,
+      "failed": 0
+    },
+    "actual_source_sha256": "2b45b4e29cf003982271d5bdd791c8f8ba90e90c2ad8e1790e1fced5e9866fc3",
+    "compiled_sha256_reported": "7b6be0a49444392e180003b84419b628ad7ff0a7e9992e35d6cf399846667bbd",
+    "harness_sha256": "69df9929513a3c1af1ac1e7faf2337c930ede14505e2651895f51f51490458d5",
+    "scope": "ACTUAL_COMPONENT_CLOSURES_WITH_DECLARED_TEST_ONLY_HOOKS_AND_REQUEST_ADAPTER",
+    "cases": [
+      {
+        "name": "IDEMPOTENCY_EXPIRED preserves frozen uncertain create and exact retry",
+        "status": "passed"
+      },
+      {
+        "name": "CONFLICT_OPERATION preserves frozen uncertain create and exact retry",
+        "status": "passed"
+      },
+      {
+        "name": "Known validation refusal releases the refused draft for editing",
+        "status": "passed"
+      }
+    ],
+    "limitations": [
+      "No real browser mount, DOM events, React concurrent scheduler, API/DB/server receipt expiry, test clock or production acceptance is claimed.",
+      "Synthetic request-adapter errors exercise actual component command handlers and rendered control state; they are not server responses or HTTP qualification.",
+      "Actual API expired replay requires an approved test clock or actual elapsed retention period; immutable receipts and audit/history must not be edited to manufacture expiry."
+    ],
+    "compiled_output_independently_retained": "Not present in this evidence set; reported compiled hash is not independently reconstructed by this read-only review."
+  },
+  "failure_history": {
+    "artifact_sha256": {
+      "attempt-history.json": "2986c7cd81942d60bd8df6ecf080d24dc9e5048eb5a5b85793bc6a0a2be948da",
+      "diagnosis-api-first.xml": "dbb51b950aae71b1043562a7dcdcae520f6b859a3f5289e783dc748f910262ad",
+      "diagnosis-unit-first.xml": "d5f62da88021082f48bf814561f4a230f09fb3487123433610fa391718ca12dc",
+      "diagnosis-api-regression-first-failed.xml": "acc9df21de38caaa72dee4105a46bd207d07dee4ba4f78edcb92e1e1a9bab1df",
+      "diagnosis-api-regression-second-failed.xml": "068b782eb649633b1f208897fc9e8e0d1929dd5b9fded9ff011442f0015689eb",
+      "browser-first.json": "4f06a9d4cd8708bc59df6423c9ab53cb83c9c1bfdb4550ddf682bc22d6b3b337",
+      "browser-second.json": "422daa7a9b90d5d2fe18cba78cb2541ad800820cc9e5542843899cdab22b0cd4"
+    },
+    "initial_44_api_and_23_unit_bytes_unchanged": true,
+    "failed_142_case_and_148_case_xml_bytes_unchanged": true,
+    "reconciliation": "Initial rollback+kind fixture oracle failures and later cursor-reader contract failure are preserved, then retested under exact corrected current fixture/readers. Earlier source pins, failures and first manifest remain historical; final source bindings do not retroactively qualify old runs.",
+    "attempts": {
+      "initial_api_startup": {
+        "outcome": "FAILED_BEFORE_TESTS",
+        "cause": "EPERM on localhost listener",
+        "tests_executed": 0,
+        "original_receipt": "outputs/imprana-delivery-start-20261011/API-FIRST-STARTUP-FAILURE.json"
+      },
+      "unit_regression_first": {
+        "passed": 1502,
+        "failed": 16,
+        "errors": 2,
+        "skipped": 62,
+        "log_sha256": "4bee758e598fa54c6550af47cb3f5cf51f5d079eb8542176608330f3e858e0e3",
+        "cause": "One historical0042 profile comparison; other local listener refusals. No tests disabled."
+      },
+      "unit_regression_second": {
+        "passed": 1520,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 62,
+        "log_sha256": "ff13d4346aabc196568bf1ab3cfbe4defce592848717e2b9da9fe5bc5d039002",
+        "mode": "Existing pure/local-synthetic regression; local SMTP/identity sinks enabled; no hosted provider"
+      },
+      "api_regression_first": {
+        "passed": 126,
+        "failed": 4,
+        "skipped": 12,
+        "junit": "docs/evidence/candidate-0.40/diagnosis-api-regression-first-failed.xml",
+        "cause": "Three new fault-adapter tests counted shared registry/revision increments incorrectly; historicalkindlist comparison omitted0044. Product implementation unchanged; failure oracles corrected with audit/source evidence; rerun required."
+      },
+      "api_regression_second": {
+        "passed": 135,
+        "failed": 1,
+        "skipped": 12,
+        "junit": "docs/evidence/candidate-0.40/diagnosis-api-regression-second-failed.xml",
+        "cause": "RuntimeINVALID_CURSOR400 not admitted by genericError closedenum. Added separate AIDiagnosisError closed reader; olderError unchanged; exact assertions retained. Final rerun pending."
+      },
+      "browser_first": {
+        "passed_groups": 4,
+        "failed_groups": 1,
+        "not_run_groups": 4,
+        "cause": "Stale-write editable-data assertion incorrectly included server correction_reason. Test compares exact three editable fields; server metadata remains retained."
+      },
+      "browser_second": {
+        "passed_groups": 6,
+        "failed_groups": 1,
+        "not_run_groups": 2,
+        "cause": "Prior replay GET readback still in flight could satisfy next denial wait. Added explicit prior receipt-revision/list settlement; pending final rerun. Separate real delayed read-loss race added as an independent check."
+      }
+    }
+  },
+  "remaining_gates": [
+    "Native PostgreSQL real-role/concurrency, populated upgrade, API restart and restore",
+    "Full application regression, live identity and container deployment-path qualification",
+    "Current-head required hosted CI and checks",
+    "Human accessibility/security and owner release acceptance",
+    "Reviewed access upgrade for existing tenants before use",
+    "Workflow/engineering package profile, financial, named human/operational enforcement activation"
+  ],
+  "native_new_story_nodes_not_run": [
+    "test_native_diagnosis_shared_registry_and_revision_have_forced_tenant_fences",
+    "test_native_application_cannot_rewrite_or_delete_a_saved_diagnosis_revision",
+    "test_native_platform_restrictive_kind_list_does_not_gain_diagnosis_access",
+    "test_native_two_diagnosis_edits_publish_one_authoritative_head_and_one_conflict"
+  ],
+  "native_new_story_execution_count": 0,
+  "skip_reason_policy": "Exact62unit/12API observed skip messages are recorded above. Four new native-only nodes are absent from both executed JUnit sets. No additional or27-native skip count inferred.",
+  "hosted_ci": "NOT_REVIEWED_OR_QUALIFIED_BY_LOCAL_EVIDENCE",
+  "main_merge_or_deployment": "NO_NEW_AUTHORITY_OR_OUTCOME_INFERRED",
+  "reviewer_application_execution": false,
+  "reviewer_external_actions": false
+}

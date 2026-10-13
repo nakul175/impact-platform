@@ -1,0 +1,79 @@
+{
+  "product": "Imprana Commons",
+  "recordedAtUtc": "2026-10-11T03:12:04.839822+00:00",
+  "fullComprehensiveAdapter": {
+    "elements": 2893,
+    "sources": 3253,
+    "planningGatePopulation": 20251,
+    "originalSha256": "0054dd5cba306eb04d2e41a114e1cf912e059234a58092b4b4586df5bf230aad",
+    "compactV3Sha256": "e179ca2e553e17c29927f5ca0340255075f197a39fc8efe7f30045433334f14d",
+    "sourceSnapshotsPinsAndGraphExact": true,
+    "compactSourceCoverageReceipt": "10cb5dc777b75210981f9cef728faabc3ace06c202745559b7a8d5c59e5456d1"
+  },
+  "fullActualAttempt": {
+    "completedAtUtc": "2026-10-11T03:10:46.831374+00:00",
+    "scope": "Full2,893actual elements /3,253exact sources /20,251mandatory planning gates",
+    "inputSha256": "e179ca2e553e17c29927f5ca0340255075f197a39fc8efe7f30045433334f14d",
+    "invocationSha256": "1a08d624303ee8ffffa60da222525793e083d7a507f8cf8c1a757b413ac36504",
+    "commands": {
+      "loop": {
+        "exitCode": -15,
+        "timedOut": true,
+        "elapsedSeconds": 300.082572292,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "summary": {
+        "exitCode": 3,
+        "timedOut": false,
+        "elapsedSeconds": 0.1330218329999866,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "ee1ad07d0742ab83f7f85b9a109118eee7fa7be28bdc3f5a0c57531193498f7e"
+      },
+      "next": {
+        "exitCode": 3,
+        "timedOut": false,
+        "elapsedSeconds": 0.13273729200000162,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "639f79ab9bee731fe812f2a934a45e948afac17291df7b0249c04922a12f47fb"
+      }
+    },
+    "reportExists": false,
+    "reportSha256": null,
+    "fullAssessmentCompleted": false,
+    "noAuthorisedExternalTrustOrIndependentReviewFabricated": true,
+    "limitations": "Local advisory checker only. No Ready/Done, delivery, product acceptance or quality PASS inferred. If full assessment is incomplete, only the separately completed partial56-gate report has an actual needs_input outcome."
+  },
+  "fullReceiptSha256": "0f05c04ecbf106556d32326b635d32afd398a0a4d224e6e2f7cb0eacd46460a2",
+  "scopedActualWorkflow": {
+    "assessed": 8,
+    "contextual": 9,
+    "sources": 16,
+    "mandatoryPlanningGates": 56,
+    "exitCodes": {
+      "loop": 2,
+      "summary": 0,
+      "next": 0
+    },
+    "qualityState": {
+      "status": "needs_input",
+      "passed": 46,
+      "applicable": 103,
+      "exemptions": 0,
+      "counts": {
+        "passed": 46,
+        "not_applicable": 0,
+        "missing": 57,
+        "failed": 0,
+        "stale": 0,
+        "invalid": 0
+      },
+      "score": null,
+      "exitRule": "Every selected mandatory stage gate and integrity check must pass with current evidence and supplied review. Deferred/reference-sampled checks cannot certify the full catalogue. No averaging, timeout or iteration limit grants a pass.",
+      "certificationGranted": false
+    },
+    "summarySha256": "d619557e8a36cb696a43dc7078a3036b3a46256904cf926a92e54a39bfc219e5",
+    "workflowReceiptSha256": "425b6c8a514afb07b4a056ecce46a66258ff43af79d5e4e481bb04e12c26345e"
+  },
+  "disposition": "The full2,893-item checker assessment is INCOMPLETE after its explicit300-second execution checkpoint; no report/state was produced, subsequent genuine summary/next returned3 for missing prerequisites. This is not a full failed semantic verdict or PASS. The separate exact-source partial connected56-gate workflow completed with needs_input: external trust,8 controlled AI-assurance references,48 independent review tasks unresolved. Whole product native source preservation has separate full readback evidence; it does not certify readiness or delivery."
+}

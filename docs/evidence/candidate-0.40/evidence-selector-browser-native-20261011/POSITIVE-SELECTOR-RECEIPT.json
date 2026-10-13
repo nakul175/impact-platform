@@ -1,0 +1,75 @@
+{
+  "at": "2026-10-11T15:24:27.781480+00:00",
+  "base_head": "70fb99da71a7bcae3c2ed6691dc3fe4bc8d7f3cf",
+  "story": "US-DX-01a / APL-361",
+  "engine": "154.0.8037.98",
+  "native": true,
+  "counts": {
+    "cases": 10,
+    "passed": 10,
+    "failed": 0,
+    "not_run": 0,
+    "assertions": 316
+  },
+  "new_linked_source_group": "DX-B10,21 assertions",
+  "stable_source_pins": 360,
+  "applied_migrations_unchanged": 46,
+  "axe_scans": 9,
+  "axe_violations": 0,
+  "axe_incomplete": 0,
+  "request_failures_retained": 21,
+  "synthetic_fixture_scope": "One new synthetic Evidence object via author API and one fresh object-only evidence.read fixture grant. It narrows at teardown; no live/default profile/role/ceiling change, governed grant-flow or human approval claim.",
+  "actual_behaviour": [
+    "Stale source head selection refused without silent revision update",
+    "Fresh exact source version selected by keyboard",
+    "Real create/readback/reload retains only exact object/revision pairs",
+    "Completion and correction retain exact selectors; completed history unchanged",
+    "Fresh current and historical HTTP reads refuse404 after fixture source grant narrows",
+    "New browser read refusal clears linked source/private fields without domain effects"
+  ],
+  "initial_failures": [
+    {
+      "run": 1,
+      "cause": "New test expected200 for create; actual published create contract201. Corrected only new assertion; raw retained."
+    },
+    {
+      "run": 2,
+      "cause": "Fresh current and historical API reads already refused404. Browser listener captured previously authorised correction readback200 still in flight. Awaited actual readback before narrowing/observing new browser request; no product change or old-test weakening."
+    }
+  ],
+  "reviews": [
+    {
+      "phase": "code",
+      "reviewer": "root integration self-review",
+      "findings": "Only test helper/coverage changes. Existing nine groups intact. New source-scoped fixture capability not default broad access; explicit finally cleanup idempotent. Real author/source/diagnosis HTTP, no fabricated result or historical revision edit.",
+      "human_signoff": false
+    },
+    {
+      "phase": "evidence",
+      "reviewer": "root integration self-review",
+      "findings": "Final10 groups316 assertions;9 axe scans zero findings;360 exact source and served-asset pins stable. All three runtimes stopped; failed raw attempts retained. No full API/provider/container refresh or release/owner acceptance supplied.",
+      "human_signoff": false
+    }
+  ],
+  "remaining": [
+    "Typed linkage cleanup and invalid populated upgrade, registered checksum/retry/recovery",
+    "Source privacy/retention races and integrated full refresh",
+    "Exact-candidate hosted/container and external/financial/human/operational/owner release gates"
+  ],
+  "delivered_stories": 0,
+  "deployed": false,
+  "raw_sha256": {
+    "run-1-integrated-worker-fence.log": "44f041f118ad3998bd4a334fff3c69b8a3033bdc4065560b382e7c27f5e9cc97",
+    "run-1-RUN-RECEIPT.json": "254d9030486d002922db5b5e3023fa43fb97f1ae17e637e414b557da4dc9755b",
+    "run-3-browser-tests.json": "c07d15d27aeca5add911defb4ec405962b72f45cda8314536359c317407da3a2",
+    "run-1-cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-1-browser-tests.json": "ff8ddf94b584ef4ee0284fee45491aa0ad1faf87fd01b2bfc124f72b4add60aa",
+    "run-2-browser-tests.json": "b7a1414ed8c5c6170fab9b535b560c5497bf13bd2531aa36cd3d3d1629cc1e89",
+    "run-3-RUN-RECEIPT.json": "b94aea0bc34956e63086e867a308e7a4ccb6e4e2dc90a22f4773a8f36d7b8c36",
+    "run-2-cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "run-3-integrated-worker-fence.log": "af3eec581183bfe3d5ae0f0ed58d7a3d10729b6a97602afd5a123468a8106f13",
+    "run-2-RUN-RECEIPT.json": "dd36eef0b893acc4e35f0f9cc3d7f4cbfa6c4ea44859ad3dedb4d8a48c8c29a8",
+    "run-2-integrated-worker-fence.log": "2d77a6d7c1bb6f2a98363fa5d44abd22b2cfca547c1e923b789f8d58b525627a",
+    "run-3-cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d"
+  }
+}

@@ -14,6 +14,8 @@ import { AIImpactEvidence } from "./AIImpactEvidence";
 import { AIHumanAdvice } from "./AIHumanAdvice";
 import { AIPlanPortability } from "./AIPlanPortability";
 import { AILearningLesson } from "./AILearningLesson";
+import { AIRoleTrainingPanel } from "./AIRoleTrainingPanel";
+import { AIChampionSupportPanel } from "./AIChampionSupportPanel";
 import {
   AIDisclosureLabel,
   AIToolComparison,
@@ -36,6 +38,27 @@ type Planning = {
   pilot_evaluation: PilotInput | null;
   task_practice: TaskPractice | null;
 };
+type DeploymentMilestone = {
+  code: "PREPARE" | "PILOT" | "ROLLOUT";
+  title: string;
+  owner_principal_id: string;
+  acceptance_criteria: string;
+  progress: "NOT_STARTED" | "IN_PROGRESS" | "BLOCKED" | "ACCEPTED";
+  progress_note: string;
+};
+type DeploymentPlan = {
+  template_version: "accountable-rollout-2026-10-12.1";
+  state: "ACTIVE" | "COMPLETE";
+  milestones: DeploymentMilestone[];
+};
+type TrainingDeployment = {
+  attestation_id: string;
+  solution_id: string;
+  deployed_at: string;
+  deployment_reference: string;
+  attested_by: string;
+  attested_at: string;
+};
 type ContentCompatibility = {
   current_versions: { catalog: string; solutions: string };
   catalog_version_status: "CURRENT" | "STALE" | "UNKNOWN";
@@ -55,6 +78,50 @@ type Solutions = {
   solutions: Solution[];
   comparison_criteria: { id: string; label: string; prompt: string }[];
 };
+type Shortlist = {
+  content_version: string;
+  opportunity_id: string;
+  expanded: boolean;
+  default_limit: 3;
+  total_vetted: number;
+  items: {
+    solution: Solution;
+    vetting_basis: "SOURCE_BACKED_EDITORIAL_EDITION";
+    opportunity_id: string;
+  }[];
+};
+type VettingPublication = {
+  criteria_edition: string;
+  meaning: string;
+  criteria: { id: string; label: string; description: string }[];
+  listings: {
+    solution_id: string;
+    status: "EDITORIAL_REVIEW_PENDING" | "VETTED_FOR_PILOT" | "WITHDRAWN";
+    last_reviewed_on: string;
+  }[];
+};
+const fitDimensions = [
+  ["size", "Organisation size"],
+  ["budget", "Budget"],
+  ["context", "Operating context"],
+  ["language", "Language"],
+  ["data_sensitivity", "Data sensitivity"],
+  ["existing_systems", "Existing systems"],
+] as const;
+type FitDimension = (typeof fitDimensions)[number][0];
+type FitScore = {
+  score_id: string;
+  solution_id: string;
+  status: "COMPLETE" | "INCOMPLETE";
+  rubric_version: "pilot-fit-v1";
+  advisor_membership_id: string;
+  dimensions: Record<FitDimension, { score: number; explanation: string }>;
+  scored_at: string;
+};
+const blankFit = () =>
+  Object.fromEntries(
+    fitDimensions.map(([name]) => [name, { score: 3, explanation: "" }]),
+  ) as Record<FitDimension, { score: number; explanation: string }>;
 type PlanDraft = {
   title: string;
   solution_ids: string[];
@@ -67,14 +134,17 @@ type PlanDraft = {
   };
   pilot: { success_measure: string; completed_actions: string[] };
   planning: Planning;
+  deployment?: DeploymentPlan;
 };
-type PlanData = PlanDraft & { profile: Profile };
+type PlanData = Omit<PlanDraft, "deployment"> & { profile: Profile };
 type Plan = {
   object_id: string;
   revision_id: string;
   business_state: string;
   data: Omit<PlanData, "planning"> & {
     planning?: Planning;
+    deployment?: DeploymentPlan;
+    training_deployment?: TrainingDeployment;
     content_versions?: {
       catalog: string;
       solutions: string;
@@ -115,6 +185,7 @@ const blankDraft = (): PlanDraft => ({
     pilot_evaluation: null,
     task_practice: null,
   },
+  deployment: undefined,
 });
 const pilotActions = [
   ["DEFINE_GOAL", "Define the goal and a measurable success criterion"],
@@ -129,6 +200,7 @@ const tabs = [
   ["practice", "Practise a useful task"],
   ["procurement", "Procurement brief"],
   ["pilot", "Pilot tracker"],
+  ["deployment", "Deployment plan"],
 ] as const;
 const categoryLabel = (value: string) =>
   value
@@ -153,7 +225,12 @@ function extractDraft(plan: Plan): PlanDraft {
       completed_actions: [...data.pilot.completed_actions],
     },
     planning: data.planning ? clone(data.planning) : blankDraft().planning,
+    deployment: data.deployment ? clone(data.deployment) : undefined,
   };
+}
+function editablePlanData(draft: PlanDraft, profile: Profile): PlanData {
+  const { deployment: _deployment, ...editable } = draft;
+  return { ...editable, profile };
 }
 export function AIAdoptionWorkspace({
   base,
@@ -170,7 +247,19 @@ export function AIAdoptionWorkspace({
   const canRead = capabilities.includes("ai.enablement.read");
   const canManage = capabilities.includes("ai.enablement.manage");
   const canExport = capabilities.includes("ai.enablement.export");
+  const canScoreFit = capabilities.includes("ai.solution-fit.score");
   const [solutions, setSolutions] = useState<Solutions | null>(null);
+  const [shortlistOpportunity, setShortlistOpportunity] = useState(
+    catalog.use_cases[0]?.id || "",
+  );
+  const [shortlistExpanded, setShortlistExpanded] = useState(false);
+  const [shortlist, setShortlist] = useState<Shortlist | null>(null);
+  const [shortlistError, setShortlistError] = useState("");
+  const [vetting, setVetting] = useState<VettingPublication | null>(null);
+  const [fitScores, setFitScores] = useState<Record<string, FitScore>>({});
+  const [fitSolution, setFitSolution] = useState("");
+  const [fitDraft, setFitDraft] = useState(blankFit);
+  const [fitError, setFitError] = useState("");
   const [plans, setPlans] = useState<Plan[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [draft, setDraft] = useState<PlanDraft>(blankDraft);
@@ -209,6 +298,7 @@ export function AIAdoptionWorkspace({
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [hasPendingSave, setHasPendingSave] = useState(false);
+  const [hasDeploymentPending, setHasDeploymentPending] = useState(false);
   const [evidenceMutation, setEvidenceMutation] = useState(false);
   const [adviceMutation, setAdviceMutation] = useState(false);
   const [exportMutation, setExportMutation] = useState(false);
@@ -225,11 +315,19 @@ export function AIAdoptionWorkspace({
     data: PlanData;
     selectedId: string | null;
   } | null>(null);
+  const deploymentPending = useRef<{
+    path: string;
+    method: string;
+    body: string;
+    objectId: string;
+    action: "generate" | "progress" | "complete" | "attest";
+    milestone?: DeploymentMilestone["code"];
+  } | null>(null);
   const abort = useRef<AbortController | null>(null);
   const latestData = useRef("");
   const latestHead = useRef(head);
   latestHead.current = head;
-  const data: PlanData = { ...draft, profile };
+  const data = editablePlanData(draft, profile);
   const serializedData = JSON.stringify(data);
   const draftGeneration = useRef({ serializedData, generation: 0 });
   if (draftGeneration.current.serializedData !== serializedData) {
@@ -274,8 +372,10 @@ export function AIAdoptionWorkspace({
     const controller = new AbortController();
     abort.current = controller;
     pending.current = null;
+    deploymentPending.current = null;
     busyRef.current = false;
     setHasPendingSave(false);
+    setHasDeploymentPending(false);
     setEvidenceMutation(false);
     setAdviceMutation(false);
     setExportMutation(false);
@@ -350,6 +450,7 @@ export function AIAdoptionWorkspace({
       !planChoice ||
       busyRef.current ||
       pending.current ||
+      deploymentPending.current ||
       evidenceMutation ||
       adviceMutation ||
       exportMutation
@@ -414,7 +515,9 @@ export function AIAdoptionWorkspace({
           : null,
       );
       setCanonicalUnavailable(false);
-      setSavedSnapshot(JSON.stringify({ ...nextDraft, profile: nextProfile }));
+      setSavedSnapshot(
+        JSON.stringify(editablePlanData(nextDraft, nextProfile)),
+      );
       setNotice(
         "Saved plan opened. These are shared draft records for your organisation.",
       );
@@ -435,6 +538,7 @@ export function AIAdoptionWorkspace({
     if (
       busyRef.current ||
       pending.current ||
+      deploymentPending.current ||
       evidenceMutation ||
       adviceMutation ||
       exportMutation
@@ -515,7 +619,9 @@ export function AIAdoptionWorkspace({
       );
       setCanonicalUnavailable(false);
       setPlanChoice(plan.object_id);
-      setSavedSnapshot(JSON.stringify({ ...nextDraft, profile: nextProfile }));
+      setSavedSnapshot(
+        JSON.stringify(editablePlanData(nextDraft, nextProfile)),
+      );
       setSavedContent({
         versions: clone(plan.data.content_versions ?? null) ?? undefined,
         compatibility: plan.content_compatibility
@@ -548,11 +654,148 @@ export function AIAdoptionWorkspace({
       }
     }
   }
+  async function deploymentCommand(
+    event: React.FormEvent<HTMLFormElement>,
+    action: "generate" | "progress" | "complete" | "attest",
+    milestone?: DeploymentMilestone["code"],
+  ) {
+    event.preventDefault();
+    if (
+      !canManage ||
+      !head ||
+      (dirty && !deploymentPending.current) ||
+      busyRef.current ||
+      pending.current ||
+      evidenceMutation ||
+      adviceMutation ||
+      exportMutation
+    )
+      return;
+    if (
+      deploymentPending.current &&
+      (deploymentPending.current.action !== action ||
+        deploymentPending.current.milestone !== milestone)
+    ) {
+      setError(
+        "Resolve the pending deployment action before starting another milestone action.",
+      );
+      setNotice(
+        "Retry the same deployment action to recover its exact receipt.",
+      );
+      return;
+    }
+    if (!deploymentPending.current) {
+      const values = new FormData(event.currentTarget);
+      const body: Record<string, unknown> = {
+        operation_id: crypto.randomUUID(),
+        expected_revision: head.revision_id,
+      };
+      let path = `${base}ai-enablement/plans/${head.object_id}/deployment/actions/${action}`;
+      let method = "POST";
+      if (action === "generate") {
+        body.owners = Object.fromEntries(
+          (["PREPARE", "PILOT", "ROLLOUT"] as const).map((code) => [
+            code,
+            String(values.get(code) || ""),
+          ]),
+        );
+      } else if (action === "progress" && milestone) {
+        path = `${base}ai-enablement/plans/${head.object_id}/deployment/milestones/${milestone}`;
+        method = "PUT";
+        body.progress = String(values.get("progress") || "");
+        body.progress_note = String(values.get("progress_note") || "");
+      } else if (action === "attest") {
+        const deployedAt = String(values.get("deployed_at") || "");
+        body.solution_id = String(values.get("solution_id") || "");
+        body.deployed_at = new Date(deployedAt).toISOString();
+        body.deployment_reference = String(
+          values.get("deployment_reference") || "",
+        );
+      }
+      deploymentPending.current = {
+        path,
+        method,
+        body: JSON.stringify(body),
+        objectId: head.object_id,
+        action,
+        milestone,
+      };
+      setHasDeploymentPending(true);
+    }
+    const captured = deploymentPending.current;
+    if (captured.objectId !== head.object_id) return;
+    const current = epoch.current;
+    const authorityGeneration = readAuthority.current.generation;
+    setEvidenceMutation(true);
+    busyRef.current = true;
+    setBusy(true);
+    setError("");
+    setNotice("");
+    try {
+      const receipt = await request(captured.path, {
+        method: captured.method,
+        body: captured.body,
+        signal: abort.current?.signal,
+      });
+      if (
+        current !== epoch.current ||
+        authorityGeneration !== readAuthority.current.generation ||
+        latestHead.current?.object_id !== captured.objectId
+      )
+        return;
+      deploymentPending.current = null;
+      setHasDeploymentPending(false);
+      await evidenceSaved(receipt);
+      if (current !== epoch.current) return;
+      setNotice(
+        captured.action === "generate"
+          ? "Accountable deployment plan generated from the fixed template."
+          : captured.action === "attest"
+            ? "Actual solution deployment attestation recorded for role training."
+            : captured.action === "complete"
+              ? "Deployment plan completed after every milestone was accepted."
+              : "Milestone progress saved by its named owner.",
+      );
+    } catch (cause) {
+      if (current !== epoch.current) return;
+      const failure = cause as { code?: string };
+      if (
+        failure.code &&
+        [
+          "AUTH_REQUIRED",
+          "ASSURANCE_REQUIRED",
+          "RESOURCE_UNAVAILABLE",
+          "POLICY_DENIED",
+          "VALIDATION_FAILED",
+          "CONFLICT_VERSION",
+          "CONFLICT_OPERATION",
+          "STATE_TRANSITION_DENIED",
+          "LIMIT_EXCEEDED",
+          "IDEMPOTENCY_EXPIRED",
+        ].includes(failure.code)
+      ) {
+        deploymentPending.current = null;
+        setHasDeploymentPending(false);
+      } else {
+        setNotice(
+          "Retry this deployment action to resolve its exact outcome before making another change.",
+        );
+      }
+      setError(explain(cause));
+    } finally {
+      if (current === epoch.current) {
+        busyRef.current = false;
+        setBusy(false);
+        setEvidenceMutation(false);
+      }
+    }
+  }
   async function savePlan(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (
       !canManage ||
       busyRef.current ||
+      deploymentPending.current ||
       evidenceMutation ||
       adviceMutation ||
       exportMutation ||
@@ -724,7 +967,13 @@ export function AIAdoptionWorkspace({
     }
   }
   async function morePlans() {
-    if (!nextCursor || busyRef.current || pending.current) return;
+    if (
+      !nextCursor ||
+      busyRef.current ||
+      pending.current ||
+      deploymentPending.current
+    )
+      return;
     const current = epoch.current;
     busyRef.current = true;
     setBusy(true);
@@ -767,6 +1016,79 @@ export function AIAdoptionWorkspace({
           .toLowerCase()
           .includes(search.toLowerCase()),
     ) || [];
+  useEffect(() => {
+    if (!canRead || !shortlistOpportunity) return;
+    const controller = new AbortController();
+    setShortlist(null);
+    setShortlistError("");
+    request(
+      base +
+        "ai-enablement/solution-shortlist?opportunity_id=" +
+        encodeURIComponent(shortlistOpportunity) +
+        "&expanded=" +
+        String(shortlistExpanded),
+      { signal: controller.signal },
+    )
+      .then((value) => setShortlist(value))
+      .catch((cause) => {
+        if (!controller.signal.aborted) setShortlistError(explain(cause));
+      });
+    return () => controller.abort();
+  }, [base, canRead, shortlistOpportunity, shortlistExpanded]);
+  useEffect(() => {
+    const controller = new AbortController();
+    request("/v1/public/ai-vetting-criteria", { signal: controller.signal })
+      .then((value) => setVetting(value))
+      .catch(() => setVetting(null));
+    return () => controller.abort();
+  }, [request]);
+  async function loadFitScores() {
+    if (!canRead || !shortlistOpportunity) return;
+    try {
+      const value = await request(
+        base +
+          "ai-enablement/solution-fit-scores?opportunity_id=" +
+          encodeURIComponent(shortlistOpportunity),
+      );
+      setFitScores(
+        Object.fromEntries(
+          (value.items as FitScore[]).map((item) => [item.solution_id, item]),
+        ),
+      );
+      setFitError("");
+    } catch (cause) {
+      setFitScores({});
+      setFitError(explain(cause));
+    }
+  }
+  useEffect(() => {
+    void loadFitScores();
+  }, [base, canRead, shortlistOpportunity]);
+  async function saveFitScore() {
+    if (!fitSolution) return;
+    if (fitDimensions.some(([name]) => !fitDraft[name].explanation.trim())) {
+      setFitError("Explain every dimension before saving the fit score.");
+      return;
+    }
+    try {
+      await request(base + "ai-enablement/solution-fit-scores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          opportunity_id: shortlistOpportunity,
+          solution_id: fitSolution,
+          rubric_version: "pilot-fit-v1",
+          dimensions: fitDraft,
+        }),
+      });
+      setFitSolution("");
+      setFitDraft(blankFit());
+      await loadFitScores();
+    } catch (cause) {
+      setFitError(explain(cause));
+    }
+  }
   return (
     <section className="ai-adoption" aria-labelledby="ai-adoption-tool">
       <header className="ai-section-title">
@@ -779,6 +1101,201 @@ export function AIAdoptionWorkspace({
         </div>
         <span className="badge">Draft for human review</span>
       </header>
+      <section aria-labelledby="ai-opportunity-shortlist">
+        <h4 id="ai-opportunity-shortlist">
+          Vetted options for one opportunity
+        </h4>
+        <p className="muted">
+          The default list is capped at three source-backed editorial options.
+          More appear only after your explicit request. Source-backed does not
+          mean endorsed or approved for purchase.
+        </p>
+        {vetting && (
+          <details>
+            <summary>What “vetted” means</summary>
+            <p>{vetting.meaning}</p>
+            <p className="muted">Criteria edition {vetting.criteria_edition}</p>
+            <ul>
+              {vetting.criteria.map((criterion) => (
+                <li key={criterion.id}>
+                  <strong>{criterion.label}:</strong> {criterion.description}
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
+        <label>
+          Opportunity
+          <select
+            value={shortlistOpportunity}
+            onChange={(event) => {
+              setShortlistOpportunity(event.target.value);
+              setShortlistExpanded(false);
+            }}
+          >
+            {catalog.use_cases.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        {shortlistError && <p role="alert">{shortlistError}</p>}
+        {shortlist && (
+          <>
+            <p aria-live="polite">
+              {shortlist.items.length} of {shortlist.total_vetted} vetted
+              options shown.
+            </p>
+            <div className="ai-cards">
+              {shortlist.items.map(({ solution }) => (
+                <article key={solution.id}>
+                  <h5>{solution.name}</h5>
+                  {vetting?.listings.find(
+                    (item) => item.solution_id === solution.id,
+                  ) ? (
+                    <p className="muted">
+                      Vetting status:{" "}
+                      {vetting.listings
+                        .find((item) => item.solution_id === solution.id)!
+                        .status.replaceAll("_", " ")}
+                      {" · Last reviewed "}
+                      {
+                        vetting.listings.find(
+                          (item) => item.solution_id === solution.id,
+                        )!.last_reviewed_on
+                      }
+                    </p>
+                  ) : (
+                    <p role="alert">
+                      Listing unavailable: vetting status or review date is
+                      missing.
+                    </p>
+                  )}
+                  <p>{solution.description}</p>
+                  <AIDisclosureLabel
+                    name={solution.name}
+                    disclosure={solution.commercial_disclosure}
+                  />
+                  <AIToolSources solution={solution} />
+                  {fitScores[solution.id] ? (
+                    <div
+                      role="group"
+                      aria-label={"Advisor fit for " + solution.name}
+                    >
+                      <p>
+                        <strong>Advisor-scored pilot fit · Complete</strong>
+                      </p>
+                      <dl>
+                        {fitDimensions.map(([name, label]) => (
+                          <React.Fragment key={name}>
+                            <dt>{label}</dt>
+                            <dd>
+                              {fitScores[solution.id].dimensions[name].score}/5
+                              {" — "}
+                              {
+                                fitScores[solution.id].dimensions[name]
+                                  .explanation
+                              }
+                            </dd>
+                          </React.Fragment>
+                        ))}
+                      </dl>
+                      <p className="muted">
+                        Rubric {fitScores[solution.id].rubric_version}; scored
+                        by assigned advisor membership. This is pilot advice,
+                        not automated scoring or purchase approval.
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="muted">
+                      Incomplete — no complete six-dimension advisor fit score
+                      is available.
+                    </p>
+                  )}
+                </article>
+              ))}
+            </div>
+            {fitError && <p role="alert">{fitError}</p>}
+            {canScoreFit && (
+              <section aria-labelledby="advisor-fit-score-form">
+                <h5 id="advisor-fit-score-form">Record advisor pilot fit</h5>
+                <label>
+                  Vetted option
+                  <select
+                    value={fitSolution}
+                    onChange={(event) => setFitSolution(event.target.value)}
+                  >
+                    <option value="">Choose an option</option>
+                    {shortlist.items.map(({ solution }) => (
+                      <option key={solution.id} value={solution.id}>
+                        {solution.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {fitDimensions.map(([name, label]) => (
+                  <fieldset key={name}>
+                    <legend>{label}</legend>
+                    <label>
+                      Score from 1 to 5
+                      <select
+                        value={fitDraft[name].score}
+                        onChange={(event) =>
+                          setFitDraft((current) => ({
+                            ...current,
+                            [name]: {
+                              ...current[name],
+                              score: Number(event.target.value),
+                            },
+                          }))
+                        }
+                      >
+                        {[1, 2, 3, 4, 5].map((score) => (
+                          <option key={score}>{score}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      Advisor explanation
+                      <textarea
+                        maxLength={1000}
+                        value={fitDraft[name].explanation}
+                        onChange={(event) =>
+                          setFitDraft((current) => ({
+                            ...current,
+                            [name]: {
+                              ...current[name],
+                              explanation: event.target.value,
+                            },
+                          }))
+                        }
+                      />
+                    </label>
+                  </fieldset>
+                ))}
+                <button
+                  type="button"
+                  disabled={!fitSolution}
+                  onClick={() => void saveFitScore()}
+                >
+                  Save complete advisor fit score
+                </button>
+              </section>
+            )}
+            {!shortlist.expanded && shortlist.total_vetted > 3 && (
+              <button type="button" onClick={() => setShortlistExpanded(true)}>
+                Show more vetted options
+              </button>
+            )}
+            {shortlist.expanded && shortlist.total_vetted > 3 && (
+              <button type="button" onClick={() => setShortlistExpanded(false)}>
+                Show only the first three
+              </button>
+            )}
+          </>
+        )}
+      </section>
       <div className="ai-plan-bar">
         <label>
           Saved adoption plans
@@ -789,6 +1306,7 @@ export function AIAdoptionWorkspace({
             disabled={
               busy ||
               hasPendingSave ||
+              hasDeploymentPending ||
               evidenceMutation ||
               adviceMutation ||
               exportMutation
@@ -811,6 +1329,7 @@ export function AIAdoptionWorkspace({
               !planChoice ||
               busy ||
               hasPendingSave ||
+              hasDeploymentPending ||
               evidenceMutation ||
               adviceMutation ||
               exportMutation
@@ -826,6 +1345,7 @@ export function AIAdoptionWorkspace({
               disabled={
                 busy ||
                 hasPendingSave ||
+                hasDeploymentPending ||
                 evidenceMutation ||
                 adviceMutation ||
                 exportMutation
@@ -842,6 +1362,7 @@ export function AIAdoptionWorkspace({
               disabled={
                 busy ||
                 hasPendingSave ||
+                hasDeploymentPending ||
                 evidenceMutation ||
                 adviceMutation ||
                 exportMutation
@@ -920,6 +1441,7 @@ export function AIAdoptionWorkspace({
         hasConflictingMutation={
           busy ||
           hasPendingSave ||
+          hasDeploymentPending ||
           evidenceMutation ||
           adviceMutation ||
           exportMutation
@@ -961,7 +1483,12 @@ export function AIAdoptionWorkspace({
           currentRevision={head.revision_id}
           canManage={canManage}
           hasUnsavedChanges={
-            dirty || busy || hasPendingSave || adviceMutation || exportMutation
+            dirty ||
+            busy ||
+            hasPendingSave ||
+            hasDeploymentPending ||
+            adviceMutation ||
+            exportMutation
           }
           request={request}
           explain={explain}
@@ -992,7 +1519,11 @@ export function AIAdoptionWorkspace({
           canReadMemberDirectory={capabilities.includes("memberships.read")}
           hasUnsavedChanges={dirty}
           hasConflictingMutation={
-            busy || hasPendingSave || evidenceMutation || exportMutation
+            busy ||
+            hasPendingSave ||
+            hasDeploymentPending ||
+            evidenceMutation ||
+            exportMutation
           }
           request={request}
           explain={explain}
@@ -1022,7 +1553,11 @@ export function AIAdoptionWorkspace({
           canExport={canExport}
           hasUnsavedChanges={dirty}
           hasConflictingMutation={
-            busy || hasPendingSave || evidenceMutation || adviceMutation
+            busy ||
+            hasPendingSave ||
+            hasDeploymentPending ||
+            evidenceMutation ||
+            adviceMutation
           }
           request={request}
           explain={explain}
@@ -1053,6 +1588,16 @@ export function AIAdoptionWorkspace({
         className="ai-plan-form"
         noValidate={hasPendingSave}
       >
+        {hasDeploymentPending && (
+          <p role="status">
+            The {deploymentPending.current?.action}
+            {deploymentPending.current?.milestone
+              ? ` ${deploymentPending.current.milestone} milestone`
+              : ""}{" "}
+            deployment action has an uncertain outcome. Use its Retry button
+            before saving, opening or starting another plan.
+          </p>
+        )}
         <div className="ai-plan-name">
           <label>
             Plan name
@@ -1076,6 +1621,7 @@ export function AIAdoptionWorkspace({
                 busy ||
                 loading ||
                 evidenceMutation ||
+                hasDeploymentPending ||
                 adviceMutation ||
                 exportMutation ||
                 canonicalUnavailable
@@ -1351,6 +1897,23 @@ export function AIAdoptionWorkspace({
             learning steps recorded complete. Save your plan to keep this
             progress.
           </p>
+          {head &&
+            plans.find((plan) => plan.object_id === head.object_id)?.data
+              .training_deployment && (
+              <AIRoleTrainingPanel
+                key={`${sessionIdentity}:${principalId}:${head.revision_id}:role-training`}
+                base={base}
+                contextKey={`${base}:${sessionIdentity}:${principalId}`}
+                canRead={canRead}
+                planId={head.object_id}
+                solutionId={
+                  plans.find((plan) => plan.object_id === head.object_id)!.data
+                    .training_deployment!.solution_id
+                }
+                request={request}
+                explain={explain}
+              />
+            )}
         </section>
       )}
       {activeTab === "practice" && (
@@ -1376,6 +1939,7 @@ export function AIAdoptionWorkspace({
             mutationBlocked={
               busy ||
               hasPendingSave ||
+              hasDeploymentPending ||
               evidenceMutation ||
               adviceMutation ||
               exportMutation
@@ -1421,6 +1985,7 @@ export function AIAdoptionWorkspace({
               busy ||
               loading ||
               hasPendingSave ||
+              hasDeploymentPending ||
               evidenceMutation ||
               adviceMutation ||
               exportMutation ||
@@ -1431,6 +1996,7 @@ export function AIAdoptionWorkspace({
                 !canManage ||
                 busyRef.current ||
                 pending.current ||
+                deploymentPending.current ||
                 loading ||
                 evidenceMutation ||
                 adviceMutation ||
@@ -1549,6 +2115,258 @@ export function AIAdoptionWorkspace({
             onChange={(value) => updatePlanning("pilot_evaluation", value)}
             canManage={canManage}
           />
+        </section>
+      )}
+      {activeTab === "deployment" && (
+        <section aria-labelledby="ai-deployment-plan">
+          <h4 id="ai-deployment-plan">Accountable deployment plan</h4>
+          <p>
+            Generate the fixed rollout template after saving this adoption plan.
+            Each milestone has one named owner and explicit acceptance criteria.
+            Only that owner can record its progress.
+          </p>
+          {!head && (
+            <p role="status">
+              Save the adoption plan before generating its deployment plan.
+            </p>
+          )}
+          {head && dirty && (
+            <p role="status">
+              Save or discard local edits before changing deployment progress.
+            </p>
+          )}
+          {head && !draft.deployment && (
+            <form
+              onSubmit={(event) => void deploymentCommand(event, "generate")}
+            >
+              <fieldset
+                disabled={
+                  !canManage ||
+                  (dirty && !deploymentPending.current) ||
+                  evidenceMutation ||
+                  busy
+                }
+              >
+                <legend>Milestone owners</legend>
+                {(["PREPARE", "PILOT", "ROLLOUT"] as const).map((code) => (
+                  <label key={code}>
+                    {categoryLabel(code)} owner principal ID
+                    <input
+                      name={code}
+                      defaultValue={principalId}
+                      required
+                      pattern="[0-9a-fA-F-]{36}"
+                      aria-label={`${categoryLabel(code)} owner principal ID`}
+                    />
+                  </label>
+                ))}
+              </fieldset>
+              <button
+                className="primary"
+                type="submit"
+                disabled={
+                  !canManage ||
+                  (dirty && !deploymentPending.current) ||
+                  evidenceMutation ||
+                  busy
+                }
+              >
+                {hasDeploymentPending &&
+                deploymentPending.current?.action === "generate"
+                  ? "Retry pending template generation"
+                  : "Generate deployment plan"}
+              </button>
+            </form>
+          )}
+          {draft.deployment && (
+            <>
+              <p className="muted">
+                Template {draft.deployment.template_version} ·{" "}
+                {categoryLabel(draft.deployment.state)}
+              </p>
+              <div className="ai-cards">
+                {draft.deployment.milestones.map((milestone) => (
+                  <article key={milestone.code}>
+                    <h5>{milestone.title}</h5>
+                    <p>
+                      <strong>Owner:</strong> {milestone.owner_principal_id}
+                    </p>
+                    <p>
+                      <strong>Acceptance:</strong>{" "}
+                      {milestone.acceptance_criteria}
+                    </p>
+                    <form
+                      key={`${head?.revision_id ?? "unsaved"}:${milestone.code}`}
+                      onSubmit={(event) =>
+                        void deploymentCommand(
+                          event,
+                          "progress",
+                          milestone.code,
+                        )
+                      }
+                    >
+                      <label>
+                        Progress
+                        <select
+                          name="progress"
+                          defaultValue={milestone.progress}
+                          disabled={!canManage}
+                        >
+                          <option value="NOT_STARTED">Not started</option>
+                          <option value="IN_PROGRESS">In progress</option>
+                          <option value="BLOCKED">Blocked</option>
+                          <option value="ACCEPTED">Accepted</option>
+                        </select>
+                      </label>
+                      <label>
+                        Progress note
+                        <textarea
+                          name="progress_note"
+                          defaultValue={milestone.progress_note}
+                          maxLength={1000}
+                          rows={3}
+                        />
+                      </label>
+                      <button
+                        type="submit"
+                        className="secondary"
+                        disabled={
+                          !canManage ||
+                          (dirty &&
+                            !(
+                              deploymentPending.current?.action ===
+                                "progress" &&
+                              deploymentPending.current?.milestone ===
+                                milestone.code
+                            )) ||
+                          evidenceMutation ||
+                          busy ||
+                          milestone.owner_principal_id !== principalId ||
+                          draft.deployment?.state === "COMPLETE"
+                        }
+                      >
+                        {hasDeploymentPending &&
+                        deploymentPending.current?.action === "progress" &&
+                        deploymentPending.current?.milestone === milestone.code
+                          ? "Retry pending milestone update"
+                          : "Save milestone progress"}
+                      </button>
+                    </form>
+                  </article>
+                ))}
+              </div>
+              {draft.deployment.state === "ACTIVE" && (
+                <form
+                  onSubmit={(event) =>
+                    void deploymentCommand(event, "complete")
+                  }
+                >
+                  <button
+                    className="primary"
+                    type="submit"
+                    disabled={
+                      !canManage ||
+                      (dirty &&
+                        deploymentPending.current?.action !== "complete") ||
+                      evidenceMutation ||
+                      busy ||
+                      draft.deployment.milestones.some(
+                        (milestone) => milestone.progress !== "ACCEPTED",
+                      )
+                    }
+                  >
+                    {hasDeploymentPending &&
+                    deploymentPending.current?.action === "complete"
+                      ? "Retry pending completion"
+                      : "Complete accountable deployment plan"}
+                  </button>
+                </form>
+              )}
+              {draft.deployment.state === "COMPLETE" &&
+                !plans.find((plan) => plan.object_id === head?.object_id)?.data
+                  .training_deployment && (
+                  <form
+                    onSubmit={(event) =>
+                      void deploymentCommand(event, "attest")
+                    }
+                  >
+                    <h5>Record the actual deployed solution</h5>
+                    <p className="muted">
+                      A completed plan does not prove deployment. An authorised
+                      manager must record the selected solution, deployment time
+                      and accountable reference before role training is
+                      available.
+                    </p>
+                    <label>
+                      Deployed solution
+                      <select name="solution_id" required>
+                        {draft.solution_ids.map((solutionId) => (
+                          <option key={solutionId} value={solutionId}>
+                            {selected.find((item) => item.id === solutionId)
+                              ?.name || solutionId}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      Deployed at
+                      <input
+                        name="deployed_at"
+                        type="datetime-local"
+                        required
+                      />
+                    </label>
+                    <label>
+                      Deployment reference
+                      <input
+                        name="deployment_reference"
+                        maxLength={500}
+                        required
+                        placeholder="Change record, rollout ticket or accountable internal reference"
+                      />
+                    </label>
+                    <button
+                      type="submit"
+                      className="primary"
+                      disabled={!canManage || busy || evidenceMutation}
+                    >
+                      {hasDeploymentPending &&
+                      deploymentPending.current?.action === "attest"
+                        ? "Retry pending deployment attestation"
+                        : "Record actual deployment"}
+                    </button>
+                  </form>
+                )}
+              {plans.find((plan) => plan.object_id === head?.object_id)?.data
+                .training_deployment && (
+                <>
+                  <p role="status" className="ai-notice">
+                    Actual deployment recorded for solution{" "}
+                    {
+                      plans.find((plan) => plan.object_id === head?.object_id)!
+                        .data.training_deployment!.solution_id
+                    }
+                    . Data Authors can now open their role training.
+                  </p>
+                  <AIChampionSupportPanel
+                    key={`${sessionIdentity}:${principalId}:${head?.revision_id}:champion-support`}
+                    base={base}
+                    contextKey={`${base}:${sessionIdentity}:${principalId}`}
+                    canRead={canRead}
+                    canManage={canManage}
+                    planId={head!.object_id}
+                    planRevision={head!.revision_id}
+                    solutionId={
+                      plans.find((plan) => plan.object_id === head?.object_id)!
+                        .data.training_deployment!.solution_id
+                    }
+                    request={request}
+                    explain={explain}
+                  />
+                </>
+              )}
+            </>
+          )}
         </section>
       )}
       {discard && (

@@ -20,7 +20,7 @@ ranked; it is listed as "Not ranked: scores incomplete". Changing any value mean
 
 from copy import deepcopy
 
-SCORE_VERSION = "imprana-opportunity-scores-2026-10-09.1"
+SCORE_VERSION = "imprana-opportunity-scores-2026-10-12.2"
 STATUS = "EDITORIAL_DRAFT_PENDING_ADVISOR_REVIEW"
 CRITERIA = ("impact", "effort", "cost")
 MINIMUM, MAXIMUM = 1, 5

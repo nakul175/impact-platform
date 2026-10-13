@@ -17,6 +17,10 @@ CURRENT_STEP="start"
 STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 COMMIT=""
 RUN_LOG=""
+WRITER_QUIESCENCE="not-started"
+MIGRATION_STARTED="false"
+WRITER_CHECKPOINT=""
+WRITER_SCHEMA_BEFORE=""
 
 step() {
   CURRENT_STEP=$1
@@ -37,6 +41,9 @@ write_status() {
     APP_HOST="${APP_HOST:-}" AUTH_HOST="${AUTH_HOST:-}" CONTAINERS="$containers" \
     RUN_LOG="$RUN_LOG" SECRETS_FILE="$SECRETS_FILE" TLS_MODE="${CADDY_TLS_MODE:-}" \
     OPERATOR="${OPERATOR_OUTCOME:-}" SCHEMA="${SCHEMA_VERSION:-}" OPS_FILE="$OPS_DIR/ops-status.json" \
+    WRITER_QUIESCENCE="$WRITER_QUIESCENCE" MIGRATION_STARTED="$MIGRATION_STARTED" \
+    WRITER_CHECKPOINT="$WRITER_CHECKPOINT" WRITER_SCHEMA_BEFORE="$WRITER_SCHEMA_BEFORE" \
+    WRITER_CHECKPOINT_FILE="$STATE_DIR/writer-quiescence.json" \
     python3 - "$STATUS_DIR/deploy-status.json" "$IMPACT_HOME/status.json" <<'PY'
 import json, os, sys, tempfile
 from datetime import datetime, timezone
@@ -72,6 +79,8 @@ cleaned = []
 for line in tail:
     for value in secrets:
         line = line.replace(value, "[redacted]")
+    if "writer checkpoint service=" in line and ("container=" in line or "image=" in line):
+        line = "writer checkpoint details retained privately"
     cleaned.append(line[:400])
 app, auth = os.environ["APP_HOST"], os.environ["AUTH_HOST"]
 # The last operations check (deploy/ops-check.sh, every 5 minutes): kept across deployments.
@@ -94,10 +103,33 @@ document = {
     "schema_version": os.environ["SCHEMA"] or None,
     "first_operator": os.environ["OPERATOR"] or None,
     "services": services,
+    "writer_quiescence": os.environ.get("WRITER_QUIESCENCE"),
+    "migration_started": os.environ.get("MIGRATION_STARTED") == "true",
+    "writer_schema_before": os.environ.get("WRITER_SCHEMA_BEFORE") or None,
+    "writer_checkpoint_recorded": os.environ.get("WRITER_QUIESCENCE") not in (None, "", "not-started"),
     "operations": ops.get("operations"),
     "alerts": ops.get("alerts", []),
     "log_tail": cleaned,
 }
+if document["writer_checkpoint_recorded"]:
+    target = os.environ["WRITER_CHECKPOINT_FILE"]
+    directory = os.path.dirname(target)
+    os.makedirs(directory, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(dir=directory, prefix=".writer-checkpoint-")
+    with os.fdopen(fd, "w") as handle:
+        json.dump({
+            "commit": os.environ.get("COMMIT"),
+            "schema_before": document["writer_schema_before"],
+            "quiescence": document["writer_quiescence"],
+            "migration_started": document["migration_started"],
+            "writers": [
+                dict(zip(("service", "container", "image", "was_running"), line.split("\t")))
+                for line in os.environ["WRITER_CHECKPOINT"].splitlines()
+            ],
+        }, handle, indent=2)
+        handle.write("\n")
+    os.chmod(tmp, 0o600)
+    os.replace(tmp, target)
 for target in sys.argv[1:]:
     directory = os.path.dirname(target)
     fd, tmp = tempfile.mkstemp(dir=directory, prefix=".status-")
@@ -113,6 +145,7 @@ on_exit() {
   local code=$?
   if [ "$code" -ne 0 ]; then
     log "update FAILED at step: $CURRENT_STEP (exit $code)"
+    log "writer checkpoint: quiescence=$WRITER_QUIESCENCE migration_started=$MIGRATION_STARTED; no automatic previous-image restart"
     write_status failed || true
   fi
 }
@@ -399,6 +432,12 @@ main() {
   step "database"
   compose up -d postgres
   wait_for postgres healthy 180
+  step "writer quiescence"
+  quiesce_writers || die "writers could not be safely stopped; migration refused"
+  verify_writer_quiescence || die "database sessions are not proven quiescent; migration refused"
+  step "database migration"
+  MIGRATION_STARTED="true"
+  write_status updating
   local prepared
   prepared="$(compose run --rm -T migrate | tee /dev/stderr | last_json)"
   [ -n "$prepared" ] || die "the database job printed no summary"

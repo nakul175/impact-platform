@@ -1,0 +1,360 @@
+{
+  "scope": "Independent AI read-only code/security review of API/contracts/local0044/profile/routes/bootstrap/generator/tests; advisory only",
+  "reviewed_at_utc": "2026-10-11 08:47:08 UTC",
+  "candidate_base": "92341d6d81414be4627c5981363636580f7cbf52",
+  "candidate_state": "Dirty local candidate; root sole canonical writer. This receipt qualifies captured hashes, not a later commit/tree or UI integration.",
+  "outcome": "NO_MATERIAL_API_CODE_DEFECT_OBSERVED_WITH_LIMITS",
+  "accountable_human_approval": false,
+  "new_canonical_edits_by_reviewer": false,
+  "source_integrity": {
+    "receipt": "ACTUAL-SOURCE-INTEGRITY-CHECK-V3.json",
+    "sha256": "6a9f0e61abd3c15424b5ccb4362598d8d5518f2db4743efa459325b46a3260fc",
+    "summary": {
+      "checks": 28,
+      "passed": 28,
+      "failed": 0
+    }
+  },
+  "source_pins": {
+    "apps/api/impact_api/ai_diagnoses.py": {
+      "sha256": "f61f398e83983bbcfa3d6b6452c1f1b92d236820bf7579634cd65c2e558de220",
+      "bytes": 13622
+    },
+    "apps/api/impact_api/ai_diagnosis_contracts.py": {
+      "sha256": "114aa17dbddd5e0b2237cc29b193f3f2f0dfab1b05b33ab15636f1e62024d90d",
+      "bytes": 6989
+    },
+    "apps/api/impact_api/main.py": {
+      "sha256": "17f98430e9df02d47216271d86d7c5f5533d8bc6c6f9720744846ce633a7bbb5",
+      "bytes": 58352
+    },
+    "apps/api/impact_api/bootstrap_profile.json": {
+      "sha256": "20a6d17e3619472174dbfb575189aa068bf26ed6ca36f38e81e64560634649cf",
+      "bytes": 12532
+    },
+    "scripts/bootstrap.py": {
+      "sha256": "7a5dd1613333fcf4e5771b12ba58cce60dfb465948effb4406981caa9addbb7e",
+      "bytes": 19730
+    },
+    "scripts/build_contracts.py": {
+      "sha256": "df8be77d189d038590d4ff1ff34f6a3570bd60900d797066c96685dc3d7f181a",
+      "bytes": 10577
+    },
+    "scripts/export_implemented_api.py": {
+      "sha256": "1272c5186094f7504f859e1ff448cbc30cb2ec27f0b26651edb768b6e4d1eb15",
+      "bytes": 6307
+    },
+    "packages/contracts/openapi.json": {
+      "sha256": "b76c853fd3a31b72a73f0ce81e6079f3e400c587814f8c564636f3020e3ce416",
+      "bytes": 2280441
+    },
+    "packages/contracts/openapi-implemented.json": {
+      "sha256": "1d346ed8dd8d25a3bde5ff9eff46ff696361ce0edbf448417df17accab5d462b",
+      "bytes": 1877185
+    },
+    "packages/contracts/access-policy.json": {
+      "sha256": "5f50af11ed74e17829d765166a97286a524a4bb0454c57ff5971448c5dac5bb2",
+      "bytes": 235527
+    },
+    "infrastructure/migrations/0044_ai_diagnoses.sql": {
+      "sha256": "9f9f136ad38f2ae9e3f280fed0fc10d497716e3875a96e2095e72f24a8b0bd65",
+      "bytes": 10423
+    },
+    "qualification/test_ai_diagnoses_unit.py": {
+      "sha256": "a2896060a71610f7bfed9c344d02a4ea001ffd74053cf1175bf001902a85c5c1",
+      "bytes": 5819
+    },
+    "qualification/test_ai_diagnosis_live.py": {
+      "sha256": "3bed17de4d4bc09535f0984201b0d4ce1594b2b4d1f6cf078a93741bb0c3a9b1",
+      "bytes": 21439
+    },
+    "qualification/test_ai_diagnosis_native.py": {
+      "sha256": "eedddb1205bf65d5a167be06bf4beea6631b795f0d5f458d9a00878ef5ce40ef",
+      "bytes": 5939
+    },
+    "VERSION.json": {
+      "sha256": "898215162b8ccaf8cb58d0b8f8d26ed50738c8ce0aed9a92f6787fe59c33d0cf",
+      "bytes": 214
+    },
+    "docs/backlog/backlog.csv": {
+      "sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+      "bytes": 718739
+    },
+    "docs/qa/standards-completion-20261011/case-design/procedures/US-DX-01a.md": {
+      "sha256": "dc0c6c70260c41671252c0bb85e1ee3d207c1f8000de99a4e615599b4ef8e511",
+      "bytes": 4075
+    },
+    "apps/api/impact_api/store.py": {
+      "sha256": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+      "bytes": 20595
+    },
+    "apps/api/impact_api/contracts.py": {
+      "sha256": "26d2e9165a2a91271cad6b92eadc33d243df123d260fcf0a686799e197a11e65",
+      "bytes": 2119
+    },
+    "infrastructure/migrations/0013_tenant_lifecycle.sql": {
+      "sha256": "564e9c0858336297b379e6bb4930d8a92b3b499bf4d6b632f8a3ad994b2e3e5a",
+      "bytes": 8712
+    },
+    "infrastructure/migrations/0014_initial_access.sql": {
+      "sha256": "b91c517920bb28c77eea184e9dc40e717e3ed0e0db2a2bb7656c456de5d45468",
+      "bytes": 4250
+    }
+  },
+  "manual_review": [
+    {
+      "id": "DX-R01",
+      "boundary": "Two exact original acceptance criteria",
+      "evidence": "Original backlog and source-bound QA procedure unchanged; current validate_diagnosis/command persist stable IDs, supporting evidence and explicit order, and refuse/names incomplete saved problems.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R02",
+      "boundary": "TENANT authority",
+      "evidence": "Every route calls context and authorize with no object selector before loading/querying. Existing scopes requires purpose-less TENANT grant for this form; object-scope alone cannot pass.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R03",
+      "boundary": "Read/manage distinction",
+      "evidence": "Write commands require ai.diagnosis.manage and get_ai_diagnosis ai.diagnosis.read before receipt access. Ordinary ai.enablement.read does not grant diagnosis access.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R04",
+      "boundary": "Current context and tenant isolation",
+      "evidence": "Transactions set tenant context; tenant write lock precedes write context; all direct queries include tenant_id and exact kind/object where applicable. Existing forced tenant fence and restrictive platform type-list migrations unchanged.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R05",
+      "boundary": "Fresh assurance",
+      "evidence": "Complete/revise policies require 300 seconds; shared authorize verifies assurance flag and auth_time, not token issuance; authorization occurs before replay lookup.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R06",
+      "boundary": "Exact replay",
+      "evidence": "Fingerprint includes command operation, target and original body; receipt lookup bound to tenant/principal/type/operation ID; mismatching hash conflicts, elapsed receipt expires, current target availability rechecked, replay returns exact saved outcome.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R07",
+      "boundary": "Closed input and stable UUID",
+      "evidence": "Generated request/problem/data DTOs closed. Direct validator requires exact keys and canonical UUID spelling before uniqueness/priority membership. Unknown server metadata/reference selectors refused.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R08",
+      "boundary": "Bounded completion errors",
+      "evidence": "At most20 problems and4missing fields each; authorized stored problem description up to150chars/ID names field errors; evidence text not copied. Existing closed Error path/message shape now respected.",
+      "finding": "EARLY_FINDING_FIXED_IN_CURRENT_SOURCE"
+    },
+    {
+      "id": "DX-R09",
+      "boundary": "Immutable completed correction",
+      "evidence": "Direct update Completed refused. Revise only Completed with current expected_revision and explicit bounded reason; writes new Draft payload copy, removes completion metadata only from new copy. Previous revision/hash/author/created bytes untouched.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R10",
+      "boundary": "Historical state/current access",
+      "evidence": "Server-owned diagnosis_state retained per revision. History/exact read first load current visible object; requested rows match tenant/object/kind and AVAILABLE. Exact Completed output cannot silently inherit current Draft.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R11",
+      "boundary": "Atomic writes and refusal rollback",
+      "evidence": "Expected_revision check/state/complete validation before write. Existing write/audit/receipt in one DB transaction commits registry/revision/natural author/audit/outbox/receipt together; errors rollback.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R12",
+      "boundary": "Bounded listings and cursors",
+      "evidence": "Limit exact int1..100; signed cursor binding uses current tenant/principal/policy+subject epochs/grant fingerprint/route, expiry existing15min; exact object history route; no total_rows. SQL filters classification/restriction.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R13",
+      "boundary": "Migration/profile compatibility",
+      "evidence": "0044 extends current object-kind constraint without replacing prior kinds; no new tables/roles/RLS changes. Registered manifest matches generated profile/hash; only TENANT_ADMIN gets two new source capabilities; old ceilings untouched.",
+      "finding": "EARLY_ASSUMPTION_CORRECTED_AND_IMPLEMENTED"
+    },
+    {
+      "id": "DX-R14",
+      "boundary": "Existing API compatibility",
+      "evidence": "28-check offline diff verifies original paths/schemas/policy operations unchanged;8new diagnosis ops/12new schemas only. Separate kind avoids adoption draft DTO/archive/export changes.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R15",
+      "boundary": "Provider/official approval boundary",
+      "evidence": "New class imports no provider/model call and uses no evidence selector. Completion is expressly manual authored readiness; no independent-review decision, approval, official calculation or provider budget emitted.",
+      "finding": "NO_MATERIAL_DEFECT_OBSERVED"
+    },
+    {
+      "id": "DX-R16",
+      "boundary": "Release integrity",
+      "evidence": "IR-0.40-01 now records current sensitive paths, threats and local limitations with confirmed_by null; passed false/G11Notpassed/G12Notrun remain. Source entry does not authenticate reviewer or grant release authority.",
+      "finding": "EARLY_CHECKPOINT_ITEM_RESOLVED"
+    }
+  ],
+  "observed_actual_run_artifacts": [
+    {
+      "path": "outputs/imprana-delivery-start-20261011/diagnosis-unit-first.xml",
+      "sha256": "d5f62da88021082f48bf814561f4a230f09fb3487123433610fa391718ca12dc",
+      "suites": [
+        {
+          "tests": "23",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "timestamp": "2026-10-11T14:06:27.927130+05:30"
+        }
+      ]
+    },
+    {
+      "path": "work/imprana-diagnosis-20261011/.local/test-801abf17/perf-tests.xml",
+      "sha256": "dbb51b950aae71b1043562a7dcdcae520f6b859a3f5289e783dc748f910262ad",
+      "suites": [
+        {
+          "tests": "44",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "timestamp": "2026-10-11T14:08:26.021455+05:30"
+        }
+      ]
+    }
+  ],
+  "actual_run_applicability": {
+    "API_first_input_manifest": "API-FIRST-INPUT-MANIFEST.json",
+    "selected_pin_comparison": [
+      {
+        "path": "apps/api/impact_api/ai_diagnoses.py",
+        "present_in_first_manifest": true,
+        "current_matches_first": true
+      },
+      {
+        "path": "apps/api/impact_api/ai_diagnosis_contracts.py",
+        "present_in_first_manifest": true,
+        "current_matches_first": true
+      },
+      {
+        "path": "apps/api/impact_api/main.py",
+        "present_in_first_manifest": true,
+        "current_matches_first": true
+      },
+      {
+        "path": "qualification/test_ai_diagnoses_unit.py",
+        "present_in_first_manifest": true,
+        "current_matches_first": true
+      },
+      {
+        "path": "qualification/test_ai_diagnosis_live.py",
+        "present_in_first_manifest": true,
+        "current_matches_first": false
+      },
+      {
+        "path": "qualification/test_ai_diagnosis_native.py",
+        "present_in_first_manifest": true,
+        "current_matches_first": true
+      },
+      {
+        "path": "infrastructure/migrations/0044_ai_diagnoses.sql",
+        "present_in_first_manifest": true,
+        "current_matches_first": true
+      }
+    ],
+    "live_test_docstring_only_applicability": {
+      "proposal_sha256": "ba7851a19cdaf70e98f16e810fb7a95013a0f7a6fd14f173f6d5f5abd42bdb07",
+      "matches_first_run_pin": true,
+      "candidate_AST_equals_proposal_after_removing_only_module_docstring": true,
+      "candidate_sha256": "3bed17de4d4bc09535f0984201b0d4ce1594b2b4d1f6cf078a93741bb0c3a9b1"
+    },
+    "interpretation": "Observed first23 unit/44PGlite API XMLs, not rerun by reviewer. Current live test differs bytewise onlyin module docstring from hash-matching original proposal; executable AST matches. Original first manifest is exploratory during startup; no final integrated qualification inferred."
+  },
+  "supplemental_test_gaps": [
+    {
+      "severity": "P2",
+      "scope": "Verification gap, not observed bug",
+      "boundary": "Seven-day expired receipt",
+      "required_evidence": "Expired selected receipt refuses withIDEMPOTENCY_EXPIRED and no domain sideeffects."
+    },
+    {
+      "severity": "P2",
+      "scope": "Verification gap, not observed bug",
+      "boundary": "Object-scope grant and current privacy restriction",
+      "required_evidence": "OBJECT grant alone mustnot authorise; restricted/removed currenthead or requestedhistorical revision musthold relevant exactread/history/replay."
+    },
+    {
+      "severity": "P3",
+      "scope": "Verification gap, not observed bug",
+      "boundary": "History cursor route/object/current grant binding",
+      "required_evidence": "Crossobject/changedvisibility/expired cursor rejected without history metadata."
+    }
+  ],
+  "release_impact_observation": {
+    "impact_reviews": [
+      {
+        "id": "IR-0.40-01",
+        "change_id": "US-DX-01a",
+        "change": "Manual organisation diagnosis with stable problem identity, evidence notes, priority, guarded completion and immutable correction history",
+        "paths": [
+          "apps/api/impact_api/ai_diagnoses.py",
+          "apps/api/impact_api/ai_diagnosis_contracts.py",
+          "infrastructure/migrations/0044_ai_diagnoses.sql",
+          "packages/contracts/access-policy.json",
+          "apps/api/impact_api/bootstrap_profile.json",
+          "apps/api/impact_api/main.py",
+          "scripts/bootstrap.py",
+          "apps/web/src/AIDiagnosis.tsx",
+          "apps/web/src/main.tsx"
+        ],
+        "areas": [
+          "migration",
+          "contracts",
+          "access-policy",
+          "ai-module"
+        ],
+        "threats": [
+          "TH01",
+          "TH02",
+          "TH03",
+          "TH06",
+          "TH09",
+          "TH28",
+          "TH30",
+          "TH32"
+        ],
+        "summary": "Agent proposal only. New bounded manual AIDiagnosis kind reuses forced tenant fences and immutable revisions. Only explicit purpose-less TENANT diagnosis read/manage capabilities authorise these routes; new onboarding profile limits them to TENANT_ADMIN and does not widen existing ceilings. Closed canonical UUID DTOs refuse unknown fields and duplicate JSON. Complete/revise require current verified authentication within300seconds. Tenant advisory lock precedes current context and all writes; current read/manage/assurance precede exact receipt replay. Head, revision, audit, outbox and receipt commit atomically. Completed revisions remain byte-preserved across explicit correction. Browser memory is scope-keyed and clears on read loss; ambiguous outcomes retain the exact request for retry, not automatic rebase. No model, provider, protected reference fetch, official calculation, new worker privilege or cloud resource. Local PGlite and browser evidence are bounded; native concurrent/revocation/login-role, live identity, restart/restore/upgrade, security human assessment and all required exact-head CI remain outstanding. Existing threat/residual decisions remain unchanged.",
+        "prepared_by": "Codex agent; independent agent reviews are advisory, no human confirmation",
+        "prepared_on": "2026-10-11",
+        "confirmed_by": null
+      }
+    ],
+    "passed": false,
+    "G11": {
+      "status": "Not passed",
+      "reason": "Review started; no independent assessment recorded."
+    },
+    "G12": {
+      "status": "Not run",
+      "reason": "No AI evaluation recorded for this build."
+    }
+  },
+  "failure_history_preserved": [
+    "FIRST-CAPTURE-ADAPTER-OBSERVATION.json — truncated tool capture parser failure",
+    "ACTUAL-SOURCE-INTEGRITY-CHECK.json —27/28, reviewerregex matchedSQLcomment",
+    "SOURCE-CHECK-ADAPTER-RECONCILIATION.json — adapter onlyfixed",
+    "../package-review/US-DX-01a-EARLY-CODE-ADVISORY.json — earlier Error schemafinding",
+    "../package-review/US-DX-01a-SOURCE-BOUND-PERSISTENCE-CORRECTION.json — originalkindallowlistassumptioncorrected"
+  ],
+  "limitations": [
+    "UI and browser integration remain outside this API review.",
+    "No native PostgreSQL role/concurrency/recovery/fullsuite/liveidentity/container/fullregression/currentheadCI reviewed or run here.",
+    "Test and package evidence are separate from authentic owner/persona mapping, native binding/adoption, human securityreview/UAT, Ready/Done and release.",
+    "Notes-only supporting evidence scope remainsexplicit; attachment/type/redaction/protectedreference policies arefuture decisions.",
+    "Source alterations aftercapturedhashes require affected review/check renewal."
+  ]
+}

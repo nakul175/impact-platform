@@ -1,0 +1,135 @@
+{
+  "record": "ACTUAL-PROPOSED-DESIGN-REGISTER-COVERAGE-SUMMARY",
+  "recorded_at_utc": "2026-10-11T05:44:44.345012+00:00",
+  "checker_stdout": {
+    "path": "outputs/imprana-standards-completion-20261011/source/proposed-registers/structure.stdout.json",
+    "sha256": "6ebdf15657d76f3bbc4c4c864ddeced4955d3f2bbcca1564aa77de6769fd8ef0",
+    "bytes": 518604
+  },
+  "negative_checker_stdout": {
+    "path": "outputs/imprana-standards-completion-20261011/source/proposed-registers/negative-release-record.stdout.json",
+    "sha256": "bddfc2eb2dc669eecd65d677bbde6bbbd83135037805097ec2ff8c920d430696",
+    "bytes": 518956
+  },
+  "supported_runtime": "Python3.12.15",
+  "unchanged_checker": {
+    "path": "outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+    "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9",
+    "bytes": 22397
+  },
+  "real_structure_exit": 1,
+  "real_release_record_exit": 1,
+  "structure_errors": 3786,
+  "release_errors": 3794,
+  "actual_coverage_fields": {
+    "planned_coverage": {
+      "numerator": 1328,
+      "denominator": 1328,
+      "ratio": 1.0
+    },
+    "validated_coverage": {
+      "numerator": 0,
+      "denominator": 1328,
+      "ratio": 0.0
+    },
+    "required_completion": {
+      "numerator": 0,
+      "denominator": 1328,
+      "ratio": 0.0
+    },
+    "selected_pass_rate": {
+      "numerator": 0,
+      "denominator": 0,
+      "ratio": null
+    },
+    "unknown_applicability": 1328,
+    "selected_unique_runs": 0,
+    "result_counts": {
+      "PASS": 0,
+      "FAIL": 0,
+      "BLOCKED": 0,
+      "NOT_RUN": 1328,
+      "SKIPPED": 0,
+      "NOT_APPLICABLE": 0
+    },
+    "freshness_counts": {
+      "CURRENT": 0,
+      "STALE": 0,
+      "UNASSESSED": 1328
+    }
+  },
+  "case_modes": {
+    "MANUAL": 66,
+    "AUTO": 1262
+  },
+  "mapping_population": 1328,
+  "accepted_bindings": 0,
+  "design_tests_executed": 0,
+  "checks": [
+    {
+      "name": "eight exact schema headers",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "all active source AC/version rows exact copied original register",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "canonical source bytes/review/provenance/risk rationale and separate history copied exact",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "1328 source-derived cases plus1328 nonduplicating mappings",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "complete case rows preserve source versions/modes/oracles/task and hierarchy anchors",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "four actual event registers remain empty",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "scope actual candidate pins empty and all applicability UNKNOWN",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "all exact copies actual receipt verified",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "sealed source source-manifest immutable",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "frozen case/appends unchanged",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "genuine structure failure is exactly missing AUTO bindings",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "actual planned design count never upgrades validated/current quality",
+      "pass": true,
+      "details": null
+    }
+  ],
+  "check_count": 12,
+  "check_failures": 0,
+  "clarification": "The first diagnostic receipt generic actual_coverage_report field is null because this unchanged checker exposes separate planned_coverage/validated_coverage/required_completion/selected_pass_rate fields. Its actual_report_other_fields preserves them exactly. This additive summary quotes the actual fields directly; no execution/result was changed or rerun.",
+  "interpretation": "1328/1328 is nominal proposed design-mapping coverage, never accepted case/binding coverage, implementation percentage or product execution. All1328 UNKNOWN; validated0/1328; all1328 Notrun/Unassessed;zero actual run/event/selection.",
+  "approval_readiness": "PENDING / NOT_READY; no actual source-owner/human/trust/release authority authenticated."
+}

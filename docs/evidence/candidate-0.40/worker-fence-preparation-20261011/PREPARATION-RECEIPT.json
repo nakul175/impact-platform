@@ -1,0 +1,31 @@
+{
+  "candidate_head": "2e4dcaeff4ebfbcbd26bb8b093a4677fe95136c4",
+  "story": "US-DX-01a",
+  "observed_at_utc": "2026-10-11T11:17:36.591797+00:00",
+  "state": "SOURCE_INSPECTED_DRAFT_NOT_APPLIED",
+  "source_sha256": {
+    "apps/api/impact_api/worker.py": "3025c8dc9ce3a6b684d19bd4d089d19f4ce9fe73d01dc9f7796c7c3d53ec259e",
+    "apps/api/impact_api/store.py": "ee5f903a4dea0fd1b38c60d9e8447d229099f6ce4bd234ab68b7a998911889c3",
+    "infrastructure/migrations/0003_security.sql": "9bb472eb6481f95c83e755d6648928e7269958f647ddabf89ec9509bc4e9d148",
+    "infrastructure/migrations/0024_report_exports.sql": "2a162567e6414db5d349850bc0d279678203c830d7a3c4fef8751ce7fab8db9f",
+    "infrastructure/migrations/0025_worker_grants.sql": "e15906bfddde70bc978f93785dfec60ed60ddd45d0135d351a2584bbffbc5047",
+    "infrastructure/migrations/0026_worker_job_grants.sql": "c01bcd55621e71fd6e5bd3d11ac08f085eec8bd51efcefb25b8de11fded64310",
+    "infrastructure/migrations/0044_ai_diagnoses.sql": "9f9f136ad38f2ae9e3f280fed0fc10d497716e3875a96e2095e72f24a8b0bd65",
+    "qualification/test_worker.py": "b7dc8edc9baa62c4014f25656726e7bc94a4154f3cb3e66a10003f1aef758dd2"
+  },
+  "draft_sha256": "ab0eab10721c3f711e7cf7eca4efd3e7cad730d60fa8f6640e91148f986ce8cc",
+  "new_runtime_tests": 0,
+  "permission_changes_applied": false,
+  "migration_changes": false,
+  "human_signoff": false,
+  "review_phases": [
+    "Root-agent code/dependency review",
+    "Root-agent evidence/claim review"
+  ],
+  "remaining_scope_gaps": [
+    "Diagnosis JSON SQL constraints",
+    "Protected evidence selectors",
+    "Worker isolation not yet implemented"
+  ],
+  "remaining_authority": "Current window excludes account/role changes; draft preparation only"
+}

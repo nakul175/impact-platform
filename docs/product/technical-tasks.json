@@ -1,0 +1,319 @@
+{
+  "version": "1.0",
+  "source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "planning_status": "Proposed — Backlog; Sprint 2 not committed; Ready decisions pending refinement",
+  "tasks": [
+    {
+      "id": "TASK-US-DX-01a-01",
+      "story_id": "US-DX-01a",
+      "title": "Define stable problem identity and the diagnosis command contract",
+      "description": "Produce the reviewed design for a manual diagnosis with stable problem IDs, description, affected area, supporting evidence and one explicit priority order. Resolve active-diagnosis cardinality, text/list bounds, completion and later correction rules with the owner and engineer. Specify closed create/update/reorder/complete DTOs, operation IDs, expected revisions, bounded reads and errors; retain US-DX-01 as the split source. Record the read/manage capability and scope matrix for TENANT_ADMIN, and compatibility with existing AIEnablementProfile/AIAdoptionPlan data. The proposed slice uses no conversational agent or provider call.",
+      "acceptance_criteria": [
+        "The story links VISION-IMPRANA-01, STR-02, RG-R1 and EPIC-ADOPTION-DIAGNOSE, with every unresolved model choice recorded before a Ready decision.",
+        "Every write schema is closed and bounded; completion requires supporting evidence and exactly one position for every included stable problem ID.",
+        "The contract distinguishes an incomplete draft from a complete revision, server-owned state/actor/time from client input, and hidden resources from validation failures without leaking titles.",
+        "The design states how changed problem descriptions or priority order create later revisions without rewriting historical diagnoses or silently migrating existing adoption plans."
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "TASK-US-DX-01a-02",
+      "story_id": "US-DX-01a",
+      "title": "Add the tenant-fenced diagnosis projection and revision references",
+      "description": "Implement the reviewed diagnosis registry kind/current projection and stable problem identity storage using the existing immutable object_revision/write model. Add completion/order constraints and tenant-keyed evidence revision links where the chosen model needs them. An integrator assigns the next additive migration at implementation time; this task reserves no final filename or build. Include all projection columns required by new payload keys, narrow grants, forced tenant RLS, and data-dictionary/checksum/security-impact entries. Preserve existing adoption-plan and evidence history.",
+      "acceptance_criteria": [
+        "Every new tenant primary/foreign key includes tenant_id; each new tenant table has ENABLE and FORCE RLS with tenant_fence and the narrowest required impact_app privileges.",
+        "Database constraints reject duplicate problem IDs, invalid parent/revision references and malformed stored order according to the reviewed model.",
+        "A populated upgrade preserves historical adoption-plan/evidence rows and all previously applied migration bytes; projection writes cannot fail because an expected column is missing.",
+        "Native provisioned-role checks prove no-tenant/other-tenant invisibility and refusal of cross-tenant inserts or unintended worker/platform/identity access."
+      ],
+      "depends_on": ["TASK-US-DX-01a-01"]
+    },
+    {
+      "id": "TASK-US-DX-01a-03",
+      "story_id": "US-DX-01a",
+      "title": "Implement atomic edit, reorder and completion operations",
+      "description": "Add the diagnosis service and dispatcher/routes for the agreed command contract. Acquire the tenant write lock before current-authority resolution; create a new revision for edits/reorders and validate completion against the expected revision and full ordered set. Use the governed head/projection/audit/outbox/operation-receipt transaction and current-principal replay rules. Reject incomplete completion with named visible problems while retaining the draft; do not overwrite a newer revision or retry semantic conflicts automatically.",
+      "acceptance_criteria": [
+        "A complete diagnosis saves and reloads the same ordered stable IDs and evidence, and its revision, audit, outbox intent and receipt commit together.",
+        "Missing description/area/evidence/order produces the agreed bounded validation response, creates no complete revision and leaves the previous draft readable.",
+        "Exact same-principal retries produce one write/receipt; changed payload under the same operation ID and stale expected_revision return documented 409 conflicts.",
+        "Native simultaneous edits preserve one authoritative head and refuse the stale writer; tenant authority loss is rechecked before replay or write."
+      ],
+      "depends_on": ["TASK-US-DX-01a-02"]
+    },
+    {
+      "id": "TASK-US-DX-01a-04",
+      "story_id": "US-DX-01a",
+      "title": "Enforce evidence visibility and wire diagnosis permissions",
+      "description": "Validate each selected evidence revision through current tenant/object authority and the chosen evidence-status rules instead of trusting a supplied ID. Keep supporting notes bounded and render them as text. Add the agreed diagnosis policy rows, fixture grants, generated access profile and web area capability prefix; register any new profile without automatically widening existing tenant ceilings. Cover restricted/removed evidence and loss of access between draft save and completion, and retain OWNER's custody-only boundary.",
+      "acceptance_criteria": [
+        "Hidden, missing and other-tenant evidence selectors return RESOURCE_UNAVAILABLE 404 without title/content/existence leakage; completion refuses a newly inaccessible reference.",
+        "TENANT_ADMIN with the specific diagnosis capability can use the chosen scope; read-only actors, custody-only OWNER and revoked actors cannot perform diagnosis writes.",
+        "Generated contracts, fixture grants, bootstrap profile and areaCapabilities agree; an existing tenant gains a new ceiling only through the reviewed access-upgrade path.",
+        "Unknown fields, duplicate JSON keys, client actor/state/timestamp claims and unbounded evidence notes are rejected before a governed write."
+      ],
+      "depends_on": ["TASK-US-DX-01a-03"]
+    },
+    {
+      "id": "TASK-US-DX-01a-05",
+      "story_id": "US-DX-01a",
+      "title": "Build the accessible structured diagnosis and priority editor",
+      "description": "Add a plain-language screen for adding/editing problems, supporting notes/evidence, moving problems up/down and completing the reviewed order. Show explicit Draft/Complete state, the current revision and visible completeness errors. Retain unsaved input after validation, permission or network failures, keep operation IDs stable for exact retries and offer reload/review after conflict. Use labelled fields, keyboard controls and announced save/error states; avoid drag-only ordering and preserve the existing manual adoption workspace.",
+      "acceptance_criteria": [
+        "An actor can record, reorder, save, reload and complete multiple synthetic problems entirely with the keyboard, with no provider call when AI is disabled.",
+        "Completeness errors identify the visible problem and missing field; a refused save does not erase input or falsely show Complete.",
+        "The editor retries the same payload with the same operation ID and does not silently replace a stale expected revision; current-authority failures remove protected loaded detail appropriately.",
+        "The proposed tools/browser/ai-diagnosis-check.mjs exercises keyboard ordering, saved order, missing-evidence rejection, stale-save handling and an axe accessibility scan of the new screen."
+      ],
+      "depends_on": ["TASK-US-DX-01a-03", "TASK-US-DX-01a-04"]
+    },
+    {
+      "id": "TASK-US-DX-01a-06",
+      "story_id": "US-DX-01a",
+      "title": "Qualify diagnosis boundaries and assemble review evidence",
+      "description": "Create a scenario-to-evidence record for the integrated diagnosis slice, using synthetic fixtures and exact test nodes. Proposed qualification/test_ai_diagnosis.py covers ordered persistence/completion, incomplete drafts, stale and changed retries, and current evidence visibility; proposed test_ai_diagnosis_live.py covers real-role RLS and native edit races. Verify restart/populated-upgrade retention and existing adoption-plan/history compatibility. Record the built commit, limits, relevant security-impact review and owner demo; these planned nodes are not existing or passing evidence.",
+      "acceptance_criteria": [
+        "Proposed test_ai_diagnosis.py::test_complete_diagnosis_retains_order_and_evidence and ::test_incomplete_problem_refuses_completion prove the source positive/rejection criteria with exact stored revision assertions.",
+        "Proposed test_ai_diagnosis_live.py::test_native_stale_reorder_preserves_one_head and ::test_native_diagnosis_rls_and_evidence_boundaries use concurrent/provisioned native roles, with skips and environment recorded.",
+        "Restart and populated-upgrade evidence preserves the saved order and existing plan history; browser evidence records the new screen's keyboard/accessibility outcomes.",
+        "The story remains In review until required human review, qualification and dated product-owner acceptance; no entire US-DX-01 conversational requirement is accepted by this manual slice."
+      ],
+      "depends_on": ["TASK-US-DX-01a-04", "TASK-US-DX-01a-05"]
+    },
+    {
+      "id": "TASK-US-DX-03-01",
+      "story_id": "US-DX-03",
+      "title": "Agree four metric definitions and the baseline lock contract",
+      "description": "Resolve time, cost, quality and reach definitions with the owner: units/currency, observation window, sample or denominator basis, required supporting evidence and permitted zero values. Define a baseline draft bound to a stable problem and exact diagnosis revision, plus closed save/lock/read/history commands and server-owned lock metadata. Decide correction/supersession policy and whether a priority-only diagnosis change requires rereview. Retain the distinction between a locked self-reported adoption baseline and independently approved official MEL results; do not infer metrics from the existing pilot time-comparison DTO.",
+      "acceptance_criteria": [
+        "The agreed metric definitions, source requirements, scope/role matrix and correction policy are written before the story can be Ready; unresolved choices are explicit.",
+        "All four required measures have an explicit value/basis, and missing is distinct from a measured zero; decimal transport stays bounded strings with no float coercion.",
+        "Closed save/lock DTOs require expected baseline/source revisions and cannot set actor, lock date, official-result status or approval metadata.",
+        "The story links VISION-IMPRANA-01, STR-02/STR-03, RG-R1 and EPIC-ADOPTION-DIAGNOSE, with US-DX-01a as its model dependency."
+      ],
+      "depends_on": ["TASK-US-DX-01a-01"]
+    },
+    {
+      "id": "TASK-US-DX-03-02",
+      "story_id": "US-DX-03",
+      "title": "Persist baseline revisions and an insert-only lock register",
+      "description": "Implement the reviewed baseline projection and immutable lock register, referencing exact tenant/diagnosis/problem/metric revisions. Persist bounded quantities with exact numeric precision and retain metric units/bases and source references in the locked payload. Enforce one lock per baseline revision and server-owned lock actor/date; use additive migration allocation by the integrator, forced RLS, narrow grants and data-dictionary/security-impact evidence. A later projection change cannot repoint the locked problem or metric snapshot.",
+      "acceptance_criteria": [
+        "Every tenant reference is composite and cannot connect a baseline to another tenant's problem, diagnosis or source evidence.",
+        "The lock register is insert-only under runtime roles and uniquely names the exact metric revision; dates/actors are supplied by the server/database clock.",
+        "Persisted measures preserve exact decimal strings/NUMERIC(38,12) quantities and their agreed units, with completeness and range constraints where applicable.",
+        "Native RLS/role checks and a populated upgrade prove tenant isolation, immutable lock evidence and preservation of older diagnosis/adoption data."
+      ],
+      "depends_on": ["TASK-US-DX-03-01", "TASK-US-DX-01a-02"]
+    },
+    {
+      "id": "TASK-US-DX-03-03",
+      "story_id": "US-DX-03",
+      "title": "Implement decimal baseline saves and immutable locking",
+      "description": "Add baseline services that validate the reviewed metric semantics and current problem/evidence authority, save drafts as revisions and lock only complete current metric/source revisions. Take the tenant write lock before authority checks and commit the lock, revision/head/projection, audit/outbox and receipt atomically. Reject all direct edits to locked observations, stale source/baseline revision claims and client-owned lock metadata. The ordinary lock records observations, not a new independent approval or a calculated benefit.",
+      "acceptance_criteria": [
+        "A complete four-measure draft locks with a server-set date and exact problem/metric revisions; reopening reproduces the source observations without rounding them into new inputs.",
+        "Missing time/cost/quality/reach refuses locking with the specific visible missing measure and creates no lock record; valid measured zero is not mistaken for absence.",
+        "Locked edits and stale expected source/baseline revisions are refused without changing the locked bytes/date or current source head.",
+        "Exact retries create one lock/receipt; changed operation payloads conflict and native concurrent lock/edit requests cannot bypass the immutable boundary."
+      ],
+      "depends_on": ["TASK-US-DX-03-02", "TASK-US-DX-01a-03", "TASK-US-DX-01a-04"]
+    },
+    {
+      "id": "TASK-US-DX-03-04",
+      "story_id": "US-DX-03",
+      "title": "Build per-problem metrics and dated lock confirmation",
+      "description": "Add a baseline panel under each authorised priority problem, showing the source diagnosis revision, four metric fields with agreed units/bases and evidence notes. Explain missing data and measured zero, preserve draft input after refusal, and provide a keyboard-accessible confirmation that states what the lock preserves. After locking, show read-only original observations and the server-set lock date; avoid ROI, improvement or accepted-impact claims. Reload/review source changes before another lock attempt.",
+      "acceptance_criteria": [
+        "All four metric fields show their units/bases; the actor can save and lock using the keyboard, and the confirmation identifies the specific problem/source revision.",
+        "A lock refusal preserves the draft, identifies missing metrics or source conflict, and never fabricates a lock date or Complete state.",
+        "Locked observations are read-only and display the original values/date across reload; no automatic benefit or comparison is presented.",
+        "The proposed tools/browser/ai-problem-baseline-check.mjs covers incomplete lock, measured zero, source-change review, locked edit refusal and accessibility of the panel/dialog."
+      ],
+      "depends_on": ["TASK-US-DX-03-03"]
+    },
+    {
+      "id": "TASK-US-DX-03-05",
+      "story_id": "US-DX-03",
+      "title": "Integrate authorised baseline history and correction references",
+      "description": "Implement bounded baseline/lock history under current read authority and the reviewed correction model. If a correction is allowed, create a new separately identified successor with a reason and explicit superseded lock reference; never unlock, repoint or rewrite the earlier baseline. If correction is deferred, expose that limit and reject unsupported correction commands. Retain the link to the original problem even after a later diagnosis revision, while hiding any evidence whose current access or restriction has changed.",
+      "acceptance_criteria": [
+        "History shows the exact earlier locked problem/metric revision and date using principal/route/visibility-bound signed cursors, without total_rows leakage.",
+        "Allowed successor corrections preserve the original lock byte-for-byte and explicitly name its predecessor/reason; otherwise correction commands fail under the agreed deferred-scope rule.",
+        "A later diagnosis edit cannot silently attach the old baseline to a different problem or replace its source observation basis.",
+        "Read and history recheck current tenant/object/evidence authority; restricted, hidden or other-tenant selectors do not disclose original titles or content."
+      ],
+      "depends_on": ["TASK-US-DX-03-03"]
+    },
+    {
+      "id": "TASK-US-DX-03-06",
+      "story_id": "US-DX-03",
+      "title": "Prove lock races, source preservation and review evidence",
+      "description": "Qualify the integrated per-problem baseline slice using synthetic measurements and exact source revisions. Proposed test_ai_problem_baselines.py covers four-metric completeness, decimal/zero handling, stale source locks and rejected locked edits; proposed test_ai_problem_baselines_live.py covers native races, immutable grants/RLS and restart preservation. Exercise the chosen correction/history model and the browser panel. Keep existing ai_pilot_outcomes self-reported/undefined-comparison boundaries intact and record exact test/run/commit evidence for human and owner review.",
+      "acceptance_criteria": [
+        "Proposed test_ai_problem_baselines.py::test_lock_preserves_four_metrics_and_server_date and ::test_missing_measure_refuses_lock prove the source criteria without inferred default metrics.",
+        "Proposed test_ai_problem_baselines_live.py::test_native_edit_lock_race_preserves_one_immutable_baseline uses separate concurrent native sessions and records final locked values/receipt counts.",
+        "Restart, populated-upgrade, history and correction checks prove no repointing of locked references; existing pilot comparison regressions retain their self-reported/undefined semantics.",
+        "Evidence names the actual built commit, exact nodes, environment and unrun/skipped checks; owner acceptance of this slice does not claim causal benefit or official MEL acceptance."
+      ],
+      "depends_on": ["TASK-US-DX-03-04", "TASK-US-DX-03-05", "TASK-US-DX-01a-06"]
+    },
+    {
+      "id": "TASK-FR-AI-016a-01",
+      "story_id": "FR-AI-016a",
+      "title": "Define budget units, job states and execution ownership",
+      "description": "Resolve the reservation unit/conversion, bounded provider-call estimate, budget window/reset/limit-change rules and terminal accounting with the owner and engineer. Design the 202 job/request/read/cancel contract and own-job versus tenant visibility scopes, including current-policy rechecks, uncertain provider acceptance and one terminal settlement. Choose a compatibility path for today's synchronous advisory API and an execution/cancellation owner that preserves application_executor/worker role boundaries. Keep ADVISORY_DRAFT as the only supported use case, tools empty, the current daily cap unless explicitly changed, and FR-AI-016b's timeout/partial-draft scope separate.",
+      "acceptance_criteria": [
+        "The approved accounting design specifies consumed + outstanding reserved <= limit, an upper bound per controllable call, and no automatic budget refill on policy revision.",
+        "Closed contracts document 202 stable job ID, 429 AI_BUDGET_EXHAUSTED, replay/conflict rules, actual progress states, cancellation boundaries and current-authority result visibility.",
+        "Execution ownership includes provider I/O outside transactions, sealing-key access, lease generation fencing, no blind retry after uncertain acceptance and settlement-aware cancellation ownership.",
+        "Open provider/region approval and all unresolved unit/window/topology decisions are retained; FR-AI-001 remains built/In review and no live enablement or paid call is authorised by this task."
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "TASK-FR-AI-016a-02",
+      "story_id": "FR-AI-016a",
+      "title": "Persist reservations, provider attempts and a terminal journal",
+      "description": "Implement the reviewed tenant-keyed budget-window/account, AI job/request, provider-attempt and append-only reservation/consumption/release/settlement journal. Bind every job to its requester, policy version and budget window, and enforce one reservation identity and one terminal settlement per job with database uniqueness and bounded numeric constraints. Store required input/output sealed rather than in job/outbox plaintext, keep uncertain accepted work explicitly accounted, and make later reconciliations new journal adjustments. Allocate additive migration(s) during implementation with narrow grants, forced RLS, data dictionary/checksum and security-impact updates.",
+      "acceptance_criteria": [
+        "Every job/policy/principal/window foreign key is tenant-keyed and every new tenant table has forced tenant_fence RLS; runtime roles cannot rewrite append-only journal/settlement rows.",
+        "Uniqueness prevents a duplicate reservation and duplicate terminal settlement, and the model reconstructs consumed/reserved/available without double-subtracting a completed reservation.",
+        "Sealed input/output is bound to tenant/job and ciphertext keys; journal/job/outbox metadata contains no plaintext prompt, credential, raw provider response or unnecessary personal data.",
+        "Native role/constraint and populated-upgrade checks preserve prior advisory request/result rows and applied migrations, with no new application-data grants given to impact_worker as a shortcut."
+      ],
+      "depends_on": ["TASK-FR-AI-016a-01"]
+    },
+    {
+      "id": "TASK-FR-AI-016a-03",
+      "story_id": "FR-AI-016a",
+      "title": "Reserve bounded work atomically and return one stable job",
+      "description": "Implement request submission after existing server/read/request authority and ai_policy.require checks. Under the tenant write lock, use the agreed bounded estimate to check available credits and commit the job, reservation, audit/outbox and operation receipt as one transaction, returning 202. Preserve current-principal exact replay and reject changed payloads; do not call the provider or create a job on policy/budget failure. Apply the selected synchronous-advisory compatibility contract and retain the daily-attempt cap until explicitly replaced.",
+      "acceptance_criteria": [
+        "An enabled/current-policy request with sufficient credit produces exactly one stable job/reservation/receipt and returns 202 before any provider call.",
+        "Server off, stale policy, disallowed destination/data/language/tools, unreadable policy/ledger and budget exhaustion create no job/reservation or provider call, with documented safe responses.",
+        "Native simultaneous submissions competing for the final credits cannot exceed consumed + reserved <= limit; rejected submissions leave available credit unchanged.",
+        "Exact same-principal retries return the same job under current authority; changed payload/principal conflicts and policy-version changes cannot replenish already used budget."
+      ],
+      "depends_on": ["TASK-FR-AI-016a-02"]
+    },
+    {
+      "id": "TASK-FR-AI-016a-04",
+      "story_id": "FR-AI-016a",
+      "title": "Execute AI work with lease fencing and uncertain-call recovery",
+      "description": "Implement the chosen AI executor path with narrow unprivileged role topology and class-specific claims on database-clock leases. Reconstruct/recheck the current requester, tenant status and in-force policy before each next controllable provider call, persist a call-attempt marker/bound and then perform provider I/O outside the transaction. Fence outcome writes on live owner/generation and check cancellation again before another call/result disclosure. After crash or transport ambiguity, reconcile accepted work or conservatively account the bounded reservation without automatically repeating a possibly accepted paid call. Keep IMPORT_COMMIT, REPORT_EXPORT and RETENTION_SWEEP ownership intact.",
+      "acceptance_criteria": [
+        "Only the intended AI class is claimed, under tenant context/lock and a non-owner role; job manifests cannot supply authoritative actors, grants or lease metadata.",
+        "Revoked requester, suspended tenant, changed blocking policy or cancellation prevents the next controllable call, and no provider I/O runs within a database transaction.",
+        "A lease takeover rejects the old holder's result and journal writes; crash/restart after a call-attempt marker cannot silently regenerate or undercount possibly accepted provider work.",
+        "Stored results remain sealed and current read authority is checked before disclosure; logs contain only closed reason codes, not exception/prompt/provider-body contents."
+      ],
+      "depends_on": ["TASK-FR-AI-016a-03"]
+    },
+    {
+      "id": "TASK-FR-AI-016a-05",
+      "story_id": "FR-AI-016a",
+      "title": "Make cancellation and every terminal outcome settle once",
+      "description": "Implement a settlement-aware cancel command and shared terminal transition for success, failure, cancellation and authority/policy loss. Before provider acceptance, release the unused reservation; after acceptance, record observed or conservatively bounded uncertain consumption and release only the unused portion. Commit terminal state, journal settlement, audit/outbox and relevant receipt atomically under the tenant lock and lease fence. Explicitly isolate or delegate the generic worker cancellation pass so it cannot mark an AI job Cancelled without accounting; later provider reconciliation appends an adjustment rather than another terminal settlement.",
+      "acceptance_criteria": [
+        "Queued cancellation creates no provider call and one terminal release; running cancellation stops the next controllable call while separately accounting for already accepted/uncertain work.",
+        "Native cancel-versus-complete-versus-takeover races create exactly one terminal settlement and never a negative/double-released balance or stale result.",
+        "Retries, authority loss after accepted work and executor restart cannot strand or erase a reservation; conservative uncertain accounting is visible until reconciled by a new adjustment.",
+        "The worker's existing non-AI cancellation tests retain their established behaviour, and every AI terminal transition is settlement-aware without broadening worker tenant-data access."
+      ],
+      "depends_on": ["TASK-FR-AI-016a-04"]
+    },
+    {
+      "id": "TASK-FR-AI-016a-06",
+      "story_id": "FR-AI-016a",
+      "title": "Show honest job progress and qualify accounting/recovery",
+      "description": "Add request/job progress and cancel UI using actual stages, available/reserved/consumed units and a distinct accepted-work/uncertainty state. Retain the user's request input on budget/policy/network failure and keep operation IDs stable; do not fabricate progress percentages or timeout/partial-draft features. Proposed test_ai_jobs.py/test_ai_jobs_live.py and tools/browser/ai-jobs-check.mjs cover reservation, cancel/complete/takeover/crash races, current-authority disclosure and UI failures with synthetic provider output. Exercise exhausted-budget approvals/calculation/period-close/non-AI reporting and record the built commit, native run evidence and unrun limits.",
+      "acceptance_criteria": [
+        "The screen shows a stable job, actual state/progress and Cancel, announces changes accessibly, and retains request input after 429 AI_BUDGET_EXHAUSTED or policy/conflict refusals.",
+        "Proposed test_ai_jobs_live.py::test_native_last_credit_reservation_race and ::test_native_cancel_complete_takeover_settle_once prove bounded credit and single settlement using separate native sessions.",
+        "Proposed test_ai_jobs.py::test_ambiguous_acceptance_restart_does_not_repeat_call and ::test_exhausted_budget_preserves_manual_close_and_reporting record synthetic call counts and intact manual paths; no live paid request is used.",
+        "Exact scenario/node/run/commit evidence and the security-impact review are attached for human/owner review; the story remains In review until all Done conditions are met, with FR-AI-016b still a separate Backlog slice."
+      ],
+      "depends_on": ["TASK-FR-AI-016a-05"]
+    },
+    {
+      "id": "TASK-US-CM-05-01",
+      "story_id": "US-CM-05",
+      "title": "Agree usage basis, recipients and the read-only usage contract",
+      "description": "Specify a closed usage response with budget unit/window/limit, consumed, outstanding reserved, available, as-of time and bounded per-user breakdown from FR-AI-016a's journal. Confirm whether 80/100 percent warnings use exposure (consumed plus outstanding reserved), recipient/channel rules, zero-limit/unavailable states and identity/retention treatment. Proposed required channel is delivered in-app notification; email and broader billing/entitlement management are not assumed. Map FINANCE to proposed ai.usage.read only and decide any additional reader roles. Retain FR-OPS-002's wider R2 entitlement scope rather than inventing it as an existing prerequisite.",
+      "acceptance_criteria": [
+        "The owner/engineer confirm unit/window/threshold basis, required channel and recipients before Ready; the response labels consumed/reserved/available and uncertain accounting distinctly.",
+        "80 and 100 percent comparisons use exact amounts under the agreed basis, a jump across both thresholds requires both notices, and zero limit has no fabricated division result.",
+        "The role/scope/identity-display matrix gives FINANCE read-only usage without AI policy/manage/billing rights; any export is explicitly outside this read capability.",
+        "The story links VISION-IMPRANA-01, STR-01/STR-03, RG-R1 and EPIC-COMMERCIAL-AND-BILLING, with the ledger dependency and broader FR-OPS-002 scope clearly separated."
+      ],
+      "depends_on": ["TASK-FR-AI-016a-01"]
+    },
+    {
+      "id": "TASK-US-CM-05-02",
+      "story_id": "US-CM-05",
+      "title": "Query and reconcile exact usage from the authoritative journal",
+      "description": "Implement a consistent tenant/window usage read over the completed reservation/settlement journal, preserving original requester attribution for cancelled accepted work. Return limit, consumed, reserved and available from one accounting snapshot, with as-of/basis and bounded per-user records. If a projection is introduced for performance, make it reconstructible and reconcile it to immutable journal entries; do not create a second editable balance. Keep policy revisions from resetting usage and show uncertainty/unavailable states without pretending unknown credit is zero.",
+      "acceptance_criteria": [
+        "For known synthetic reserve/consume/release/adjustment sequences, per-user totals reconcile to tenant consumed/reserved totals and available equals limit minus consumed minus outstanding reserved.",
+        "A consistent read during native reservation/settlement writes never double-subtracts completed reservations or reports a negative/overstated available balance.",
+        "Cancelled provider work remains attributed/accounted, uncertain charges remain labelled, and policy edits do not silently change the accounting window or replenish credits.",
+        "Breakdown pagination is bounded with tenant/principal/route/visibility-bound signed cursors; any projection can rebuild from the journal and detect a mismatch."
+      ],
+      "depends_on": ["TASK-US-CM-05-01", "TASK-FR-AI-016a-02", "TASK-FR-AI-016a-05"]
+    },
+    {
+      "id": "TASK-US-CM-05-03",
+      "story_id": "US-CM-05",
+      "title": "Wire ai.usage.read without granting manage or hidden-user access",
+      "description": "Add the agreed usage operation/policy rows, current-authority checks, read-only FINANCE fixture/profile grants and web area prefix. Register the new access profile through the existing controlled path; already-applied tenants require reviewed ceiling widening. Derive displayed user identity from currently permitted tenant membership/profile data, respecting the agreed retention/redaction rules for departed users. Preserve OWNER custody-only and platform-operator boundaries; a commercial limit cannot become a data permission.",
+      "acceptance_criteria": [
+        "FINANCE with ai.usage.read can read tenant usage but cannot request AI, change policy/weights or edit a limit solely from that capability.",
+        "Other-tenant, hidden, custody-only, expired/revoked and unauthorised reads disclose no balance/limit/user identity; current-authority checks apply to repeated reads/cursors.",
+        "Generated contracts, fixture/profile grants and areaCapabilities are consistent; a user holding only ai.usage.read can reach the intended screen after authorised provisioning.",
+        "Existing tenants are not automatically widened, and identity labels for departed/restricted principals follow the agreed minimal disclosure rules."
+      ],
+      "depends_on": ["TASK-US-CM-05-01"]
+    },
+    {
+      "id": "TASK-US-CM-05-04",
+      "story_id": "US-CM-05",
+      "title": "Create idempotent threshold notices with delivery proof",
+      "description": "Implement threshold transitions keyed by tenant, budget window, threshold and authorised recipient, computed atomically from the agreed journal exposure basis. Create the notification revision/audit and IN_APP_NOTICE outbox intent in the same transition transaction; reuse delivery.py and the worker's consumer/notification_delivery discipline for visible delivered notices. A jump crosses both keys, release/re-entry does not duplicate a prior alert in that window, and a new window has new keys. Recheck recipient authority at delivery and handle no eligible recipient or delivery failure as a recorded unresolved alert state, not a successful receipt.",
+      "acceptance_criteria": [
+        "Exact synthetic crossings at 80 percent and 100 percent create one notice per window/threshold/recipient; a direct jump creates both notices and restart/replay creates no duplicates.",
+        "A reservation release then recross in the same window does not re-alert the same threshold; a new budget window can alert independently.",
+        "Delivered notifications visible to the eligible Operations Head have notification_delivery/consumer receipt evidence; an outbox intent alone cannot pass the source rejection criterion.",
+        "Revoked/inactive recipients are not sent protected usage details; failed/pending delivery and no-recipient outcomes remain visible as unresolved evidence without widening worker privileges unnecessarily."
+      ],
+      "depends_on": ["TASK-US-CM-05-02", "TASK-US-CM-05-03", "TASK-FR-AI-016a-05"]
+    },
+    {
+      "id": "TASK-US-CM-05-05",
+      "story_id": "US-CM-05",
+      "title": "Show usage, reservations and limit warnings accessibly",
+      "description": "Build the FINANCE usage view with the authoritative unit/window/as-of labels, separate consumed/reserved/available amounts, per-user attribution and conservative uncertain-work explanation. Show delivered threshold notices or links to the actor's notifications and honest pending/failure/unavailable states. Support manual refresh/polling without stale values being shown as current, preserve the read-only boundary and keep the manual close/reporting navigation available at the limit. Use accessible table headings, keyboard navigation and status announcements, with no invented currency price, benefit or progress metric.",
+      "acceptance_criteria": [
+        "The Operations Head sees the exact fixture limit, balance and per-user breakdown, with window/unit/as-of and separate reservation/uncertainty labels.",
+        "Zero limit or a failed usage request yields the agreed no-budget/unavailable state, not a fabricated balance or percentage; stale data is visibly identified if retained.",
+        "At the limit the screen still permits ordinary authorised manual programme/close/reporting navigation and offers no AI-manage/billing action through the read-only grant.",
+        "The proposed tools/browser/ai-usage-check.mjs verifies the ai.usage.read-only actor, both threshold notices, pending/unavailable states, narrow-screen layout and keyboard/axe accessibility."
+      ],
+      "depends_on": ["TASK-US-CM-05-02", "TASK-US-CM-05-03", "TASK-US-CM-05-04"]
+    },
+    {
+      "id": "TASK-US-CM-05-06",
+      "story_id": "US-CM-05",
+      "title": "Qualify usage reconciliation, delivery and access boundaries",
+      "description": "Build the integrated evidence matrix for balances, per-user usage and received 80/100 percent notices using synthetic journal entries/provider outcomes. Proposed test_ai_usage.py/test_ai_usage_live.py cover exact threshold edges/jumps, cancellation adjustments, window resets, replay/restart, missing-recipient/delivery failure and current-authority redaction. Join the native settlement/race evidence from FR-AI-016a and verify browser accessibility/read-only routing; do not treat queued alerts as received. Record exact commit/nodes/run paths, limits and remaining owner decisions for human review and product-owner acceptance.",
+      "acceptance_criteria": [
+        "Proposed test_ai_usage.py::test_balance_and_per_user_usage_reconcile and ::test_jump_to_limit_delivers_both_threshold_notices prove the source positive scenarios against exact journal amounts and delivered receipt records.",
+        "Proposed test_ai_usage_live.py::test_native_settlement_and_alert_replay_are_idempotent exercises concurrent/restarted execution and proves one threshold key/notice without double-accounting.",
+        "Proposed test_ai_usage.py::test_pending_outbox_is_not_delivered_alert_evidence and ::test_revoked_usage_reader_sees_no_balance_or_user_details prove the alert/access rejections, including unavailable/no-recipient states.",
+        "The evidence distinguishes new task Backlog/In review from Sprint 1's existing In review stories, and the owner records actual accepted scope before US-CM-05 can become Done; wider R2 entitlements remain future work."
+      ],
+      "depends_on": ["TASK-US-CM-05-05", "TASK-FR-AI-016a-06"]
+    }
+  ]
+}

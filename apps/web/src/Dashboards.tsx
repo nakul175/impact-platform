@@ -9,7 +9,12 @@ type Props = {
   request: (path: string, options?: RequestInit) => Promise<any>;
   explain: (e: unknown) => string;
 };
-type Row = { object_id: string; data: Record<string, any> };
+type Row = {
+  object_id: string;
+  revision_id: string;
+  classification?: string;
+  data: Record<string, any>;
+};
 type Value = {
   mode: "OFFICIAL" | "PROVISIONAL";
   value_state: string;
@@ -80,6 +85,21 @@ function targetText(t: any) {
   return t.displayed_value;
 }
 
+function targetContext(t: any) {
+  if (!t) return null;
+  const period = t.applicable_period;
+  return [
+    t.version_label,
+    period?.period_code || period?.period_id?.slice(0, 8),
+    period?.starts_at && period?.ends_at
+      ? `${period.starts_at.slice(0, 10)} to ${period.ends_at.slice(0, 10)}`
+      : null,
+    t.time_semantic ? words(t.time_semantic) : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+}
+
 function Coverage({ c }: { c: any }) {
   if (c.applicability === "UNAVAILABLE")
     return (
@@ -123,6 +143,12 @@ function Freshness({ f }: { f: any }) {
       ) : null}
       <small className="muted">
         <br />
+        State {words(f.data_state)} · last valid data{" "}
+        {when(f.last_valid_data_at)}
+        <br />
+        Last source success {when(f.last_source_success_at)} · approval cutoff{" "}
+        {when(f.approval_cutoff_at)} · calculation {when(f.calculation_at)}
+        <br />
         {f.locked_at ? "Locked " + when(f.locked_at) + " · " : ""}
         {f.provisional_calculated_at
           ? "Calculated " + when(f.provisional_calculated_at) + " · "
@@ -131,6 +157,9 @@ function Freshness({ f }: { f: any }) {
         {f.source_check === "NOT_PERMITTED"
           ? " · some sources are outside your access"
           : ""}
+        <br />
+        Dashboard fetched {when(f.dashboard_fetched_at)}; fetch success does not
+        change freshness.
       </small>
     </span>
   );
@@ -287,7 +316,27 @@ export function DashboardsPanel({
     [view, setView] = useState<any>(null),
     [indicator, setIndicator] = useState(""),
     [series, setSeries] = useState<any>(null),
-    [mode, setMode] = useState<"programme" | "portfolio">("programme"),
+    [mode, setMode] = useState<"programme" | "portfolio" | "authored">(
+      "programme",
+    ),
+    [savedDashboards, setSavedDashboards] = useState<Row[]>([]),
+    [calculatedResults, setCalculatedResults] = useState<Row[]>([]),
+    [savedDashboard, setSavedDashboard] = useState(""),
+    [authoredPreview, setAuthoredPreview] = useState<any>(null),
+    [viewport, setViewport] = useState<"DESKTOP" | "MOBILE" | "TABLE">(
+      "DESKTOP",
+    ),
+    [drillLevel, setDrillLevel] = useState(""),
+    [filterField, setFilterField] = useState("programme"),
+    [filterValue, setFilterValue] = useState(""),
+    [pivotDimension, setPivotDimension] = useState("service_type"),
+    [pivotStatistic, setPivotStatistic] = useState("DISTINCT_COUNT"),
+    [pivotResult, setPivotResult] = useState<any>(null),
+    [geographicPreview, setGeographicPreview] = useState<any>(null),
+    [recipientId, setRecipientId] = useState(""),
+    [sharingPreview, setSharingPreview] = useState<any>(null),
+    [alertRule, setAlertRule] = useState(""),
+    [alertOutcome, setAlertOutcome] = useState<any>(null),
     [sourcesFor, setSourcesFor] = useState(""),
     [sources, setSources] = useState<any>(null),
     [error, setError] = useState(""),
@@ -297,6 +346,10 @@ export function DashboardsPanel({
     allowed("dashboards.read") &&
     allowed("programmes.read") &&
     allowed("periods.read");
+  const canAuthor =
+    allowed("dashboards.read") &&
+    allowed("dashboards.draft.create") &&
+    allowed("calculated-results.read");
   useEffect(() => {
     if (!permitted) return;
     Promise.all([
@@ -374,6 +427,336 @@ export function DashboardsPanel({
       live = false;
     };
   }, [sourcesFor, period, tick, base]);
+  useEffect(() => {
+    if (mode !== "authored" || !canAuthor) return;
+    Promise.all([
+      all(request, base + "dashboards"),
+      all(request, base + "calculated-results"),
+    ])
+      .then(([dashboards, results]) => {
+        setSavedDashboards(dashboards);
+        setCalculatedResults(results);
+        setSavedDashboard(
+          (current) => current || dashboards[0]?.object_id || "",
+        );
+      })
+      .catch((e) => setError(explain(e)));
+  }, [mode, canAuthor, base, tick]);
+  useEffect(() => {
+    if (mode !== "authored" || !savedDashboard) {
+      setAuthoredPreview(null);
+      return;
+    }
+    request(
+      `${base}dashboards/${savedDashboard}/preview?viewport=${viewport}${drillLevel ? `&drill_level=${drillLevel}` : ""}`,
+    )
+      .then(setAuthoredPreview)
+      .catch((e) => setError(explain(e)));
+  }, [mode, savedDashboard, viewport, drillLevel, base, tick]);
+  const widgetFor = (result: Row, position: number) => ({
+    widget_id: crypto.randomUUID(),
+    type: "METRIC",
+    title: `Result ${result.object_id.slice(0, 8)}`,
+    binding: {
+      resource_type: "CALCULATED_RESULT",
+      object_id: result.object_id,
+      revision_id: result.revision_id,
+    },
+    view_mode: result.data.mode || "PROVISIONAL",
+    period_id: result.data.period_id,
+    dimensions: [],
+    disclosure_context: {
+      classification: result.classification || "INTERNAL",
+      quality_context_required: true,
+    },
+    position,
+    width: 6,
+    compatible_filters: ["programme", "period", "indicator"],
+    drilldown_levels: ["PORTFOLIO", "PARTNER", "PROGRAMME"],
+    approved_slices: [],
+  });
+  async function createAuthoredDashboard() {
+    const result = calculatedResults[0];
+    if (!result) return setError("A permitted calculated result is required.");
+    try {
+      const receipt = await request(base + "dashboards", {
+        method: "POST",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          data: {
+            title: "New private dashboard",
+            mode: "PRIVATE_DRAFT",
+            widgets: [widgetFor(result, 0)],
+            filters: { terms: [] },
+          },
+        }),
+      });
+      setSavedDashboard(receipt.object_id);
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function addWidget() {
+    const dashboard = savedDashboards.find(
+      (row) => row.object_id === savedDashboard,
+    );
+    if (!dashboard || dashboard.data.widgets.length >= 10) return;
+    const used = new Set(
+      dashboard.data.widgets.map((widget: any) => widget.binding.object_id),
+    );
+    const result = calculatedResults.find((row) => !used.has(row.object_id));
+    if (!result)
+      return setError("No additional permitted result is available.");
+    try {
+      await request(base + "dashboards/" + dashboard.object_id, {
+        method: "PATCH",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          expected_revision: dashboard.revision_id,
+          data: {
+            widgets: [
+              ...dashboard.data.widgets,
+              widgetFor(result, dashboard.data.widgets.length),
+            ],
+          },
+        }),
+      });
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function addMapWidget() {
+    const dashboard = savedDashboards.find(
+      (row) => row.object_id === savedDashboard,
+    );
+    const result = calculatedResults.find((row) =>
+      row.data.disaggregation?.some(
+        (entry: any) => entry.dimension && entry.dimension_version,
+      ),
+    );
+    const geographic = result?.data.disaggregation?.find(
+      (entry: any) => entry.dimension && entry.dimension_version,
+    );
+    if (!dashboard || !result || !geographic)
+      return setError("A versioned geographic result is required.");
+    if (dashboard.data.widgets.length >= 10) return;
+    const widget = {
+      ...widgetFor(result, dashboard.data.widgets.length),
+      type: "MAP",
+      title: `Map ${result.object_id.slice(0, 8)}`,
+      geographic_config: {
+        dimension: geographic.dimension,
+        boundary_version: geographic.dimension_version,
+        layer: "AGGREGATE",
+        granularity: "DISTRICT",
+        legend: "Approved result by district",
+        missingness: "SHOW_MISSING",
+        external_map: false,
+      },
+    };
+    try {
+      await request(base + "dashboards/" + dashboard.object_id, {
+        method: "PATCH",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          expected_revision: dashboard.revision_id,
+          data: { widgets: [...dashboard.data.widgets, widget] },
+        }),
+      });
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function previewMap() {
+    const dashboard = savedDashboards.find(
+      (row) => row.object_id === savedDashboard,
+    );
+    const widget = dashboard?.data.widgets.find(
+      (item: any) => item.type === "MAP",
+    );
+    if (!dashboard || !widget)
+      return setError("A configured map widget is required.");
+    try {
+      setGeographicPreview(
+        await request(
+          `${base}dashboards/${dashboard.object_id}/geographic-preview?widget_id=${encodeURIComponent(widget.widget_id)}`,
+        ),
+      );
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function copyDashboard() {
+    if (!savedDashboard) return;
+    try {
+      const receipt = await request(
+        `${base}dashboards/${savedDashboard}/actions/copy`,
+        {
+          method: "POST",
+          body: JSON.stringify({ operation_id: crypto.randomUUID(), data: {} }),
+        },
+      );
+      setSavedDashboard(receipt.object_id);
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function previewSharing() {
+    if (!savedDashboard || !recipientId) return;
+    try {
+      setSharingPreview(
+        await request(
+          base +
+            "dashboards/" +
+            savedDashboard +
+            "/sharing-preview?recipient_id=" +
+            encodeURIComponent(recipientId),
+        ),
+      );
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function publishDashboard() {
+    if (!savedDashboard) return;
+    const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    try {
+      await request(
+        base + "dashboards/" + savedDashboard + "/actions/publish",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            operation_id: crypto.randomUUID(),
+            data: { audience: "INTERNAL", expires_at: expires.toISOString() },
+          }),
+        },
+      );
+      setError("");
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function createAlertRule() {
+    if (!indicator || !recipientId) return;
+    try {
+      const receipt = await request(base + "dashboard-alert-rules", {
+        method: "POST",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          data: {
+            measure_id: indicator,
+            operator: "LT",
+            threshold: "0",
+            minimum_coverage: 75,
+            max_freshness_seconds: 2678400,
+            evaluation_cadence: "MONTHLY",
+            recipient_ids: [recipientId],
+            cooldown_seconds: 86400,
+          },
+        }),
+      });
+      setAlertRule(receipt.object_id);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function evaluateMissingAlert() {
+    if (!alertRule) return;
+    try {
+      setAlertOutcome(
+        await request(
+          base + "dashboard-alert-rules/" + alertRule + "/actions/evaluate",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              operation_id: crypto.randomUUID(),
+              data: {},
+            }),
+          },
+        ),
+      );
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function applyDashboardFilter() {
+    const dashboard = savedDashboards.find(
+      (row) => row.object_id === savedDashboard,
+    );
+    if (!dashboard) return;
+    try {
+      await request(base + "dashboards/" + dashboard.object_id, {
+        method: "PATCH",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          expected_revision: dashboard.revision_id,
+          data: {
+            filters: {
+              terms: filterValue
+                ? [
+                    {
+                      field: filterField,
+                      operator: "EQ",
+                      values: [filterValue],
+                    },
+                  ]
+                : [],
+            },
+          },
+        }),
+      });
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function runPivot(preview: boolean) {
+    const dashboard = savedDashboards.find(
+      (row) => row.object_id === savedDashboard,
+    );
+    const widget = dashboard?.data.widgets[0];
+    if (!dashboard || !widget)
+      return setError("A dashboard result widget is required.");
+    const data = {
+      widget_id: widget.widget_id,
+      row_dimension: pivotDimension,
+      statistic: pivotStatistic,
+    };
+    try {
+      const result = await request(
+        `${base}dashboards/${dashboard.object_id}/${preview ? "pivot-preview" : "actions/run-pivot"}`,
+        {
+          method: "POST",
+          body: JSON.stringify(
+            preview ? data : { operation_id: crypto.randomUUID(), data },
+          ),
+        },
+      );
+      setPivotResult(result);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function cancelPivot() {
+    if (!savedDashboard || !pivotResult?.job_id) return;
+    try {
+      setPivotResult(
+        await request(
+          `${base}dashboards/${savedDashboard}/pivot-jobs/${pivotResult.job_id}/actions/cancel`,
+          {
+            method: "POST",
+            body: JSON.stringify({ operation_id: crypto.randomUUID() }),
+          },
+        ),
+      );
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
   async function more() {
     try {
       const next = await request(
@@ -412,16 +795,26 @@ export function DashboardsPanel({
           aria-label="Dashboard view"
           onKeyDown={tabListKeys}
         >
-          {(["programme", "portfolio"] as const).map((m) => (
+          {(
+            [
+              "programme",
+              "portfolio",
+              ...(canAuthor ? ["authored"] : []),
+            ] as const
+          ).map((m) => (
             <button
               key={m}
               role="tab"
               type="button"
               aria-selected={mode === m}
               className={mode === m ? "primary" : "secondary"}
-              onClick={() => setMode(m)}
+              onClick={() => setMode(m as typeof mode)}
             >
-              {m === "programme" ? "Programme dashboard" : "Portfolio"}
+              {m === "programme"
+                ? "Programme dashboard"
+                : m === "portfolio"
+                  ? "Portfolio"
+                  : "Authored dashboards"}
             </button>
           ))}
         </div>
@@ -436,9 +829,348 @@ export function DashboardsPanel({
           setPeriod={setPeriod}
         />
       ) : null}
+      {mode === "authored" ? (
+        <section className="panel" aria-label="Authored dashboard preview">
+          <div className="planning-toolbar">
+            <label>
+              Private dashboard
+              <select
+                value={savedDashboard}
+                onChange={(event) => setSavedDashboard(event.target.value)}
+              >
+                {!savedDashboards.length && <option value="">No drafts</option>}
+                {savedDashboards.map((row) => (
+                  <option key={row.object_id} value={row.object_id}>
+                    {row.data.title}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Preview
+              <select
+                value={viewport}
+                onChange={(event) =>
+                  setViewport(event.target.value as typeof viewport)
+                }
+              >
+                <option>DESKTOP</option>
+                <option>MOBILE</option>
+                <option>TABLE</option>
+              </select>
+            </label>
+            <label>
+              Drill level
+              <select
+                value={drillLevel}
+                onChange={(event) => setDrillLevel(event.target.value)}
+              >
+                <option value="">No drill</option>
+                <option>PORTFOLIO</option>
+                <option>PARTNER</option>
+                <option>PROGRAMME</option>
+              </select>
+            </label>
+            <button type="button" onClick={createAuthoredDashboard}>
+              New draft
+            </button>
+            <button type="button" className="secondary" onClick={addWidget}>
+              Add result widget
+            </button>
+            <button type="button" className="secondary" onClick={addMapWidget}>
+              Add district map
+            </button>
+            <button type="button" className="secondary" onClick={previewMap}>
+              Preview safe map
+            </button>
+            <button type="button" className="secondary" onClick={copyDashboard}>
+              Copy privately
+            </button>
+            <label>
+              Recipient principal ID
+              <input
+                value={recipientId}
+                onChange={(event) => setRecipientId(event.target.value)}
+                placeholder="UUID"
+              />
+            </label>
+            <button
+              type="button"
+              className="secondary"
+              onClick={previewSharing}
+            >
+              Preview recipient view
+            </button>
+            <button type="button" onClick={publishDashboard}>
+              Publish internally for 30 days
+            </button>
+            <button
+              type="button"
+              className="secondary"
+              onClick={createAlertRule}
+            >
+              Create monthly alert
+            </button>
+            <button
+              type="button"
+              className="secondary"
+              disabled={!alertRule}
+              onClick={evaluateMissingAlert}
+            >
+              Evaluate missed result
+            </button>
+          </div>
+          {sharingPreview ? (
+            <p role="status" className="muted">
+              Recipient preview:{" "}
+              {sharingPreview.unavailable_binding_count === 0
+                ? "all bindings available"
+                : sharingPreview.unavailable_binding_count +
+                  " bindings unavailable"}
+              . No grants were created.
+            </p>
+          ) : null}
+          {alertOutcome ? (
+            <p role="status" className="muted">
+              Alert outcome: {words(alertOutcome.outcome)} ·{" "}
+              {words(alertOutcome.reason_code)}
+              {alertOutcome.coalesced ? " · cooldown incident updated" : ""}
+            </p>
+          ) : null}
+          <div className="planning-toolbar" aria-label="Pivot analysis">
+            <label>
+              Pivot dimension
+              <input
+                value={pivotDimension}
+                onChange={(event) => setPivotDimension(event.target.value)}
+              />
+            </label>
+            <label>
+              Statistic
+              <select
+                value={pivotStatistic}
+                onChange={(event) => setPivotStatistic(event.target.value)}
+              >
+                <option>DISTINCT_COUNT</option>
+                <option>SUM</option>
+                <option>MEAN</option>
+              </select>
+            </label>
+            <button
+              type="button"
+              className="secondary"
+              onClick={() => runPivot(true)}
+            >
+              Preview pivot
+            </button>
+            <button
+              type="button"
+              className="secondary"
+              onClick={() => runPivot(false)}
+            >
+              Run pivot
+            </button>
+          </div>
+          {pivotResult ? (
+            <section className="dashboard-card" aria-label="Pivot result">
+              <h3>Pivot result</h3>
+              <p role="status">
+                {words(pivotResult.execution)} · estimated{" "}
+                {pivotResult.estimated_cardinality} cells
+              </p>
+              <p>{pivotResult.explanation}</p>
+              {pivotResult.job_id ? (
+                <p>
+                  Queued cancellable job {pivotResult.job_id}{" "}
+                  <button
+                    type="button"
+                    className="secondary"
+                    onClick={cancelPivot}
+                  >
+                    Cancel queued pivot
+                  </button>
+                </p>
+              ) : null}
+              {!pivotResult.job_id ? (
+                <div className="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Category</th>
+                        <th>Value</th>
+                        <th>Disclosure</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pivotResult.cells.map((cell: any, index: number) => (
+                        <tr key={`${cell.category}-${index}`}>
+                          <td>{cell.category ?? "—"}</td>
+                          <td>
+                            {cell.displayed_value ??
+                              cell.value ??
+                              words(cell.value_state)}
+                          </td>
+                          <td>
+                            {words(cell.disclosure)} · {words(cell.additivity)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>Grand total</th>
+                        <td>{pivotResult.grand_total ?? "—"}</td>
+                        <td>{words(pivotResult.grand_total_basis)}</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              ) : null}
+            </section>
+          ) : null}
+          {geographicPreview ? (
+            <section
+              className="dashboard-card"
+              aria-label="Geographic map and equivalent table"
+            >
+              <h3>{geographicPreview.legend}</h3>
+              <p role="status">
+                Boundary {words(geographicPreview.boundary_status)} ·{" "}
+                {words(geographicPreview.granularity)} ·{" "}
+                {words(geographicPreview.coordinate_delivery)}
+              </p>
+              <div
+                className="geographic-map"
+                role="img"
+                aria-label={`${geographicPreview.legend}; ${geographicPreview.map_request.length} permitted geographic features`}
+              >
+                {geographicPreview.map_request.map(
+                  (feature: any, index: number) => (
+                    <span
+                      key={`${feature.geography_key}-${index}`}
+                      title={`${feature.tooltip.label}: ${feature.tooltip.displayed_value ?? words(feature.tooltip.value_state)}`}
+                    >
+                      {feature.geography_key ?? "Missing"}:{" "}
+                      {feature.displayed_value ?? words(feature.value_state)}
+                    </span>
+                  ),
+                )}
+              </div>
+              <div className="table-scroll">
+                <table>
+                  <caption>Sortable equivalent table</caption>
+                  <thead>
+                    <tr>
+                      <th>Geography</th>
+                      <th>Value</th>
+                      <th>State</th>
+                      <th>Disclosure</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {geographicPreview.equivalent_table.map(
+                      (row: any, index: number) => (
+                        <tr key={`${row.geography_key}-${index}`}>
+                          <td>{row.geography_key ?? "—"}</td>
+                          <td>{row.displayed_value ?? row.value ?? "—"}</td>
+                          <td>{words(row.value_state)}</td>
+                          <td>{words(row.disclosure)}</td>
+                        </tr>
+                      ),
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          ) : null}
+          <div className="planning-toolbar">
+            <label>
+              Filter field
+              <select
+                value={filterField}
+                onChange={(event) => setFilterField(event.target.value)}
+              >
+                <option value="programme">Programme</option>
+                <option value="period">Period</option>
+                <option value="indicator">Indicator</option>
+                <option value="geography">Geography</option>
+                <option value="dimension">Dimension</option>
+                <option value="approval">Approval</option>
+              </select>
+            </label>
+            <label>
+              Current filter value
+              <input
+                value={filterValue}
+                onChange={(event) => setFilterValue(event.target.value)}
+              />
+            </label>
+            <button
+              type="button"
+              className="secondary"
+              onClick={applyDashboardFilter}
+            >
+              Apply visible filter
+            </button>
+          </div>
+          {authoredPreview?.current_filters?.terms?.length ? (
+            <p role="status">
+              Current filters:{" "}
+              {authoredPreview.current_filters.terms
+                .map(
+                  (term: any) =>
+                    `${words(term.field)} = ${term.values.join(", ")}`,
+                )
+                .join("; ")}
+            </p>
+          ) : (
+            <p className="muted">No filters applied.</p>
+          )}
+          {authoredPreview?.widgets.map((widget: any) => (
+            <article className="dashboard-card" key={widget.widget_id}>
+              <h3>{widget.title}</h3>
+              {widget.availability === "UNAVAILABLE" ? (
+                <p role="status">
+                  Unavailable — no saved private value is shown.
+                </p>
+              ) : (
+                <div className="table-scroll">
+                  <table aria-label={`${widget.title} tabular equivalent`}>
+                    <thead>
+                      <tr>
+                        <th>Measure</th>
+                        <th>Value</th>
+                        <th>State</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {widget.table_rows.map((row: any) => (
+                        <tr key={row.label}>
+                          <td>{row.label}</td>
+                          <td>{row.displayed_value ?? "—"}</td>
+                          <td>{words(row.value_state)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              <p className="muted">
+                Quality context is always visible · {words(widget.view_mode)}
+              </p>
+              {widget.non_applicable_filters.length ? (
+                <p role="status">
+                  Not affected by:{" "}
+                  {widget.non_applicable_filters.map(words).join(", ")}
+                </p>
+              ) : null}
+            </article>
+          ))}
+        </section>
+      ) : null}
       <div
         className="planning-toolbar"
-        style={mode === "portfolio" ? { display: "none" } : undefined}
+        style={mode !== "programme" ? { display: "none" } : undefined}
       >
         <label>
           Programme
@@ -503,6 +1235,13 @@ export function DashboardsPanel({
             <summary>When is a value stale?</summary>
             <p>{view.stale_rule}</p>
           </details>
+          <button
+            type="button"
+            className="secondary dashboard-print-control"
+            onClick={() => window.print()}
+          >
+            Print or save dashboard with context
+          </button>
           {!view.indicators.length ? (
             <p className="muted">No indicators in this programme yet.</p>
           ) : (
@@ -535,12 +1274,20 @@ export function DashboardsPanel({
                         <small className="muted">
                           {" "}
                           · {words(c.target.direction)} ·{" "}
-                          {words(c.target.target_basis)}
+                          {targetContext(c.target)}
                         </small>
                       ) : null}
                     </dd>
                     <dt>Baseline</dt>
-                    <dd>{c.baseline ? targetText(c.baseline) : "None"}</dd>
+                    <dd>
+                      {c.baseline ? targetText(c.baseline) : "None"}
+                      {c.baseline ? (
+                        <small className="muted">
+                          {" "}
+                          · {targetContext(c.baseline)}
+                        </small>
+                      ) : null}
+                    </dd>
                     {c.status ? (
                       <>
                         <dt>Status</dt>
@@ -555,6 +1302,28 @@ export function DashboardsPanel({
                               · against {words(c.status.compared_with)}
                             </small>
                           ) : null}
+                          <small className="muted">
+                            <br />
+                            Deviation{" "}
+                            {c.status.displayed_deviation ?? "undefined"} ·
+                            formula: {c.status.deviation_formula}
+                            <br />
+                            Attainment formula: {c.status.attainment_formula} ·
+                            scale is uncapped
+                            <br />
+                            Baseline change{" "}
+                            {c.status.change_from_baseline_percent === null
+                              ? "not available"
+                              : c.status.change_from_baseline_percent ===
+                                  "Undefined"
+                                ? "undefined"
+                                : c.status.change_from_baseline_percent +
+                                  "%"}{" "}
+                            · {c.status.baseline_change_formula}
+                            <br />
+                            Time semantic: {words(c.status.time_semantic)} (
+                            {words(c.status.time_semantic_compatibility)})
+                          </small>
                         </dd>
                       </>
                     ) : null}

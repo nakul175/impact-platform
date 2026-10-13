@@ -1,0 +1,680 @@
+{
+  "record": "IMPRANA-CURRENT-QA-FINAL-README-DELTA-REVIEW-20261011",
+  "recorded_at_utc": "2026-10-11T04:55:05.514172+00:00",
+  "review_type": "SEPARATE_BOUNDED_AI_DOCUMENT_AND_RECEIPT_DELTA_REVIEW",
+  "product": "Imprana Commons",
+  "scope": "Exact previously reviewed README prefix plus newly appended Recorded document checks; peer/document and linked evidence hash preservation only",
+  "authorship_boundary": "Reviewer did not author the README. Previously authored release-plan/protocol were checked only for unchanged bytes against the separate independent six-document review, not self-approved for semantics.",
+  "documentation_baseline": "c1bcae29718bcae0fac51000d69734a536061fba",
+  "application_source": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "current_readme_pin": {
+    "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/README.md",
+    "bytes": 7525,
+    "sha256": "053f9e2437ba99d0c3604d294eddd19c4b14be90747118c1763c7e3ade1df092"
+  },
+  "reviewed_readme_prefix": {
+    "path": "docs/qa/current-20261011/README.md",
+    "bytes": 5870,
+    "sha256": "18c40d23d3c53d13460e4eeb1d373175340d9bbaccd7967bcae33e185d3fdea4"
+  },
+  "appendix": {
+    "bytes": 1655,
+    "sha256": "adb414e32d71cfae28aabe3636ceb728326ad23ee7488f8ab514ab4b0185a922",
+    "text": "\n## Recorded document checks\n\nThe separate [bridge/source review](evidence/bridge-independent-review/REVIEW-RECEIPT.json) records 19 source/contract checks; the separate [six-document review](evidence/current-doc-review/INDEPENDENT-CURRENT-QA-DOCUMENT-REVIEW.json) records 33 source/document checks and binds the added risk-scoring paragraph. Both found no blocking documentation defect in their bounded scope. These are AI reviews, not appointed specialist review, source-owner completeness approval, product test results or release acceptance.\n\nThe [initial root integration observation](evidence/ROOT-INTEGRATION-CHECKS.json) records 14 source-only checks before the risk paragraph was added; it remains dated history. The [first final-integration observation](evidence/ROOT-INTEGRATION-FINAL-CHECKS.json) retains its 13/14 result: this README linked that receipt before the copy existed. The missing copy was then saved; a separate `ROOT-INTEGRATION-POST-LINK-CHECKS.json` observation in the [evidence directory](evidence/) pins the resulting document bytes. The [first review-adapter observation](evidence/current-doc-review/INDEPENDENT-CURRENT-QA-DOCUMENT-REVIEW.initial-adapter-observation.json) preserves two parser/locator errors; only those review adapters were corrected, with no weakened source requirement or product-test result inferred.\n\nArchived review helpers are records of these bounded observations, not installed product runners or adopted QA gates. Reproduction requires fresh owned output destinations; do not run over retained receipts. GitHub/Linear publication of this new QA edition and actual product execution remain pending.\n"
+  },
+  "review_receipt_pins": [
+    {
+      "path": "outputs/imprana-qa-reconciliation-20261011/INDEPENDENT-CURRENT-QA-DOCUMENT-REVIEW.json",
+      "bytes": 46756,
+      "sha256": "87e66aa8c8d252e44443106ce77544226e5dbe580195a7e19cc39183ef20179e"
+    },
+    {
+      "path": "outputs/imprana-qa-reconciliation-20261011/bridge-independent-review/REVIEW-RECEIPT.json",
+      "bytes": 5889,
+      "sha256": "d8eb2679308b9fa7a02537d1943454bb29936d59fd07f7efd95871b4201e76e6"
+    },
+    {
+      "path": "outputs/imprana-qa-reconciliation-20261011/bridge-independent-review/ACTUAL-SOURCE-CHECKS.json",
+      "bytes": 17033,
+      "sha256": "479628bcf03115f6f3763add09390e195e3b70ea996134e98d593743263ded27"
+    },
+    {
+      "path": "outputs/imprana-qa-reconciliation-20261011/ROOT-INTEGRATION-CHECKS.json",
+      "bytes": 3884,
+      "sha256": "e0dda0072f5e51f758b1cece9e2580d9200647057026010c9ed380384c523ba8"
+    },
+    {
+      "path": "outputs/imprana-qa-reconciliation-20261011/ROOT-INTEGRATION-FINAL-CHECKS.json",
+      "bytes": 4046,
+      "sha256": "d8e8ddae332b13a5f0e7b46bb3525020752b4c642f9e00af11976751e14cca33"
+    },
+    {
+      "path": "outputs/imprana-qa-reconciliation-20261011/ROOT-INTEGRATION-POST-LINK-CHECKS.json",
+      "bytes": 3884,
+      "sha256": "d0b69300d7a53614a4f6af1f7f4850c5907b361240b845d273124a88aa96a455"
+    }
+  ],
+  "checks": [
+    {
+      "check_id": "README-01",
+      "check": "Exact declared documentation HEAD is retained",
+      "passed": true,
+      "detail": "c1bcae29718bcae0fac51000d69734a536061fba"
+    },
+    {
+      "check_id": "README-02",
+      "check": "Previously independently reviewed README bytes remain an exact prefix",
+      "passed": true,
+      "detail": {
+        "reviewed_prefix_bytes": 5870,
+        "reviewed_prefix_sha256": "18c40d23d3c53d13460e4eeb1d373175340d9bbaccd7967bcae33e185d3fdea4",
+        "actual_prefix_sha256": "18c40d23d3c53d13460e4eeb1d373175340d9bbaccd7967bcae33e185d3fdea4",
+        "append_bytes": 1655,
+        "append_sha256": "adb414e32d71cfae28aabe3636ceb728326ad23ee7488f8ab514ab4b0185a922"
+      }
+    },
+    {
+      "check_id": "README-03",
+      "check": "The sole new section is the declared Recorded document checks appendix",
+      "passed": true,
+      "detail": {
+        "scope": "README appendix only; no earlier source text was changed"
+      }
+    },
+    {
+      "check_id": "README-04",
+      "check": "Current README stays within Imprana Commons and source-bound planning",
+      "passed": true,
+      "detail": {
+        "unrelated-product vocabulary": false
+      }
+    },
+    {
+      "check_id": "README-05",
+      "check": "Narrated six-document review is the actual bounded 33/33 source/document review",
+      "passed": true,
+      "detail": {
+        "actual_totals": {
+          "passed": 33,
+          "failed": 0,
+          "total": 33
+        },
+        "actual_scope": "Separate bounded AI document/source-evidence review of six non-owned Imprana current QA documents; not owner approval, adoption, product qualification or release certification"
+      }
+    },
+    {
+      "check_id": "README-06",
+      "check": "Six-document review and README do not claim human approval or product acceptance",
+      "passed": true,
+      "detail": {
+        "owner_approval": false,
+        "adoption_approval": false,
+        "product_ready": false,
+        "release_approval": false,
+        "repo_or_native_mutations": false,
+        "product_test_result": "NOT_RUN_BY_THIS_REVIEW"
+      }
+    },
+    {
+      "check_id": "README-07",
+      "check": "Bridge/source review is the actual 19/19 bounded separate AI review",
+      "passed": true,
+      "detail": {
+        "actual_review_type": "BOUNDED_AI_SOURCE_AND_DOCUMENT_REVIEW",
+        "source_checks": {
+          "pass": 19,
+          "fail": 0
+        },
+        "authority_limits": [
+          "Read-only review of exactly two proposed inputs plus their primary Git/source and actual attachment references.",
+          "Checks establish fidelity to retained c1bcae planning snapshot, not live Linear current planning authority or independent source completeness.",
+          "No product tests, runtime, build, provider, CI, network, Native mutation or repository edits.",
+          "No package helper/checker executed; package contracts inspected as source.",
+          "This AI review is not human/source-owner completeness approval, external assurance, adopted package validation or release qualification."
+        ]
+      }
+    },
+    {
+      "check_id": "README-08",
+      "check": "Initial root 14/14 is explicitly historical and predates the newly reviewed risk strategy",
+      "passed": true,
+      "detail": {
+        "initial_date": "2026-10-11T04:47:25.427591+00:00",
+        "later_review_date": "2026-10-11T04:51:27.649702+00:00",
+        "initial_strategy": {
+          "path": "docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "bytes": 17915,
+          "sha256": "8701929767549263f000eb8bf8938d37a6677356816657a0b3d97eaf4238dba9"
+        },
+        "reviewed_current_strategy": {
+          "path": "docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+          "bytes": 18986,
+          "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157"
+        }
+      }
+    },
+    {
+      "check_id": "README-09",
+      "check": "First final 13/14 failure remains the exact missing-receipt-link observation",
+      "passed": true,
+      "detail": {
+        "recorded_at": "2026-10-11T04:52:29.378687+00:00",
+        "failed_check": [
+          {
+            "check": "new documentation relative links exist and stay in repository",
+            "passed": false,
+            "detail": {
+              "count": 109,
+              "errors": [
+                {
+                  "source": "docs/qa/current-20261011/README.md",
+                  "target": "evidence/ROOT-INTEGRATION-FINAL-CHECKS.json"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check_id": "README-10",
+      "check": "The missing first-final receipt now exists without altering the historical 13/14 record",
+      "passed": true,
+      "detail": {
+        "stored_pin": {
+          "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/ROOT-INTEGRATION-FINAL-CHECKS.json",
+          "bytes": 4046,
+          "sha256": "d8e8ddae332b13a5f0e7b46bb3525020752b4c642f9e00af11976751e14cca33"
+        }
+      }
+    },
+    {
+      "check_id": "README-11",
+      "check": "Fresh post-link integration observation is actual source-only 14/14",
+      "passed": true,
+      "detail": {
+        "recorded_at": "2026-10-11T04:53:03.878702+00:00",
+        "product_tests_executed": false,
+        "remote_actions": false,
+        "owner_approval": false
+      }
+    },
+    {
+      "check_id": "README-12",
+      "check": "Post-link receipt pins the final README and exact seven current document bytes",
+      "passed": true,
+      "detail": {
+        "recorded_pins": [
+          {
+            "path": "docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+            "bytes": 12412,
+            "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20"
+          },
+          {
+            "path": "docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+            "bytes": 18986,
+            "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157"
+          },
+          {
+            "path": "docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+            "bytes": 26402,
+            "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef"
+          },
+          {
+            "path": "docs/qa/current-20261011/README.md",
+            "bytes": 7525,
+            "sha256": "053f9e2437ba99d0c3604d294eddd19c4b14be90747118c1763c7e3ade1df092"
+          },
+          {
+            "path": "docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+            "bytes": 26265,
+            "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8"
+          },
+          {
+            "path": "docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+            "bytes": 14040,
+            "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535"
+          },
+          {
+            "path": "docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+            "bytes": 14723,
+            "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310"
+          }
+        ],
+        "mismatches": []
+      }
+    },
+    {
+      "check_id": "README-13",
+      "check": "Five peers of the reviewed six-document README remain byte-identical to the 33-check receipt",
+      "passed": true,
+      "detail": {
+        "pins": [
+          {
+            "path": "docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+            "bytes": 18986,
+            "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157"
+          },
+          {
+            "path": "docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+            "bytes": 14723,
+            "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310"
+          },
+          {
+            "path": "docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+            "bytes": 14040,
+            "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535"
+          },
+          {
+            "path": "docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+            "bytes": 26265,
+            "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8"
+          },
+          {
+            "path": "docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+            "bytes": 26402,
+            "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef"
+          }
+        ],
+        "mismatches": [],
+        "scope": "Hash preservation only; no repeated semantic review of my own authored plan/protocol"
+      }
+    },
+    {
+      "check_id": "README-14",
+      "check": "The sixth peer, separately reviewed bridge, remains byte-identical to the 19-check receipt",
+      "passed": true,
+      "detail": {
+        "pin": {
+          "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+          "bytes": 12412
+        }
+      }
+    },
+    {
+      "check_id": "README-15",
+      "check": "Source census remains byte-identical to separate source-review and post-link pins",
+      "passed": true,
+      "detail": {
+        "pin": {
+          "sha256": "beb6277c245065c57a17f94598c20d6b918e1631d9e923fae089f3da0cde7184",
+          "bytes": 826611
+        }
+      }
+    },
+    {
+      "check_id": "README-16",
+      "check": "All 15 copied evidence/archived-helper files exist and equal output originals",
+      "passed": true,
+      "detail": [
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/BRIDGE-AUTHORING-RECEIPT.json",
+            "bytes": 2202,
+            "sha256": "81c9debf3fe4d3dda4b778d1ef2ee9b4ba8395a63fe2665de0080b936f8a02e2"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/BRIDGE-AUTHORING-RECEIPT.json",
+            "bytes": 2202,
+            "sha256": "81c9debf3fe4d3dda4b778d1ef2ee9b4ba8395a63fe2665de0080b936f8a02e2"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/PRIMARY-SOURCE-CENSUS.json",
+            "bytes": 826611,
+            "sha256": "beb6277c245065c57a17f94598c20d6b918e1631d9e923fae089f3da0cde7184"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/PRIMARY-SOURCE-CENSUS.json",
+            "bytes": 826611,
+            "sha256": "beb6277c245065c57a17f94598c20d6b918e1631d9e923fae089f3da0cde7184"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/ROOT-INTEGRATION-CHECKS.json",
+            "bytes": 3884,
+            "sha256": "e0dda0072f5e51f758b1cece9e2580d9200647057026010c9ed380384c523ba8"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/ROOT-INTEGRATION-CHECKS.json",
+            "bytes": 3884,
+            "sha256": "e0dda0072f5e51f758b1cece9e2580d9200647057026010c9ed380384c523ba8"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/ROOT-INTEGRATION-FINAL-CHECKS.json",
+            "bytes": 4046,
+            "sha256": "d8e8ddae332b13a5f0e7b46bb3525020752b4c642f9e00af11976751e14cca33"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/ROOT-INTEGRATION-FINAL-CHECKS.json",
+            "bytes": 4046,
+            "sha256": "d8e8ddae332b13a5f0e7b46bb3525020752b4c642f9e00af11976751e14cca33"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/ROOT-INTEGRATION-POST-LINK-CHECKS.json",
+            "bytes": 3884,
+            "sha256": "d0b69300d7a53614a4f6af1f7f4850c5907b361240b845d273124a88aa96a455"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/ROOT-INTEGRATION-POST-LINK-CHECKS.json",
+            "bytes": 3884,
+            "sha256": "d0b69300d7a53614a4f6af1f7f4850c5907b361240b845d273124a88aa96a455"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/bridge-independent-review/ACTUAL-SOURCE-CHECKS.json",
+            "bytes": 17033,
+            "sha256": "479628bcf03115f6f3763add09390e195e3b70ea996134e98d593743263ded27"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/bridge-independent-review/ACTUAL-SOURCE-CHECKS.json",
+            "bytes": 17033,
+            "sha256": "479628bcf03115f6f3763add09390e195e3b70ea996134e98d593743263ded27"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/bridge-independent-review/REVIEW-RECEIPT.json",
+            "bytes": 5889,
+            "sha256": "d8eb2679308b9fa7a02537d1943454bb29936d59fd07f7efd95871b4201e76e6"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/bridge-independent-review/REVIEW-RECEIPT.json",
+            "bytes": 5889,
+            "sha256": "d8eb2679308b9fa7a02537d1943454bb29936d59fd07f7efd95871b4201e76e6"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/bridge-independent-review/REVIEW.md",
+            "bytes": 2068,
+            "sha256": "3ad77f01cac38e837135da1a8a086a2107914fadc51848c1372b3e55cf8d2684"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/bridge-independent-review/REVIEW.md",
+            "bytes": 2068,
+            "sha256": "3ad77f01cac38e837135da1a8a086a2107914fadc51848c1372b3e55cf8d2684"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/bridge-independent-review/independent_source_review.py",
+            "bytes": 15531,
+            "sha256": "ee703c7df63210652f3e63483cdbdca1314494a231a2cbd9782bed7bd52e61f5"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/bridge-independent-review/independent_source_review.py",
+            "bytes": 15531,
+            "sha256": "ee703c7df63210652f3e63483cdbdca1314494a231a2cbd9782bed7bd52e61f5"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/current-doc-review/INDEPENDENT-CURRENT-QA-DOCUMENT-REVIEW.initial-adapter-observation.json",
+            "bytes": 45790,
+            "sha256": "0c59c090fe0665969f901deb436593a48f85826de960a292e2de48e545df9a5b"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/INDEPENDENT-CURRENT-QA-DOCUMENT-REVIEW.initial-adapter-observation.json",
+            "bytes": 45790,
+            "sha256": "0c59c090fe0665969f901deb436593a48f85826de960a292e2de48e545df9a5b"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/current-doc-review/INDEPENDENT-CURRENT-QA-DOCUMENT-REVIEW.json",
+            "bytes": 46756,
+            "sha256": "87e66aa8c8d252e44443106ce77544226e5dbe580195a7e19cc39183ef20179e"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/INDEPENDENT-CURRENT-QA-DOCUMENT-REVIEW.json",
+            "bytes": 46756,
+            "sha256": "87e66aa8c8d252e44443106ce77544226e5dbe580195a7e19cc39183ef20179e"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/current-doc-review/review_current_qa.initial.py",
+            "bytes": 21929,
+            "sha256": "527c53f2708280586cb04e80b3c2302d6704b2556864f20bfdf09c7e33924718"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/review_current_qa.initial.py",
+            "bytes": 21929,
+            "sha256": "527c53f2708280586cb04e80b3c2302d6704b2556864f20bfdf09c7e33924718"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/current-doc-review/review_current_qa.py",
+            "bytes": 22678,
+            "sha256": "48c0bf03d2a2027029520e5aa242d62ee07bfacc9cffd17f5dca01841ab67f31"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/review_current_qa.py",
+            "bytes": 22678,
+            "sha256": "48c0bf03d2a2027029520e5aa242d62ee07bfacc9cffd17f5dca01841ab67f31"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/helpers/check_document_integration.py",
+            "bytes": 6087,
+            "sha256": "cca62d49523dacf45b70be9199932af95d07de176b0ba50e2325af02b29ef905"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/check_document_integration.py",
+            "bytes": 6087,
+            "sha256": "cca62d49523dacf45b70be9199932af95d07de176b0ba50e2325af02b29ef905"
+          },
+          "byte_exact": true
+        },
+        {
+          "repository": {
+            "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/evidence/helpers/inspect_primary_source.py",
+            "bytes": 9678,
+            "sha256": "447d33c60f75cf87abf76e0a1705ef061a191de8e2bf1bc43c7ba25c2c8b0b05"
+          },
+          "output": {
+            "path": "outputs/imprana-qa-reconciliation-20261011/inspect_primary_source.py",
+            "bytes": 9678,
+            "sha256": "447d33c60f75cf87abf76e0a1705ef061a191de8e2bf1bc43c7ba25c2c8b0b05"
+          },
+          "byte_exact": true
+        }
+      ]
+    },
+    {
+      "check_id": "README-17",
+      "check": "All current README relative links resolve within the repository",
+      "passed": true,
+      "detail": {
+        "links_checked": 16,
+        "errors": [],
+        "links": [
+          {
+            "label": "QA v1.3 documentation audit",
+            "target": "../APLYD-v1.3-AUDIT-20261011.md",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "Current test strategy",
+            "target": "CURRENT-TEST-STRATEGY.md",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "Release test plan",
+            "target": "RELEASE-TEST-PLAN.md",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "Test data and environments",
+            "target": "TEST-DATA-AND-ENVIRONMENTS.md",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "Criteria and case bridge",
+            "target": "CRITERIA-AND-CASE-BRIDGE.md",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "Execution and defect protocol",
+            "target": "EXECUTION-AND-DEFECT-PROTOCOL.md",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "Specialist verification plans",
+            "target": "SPECIALIST-VERIFICATION-PLANS.md",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "product continuation",
+            "target": "../../product/framework-v4-20261011/START-HERE.md",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "primary-source census",
+            "target": "evidence/PRIMARY-SOURCE-CENSUS.json",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "authoring receipt",
+            "target": "evidence/BRIDGE-AUTHORING-RECEIPT.json",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "bridge/source review",
+            "target": "evidence/bridge-independent-review/REVIEW-RECEIPT.json",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "six-document review",
+            "target": "evidence/current-doc-review/INDEPENDENT-CURRENT-QA-DOCUMENT-REVIEW.json",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "initial root integration observation",
+            "target": "evidence/ROOT-INTEGRATION-CHECKS.json",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "first final-integration observation",
+            "target": "evidence/ROOT-INTEGRATION-FINAL-CHECKS.json",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "evidence directory",
+            "target": "evidence/",
+            "confined": true,
+            "exists": true
+          },
+          {
+            "label": "first review-adapter observation",
+            "target": "evidence/current-doc-review/INDEPENDENT-CURRENT-QA-DOCUMENT-REVIEW.initial-adapter-observation.json",
+            "confined": true,
+            "exists": true
+          }
+        ],
+        "external_fetches": false
+      }
+    },
+    {
+      "check_id": "README-18",
+      "check": "The initial two review-adapter errors remain preserved and honestly distinguished",
+      "passed": true,
+      "detail": {
+        "actual_initial_checks": {
+          "passed": 31,
+          "failed": 2,
+          "total": 33
+        },
+        "receipt_sha256": "0c59c090fe0665969f901deb436593a48f85826de960a292e2de48e545df9a5b"
+      }
+    },
+    {
+      "check_id": "README-19",
+      "check": "Appendix preserves archive-only reproduction and pending publication/execution boundaries",
+      "passed": true,
+      "detail": {
+        "native_or_repository_changes_by_review": false
+      }
+    },
+    {
+      "check_id": "README-20",
+      "check": "Current README leaves exact security/AI threat disposition open",
+      "passed": true,
+      "detail": {
+        "scope": "Narrative consistency; existing source threat reviews were not reexecuted"
+      }
+    }
+  ],
+  "check_totals": {
+    "passed": 20,
+    "failed": 0,
+    "total": 20
+  },
+  "disposition": "NO_BLOCKING_README_DELTA_DOCUMENT_DEFECT_FOUND",
+  "limits": [
+    "Local README/source-receipt consistency only; preceding primary-source and full seven-document reviews were not rerun.",
+    "Recorded 33/19/14 checks remain their actual scoped AI source/document observations, not product runs or authentic human approval.",
+    "No product/unit/API/native/browser/AI/provider/checker/CI test or runtime was executed.",
+    "No network, external message, Native/Linear mutation, repository edit, merge, deployment or paid action occurred.",
+    "No owner/source-completeness/specialist/adoption/release approval or readiness is granted.",
+    "Only the exact pinned README/peer/copy bytes reviewed here apply; later changes require another scoped review."
+  ],
+  "product_tests_executed": false,
+  "remote_actions": false,
+  "repository_or_native_mutations": false,
+  "owner_approval": false,
+  "adoption_approval": false,
+  "release_approval": false,
+  "files_written_only": [
+    "outputs/imprana-qa-reconciliation-20261011/FINAL-README-DELTA-REVIEW.json",
+    "outputs/imprana-qa-reconciliation-20261011/FINAL-README-DELTA-REVIEW.initial-copy-adapter-observation.json"
+  ],
+  "initial_adapter_observation": {
+    "path": "outputs/imprana-qa-reconciliation-20261011/FINAL-README-DELTA-REVIEW.initial-copy-adapter-observation.json",
+    "bytes": 28314,
+    "sha256": "99656ded8c1ef72d15e27f87c91d436006eb0f442cc66ce25df3e7b3d9d49b3e",
+    "actual_initial_checks": {
+      "passed": 19,
+      "failed": 1,
+      "total": 20
+    },
+    "diagnosis": "Initial copy adapter fixed an earlier13-file inventory and assumed evidence/helpers maps to outputs/helpers. Two actual archived helper copies arrived during the bounded review; both original files are directly under outputs. Corrected only the copy adapter to inspect actual15 files and map documented archival helper copies to exact originals. Every byte comparator remains exact. README, peer/source/review bytes unchanged; no product failure or product test result inferred."
+  }
+}

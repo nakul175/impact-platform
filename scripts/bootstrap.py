@@ -113,6 +113,14 @@ def bootstrap(local, idp=None):
                 "framework.export",
                 "ai.enablement.read",
                 "ai.enablement.manage",
+                # Synthetic explicit diagnosis grants; no live membership or ceiling changes.
+                "ai.diagnosis.read",
+                "ai.diagnosis.manage",
+                "ai.diagnosis.contribute",
+                "ai.diagnosis.contributors.manage",
+                "ai.diagnosis.review",
+                "ai.problem-baseline.read",
+                "ai.problem-baseline.manage",
                 "ai.advisory.request",
                 # FR-AI-001 (0.37.0): the tenant AI policy; TENANT_ADMIN only, fresh assurance.
                 "ai.policy.manage",
@@ -134,8 +142,8 @@ def bootstrap(local, idp=None):
                 (tenant,),
             ).fetchone()["scope_id"]
             for cap in capabilities:
-                policy = next(p for p in OPERATIONS.values() if p["capability"] == cap)
-                if not set(actor["roles"]).intersection(policy["role_templates"]):
+                policies = [p for p in OPERATIONS.values() if p["capability"] == cap]
+                if not any(set(actor["roles"]).intersection(p["role_templates"]) for p in policies):
                     continue
                 obj = str(uuid5(NAMESPACE_URL, "impact-dev-grant:" + name + ":" + cap))
                 if c.execute(

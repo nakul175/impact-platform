@@ -1,0 +1,130 @@
+{
+  "schema_version": "imprana.pm.completion.input-pins.v1",
+  "input_revision": "4472cc845b62c32ffd074d2afee49b5d32f98879",
+  "application_source": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "planning_source": "eb194fdbb6fc8247db8429fc23120aa0fe659ed8",
+  "captured_at": "2026-10-11T05:47:07.709681+00:00",
+  "files": [
+    {
+      "path": "outputs/imprana-product-refinement-20261011/bundle-review/ROOT-REVIEWED-PLANNING-ADAPTER-V4.json",
+      "sha256": "77e38c07a265f54a0c30bd18578cf94b40e2946dd90be8f5f2c019bd031e3685",
+      "bytes": 63235675
+    },
+    {
+      "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/ai-assurance.template.json",
+      "sha256": "e27a340a426af567b6301ada3388ad1812696e7d60699f787279e1e68ea82983",
+      "bytes": 11790
+    },
+    {
+      "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/AI-ASSURANCE.md",
+      "sha256": "2daca863175de55394f2b063c0ffcf8da4db2b4345d01bbdcf190ba18c65e66b",
+      "bytes": 30437
+    },
+    {
+      "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/catalogue.json",
+      "sha256": "cec6bc14f5976dd7e1a48ba9f224e18b1258abb08ed0479a7f080b2dc6245456",
+      "bytes": 2125714
+    },
+    {
+      "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/quality_checker.py",
+      "sha256": "48477e9e7a522ab37cbcb66203041781d014bfdc7479f339e8e67f4011e8c327",
+      "bytes": 85290
+    },
+    {
+      "path": "outputs/imprana-product-refinement-20261011/reference/bundle-v4.2/product-management-agent-bundle-v4.2/checker/loop-quality-spec.md",
+      "sha256": "ff9aabb366515d36a8e841b00a5dce5b7c1b8796c4d915e83b6885bd67d177ee",
+      "bytes": 20398
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/epic-story-author/EPIC-REFINEMENT.json",
+      "sha256": "7341c131d214dfe9b679e895e85403a3495d73a434a0ccde049846c715e8cccc",
+      "bytes": 716206
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/epic-story-author/STORY-REFINEMENT.json",
+      "sha256": "dedfa3f1d13410c3abdfda1b3a09c281df1c49a011084241bdab78408c813f45",
+      "bytes": 3236539
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/task-author/task-contracts.proposed.json",
+      "sha256": "c3793154d8a020e883d07d8492e7327515f510427e69efe1136f4ce886ff29a8",
+      "bytes": 13484732
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+      "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208",
+      "bytes": 7419410
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/product/framework-v4-20261011/quality/FINAL-CONSOLIDATED-REAL-QUALITY-SUMMARY.json",
+      "sha256": "1f4920eb0937d3a760239e1bda315c1f8be27125c29b2339fad0b6c04605b710",
+      "bytes": 5679
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CURRENT-TEST-STRATEGY.md",
+      "sha256": "d555bffd6b242c81b3353d056d4668a57bb55717bb4d476a4d7b1e1d96e11157",
+      "bytes": 18986
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/TEST-DATA-AND-ENVIRONMENTS.md",
+      "sha256": "f3f81e16e34155ad4b1c7ac5dd446d1ee0b02920af59f42ab1f16131cb0e2310",
+      "bytes": 14723
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/RELEASE-TEST-PLAN.md",
+      "sha256": "b04beecad4d3271b0b65704641c94c8eeff4f046997eb096530a78428ff752d8",
+      "bytes": 26265
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/EXECUTION-AND-DEFECT-PROTOCOL.md",
+      "sha256": "f885170fd997d2864cf0243e95236f54eb3c19c6990b54035505e658a26c3eef",
+      "bytes": 26402
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/SPECIALIST-VERIFICATION-PLANS.md",
+      "sha256": "5a40df84876a94a22ce46c1dad4d0a0b18c6f97450d108dc886c06866bb41535",
+      "bytes": 14040
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/qa/current-20261011/CRITERIA-AND-CASE-BRIDGE.md",
+      "sha256": "dd25125632cd44683e736dfcdb2e8bc60e87cbc8ed5ee74a9e5c38248cf08a20",
+      "bytes": 12412
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-MODEL-CARD.md",
+      "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934",
+      "bytes": 4253
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/governance/AI-EVALUATION-AND-LIMITS.md",
+      "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9",
+      "bytes": 4051
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/current/threat-register.json",
+      "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa",
+      "bytes": 156610
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/release-reviews/release-review-0.39.0.json",
+      "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8",
+      "bytes": 15468
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/docs/current/ENGINEERING-BRIEF.md",
+      "sha256": "ad93b33af53c97db7072d8683c25b16a52d22f4c905c360b214b1dbf25bcb111",
+      "bytes": 155396
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/AGENTS.md",
+      "sha256": "2a7268ce8a65e31a0ed414e330a415415ded30116d3aecbf5afa0ab961afa922",
+      "bytes": 20201
+    },
+    {
+      "path": "work/imprana-framework-refinement-20261011/VERSION.json",
+      "sha256": "3a53cb858cb0fd903ae1deeb1f99337481ef416620693ff90fd18a334ae0fea9",
+      "bytes": 214
+    }
+  ],
+  "claim": "Frozen authoring inputs, not latest application deployment, reviewer identity authentication or runtime qualification."
+}

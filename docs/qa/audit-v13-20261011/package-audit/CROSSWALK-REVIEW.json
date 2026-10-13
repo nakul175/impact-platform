@@ -1,0 +1,276 @@
+{
+  "scope": "Independent AI documentation crosswalk/evidence review only; no authenticated human/product-owner approval, live control verification or product acceptance",
+  "reviewed_at_utc": "2026-10-11T04:29:31.617159+00:00",
+  "disposition": "PASS_FOR_DOCUMENTATION_CROSSWALK",
+  "checks": {
+    "expected_final_matrix_pin": true,
+    "expected_final_crosswalk_pin": true,
+    "package54_unique": true,
+    "crosswalk54_unique_and_exact_membership": true,
+    "declared_count_matches": true,
+    "package_inventory_pin_matches": true,
+    "common_frozen_head": true,
+    "exact_requirement_text": true,
+    "exact_package_citations_and_sha": true,
+    "only_declared_alignment_states": true,
+    "status_counts_match_rows": true,
+    "all_domain_refs_exist_and_nonempty": true,
+    "reciprocal_domain_mapping": true,
+    "all_rows_explicit_documentation_only_limit": true,
+    "aligned_rows_have_no_claimed_missing_fields": true,
+    "source_integrity_inventory_all_checks_true": true,
+    "proposed1328_execution_not_run": true,
+    "no_false_no_codeowners_text": true,
+    "actual_codeowners_present_and_owner": true,
+    "source_governance_stays_not_verified": true,
+    "governance_corrected_citation_in_each_projection": true,
+    "all_repository_citations_exist_with_valid_ranges_at_head": true,
+    "independent_counts_match_inventory": true,
+    "distinct_legacy_populations_not_product_pass": true,
+    "input_pins_unchanged_during_review": true
+  },
+  "checks_passed": 25,
+  "checks_failed": 0,
+  "input_pins": {
+    "package_requirements": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/package-audit/QA-V13-REQUIREMENTS-MATRIX.json",
+      "sha256": "3322e84d44a90af6efdf20fe3bcbca8ccaf51892fcd582e8250f25caa7bcef06"
+    },
+    "crosswalk": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/repo-domain-audit/package-to-repo-alignment-54.json",
+      "sha256": "4ebf7037f49170d0628f0017522ff13288c7a41b7f0cf46c5fe079d205e6a5a6"
+    },
+    "domain_matrix": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/repo-domain-audit/requirement-matrix.json",
+      "sha256": "ef44a8304caa06af6c044ac77079cedc63818648af46436e852a9064fd8f2733"
+    },
+    "trace_inventory": {
+      "path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/traceability-audit/SOURCE-TRACEABILITY-INVENTORY.json",
+      "sha256": "85cc832ae7f56885aa067b91ce3e0a6ffcf7187663e1b42c2e13c8cf6f30bab3"
+    }
+  },
+  "baseline_head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+  "baseline_tree": "c15d52d24710a9c93905b6822838d168e9c7a5dc",
+  "status_counts": {
+    "PARTIAL": 45,
+    "ALIGNED": 3,
+    "NOT_VERIFIED": 5,
+    "MISSING": 1
+  },
+  "independent_quantities": {
+    "active_stories": 368,
+    "all_backlog_rows": 370,
+    "historical_split_rows": 2,
+    "original_criteria": 1328,
+    "proposed_tasks": 1131,
+    "criterion_aliases": 1328,
+    "epics": 54,
+    "task_dependency_edges": 779,
+    "core_requirements": 307,
+    "core_statuses": {
+      "PARTIAL": 113,
+      "PENDING": 194
+    },
+    "legacy_nonprofit_cases": 108,
+    "legacy_nonprofit_case_states": {
+      "SPECIFIED_NOT_RUN": 108
+    },
+    "legacy_nonprofit_scenarios": 50,
+    "legacy_nonprofit_actual_template_runs": 0
+  },
+  "quantity_limits": [
+    "54epics and779taskedges imported from pinned traceability inventory; independent original-criteria/task/alias/backlog/legacyCSV cardinalities checked directly at pinned GitHEAD.",
+    "825oldworkbookcases are dated separately; not added to1328proposed criteria or108nonprofitcases. No latest current-test coverage inferred."
+  ],
+  "semantic_review": [
+    "ALIGNED means cited documentation/design policy, never observed implementation/test execution/approval/conformance. Three ALIGNED package rows003/037/045 remain bounded to lifecycle separation,AI authority/mechanics boundaries,reliability design invariants.",
+    "PARTIAL retains gaps rather than treating current descriptions/history/mocks as complete qualification.",
+    "MISSING row039 is bounded to source-declared absent heldoutAI evaluation/label/rubric evidence; proposed200case/20%adversarial targets remain unrun,not weakened.",
+    "NOT_VERIFIED correctly reserves external source governance/aggregator/readiness evidence; presence ofdocs/CODEOWNERS does not prove enforced humanreview or sourcecompleteness.",
+    "All54requirements and their package source citations are exact copies of pinned auditinventory; none redefined as productACs.",
+    "Known absence/coverage statements inherit bounded frozenb01a628inventory, excludingrootnew additiveQAaudit.",
+    "Original1328scenario plans areNotrun; legacy307core requirements retain113PARTIAL194PENDING and108nonprofitcasesSPECIFIED_NOT_RUN. No productPASS/approval/deployment percentage implied."
+  ],
+  "preliminary_finding_resolution": {
+    "CW-F01": "RESOLVED_BY_AUTHOR: blanket no-CODEOWNERS claim replaced by actualdocs/CODEOWNERS path/owner wildcard and explicitlive enforcement uncertainty. Originalpreliminaryfinding retained.",
+    "affected_rows": [
+      "QA-41",
+      "QA13-017",
+      "QA13-018",
+      "QA13-019",
+      "QA13-049"
+    ],
+    "confirmed_source_sha256": "f02d2371127f001543067a76f938032e9b579d278d75250731f989b23d3ab68b"
+  },
+  "citation_errors": [],
+  "reviewed_repository_source_pins": [
+    {
+      "path": ".github/workflows/checks.yml",
+      "sha256": "16817f3fc91126a582cf8c0e6c9cb1dd9eb6d9bb66c2b2d8bed4d8e4a9e6c702"
+    },
+    {
+      "path": ".github/workflows/qualification.yml",
+      "sha256": "a9bc90b3240eb52b125e5bef24a1a76f10647efad0970112d814afab708b1b1f"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "c2ebc221b8263562069ae0ee84535866d94388a33053590394679658e3869a54"
+    },
+    {
+      "path": "docs/CODEOWNERS",
+      "sha256": "f02d2371127f001543067a76f938032e9b579d278d75250731f989b23d3ab68b"
+    },
+    {
+      "path": "docs/HANDOVER.md",
+      "sha256": "c69fe2fccf6fc8ad9de84534f9d4a00d4bdbfe35709dde9084da9c598e5de351"
+    },
+    {
+      "path": "docs/QA-DEGRADATION-2026-10.md",
+      "sha256": "9731aea9a5db5137b129d7563dece856f8207e68c47442912cb6b8ec0c6eb2a1"
+    },
+    {
+      "path": "docs/QA-PERFORMANCE-2026-10.md",
+      "sha256": "fbaaf0b79cf5c392547fd0e8c64153bb994b2ae1bf9dda5b183c1cdbe0daf4ed"
+    },
+    {
+      "path": "docs/QUALIFICATION.md",
+      "sha256": "7c1659b848a16966e5c0a10df4e8b0534a60809ccb95b3cb2ad72e84d25a7c44"
+    },
+    {
+      "path": "docs/agile/WORKING-AGREEMENT.md",
+      "sha256": "11c7c4e793f73f025975b20e2db9563a36bf3794ff44f2f966b3ce53e5d20332"
+    },
+    {
+      "path": "docs/backlog/backlog.csv",
+      "sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd"
+    },
+    {
+      "path": "docs/current/ACCESSIBILITY-STATEMENT.md",
+      "sha256": "d945919ef094f9b11bcb0d39ea3a90cb41ee755571cd5ebcd2f64642f94989ee"
+    },
+    {
+      "path": "docs/current/DATA-GOVERNANCE.md",
+      "sha256": "5b0de1ca5a774e5e53d6f2fa08322bf7f9906e37cfcb4eac8ae367ccf472c0de"
+    },
+    {
+      "path": "docs/current/EXECUTION-REGISTER.csv",
+      "sha256": "bd06ce8e2e43ab159208570643f99c52ea97367db6394c0ed7a5716ff0993f13"
+    },
+    {
+      "path": "docs/current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+      "sha256": "9d74e071f779b110ebdb1eec9834f6418d285507da03147918307f0d207a4621"
+    },
+    {
+      "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+      "sha256": "bf7a9bf3ade48366417168970dc6b3dcc6faccb2f24ac12feabeb05f009dd5e6"
+    },
+    {
+      "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+      "sha256": "fe50fe631b15c06bc009b3f2f43b3713b75307944f1bc080d7c5da14ac32c9a9"
+    },
+    {
+      "path": "docs/current/RELEASE-ACCEPTANCE.md",
+      "sha256": "c656dfbb89647d4c35d4506dd18c8b36fb3ca3f7f33c19ca3a8ec990afd3309d"
+    },
+    {
+      "path": "docs/current/TRACEABILITY.csv",
+      "sha256": "a93bfd9d4a13686df08aba831717ef89a04a36698c6de470fa61553b408d71db"
+    },
+    {
+      "path": "docs/current/UAT-PACK.md",
+      "sha256": "d2767d3f8ff368d91e915c95eff3c45a9cc4026c13be5fa38a2783abf45446ee"
+    },
+    {
+      "path": "docs/current/threat-register.json",
+      "sha256": "2babf7905fd67dbb8cc1efbebf20007efad1422c55f818eb802f6fb1801e18fa"
+    },
+    {
+      "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+      "sha256": "5dc2bc235c59f27e0c4bb5b48100050ab733cacf47581473c76cc361ab91e9e9"
+    },
+    {
+      "path": "docs/governance/AI-MODEL-CARD.md",
+      "sha256": "0ce1943678ef1b7c1746f62732efd392d476a9f3fd2e263111969e5d41738934"
+    },
+    {
+      "path": "docs/governance/BACKUP-DR.md",
+      "sha256": "4ffb07daa110b9eed7f8b043fffcc90b4b6f8be4f7f30ff6539ec8edb93614be"
+    },
+    {
+      "path": "docs/governance/COMPLIANCE-CONTROL-MAPPING.md",
+      "sha256": "420f786eaa996db8c953646e493ce4af3626cc454289106d24d10e3baa83277a"
+    },
+    {
+      "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+      "sha256": "aeadbc90835cdd91269905ada5119639ea5c1d6e026f6d1ae2b9491961c3be61"
+    },
+    {
+      "path": "docs/governance/SLOS-AND-ALERTS.md",
+      "sha256": "8e256c8902813fc841fe9400acfc40775cd5d4e8f139fb0f35b2eb4a58f05f99"
+    },
+    {
+      "path": "docs/handover/PARALLEL-WORK.md",
+      "sha256": "f7acb85f309636314dff027cfdd4169afd0e7cad02601c53b4960150c589c710"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+      "sha256": "84281ccad974412bde4eb1beecfa4df4b69c0858177c6615299f255ebae0215f"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/test-cases.csv",
+      "sha256": "fbde4346b5829a36832c6a47ad0cade13c1fa6c41b5d9fba16f973177c1735af"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/test-run-template.csv",
+      "sha256": "02d89451e5d89a33f7755a92e6f75a5668581a26f90ad199239f4c9db13d6419"
+    },
+    {
+      "path": "docs/nonprofit-ai/v1.0/test-scenarios.csv",
+      "sha256": "4420e20a6bdf1dc121ea4f39ed54fd7d3c8090d51949cbb48fc84d67ad233b95"
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/START-HERE.md",
+      "sha256": "7d6bbf24b1653307657dcfa7b58793445cb1d0981d553dc4c84d73c5424ebdc3"
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/bundle-review/CRITERION-ALIAS-MAP.json",
+      "sha256": "279c1bec0920f02dba67f43cb6fcb6ce5f2fa311c79dc98dc18ac0a4f29c99ee"
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/quality/README.md",
+      "sha256": "c3de4986aa3e20bf3e522563ce7202b467d597c99227ad4845d15451a181f976"
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/task-author/README.md",
+      "sha256": "f56b479bfdaa803b94e72341a7e58e2889b77a858d8f1c4830c6cf2df7344134"
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/task-author/acceptance-task-matrix.proposed.json",
+      "sha256": "a30c5287e8d6cf1f7ee2d19af374b77cb9e7b75f34d12c1d0b3edad34517d208"
+    },
+    {
+      "path": "docs/product/framework-v4-20261011/task-author/task-contracts.proposed.json",
+      "sha256": "c3793154d8a020e883d07d8492e7327515f510427e69efe1136f4ce886ff29a8"
+    },
+    {
+      "path": "docs/release-reviews/release-review-0.39.0.json",
+      "sha256": "e30f669a5e151f6ac96b9120bf68e7f501e8bf47bd93f3d226958f870237c0a8"
+    },
+    {
+      "path": "qualification/perf_harness.py",
+      "sha256": "98c1c885fb79cbe2af47ddffb086cf079e9803b5e3a228293a79e66b9e782acd"
+    },
+    {
+      "path": "scripts/perf.py",
+      "sha256": "683e0573f2e57a6708494bd92d85a2672f6dfd2ded65ee200dfdd5af08854871"
+    },
+    {
+      "path": "scripts/run.py",
+      "sha256": "b5a1e066af045722856dda37782567efb51d3b96d7449aed9bf326f1aba67e3b"
+    }
+  ],
+  "product_tests_executed": false,
+  "governance_or_owner_approvals_authenticated": false,
+  "repository_or_native_writes": false,
+  "unresolved_review_findings": []
+}

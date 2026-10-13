@@ -5,6 +5,14 @@ import { ChangesPanel } from "./Changes";
 import { PeriodGovernancePanel } from "./PeriodGovernance";
 import { PlanningPanel } from "./Planning";
 import { AIEnablementPanel } from "./AIEnablement";
+import { AIDiagnosisPanel } from "./AIDiagnosis";
+import { AIDiagnosisReviewQueue } from "./AIDiagnosisReviewQueue";
+import { AIProblemBaselinesPanel } from "./AIProblemBaselines";
+import { AIOutcomeDashboardPanel } from "./AIOutcomeDashboard";
+import { AISponsorValueReportPanel } from "./AISponsorValueReport";
+import { AIQuarterlyValueReviewPanel } from "./AIQuarterlyValueReview";
+import { AINextOpportunitiesPanel } from "./AINextOpportunities";
+import { AIOutcomeSharingConsentPanel } from "./AIOutcomeEvidence";
 import { DashboardsPanel } from "./Dashboards";
 import { FormsPanel } from "./Forms";
 import { RoundsPanel } from "./Rounds";
@@ -112,7 +120,7 @@ const nav = [
 // match on the capability name; an empty list means always). Hidden entries are never
 // security: the server authorises every request. "My account" needs no grant.
 const areaCapabilities: Record<string, string[]> = {
-  "ai-enablement": ["ai.enablement.read", "ai.policy."],
+  "ai-enablement": ["ai.enablement.read", "ai.policy.", "ai.diagnosis."],
   programmes: ["programmes.", "programme."],
   observations: ["observations.", "observation."],
   configuration: [
@@ -1052,22 +1060,80 @@ function Workspace({
               Dialog={Dialog}
             />
           ) : route === "ai-enablement" ? (
-            <AIEnablementPanel
-              Dialog={Dialog}
-              key={
-                tenant +
-                ":" +
-                session.identity_id +
-                ":" +
-                (access.principal_id || "")
-              }
-              base={base}
-              principalId={access.principal_id || ""}
-              sessionIdentity={session.identity_id}
-              request={api}
-              explain={explain}
-              capabilities={access.capabilities}
-            />
+            <>
+              <AINextOpportunitiesPanel
+                base={base}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+                custody={Boolean(access.custody)}
+              />
+              <AIDiagnosisPanel
+                base={base}
+                principalId={access.principal_id || ""}
+                sessionIdentity={session.identity_id}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
+              <AIDiagnosisReviewQueue
+                base={base}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
+              <AIProblemBaselinesPanel
+                base={base}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
+              <AIOutcomeDashboardPanel
+                base={base}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
+              <AISponsorValueReportPanel
+                base={base}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
+              <AIQuarterlyValueReviewPanel
+                base={base}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
+              <AIOutcomeSharingConsentPanel
+                base={base}
+                request={api}
+                explain={explain}
+                capabilities={access.capabilities}
+              />
+              {(access.capabilities.includes("ai.enablement.read") ||
+                access.capabilities.some((value) =>
+                  value.startsWith("ai.policy."),
+                )) && (
+                <AIEnablementPanel
+                  Dialog={Dialog}
+                  key={
+                    tenant +
+                    ":" +
+                    session.identity_id +
+                    ":" +
+                    (access.principal_id || "")
+                  }
+                  base={base}
+                  principalId={access.principal_id || ""}
+                  sessionIdentity={session.identity_id}
+                  request={api}
+                  explain={explain}
+                  capabilities={access.capabilities}
+                />
+              )}
+            </>
           ) : route === "memberships" ? (
             <>
               <AdministrationPanel
@@ -1375,6 +1441,8 @@ function Fields({ data }: { data: Record<string, any> }) {
               "—"
             ) : k === "coverage" ? (
               <CoverageSummary data={v} />
+            ) : k === "formula" && typeof v === "object" ? (
+              <CalculationMethod formula={v} />
             ) : k === "disaggregation" && Array.isArray(v) ? (
               <Breakdown entries={v} />
             ) : typeof v === "object" ? (
@@ -1386,6 +1454,39 @@ function Fields({ data }: { data: Record<string, any> }) {
         </React.Fragment>
       ))}
     </dl>
+  );
+}
+function CalculationMethod({ formula }: { formula: Record<string, any> }) {
+  const pooled = formula.statistic_label === "POOLED_RATIO";
+  const unweighted = formula.statistic_label === "UNWEIGHTED_MEAN";
+  const meanOfMedians = formula.statistic_label === "MEAN_OF_MEDIANS";
+  const pooledMedian = formula.statistic_label === "POOLED_MEDIAN";
+  return (
+    <div>
+      <strong>
+        {pooled
+          ? "Pooled ratio"
+          : unweighted
+            ? "Unweighted mean"
+            : meanOfMedians
+              ? "Mean of subgroup medians"
+              : pooledMedian
+                ? "Pooled median from raw values"
+                : formula.method}
+      </strong>
+      <p className="footnote">
+        {pooled
+          ? "Approved numerator and denominator quantities are pooled first. The percentage multiplier is applied after pooling; contributors are therefore denominator-weighted."
+          : unweighted
+            ? "Each approved contributor has equal weight. This is labelled separately and is never presented as a pooled percentage."
+            : meanOfMedians
+              ? "This result averages supplied subgroup medians and is never presented as a pooled median."
+              : pooledMedian
+                ? "The median is calculated across the approved eligible raw values."
+                : "Calculated from approved source values using the frozen method below."}
+      </p>
+      <pre>{JSON.stringify(formula, null, 2)}</pre>
+    </div>
   );
 }
 // A review's stages as people read them (v0.27): which stage, who may decide, when it was
@@ -1459,6 +1560,132 @@ function dimensionCodes(text: string) {
   }
   return codes;
 }
+function CalculationExplanationPanel({
+  explanation,
+  comparison,
+  candidates,
+  compareWith,
+  setCompareWith,
+  compare,
+  busy,
+}: {
+  explanation: any;
+  comparison: any;
+  candidates: RecordRow[];
+  compareWith: string;
+  setCompareWith: (value: string) => void;
+  compare: () => void;
+  busy: boolean;
+}) {
+  return (
+    <section className="panel" aria-labelledby="result-explanation-heading">
+      <h3 id="result-explanation-heading">How this result was produced</h3>
+      <dl className="fields">
+        <dt>Rule version</dt>
+        <dd>
+          {explanation.formula.method} · <code>{explanation.rule_version}</code>
+        </dd>
+        <dt>Sources</dt>
+        <dd>
+          {explanation.source_set.included_count} included ·{" "}
+          {explanation.source_set.excluded_count} excluded
+        </dd>
+        <dt>Coverage</dt>
+        <dd>{explanation.coverage.coverage_state}</dd>
+        <dt>Filters</dt>
+        <dd>
+          {Object.keys(explanation.filters).length
+            ? JSON.stringify(explanation.filters)
+            : "No additional filters"}
+        </dd>
+        <dt>Adjustments</dt>
+        <dd>
+          {explanation.adjustments.length
+            ? explanation.adjustments
+                .map((item: any) => item.code + ": " + item.message)
+                .join("; ")
+            : "No governed adjustments"}
+        </dd>
+        <dt>Approval</dt>
+        <dd>
+          {explanation.approval.mode} · {explanation.approval.lifecycle_state}
+        </dd>
+      </dl>
+      {explanation.source_set.excluded_reasons.length > 0 && (
+        <table aria-label="Excluded source summary">
+          <thead>
+            <tr>
+              <th>Exclusion reason</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {explanation.source_set.excluded_reasons.map((item: any) => (
+              <tr key={item.reason_code}>
+                <td>{item.reason_code}</td>
+                <td>{item.count}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      <h4>Compare with another run</h4>
+      <div className="form-grid">
+        <label>
+          Comparison run
+          <select
+            value={compareWith}
+            onChange={(event) => setCompareWith(event.target.value)}
+          >
+            <option value="">Choose a result</option>
+            {candidates.map((candidate) => (
+              <option key={candidate.object_id} value={candidate.object_id}>
+                {label(candidate)} · {candidate.revision_id.slice(0, 8)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button
+          type="button"
+          className="secondary"
+          disabled={!compareWith || busy}
+          onClick={compare}
+        >
+          Compare runs
+        </button>
+      </div>
+      {comparison && (
+        <div role="status">
+          <p>
+            Difference:{" "}
+            <strong>{comparison.difference ?? "Unavailable"}</strong> ·{" "}
+            {comparison.reconciled
+              ? "Reconciled to stated causes"
+              : "Approval blocked until the difference is reconciled"}
+          </p>
+          <table aria-label="Run difference causes">
+            <thead>
+              <tr>
+                <th>Cause</th>
+                <th>Effect</th>
+                <th>Reference</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparison.causes.map((cause: any) => (
+                <tr key={cause.category}>
+                  <td>{cause.category}</td>
+                  <td>{cause.effect ?? "Withheld"}</td>
+                  <td>{cause.reference_state}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
 function Breakdown({ entries }: { entries: any[] }) {
   return (
     <div className="table-scroll">
@@ -1524,7 +1751,23 @@ function Editor({
     [resources, setResources] = useState<Record<string, RecordRow[]>>({}),
     [candidate, setCandidate] = useState<RecordRow | null>(null),
     [currentTarget, setCurrentTarget] = useState<RecordRow | null>(null),
-    [reportSnapshot, setReportSnapshot] = useState("");
+    [explanation, setExplanation] = useState<any>(null),
+    [comparison, setComparison] = useState<any>(null),
+    [compareWith, setCompareWith] = useState(""),
+    [reportSnapshot, setReportSnapshot] = useState(""),
+    [programmeReview, setProgrammeReview] = useState(false),
+    [programmeCalendar, setProgrammeCalendar] = useState(
+      row?.data.reporting_calendar_id || "",
+    ),
+    [programmeDefaults, setProgrammeDefaults] = useState({
+      unit: row?.data.setup_defaults?.unit || "COUNT",
+      period_basis: "REPORTING_CALENDAR",
+      aggregation_method: "SUM",
+      consent: "EXPLICIT",
+      audience: row?.data.setup_defaults?.audience || "INTERNAL",
+      unique_reach: false,
+      sharing: "NONE",
+    });
   const operation = useRef(crypto.randomUUID()),
     captured = useRef(new Date().toISOString());
   useEffect(() => {
@@ -1541,6 +1784,12 @@ function Editor({
     if (mode === "publish-report") routes = ["disclosures"];
     if (mode === "programme" || mode === "edit")
       routes = ["reporting-calendars", "geographies"];
+    if (
+      mode === "inspect" &&
+      route === "calculated-results" &&
+      allowed("lineage-manifests.read")
+    )
+      routes = ["calculated-results"];
     Promise.all(
       routes.map(
         async (r) =>
@@ -1564,6 +1813,20 @@ function Editor({
           setCandidate(r);
           setCurrentTarget(current_target || null);
         })
+        .catch((e) => {
+          if (e.name !== "AbortError") setError(explain(e));
+        });
+    }
+    if (
+      mode === "inspect" &&
+      route === "calculated-results" &&
+      row &&
+      allowed("lineage-manifests.read")
+    ) {
+      api(base + "calculated-results/" + row.object_id + "/explanation", {
+        signal: c.signal,
+      })
+        .then(setExplanation)
         .catch((e) => {
           if (e.name !== "AbortError") setError(explain(e));
         });
@@ -1596,6 +1859,26 @@ function Editor({
       setBusy(false);
     }
   }
+  async function compareRuns() {
+    if (!row || !compareWith) return;
+    setBusy(true);
+    setError("");
+    try {
+      setComparison(
+        await api(
+          base +
+            "calculated-results/" +
+            row.object_id +
+            "/comparison/" +
+            compareWith,
+        ),
+      );
+    } catch (e) {
+      setError(explain(e));
+    } finally {
+      setBusy(false);
+    }
+  }
   function form(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const f = new FormData(e.currentTarget),
@@ -1621,6 +1904,14 @@ function Editor({
           ...(get("ends_at")
             ? { ends_at: new Date(get("ends_at") + "T23:59:59Z").toISOString() }
             : {}),
+          ...(mode === "programme"
+            ? {
+                template_code: "SIMPLE",
+                setup_defaults: programmeDefaults,
+              }
+            : row?.data.template_code
+              ? { template_code: "SIMPLE", setup_defaults: programmeDefaults }
+              : {}),
         },
         row ? "PATCH" : "POST",
         row?.revision_id,
@@ -1773,6 +2064,46 @@ function Editor({
               : row.data
           }
         />
+        {route === "calculated-results" && explanation && (
+          <CalculationExplanationPanel
+            explanation={explanation}
+            comparison={comparison}
+            candidates={(resources["calculated-results"] || []).filter(
+              (candidate) => candidate.object_id !== row.object_id,
+            )}
+            compareWith={compareWith}
+            setCompareWith={setCompareWith}
+            compare={compareRuns}
+            busy={busy}
+          />
+        )}
+        {route === "programmes" && row.data.template_code === "SIMPLE" && (
+          <section className="panel" aria-labelledby="saved-programme-rules">
+            <h3 id="saved-programme-rules">Calculation and sharing rules</h3>
+            <dl>
+              <dt>Reporting calendar</dt>
+              <dd>
+                <code>{row.data.reporting_calendar_id}</code>
+              </dd>
+              <dt>First-result rule</dt>
+              <dd>Sum of approved values</dd>
+              <dt>Unit</dt>
+              <dd>{row.data.setup_defaults.unit.toLowerCase()}</dd>
+              <dt>Consent</dt>
+              <dd>Explicit consent required</dd>
+              <dt>Audience</dt>
+              <dd>
+                {row.data.setup_defaults.audience === "INTERNAL"
+                  ? "Internal workspace only"
+                  : "Named recipients only"}
+              </dd>
+              <dt>Unique reach</dt>
+              <dd>Off</dd>
+              <dt>Sharing</dt>
+              <dd>None until separately reviewed</dd>
+            </dl>
+          </section>
+        )}
         {(route === "observations" || route === "calculated-results") && (
           <EvidencePanel
             base={base}
@@ -2027,7 +2358,16 @@ function Editor({
               <select
                 name={key}
                 aria-label={title}
-                defaultValue={row?.data[key] || ""}
+                {...(key === "reporting_calendar_id"
+                  ? {
+                      value: programmeCalendar,
+                      onChange: (event: React.ChangeEvent<HTMLSelectElement>) =>
+                        setProgrammeCalendar(event.target.value),
+                    }
+                  : { defaultValue: row?.data[key] || "" })}
+                required={
+                  mode === "programme" && key === "reporting_calendar_id"
+                }
               >
                 <option value="">Choose before activation</option>
                 {(resources[resource] || [])
@@ -2040,6 +2380,87 @@ function Editor({
               </select>
             </label>
           ))}
+          {(mode === "programme" || row?.data.template_code === "SIMPLE") && (
+            <>
+              <details open={!programmeReview}>
+                <summary>Calculation and sharing defaults</summary>
+                <p className="footnote">
+                  These values are stored explicitly. The template never assumes
+                  unique reach, consent, or broad sharing.
+                </p>
+                <label>
+                  Result unit
+                  <select
+                    value={programmeDefaults.unit}
+                    onChange={(event) =>
+                      setProgrammeDefaults({
+                        ...programmeDefaults,
+                        unit: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="COUNT">Count</option>
+                    <option value="DECIMAL">Decimal</option>
+                    <option value="PERCENTAGE">Percentage</option>
+                  </select>
+                </label>
+                <label>
+                  Initial audience
+                  <select
+                    value={programmeDefaults.audience}
+                    onChange={(event) =>
+                      setProgrammeDefaults({
+                        ...programmeDefaults,
+                        audience: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="INTERNAL">Internal workspace only</option>
+                    <option value="NAMED_RECIPIENTS">
+                      Named recipients only
+                    </option>
+                  </select>
+                </label>
+              </details>
+              <section
+                className="panel"
+                aria-labelledby="programme-default-summary"
+              >
+                <h3 id="programme-default-summary">Final setup summary</h3>
+                <dl>
+                  <dt>Reporting periods</dt>
+                  <dd>
+                    {(resources["reporting-calendars"] || []).find(
+                      (item) => item.object_id === programmeCalendar,
+                    )?.data.title || "Select a reporting calendar"}
+                  </dd>
+                  <dt>First-result rule</dt>
+                  <dd>Sum of approved values</dd>
+                  <dt>Unit</dt>
+                  <dd>{programmeDefaults.unit.toLowerCase()}</dd>
+                  <dt>Consent</dt>
+                  <dd>Explicit consent required</dd>
+                  <dt>Audience</dt>
+                  <dd>
+                    {programmeDefaults.audience === "INTERNAL"
+                      ? "Internal workspace only"
+                      : "Named recipients only"}
+                  </dd>
+                  <dt>Unique reach</dt>
+                  <dd>Off</dd>
+                  <dt>Sharing</dt>
+                  <dd>None until separately reviewed</dd>
+                </dl>
+                <button
+                  type="button"
+                  className="secondary"
+                  onClick={() => setProgrammeReview((value) => !value)}
+                >
+                  {programmeReview ? "Edit defaults" : "Review complete"}
+                </button>
+              </section>
+            </>
+          )}
         </>
       )}
       {mode === "observation" && (
@@ -2340,7 +2761,10 @@ function Editor({
         </>
       )}
       <div className="dialog-actions">
-        <button className="primary" disabled={busy}>
+        <button
+          className="primary"
+          disabled={busy || (mode === "programme" && !programmeReview)}
+        >
           {busy
             ? "Saving…"
             : mode === "calculate"

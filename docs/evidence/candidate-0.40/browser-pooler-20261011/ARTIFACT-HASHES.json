@@ -1,0 +1,12 @@
+{
+  "integrated-worker-fence.log": "a98b59ae201fee4b32611dfb4b322db1df9235219d01556d0dd121d80623defb",
+  "RUN-RECEIPT.json": "f15dca681b646b7affeb6c34533925e8d244afa97ab110292277237169629ace",
+  "browser-tests.json": "222767928579a6a6ffcb1b3d6ca91b61c490d7b689fc9c1f8e6f126a2ee22f23",
+  "cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+  "BROWSER-POOLER-RECEIPT.json": "dfcc21c6aede3c97c69ca5d44aa91c36e177745fcf6b40cfdd5d9f01572f396d",
+  "run_diagnosis_pooler_browser.py": "9ea984d1ddfadcd29013f10af78ca781d8fbe9f1e05091ab251bf79f4c3a8f39",
+  "captures/diagnosis-completed.png": "f7a7ddcc0ff354f5c176c2913902575cff2bb6c81b252f3a17d0560e65d7c8a9",
+  "captures/diagnosis-saved-draft.png": "42bc52504708ab3ff8c250620721a83a9b1441c02dab1a6ca951c660bd0b2303",
+  "captures/diagnosis-completion-refused.png": "7cd6235c7ba035582ca170b88822a55882cc08f0d38eb04392ad93e1ab94fe72",
+  "captures/diagnosis-mobile.png": "489d7a82ce085e364bfcc63bf99c04c23f024e2b0091dc72f932053d3e9e7d75"
+}

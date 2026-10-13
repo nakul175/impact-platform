@@ -1,0 +1,37 @@
+{
+  "kind": "Imprana Commons post-publication overview receipt v2",
+  "overview_id": "61b8c340-13f3-4d51-8c6f-bfc23a6660a5",
+  "marker": "<!-- imprana:publication-verification:20261011:v2 -->",
+  "append": "\n\n<!-- imprana:publication-verification:20261011:v2 -->\n\nPublication verification recorded 2026-10-11T03:36:34.136890+00:00.\n\nThe complete fresh readback verified 1,553 existing issues: 54 epics, 368 stories and 1,131 technical tasks. All 1,328 original acceptance scenarios and 779 task prerequisites remain intact. Ten existing product documents were refined, the historical document was preserved, one framework overview was added, and all five release milestones retain their original names and dates. Existing captured metadata, including workflow states, priorities, estimates and parents, remain preserved. No reassignment or cycle change was requested; fields omitted by the connector are not independently certified by this receipt.\n\nThe publication verifier returned PASS with zero errors and was independently rechecked. Its exact v1 report SHA-256 is c2a50b143c97273242b92037563c9b80ff8cb35e3aabcff5cdeebb40cae2649d. Sixteen corruption guard groups and five separate overview-receipt guard groups passed. Original unsuccessful snapshots and their concrete repairs remain saved.\n\nThis is a documentation-publication and source-preservation receipt. The genuine unchanged full bundle workflow assessed 2,893 planning elements, 3,253 exact source snapshots and 20,251 selected mandatory planning gates. Its actual state is needs_input; authentic review/trust and controlled AI-assurance records remain unresolved. This selected-profile assessment does not certify deferred reference checks. Business baselines and owner decisions remain open. Proposed product tests are Not run; this receipt does not establish Ready, Done, product acceptance, financial authority or release approval.",
+  "baseline": {
+    "report": {
+      "path": "verification-author/PUBLICATION-VERIFICATION-REPORT.json",
+      "sha256": "c2a50b143c97273242b92037563c9b80ff8cb35e3aabcff5cdeebb40cae2649d"
+    },
+    "issues": {
+      "path": "native-after/full-issues.json",
+      "sha256": "fd2c1f7c03231e7e56727ce62a2a0db01ddeea294c40cabeef54b32dce080afe"
+    },
+    "documents": {
+      "path": "native-after/full-documents.json",
+      "sha256": "4216be9f8c2a4a0c9eecf248e8ba399ff134fcc02d604a572eb28b847e7571b6"
+    },
+    "project": {
+      "path": "native-after/project.json",
+      "sha256": "c9fc2e4e44d10c0833b8fc0158f2e0ee5e7a6837794717a7fabf986589390819"
+    },
+    "publication_plan": {
+      "path": "native-publication-plan.json",
+      "sha256": "4bd0adde457322c429a1471e70f99d0eadc78b12366c9280e51f0a932220567b"
+    },
+    "policy": {
+      "path": "verification-author/DECLARED-ALL-OBJECT-FORMATTING-POLICY.json",
+      "sha256": "191be095c73728010e641fcd229f808384d905c7e1ff0181bbb51bb27b5dc3ce"
+    },
+    "verifier": {
+      "path": "verification-author/verify_refinement_publication.py",
+      "sha256": "d25759cca892e152e8f443c6b17aa8fe1485418aff3ddb30796964a649a3a23a"
+    }
+  },
+  "allowed_suffix_normalization": null
+}

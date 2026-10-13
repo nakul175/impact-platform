@@ -1,0 +1,20 @@
+{
+  "observed_at": "2026-10-11T11:00:13.841Z",
+  "authority": "Direct owner reply approving concrete seven-issue mapping",
+  "mapping": {
+    "APL-361": "In Progress",
+    "APL-665": "In Review",
+    "APL-666": "In Progress",
+    "APL-669": "In Review",
+    "APL-671": "In Progress",
+    "APL-675": "In Review",
+    "APL-678": "In Progress"
+  },
+  "readback_verified": true,
+  "other_fields_preserved": true,
+  "description_sha256_verified": "Bound by private full before/after receipt; no native description changes",
+  "release_accepted": false,
+  "scope_accepted": false,
+  "done_transitions": 0,
+  "new_runtime_tests": 0
+}

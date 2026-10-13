@@ -228,6 +228,12 @@ class AIImpactReferences:
                 raise DomainError("STATE_TRANSITION_DENIED", 409)
             reference = self._current_pins(c, ctx, body["data"]) if body["data"] is not None else None
             payload = {**deepcopy(previous["payload"]), "impact_reference": reference}
+            if "deployment" in payload and previous["payload"].get("impact_reference") != reference:
+                payload["deployment"]["state"] = "ACTIVE"
+                for milestone in payload["deployment"]["milestones"]:
+                    milestone["progress"] = "NOT_STARTED"
+                    milestone["progress_note"] = ""
+                payload.pop("training_deployment", None)
             receipt = write(c, ctx, KIND, payload, "Draft", previous=previous)
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
             _inherit_guidance(c, ctx, previous, receipt)

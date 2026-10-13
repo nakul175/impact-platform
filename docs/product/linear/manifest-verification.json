@@ -1,0 +1,464 @@
+{
+  "schema_version": "imprana-manifest-verification/v1",
+  "result": "PASS",
+  "verification_scope": "Local source preservation, deterministic plan structure and dependency integrity",
+  "external_state_verified": false,
+  "verifier": {
+    "path": "scripts/linear/build_imprana_import.py",
+    "sha256": "21083404428d95570d787d99dd32b3d043f7d5cbc5ff49fab3dc26486357be5b",
+    "reproduce": "python3 scripts/linear/build_imprana_import.py --check"
+  },
+  "artifacts": {
+    "source_csv": {
+      "path": "docs/backlog/backlog.csv",
+      "sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+      "commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea"
+    },
+    "technical_tasks": {
+      "path": "docs/product/technical-tasks.json",
+      "sha256": "44f25e1fe8b1b52898506bd84b77e90403f220e9ab18c54e7664d494f8dfacd4",
+      "source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+      "planning_status": "Proposed — Backlog; Sprint 2 not committed; Ready decisions pending refinement",
+      "version": "1.0"
+    },
+    "import_manifest": {
+      "path": "docs/product/linear/import-plan.json",
+      "sha256": "37e8193c7a6f354faa4b60364120e4efd54af723867f3da6a931723f2b3590e2",
+      "bytes": 2441693
+    }
+  },
+  "counts": {
+    "source_records": 370,
+    "active_stories": 368,
+    "historical_split_documents": 2,
+    "epic_issues": 54,
+    "technical_task_issues": 24,
+    "active_issues_total": 446,
+    "source_estimates": 10,
+    "source_sprint_1_stories": 4,
+    "source_statuses": {
+      "Backlog": 364,
+      "In review": 4,
+      "Split": 2
+    },
+    "active_story_statuses": {
+      "Backlog": 364,
+      "In Review": 4
+    }
+  },
+  "preservation": {
+    "original_csv_records_verified": 370,
+    "original_csv_field_count": 19,
+    "original_field_utf8_values_verified": 7030,
+    "original_csv_record_checksums_verified": 370,
+    "original_gherkin_utf8_records_verified": 370,
+    "embedded_user_stories_verified": 370,
+    "embedded_rejection_summaries_verified": 370,
+    "proposed_technical_task_records_verified": 24,
+    "proposed_task_criteria_verified": 96,
+    "preserved_estimates": {
+      "FR-AI-001": 8,
+      "FR-AI-016a": 8,
+      "FR-AI-016b": 5,
+      "US-DX-01a": 5,
+      "US-DX-01b": 8,
+      "US-DX-03": 8,
+      "US-DC-04": 5,
+      "US-MP-03": 5,
+      "US-CM-05": 5,
+      "FR-SEC-001": 8
+    },
+    "retained_sprint_context": {
+      "FR-AI-001": "Sprint 1",
+      "US-DC-04": "Sprint 1",
+      "US-MP-03": "Sprint 1",
+      "FR-SEC-001": "Sprint 1"
+    }
+  },
+  "manifest_structure": {
+    "top_level_keys": [
+      "schema_version",
+      "source",
+      "technical_tasks_source",
+      "product_hierarchy",
+      "target",
+      "mapping",
+      "counts",
+      "milestones",
+      "issues",
+      "historical_documents"
+    ],
+    "original_csv_columns": [
+      "ID",
+      "Title",
+      "Release",
+      "Epic / area",
+      "Type",
+      "Priority",
+      "Built today",
+      "Persona",
+      "User story",
+      "Acceptance and rejection criteria (Gherkin)",
+      "Rejection summary",
+      "Source",
+      "Merged BRD stories",
+      "Related",
+      "Original requirement",
+      "Original acceptance",
+      "Story points",
+      "Sprint",
+      "Status"
+    ],
+    "issue_shapes": {
+      "epic": {
+        "count": 54,
+        "required_keys": [
+          "canonical_id",
+          "description",
+          "epic_id",
+          "kind",
+          "milestone_id",
+          "parent_id",
+          "release",
+          "release_counts",
+          "source_id",
+          "source_story_ids",
+          "status",
+          "strategic_objective_ids",
+          "title"
+        ],
+        "optional_keys": []
+      },
+      "story": {
+        "count": 368,
+        "required_keys": [
+          "canonical_id",
+          "description",
+          "epic_id",
+          "kind",
+          "milestone_id",
+          "parent_id",
+          "release",
+          "release_goal_id",
+          "source",
+          "source_id",
+          "source_record",
+          "status",
+          "strategic_objective_ids",
+          "title"
+        ],
+        "optional_keys": [
+          "estimate"
+        ]
+      },
+      "technical_task": {
+        "count": 24,
+        "required_keys": [
+          "canonical_id",
+          "depends_on",
+          "description",
+          "epic_id",
+          "kind",
+          "milestone_id",
+          "parent_id",
+          "release",
+          "release_goal_id",
+          "source_id",
+          "source_record",
+          "status",
+          "strategic_objective_ids",
+          "title"
+        ],
+        "optional_keys": []
+      }
+    },
+    "milestone_keys": [
+      "canonical_id",
+      "name",
+      "description",
+      "goal",
+      "source_row_count",
+      "active_story_count",
+      "historical_split_count"
+    ],
+    "historical_document_keys": [
+      "canonical_id",
+      "kind",
+      "title",
+      "description",
+      "source_id",
+      "replacement_story_ids",
+      "source",
+      "source_record"
+    ],
+    "reference_fields": {
+      "canonical_id": "Stable local identity; never a native Linear issue ID",
+      "parent_id": "Epic canonical ID for stories; story canonical ID for technical tasks",
+      "epic_id": "The epic canonical ID, including on task grandchildren",
+      "milestone_id": "RG-* canonical release milestone; null on cross-release epic parents",
+      "depends_on": "Technical task canonical IDs; edge means the task depends on the named task",
+      "source_record": "Every original CSV field, or every original proposed task field"
+    }
+  },
+  "hierarchy": {
+    "projects_planned": 1,
+    "release_milestones_planned": 5,
+    "epic_parent_issues": 54,
+    "story_to_epic_links": 368,
+    "task_to_story_links": 24,
+    "historical_split_replacements": {
+      "FR-AI-016": [
+        "FR-AI-016a",
+        "FR-AI-016b"
+      ],
+      "US-DX-01": [
+        "US-DX-01a",
+        "US-DX-01b"
+      ]
+    }
+  },
+  "release_counts": [
+    {
+      "release": "Foundation",
+      "milestone_id": "RG-FOUNDATION",
+      "source_rows": 6,
+      "active_stories": 6,
+      "historical_split_documents": 0,
+      "proposed_technical_tasks": 0
+    },
+    {
+      "release": "R1 Pilot",
+      "milestone_id": "RG-R1",
+      "source_rows": 174,
+      "active_stories": 172,
+      "historical_split_documents": 2,
+      "proposed_technical_tasks": 24
+    },
+    {
+      "release": "R2 Scale",
+      "milestone_id": "RG-R2",
+      "source_rows": 139,
+      "active_stories": 139,
+      "historical_split_documents": 0,
+      "proposed_technical_tasks": 0
+    },
+    {
+      "release": "R3 Ecosystem",
+      "milestone_id": "RG-R3",
+      "source_rows": 45,
+      "active_stories": 45,
+      "historical_split_documents": 0,
+      "proposed_technical_tasks": 0
+    },
+    {
+      "release": "Later",
+      "milestone_id": "RG-LATER",
+      "source_rows": 6,
+      "active_stories": 6,
+      "historical_split_documents": 0,
+      "proposed_technical_tasks": 0
+    }
+  ],
+  "status_checks": {
+    "planned_issue_statuses": {
+      "Backlog": 442,
+      "In Review": 4
+    },
+    "source_review_story_ids": [
+      "FR-AI-001",
+      "FR-SEC-001",
+      "US-DC-04",
+      "US-MP-03"
+    ],
+    "done_issues": 0,
+    "invented_assignments": 0,
+    "invented_due_dates": 0,
+    "invented_native_issue_ids": 0
+  },
+  "unique_content_markers": {
+    "count": 453,
+    "unique_count": 453
+  },
+  "task_dependency_dag": {
+    "acyclic": true,
+    "node_count": 24,
+    "edge_count": 36,
+    "edges": [
+      {
+        "task_id": "TASK-US-DX-01a-02",
+        "depends_on": "TASK-US-DX-01a-01"
+      },
+      {
+        "task_id": "TASK-US-DX-01a-03",
+        "depends_on": "TASK-US-DX-01a-02"
+      },
+      {
+        "task_id": "TASK-US-DX-01a-04",
+        "depends_on": "TASK-US-DX-01a-03"
+      },
+      {
+        "task_id": "TASK-US-DX-01a-05",
+        "depends_on": "TASK-US-DX-01a-03"
+      },
+      {
+        "task_id": "TASK-US-DX-01a-05",
+        "depends_on": "TASK-US-DX-01a-04"
+      },
+      {
+        "task_id": "TASK-US-DX-01a-06",
+        "depends_on": "TASK-US-DX-01a-04"
+      },
+      {
+        "task_id": "TASK-US-DX-01a-06",
+        "depends_on": "TASK-US-DX-01a-05"
+      },
+      {
+        "task_id": "TASK-US-DX-03-01",
+        "depends_on": "TASK-US-DX-01a-01"
+      },
+      {
+        "task_id": "TASK-US-DX-03-02",
+        "depends_on": "TASK-US-DX-03-01"
+      },
+      {
+        "task_id": "TASK-US-DX-03-02",
+        "depends_on": "TASK-US-DX-01a-02"
+      },
+      {
+        "task_id": "TASK-US-DX-03-03",
+        "depends_on": "TASK-US-DX-03-02"
+      },
+      {
+        "task_id": "TASK-US-DX-03-03",
+        "depends_on": "TASK-US-DX-01a-03"
+      },
+      {
+        "task_id": "TASK-US-DX-03-03",
+        "depends_on": "TASK-US-DX-01a-04"
+      },
+      {
+        "task_id": "TASK-US-DX-03-04",
+        "depends_on": "TASK-US-DX-03-03"
+      },
+      {
+        "task_id": "TASK-US-DX-03-05",
+        "depends_on": "TASK-US-DX-03-03"
+      },
+      {
+        "task_id": "TASK-US-DX-03-06",
+        "depends_on": "TASK-US-DX-03-04"
+      },
+      {
+        "task_id": "TASK-US-DX-03-06",
+        "depends_on": "TASK-US-DX-03-05"
+      },
+      {
+        "task_id": "TASK-US-DX-03-06",
+        "depends_on": "TASK-US-DX-01a-06"
+      },
+      {
+        "task_id": "TASK-FR-AI-016a-02",
+        "depends_on": "TASK-FR-AI-016a-01"
+      },
+      {
+        "task_id": "TASK-FR-AI-016a-03",
+        "depends_on": "TASK-FR-AI-016a-02"
+      },
+      {
+        "task_id": "TASK-FR-AI-016a-04",
+        "depends_on": "TASK-FR-AI-016a-03"
+      },
+      {
+        "task_id": "TASK-FR-AI-016a-05",
+        "depends_on": "TASK-FR-AI-016a-04"
+      },
+      {
+        "task_id": "TASK-FR-AI-016a-06",
+        "depends_on": "TASK-FR-AI-016a-05"
+      },
+      {
+        "task_id": "TASK-US-CM-05-01",
+        "depends_on": "TASK-FR-AI-016a-01"
+      },
+      {
+        "task_id": "TASK-US-CM-05-02",
+        "depends_on": "TASK-US-CM-05-01"
+      },
+      {
+        "task_id": "TASK-US-CM-05-02",
+        "depends_on": "TASK-FR-AI-016a-02"
+      },
+      {
+        "task_id": "TASK-US-CM-05-02",
+        "depends_on": "TASK-FR-AI-016a-05"
+      },
+      {
+        "task_id": "TASK-US-CM-05-03",
+        "depends_on": "TASK-US-CM-05-01"
+      },
+      {
+        "task_id": "TASK-US-CM-05-04",
+        "depends_on": "TASK-US-CM-05-02"
+      },
+      {
+        "task_id": "TASK-US-CM-05-04",
+        "depends_on": "TASK-US-CM-05-03"
+      },
+      {
+        "task_id": "TASK-US-CM-05-04",
+        "depends_on": "TASK-FR-AI-016a-05"
+      },
+      {
+        "task_id": "TASK-US-CM-05-05",
+        "depends_on": "TASK-US-CM-05-02"
+      },
+      {
+        "task_id": "TASK-US-CM-05-05",
+        "depends_on": "TASK-US-CM-05-03"
+      },
+      {
+        "task_id": "TASK-US-CM-05-05",
+        "depends_on": "TASK-US-CM-05-04"
+      },
+      {
+        "task_id": "TASK-US-CM-05-06",
+        "depends_on": "TASK-US-CM-05-05"
+      },
+      {
+        "task_id": "TASK-US-CM-05-06",
+        "depends_on": "TASK-FR-AI-016a-06"
+      }
+    ],
+    "topological_order_dependency_first": [
+      "TASK-FR-AI-016a-01",
+      "TASK-FR-AI-016a-02",
+      "TASK-FR-AI-016a-03",
+      "TASK-FR-AI-016a-04",
+      "TASK-FR-AI-016a-05",
+      "TASK-FR-AI-016a-06",
+      "TASK-US-CM-05-01",
+      "TASK-US-CM-05-02",
+      "TASK-US-CM-05-03",
+      "TASK-US-CM-05-04",
+      "TASK-US-CM-05-05",
+      "TASK-US-CM-05-06",
+      "TASK-US-DX-01a-01",
+      "TASK-US-DX-01a-02",
+      "TASK-US-DX-01a-03",
+      "TASK-US-DX-01a-04",
+      "TASK-US-DX-01a-05",
+      "TASK-US-DX-01a-06",
+      "TASK-US-DX-03-01",
+      "TASK-US-DX-03-02",
+      "TASK-US-DX-03-03",
+      "TASK-US-DX-03-04",
+      "TASK-US-DX-03-05",
+      "TASK-US-DX-03-06"
+    ]
+  },
+  "csv_export_decision": {
+    "generated": false,
+    "primary_documentation": "https://linear.app/docs/cli-importer",
+    "reason": "The documented CLI CSV fields omit the project's parent/subissue, release milestone and dependency relationships. The JSON manifest preserves this hierarchy."
+  }
+}

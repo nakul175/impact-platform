@@ -1,0 +1,19 @@
+.F.................                                                      [100%]
+=================================== FAILURES ===================================
+____ test_real_bash_stop_probe_migration_order_and_service_isolation[empty] ____
+
+tmp_path = PosixPath('/private/var/folders/wm/vfx1992n25g3q8n5myd2gy0c0000gn/T/pytest-of-athena/pytest-77/test_real_bash_stop_probe_migr1')
+scenario = 'empty'
+
+    @pytest.mark.parametrize("scenario", ["normal", "empty"])
+    def test_real_bash_stop_probe_migration_order_and_service_isolation(tmp_path, scenario):
+        result, trace = shell(tmp_path, scenario)
+>       assert result.returncode == 0, result.stderr
+E       AssertionError: /bin/bash: line 35: running_ids[@]: unbound variable
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/bin/bash', '-c', '\nset -eu\nsource "$LIB"\ncompose() {\n printf \'compose %s\\n\' "$*" >> "$...n\' "$WRITER_QUIESCENCE"\n'], returncode=1, stdout='', stderr='/bin/bash: line 35: running_ids[@]: unbound variable\n').returncode
+
+qualification/test_deployment_quiescence_unit.py:82: AssertionError
+=========================== short test summary info ============================
+FAILED qualification/test_deployment_quiescence_unit.py::test_real_bash_stop_probe_migration_order_and_service_isolation[empty]

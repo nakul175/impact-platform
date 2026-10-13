@@ -1,0 +1,3298 @@
+{
+  "schema_version": 1,
+  "repository_head": "b01a628e9a5463c92609fc7c7221fff82fd1feb2",
+  "package_inventory_sha256": "3322e84d44a90af6efdf20fe3bcbca8ccaf51892fcd582e8250f25caa7bcef06",
+  "requirements_count": 54,
+  "status_counts": {
+    "PARTIAL": 45,
+    "ALIGNED": 3,
+    "NOT_VERIFIED": 5,
+    "MISSING": 1
+  },
+  "rows": [
+    {
+      "package_requirement_id": "QA13-001",
+      "requirement": "Treat the package as proposed policy subordinate to existing requirements, rights, repository rules and authorised task scope.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-01"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 2,
+          "line_end": 3,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "README.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/README.md",
+          "line_start": 5,
+          "line_end": 6,
+          "sha256": "007b43c194e2486047d9dc3fea35da1370112df9559dd7a5504b8011e8dfce52"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 13,
+          "line_end": 23
+        },
+        {
+          "path": "docs/HANDOVER.md",
+          "line_start": 7,
+          "line_end": 20
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 40,
+          "line_end": 60
+        }
+      ],
+      "observed_alignment": [
+        "New product handover pins build0.39/schema43 correctly; the engineering status table says0.36/schema40 and the core strategy current interpretation says0.12 with increments through0.18. Keep those dated records, but add an explicit current QA edition/precedence statement."
+      ],
+      "missing_or_unresolved_fields": [
+        "current QA strategy version/build/schema",
+        "authoritative scope snapshot",
+        "superseded-section markers",
+        "actual strategy reviewer/date"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-002",
+      "requirement": "Record actual product, engineering, QA, specialist and release decision authorities; agents collect evidence but cannot manufacture approval.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-02",
+        "QA-03",
+        "QA-40"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 3,
+          "line_end": 3,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "workflow/AGENT-DETAILS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/AGENT-DETAILS.md",
+          "line_start": 15,
+          "line_end": 15,
+          "sha256": "e0086857aac9628c3cf9b438987f709c5f1bfe4ab8bda09e3edbe499db203aa1"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 92,
+          "line_end": 106
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 27,
+          "line_end": 45
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 69,
+          "line_end": 77
+        },
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 21,
+          "line_end": 49
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 99,
+          "line_end": 111
+        },
+        {
+          "path": "docs/release-reviews/release-review-0.39.0.json",
+          "line_start": 3,
+          "line_end": 16
+        },
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 21,
+          "line_end": 49
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 3,
+          "line_end": 15
+        }
+      ],
+      "observed_alignment": [
+        "Portfolio and layer limits are well described. No single current0.39 strategy binds the current roadmap/story population, released platform/language scope, delivery capacity and reviewed domain applicability.",
+        "Release gate table and0.39 security/AI review exist, but are not a complete candidate test plan. Latest review explicitly reports G11 Notpassed and G12 Notrun.",
+        "Acceptance gates, unassigned signatures and planning/nativepublication versus productready boundaries are honest. No actual current candidate signed scope/evidence/rollout/exception/learning decision exists."
+      ],
+      "missing_or_unresolved_fields": [
+        "current release scope/capabilities/platforms/locales",
+        "risk-to-layer allocation per candidate",
+        "actual responsible owners/capacity",
+        "review cadence and version",
+        "candidate artifact/config/scope pin",
+        "included/excluded story and AC version sets",
+        "execution order/dates/budgets/owners",
+        "threshold/stop rules",
+        "rollout cohort and post-release learning window",
+        "current candidate/digest/config/scope",
+        "pergate applicability/threshold/run/freshness/reviewer",
+        "eligible exceptions with expiry",
+        "rollout/rollback/compensation/exposure",
+        "actual authority timestamp",
+        "separate typed quality/approval/readiness/delivery/learning"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-003",
+      "requirement": "Keep discovery/planning/Ready/delivery/learning separate; a plan is not implementation validation.",
+      "alignment_status": "ALIGNED",
+      "matched_domain_rows": [
+        "QA-05"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 14,
+          "line_end": 21,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "workflow/PM-INTEGRATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/PM-INTEGRATION.md",
+          "line_start": 4,
+          "line_end": 4,
+          "sha256": "e58d6be4586dd0b39b386a3b415f11a69fbed9bbc7278ed56c64853ae09c6308"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/agile/WORKING-AGREEMENT.md",
+          "line_start": 17,
+          "line_end": 32
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 25,
+          "line_end": 29
+        }
+      ],
+      "observed_alignment": [
+        "Existing Ready/Done criteria require scoped scenarios, dependencies, independent review and actual owner acceptance; proposed plans do not confer Ready/Done."
+      ],
+      "missing_or_unresolved_fields": [],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-004",
+      "requirement": "Resolve only facts necessary for the current action; unknown is not no. Exact build/environment/data/permissions are needed before dependent execution.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-01",
+        "QA-29"
+      ],
+      "package_source_refs": [
+        {
+          "path": "PRODUCT-CONTEXT.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/PRODUCT-CONTEXT.md",
+          "line_start": 22,
+          "line_end": 34,
+          "sha256": "0fa99715e1ffa1c60bda03f29b4724dee78bc92c489bbe613b816d97ceff1deb"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 13,
+          "line_end": 23
+        },
+        {
+          "path": "docs/HANDOVER.md",
+          "line_start": 7,
+          "line_end": 20
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 40,
+          "line_end": 60
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 110,
+          "line_end": 127
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 57,
+          "line_end": 57
+        },
+        {
+          "path": "docs/current/ACCESSIBILITY-STATEMENT.md",
+          "line_start": 14,
+          "line_end": 14
+        },
+        {
+          "path": "docs/QA-PERFORMANCE-2026-10.md",
+          "line_start": 3,
+          "line_end": 12
+        }
+      ],
+      "observed_alignment": [
+        "New product handover pins build0.39/schema43 correctly; the engineering status table says0.36/schema40 and the core strategy current interpretation says0.12 with increments through0.18. Keep those dated records, but add an explicit current QA edition/precedence statement.",
+        "Dated checks declare concrete runtime/browser/hardware and isolation limits. A single current candidate environment record including flags/config/artifact dependency versions and production differences is not bound to selected QA runs."
+      ],
+      "missing_or_unresolved_fields": [
+        "current QA strategy version/build/schema",
+        "authoritative scope snapshot",
+        "superseded-section markers",
+        "actual strategy reviewer/date",
+        "environment ID/config/infrastructure/artifact digest",
+        "current dependency/flag/secrets-reference versions",
+        "OS/browser/device/network matrix",
+        "production differences/drift disposition"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-005",
+      "requirement": "Low-tier fast path requires documented Low risk, bounded reversible change, no critical contract/authorisation/data/AI/safety/migration or protected requirement effect.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-04",
+        "QA-14"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/TASK-ROUTING.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/TASK-ROUTING.md",
+          "line_start": 13,
+          "line_end": 16,
+          "sha256": "eef7f29fb03486d0e845f14af24aeb9494392893c6c33176d5d022920d8635c2"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 69,
+          "line_end": 71
+        },
+        {
+          "path": "docs/current/threat-register.json",
+          "line_start": 1000,
+          "line_end": 1011
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 71,
+          "line_end": 75
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 69,
+          "line_end": 77
+        },
+        {
+          "path": "docs/agile/WORKING-AGREEMENT.md",
+          "line_start": 27,
+          "line_end": 30
+        }
+      ],
+      "observed_alignment": [
+        "Threats have stable IDs, impact, verification and proposal decisions; priorities are explicitly not accepted severity. The package general risk contract is not complete across all QA domains.",
+        "Changes to authority/schema/history/provider/UI invoke named affected portfolio; original assertions and independence rules remain mandatory."
+      ],
+      "missing_or_unresolved_fields": [
+        "likelihood/evidence per nonsecurity failure",
+        "risk tier and override rationale",
+        "required case/version links",
+        "expiry and authenticated owner/reviewer decision"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-006",
+      "requirement": "Assess each failure mode with impact and likelihood 1–4; impact4 is Critical regardless of product score; unknown likelihood is provisional/conservative.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-04"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/RISK-CLASSIFICATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/RISK-CLASSIFICATION.md",
+          "line_start": 2,
+          "line_end": 11,
+          "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 162,
+          "line_end": 169,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 69,
+          "line_end": 71
+        },
+        {
+          "path": "docs/current/threat-register.json",
+          "line_start": 1000,
+          "line_end": 1011
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 71,
+          "line_end": 75
+        }
+      ],
+      "observed_alignment": [
+        "Threats have stable IDs, impact, verification and proposal decisions; priorities are explicitly not accepted severity. The package general risk contract is not complete across all QA domains."
+      ],
+      "missing_or_unresolved_fields": [
+        "likelihood/evidence per nonsecurity failure",
+        "risk tier and override rationale",
+        "required case/version links",
+        "expiry and authenticated owner/reviewer decision"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-007",
+      "requirement": "High/Critical depth includes boundaries/negative/abuse/isolation/fallback/recovery and independent relevant specialist review; medium/low checks remain proportionate.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-04",
+        "QA-16",
+        "QA-19",
+        "QA-24"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/RISK-CLASSIFICATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/RISK-CLASSIFICATION.md",
+          "line_start": 4,
+          "line_end": 11,
+          "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+        },
+        {
+          "path": "workflow/AGENT-DETAILS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/AGENT-DETAILS.md",
+          "line_start": 6,
+          "line_end": 8,
+          "sha256": "e0086857aac9628c3cf9b438987f709c5f1bfe4ab8bda09e3edbe499db203aa1"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 69,
+          "line_end": 71
+        },
+        {
+          "path": "docs/current/threat-register.json",
+          "line_start": 1000,
+          "line_end": 1011
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 71,
+          "line_end": 75
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 88,
+          "line_end": 88
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 131,
+          "line_end": 145
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 25,
+          "line_end": 25
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 9,
+          "line_end": 15
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 141,
+          "line_end": 149
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 31,
+          "line_end": 35
+        },
+        {
+          "path": "Makefile",
+          "line_start": 19,
+          "line_end": 26
+        },
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 21,
+          "line_end": 21
+        },
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 51,
+          "line_end": 71
+        },
+        {
+          "path": "docs/release-reviews/release-review-0.39.0.json",
+          "line_start": 3,
+          "line_end": 16
+        },
+        {
+          "path": "docs/current/threat-register.json",
+          "line_start": 1000,
+          "line_end": 1011
+        }
+      ],
+      "observed_alignment": [
+        "Threats have stable IDs, impact, verification and proposal decisions; priorities are explicitly not accepted severity. The package general risk contract is not complete across all QA domains.",
+        "Required normal/failure variants and meaningful observable oracles are documented, including malformed fields, stale revisions, same-key changed-intent and natural-person controls. Proposed test status stays unrun.",
+        "Native login/RLS/race/restart requirements are explicit and PGlite/service fakes never substitute for native evidence.",
+        "Current machine-readable threat register supersedes narrative state;0.39 reports14 unresolved critical threats and bothchains BLOCK. Residual decisions are explicitly agent proposals, not independently confirmed."
+      ],
+      "missing_or_unresolved_fields": [
+        "likelihood/evidence per nonsecurity failure",
+        "risk tier and override rationale",
+        "required case/version links",
+        "expiry and authenticated owner/reviewer decision",
+        "actual threat/impact review",
+        "candidate-linked complete retest evidence",
+        "authenticated residual decisions",
+        "authorized independent security assessment"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-008",
+      "requirement": "Critical invariant failures block release irrespective of average pass rate; mandatory rights cannot be waived by a low score.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-13",
+        "QA-24",
+        "QA-40"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/RISK-CLASSIFICATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/RISK-CLASSIFICATION.md",
+          "line_start": 13,
+          "line_end": 18,
+          "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 40,
+          "line_end": 49
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 213,
+          "line_end": 221
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 105,
+          "line_end": 105
+        },
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 21,
+          "line_end": 21
+        },
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 51,
+          "line_end": 71
+        },
+        {
+          "path": "docs/release-reviews/release-review-0.39.0.json",
+          "line_start": 3,
+          "line_end": 16
+        },
+        {
+          "path": "docs/current/threat-register.json",
+          "line_start": 1000,
+          "line_end": 1011
+        },
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 21,
+          "line_end": 49
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 3,
+          "line_end": 15
+        }
+      ],
+      "observed_alignment": [
+        "Controls cannot be silently waived and exclusions require authorized scope decisions. No QA exception record template/register captures every package expiry/exposure/retest/decision field.",
+        "Current machine-readable threat register supersedes narrative state;0.39 reports14 unresolved critical threats and bothchains BLOCK. Residual decisions are explicitly agent proposals, not independently confirmed.",
+        "Acceptance gates, unassigned signatures and planning/nativepublication versus productready boundaries are honest. No actual current candidate signed scope/evidence/rollout/exception/learning decision exists."
+      ],
+      "missing_or_unresolved_fields": [
+        "exception ID/scope/build/gate",
+        "eligibility/nonwaivable assessment",
+        "observed compensating controls",
+        "exposure limit/remediation owner",
+        "expiry/retest/rollback triggers",
+        "actual approval record",
+        "actual threat/impact review",
+        "candidate-linked complete retest evidence",
+        "authenticated residual decisions",
+        "authorized independent security assessment",
+        "current candidate/digest/config/scope",
+        "pergate applicability/threshold/run/freshness/reviewer",
+        "eligible exceptions with expiry",
+        "rollout/rollback/compensation/exposure",
+        "actual authority timestamp",
+        "separate typed quality/approval/readiness/delivery/learning"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-009",
+      "requirement": "Predeclare numeric metric, unit, direction/value, population/slices, denominator/window/workload/sample, uncertainty, baseline/source/version and actual approval.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-31"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/RISK-CLASSIFICATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/RISK-CLASSIFICATION.md",
+          "line_start": 18,
+          "line_end": 21,
+          "sha256": "b5b1e387dda98b5bf3e9b6144b6d589edbc3d34b7aa86db73e12ddc3a9ac3013"
+        },
+        {
+          "path": "domains/PERFORMANCE.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/PERFORMANCE.md",
+          "line_start": 2,
+          "line_end": 6,
+          "sha256": "5b9f4fcdeb98c25a477fed6cc1b010596d2e22f17d26dfb9adb0669dc4d7acd4"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 177,
+          "line_end": 187
+        },
+        {
+          "path": "docs/governance/SLOS-AND-ALERTS.md",
+          "line_start": 5,
+          "line_end": 19
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 41,
+          "line_end": 63
+        }
+      ],
+      "observed_alignment": [
+        "Original numerical targets are retained, with sandbox breaches and unmeasured boundaries openly stated. Nonprofitservicelevels remain owner decisions. No current threshold register ties metric population/sample/window/error/confidence/version/approval to a release scope."
+      ],
+      "missing_or_unresolved_fields": [
+        "threshold ID/version/source/owner",
+        "latency boundary/population/sample/window/error budget",
+        "approval/expiry/exposure",
+        "confidence/generator limitations"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-010",
+      "requirement": "A first-release provisional target needs harm/source rationale, actual pre-execution approval, cohort/exposure/expiry/monitoring and baseline-establishment plan; it cannot waive invariants.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-31",
+        "QA-40"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/PROVISIONAL-TARGETS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/PROVISIONAL-TARGETS.md",
+          "line_start": 2,
+          "line_end": 8,
+          "sha256": "7c412880c11936e38224ef74702db6241158b99ee87ad181a8c00ca5f4800476"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 177,
+          "line_end": 187
+        },
+        {
+          "path": "docs/governance/SLOS-AND-ALERTS.md",
+          "line_start": 5,
+          "line_end": 19
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 41,
+          "line_end": 63
+        },
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 21,
+          "line_end": 49
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 3,
+          "line_end": 15
+        }
+      ],
+      "observed_alignment": [
+        "Original numerical targets are retained, with sandbox breaches and unmeasured boundaries openly stated. Nonprofitservicelevels remain owner decisions. No current threshold register ties metric population/sample/window/error/confidence/version/approval to a release scope.",
+        "Acceptance gates, unassigned signatures and planning/nativepublication versus productready boundaries are honest. No actual current candidate signed scope/evidence/rollout/exception/learning decision exists."
+      ],
+      "missing_or_unresolved_fields": [
+        "threshold ID/version/source/owner",
+        "latency boundary/population/sample/window/error budget",
+        "approval/expiry/exposure",
+        "confidence/generator limitations",
+        "current candidate/digest/config/scope",
+        "pergate applicability/threshold/run/freshness/reviewer",
+        "eligible exceptions with expiry",
+        "rollout/rollback/compensation/exposure",
+        "actual authority timestamp",
+        "separate typed quality/approval/readiness/delivery/learning"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-011",
+      "requirement": "Preserve canonical vision→strategy→roadmap→releasegoal→operatingrelease→epic→story→AC→task→case→run→defect→decision IDs; a deployable operating candidate is distinct from a planning release goal.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-07",
+        "QA-08",
+        "QA-46"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/TRACEABILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/TRACEABILITY.md",
+          "line_start": 2,
+          "line_end": 2,
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "path": "workflow/LINEAR-GITHUB.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/LINEAR-GITHUB.md",
+          "line_start": 4,
+          "line_end": 12,
+          "sha256": "b1b354abe72242161c70cb7aa850d31b1235dc8930f27916f5d26082fda13c7f"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 3,
+          "line_end": 17
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 17,
+          "line_end": 23
+        },
+        {
+          "path": "docs/current/TRACEABILITY.csv",
+          "line_start": 1,
+          "line_end": 2
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 9,
+          "line_end": 15
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 3,
+          "line_end": 17
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 15,
+          "line_end": 29
+        }
+      ],
+      "observed_alignment": [
+        "1328 original scenarios are preserved with hashes and separate clarifications, but this is not an adopted QA AC/version/applicability export with independent source completeness review.",
+        "307-requirement traceability and proposed scenario/task map are preserved. The execution CSV combines dated automated identities/results; no dedicated coverage-selection register selects current qualifying case runs for each required AC mapping.",
+        "Current PMhierarchy/canonical IDs and proposed criterion-task map are available. No adopted product-specific QA operating-release/case/run adapter binding to shared Ready/Done and assurance is present at this baseline; package membership checker is a separate root-owned scope."
+      ],
+      "missing_or_unresolved_fields": [
+        "scope_id/source_id/source_version",
+        "AC versions and YES/NO/UNKNOWN applicability",
+        "review_ref authenticated outside checker",
+        "expected AC count/identity hash/source hash bound to QA scope",
+        "normalized AC/version-to-case/version required links",
+        "selected qualification run per mapping",
+        "freshness/applicability dimensions",
+        "explicit numerator/denominator and partial/unknown coverage",
+        "installed PM catalogue/edition/hash binding",
+        "shared Ready/Done/assurance versions",
+        "operating candidate below releasegoal",
+        "explicit QA case/run/defect/decision relationships",
+        "semantic adapter review"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-012",
+      "requirement": "AC register is independent complete denominator; traceability contains links only; run register contains immutable execution; coverage selection explicitly chooses run per mapping.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-08"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/TRACEABILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/TRACEABILITY.md",
+          "line_start": 4,
+          "line_end": 4,
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "path": "standards/register-schema.json",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/register-schema.json",
+          "line_start": 1,
+          "line_end": 119,
+          "sha256": "4f24182ea4beda4026af524ffe122eaf20c1c09aba2fbc1b3ab0e0f1165cd65e"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/TRACEABILITY.csv",
+          "line_start": 1,
+          "line_end": 2
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 9,
+          "line_end": 15
+        }
+      ],
+      "observed_alignment": [
+        "307-requirement traceability and proposed scenario/task map are preserved. The execution CSV combines dated automated identities/results; no dedicated coverage-selection register selects current qualifying case runs for each required AC mapping."
+      ],
+      "missing_or_unresolved_fields": [
+        "normalized AC/version-to-case/version required links",
+        "selected qualification run per mapping",
+        "freshness/applicability dimensions",
+        "explicit numerator/denominator and partial/unknown coverage"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-013",
+      "requirement": "Planned coverage counts applicable ACs with required mappings; validated coverage requires every required mapping selected PASS/CURRENT/QUALIFICATION on matching candidate. UNKNOWN remains denominator; NO needs rationale/review;0/0=null.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-08",
+        "QA-47"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/TRACEABILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/TRACEABILITY.md",
+          "line_start": 6,
+          "line_end": 8,
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 254,
+          "line_end": 291,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/TRACEABILITY.csv",
+          "line_start": 1,
+          "line_end": 2
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 9,
+          "line_end": 15
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 107,
+          "line_end": 111
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        },
+        {
+          "path": "docs/QUALIFICATION.md",
+          "line_start": 3,
+          "line_end": 23
+        }
+      ],
+      "observed_alignment": [
+        "307-requirement traceability and proposed scenario/task map are preserved. The execution CSV combines dated automated identities/results; no dedicated coverage-selection register selects current qualifying case runs for each required AC mapping.",
+        "Narrative reports distinguish overlaps/native/local/planned/acceptance and preserve dated failures. Central CSV does not compute selected required ACmapping counts, currentfreshness, firstattempt/flake and reviewedexception denominators."
+      ],
+      "missing_or_unresolved_fields": [
+        "normalized AC/version-to-case/version required links",
+        "selected qualification run per mapping",
+        "freshness/applicability dimensions",
+        "explicit numerator/denominator and partial/unknown coverage",
+        "all six typed execution outcome counts",
+        "required mapping completion vs unique/historical tests",
+        "validated AC/version coverage and unknown applicability",
+        "firstattempt/rerun/quarantine stats",
+        "stale/exception expiry/domain slice reporting"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-014",
+      "requirement": "Selected result counts are required AC-to-case mappings, not unique test functions; report historical qualification and unique selected runs separately.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-08",
+        "QA-47"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/TRACEABILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/TRACEABILITY.md",
+          "line_start": 8,
+          "line_end": 10,
+          "sha256": "3384e3fa34dad13a0723aac5526234cb497cdb2e9fd53f2a77687ef337b0325a"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 286,
+          "line_end": 292,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/TRACEABILITY.csv",
+          "line_start": 1,
+          "line_end": 2
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 9,
+          "line_end": 15
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 107,
+          "line_end": 111
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        },
+        {
+          "path": "docs/QUALIFICATION.md",
+          "line_start": 3,
+          "line_end": 23
+        }
+      ],
+      "observed_alignment": [
+        "307-requirement traceability and proposed scenario/task map are preserved. The execution CSV combines dated automated identities/results; no dedicated coverage-selection register selects current qualifying case runs for each required AC mapping.",
+        "Narrative reports distinguish overlaps/native/local/planned/acceptance and preserve dated failures. Central CSV does not compute selected required ACmapping counts, currentfreshness, firstattempt/flake and reviewedexception denominators."
+      ],
+      "missing_or_unresolved_fields": [
+        "normalized AC/version-to-case/version required links",
+        "selected qualification run per mapping",
+        "freshness/applicability dimensions",
+        "explicit numerator/denominator and partial/unknown coverage",
+        "all six typed execution outcome counts",
+        "required mapping completion vs unique/historical tests",
+        "validated AC/version coverage and unknown applicability",
+        "firstattempt/rerun/quarantine stats",
+        "stale/exception expiry/domain slice reporting"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-015",
+      "requirement": "Export all canonical in-scope ACs independently of tests/QA rows, including YES/NO/UNKNOWN; recordsource/revision/scope/review before pinning.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-07"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/CRITERIA-SOURCE-PINNING.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CRITERIA-SOURCE-PINNING.md",
+          "line_start": 2,
+          "line_end": 8,
+          "sha256": "b1efaabd32b331457860b7b0dbd5a5d4db59f518570eb7d7622d1b6621ff55fc"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 3,
+          "line_end": 17
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 17,
+          "line_end": 23
+        }
+      ],
+      "observed_alignment": [
+        "1328 original scenarios are preserved with hashes and separate clarifications, but this is not an adopted QA AC/version/applicability export with independent source completeness review."
+      ],
+      "missing_or_unresolved_fields": [
+        "scope_id/source_id/source_version",
+        "AC versions and YES/NO/UNKNOWN applicability",
+        "review_ref authenticated outside checker",
+        "expected AC count/identity hash/source hash bound to QA scope"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-016",
+      "requirement": "Pin exact source-byteSHA, all-record count and sorted[ACid,ACversion] canonical identity-setSHA; source/version/applicability changes require approved newsource and invalidate affected results.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-07"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/CRITERIA-SOURCE-PINNING.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CRITERIA-SOURCE-PINNING.md",
+          "line_start": 7,
+          "line_end": 16,
+          "sha256": "b1efaabd32b331457860b7b0dbd5a5d4db59f518570eb7d7622d1b6621ff55fc"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 89,
+          "line_end": 129,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        },
+        {
+          "path": "checker/criteria_pin.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/criteria_pin.py",
+          "line_start": 6,
+          "line_end": 17,
+          "sha256": "23bdaed08df3454428bbad3a4fd23b8b4a86efe54cbe6fe94fe370d96a9a0920"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 3,
+          "line_end": 17
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 17,
+          "line_end": 23
+        }
+      ],
+      "observed_alignment": [
+        "1328 original scenarios are preserved with hashes and separate clarifications, but this is not an adopted QA AC/version/applicability export with independent source completeness review."
+      ],
+      "missing_or_unresolved_fields": [
+        "scope_id/source_id/source_version",
+        "AC versions and YES/NO/UNKNOWN applicability",
+        "review_ref authenticated outside checker",
+        "expected AC count/identity hash/source hash bound to QA scope"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-017",
+      "requirement": "Actual human CODEOWNER review must cover source+pins plus source/export logic,CODEOWNERS,workflow/checker/schema controls; account for later overriding patterns/uncovered paths.",
+      "alignment_status": "NOT_VERIFIED",
+      "matched_domain_rows": [
+        "QA-41"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/SOURCE-PROTECTION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/SOURCE-PROTECTION.md",
+          "line_start": 4,
+          "line_end": 8,
+          "sha256": "55ea2ad92fc7686e875d3d2bf11635a46d0c010000e01c0416b88d92c7c74bff"
+        },
+        {
+          "path": "adoption/github/CODEOWNERS.template",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/adoption/github/CODEOWNERS.template",
+          "line_start": 1,
+          "line_end": 12,
+          "sha256": "180c83d429fb14924bcf0f7ecce3aa0303c4b2a191415666778694a395068338"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/CODEOWNERS",
+          "line_start": 1,
+          "line_end": 6
+        },
+        {
+          "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+          "line_start": 25,
+          "line_end": 28
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 5,
+          "line_end": 11
+        }
+      ],
+      "observed_alignment": [
+        "Ownership configuration exists at docs/CODEOWNERS: the wildcard and listed deployment/infrastructure/governance paths name @nakul175. Its location is a supported CODEOWNERS location. Actual required code-owner review, fresh-review/ruleset/bypass enforcement and authenticated source-review authority remain external and were not queried. File presence or agent/preservation checks do not prove enforcement."
+      ],
+      "missing_or_unresolved_fields": [
+        "actual branch/ruleset required-review and fresh-review configuration",
+        "verified protection of source/pins/checker/export logic",
+        "safe-PR narrowing/control-change enforcement evidence",
+        "trusted external reconciliation if used and bypass review"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-018",
+      "requirement": "Require real code-owner PR review,fresh-review/latest-push settings,trusted required checks and inspected bypass/direct/forcepush settings; verify safe source-narrowing and control-change PRs remain unmergeable without realreview.",
+      "alignment_status": "NOT_VERIFIED",
+      "matched_domain_rows": [
+        "QA-41",
+        "QA-43"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/SOURCE-PROTECTION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/SOURCE-PROTECTION.md",
+          "line_start": 7,
+          "line_end": 11,
+          "sha256": "55ea2ad92fc7686e875d3d2bf11635a46d0c010000e01c0416b88d92c7c74bff"
+        },
+        {
+          "path": "templates/source-protection-verification.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/templates/source-protection-verification.md",
+          "line_start": 2,
+          "line_end": 17,
+          "sha256": "8dca833229a688d52d22c75ecd7728935d26bf9e94e46ef528640e7bd1d2495d"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/CODEOWNERS",
+          "line_start": 1,
+          "line_end": 6
+        },
+        {
+          "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+          "line_start": 25,
+          "line_end": 28
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 5,
+          "line_end": 11
+        },
+        {
+          "path": ".github/workflows/qualification.yml",
+          "line_start": 1,
+          "line_end": 66
+        },
+        {
+          "path": ".github/workflows/checks.yml",
+          "line_start": 1,
+          "line_end": 45
+        },
+        {
+          "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+          "line_start": 13,
+          "line_end": 28
+        }
+      ],
+      "observed_alignment": [
+        "Ownership configuration exists at docs/CODEOWNERS: the wildcard and listed deployment/infrastructure/governance paths name @nakul175. Its location is a supported CODEOWNERS location. Actual required code-owner review, fresh-review/ruleset/bypass enforcement and authenticated source-review authority remain external and were not queried. File presence or agent/preservation checks do not prove enforcement.",
+        "Four qualification jobs plus small always-on checks have explicit triggers/timeouts/permissions. Docs-only qualification is filtered, and pooled subset is advisory. Actual required-check enforcement, safe failure blocking and deployable digest reuse remain unverified."
+      ],
+      "missing_or_unresolved_fields": [
+        "actual branch/ruleset required-review and fresh-review configuration",
+        "verified protection of source/pins/checker/export logic",
+        "safe-PR narrowing/control-change enforcement evidence",
+        "trusted external reconciliation if used and bypass review",
+        "current gate expression and risk selection",
+        "artifact/config scope and retention",
+        "trusted required-check configuration",
+        "authorized safe failure/blocking proof"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-019",
+      "requirement": "Alternative is trusted independent read-only canonical PM reconciliation with separately controlled selection/workflow/credentials, approved scope changes and failclosed unavailability.",
+      "alignment_status": "NOT_VERIFIED",
+      "matched_domain_rows": [
+        "QA-41"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/SOURCE-PROTECTION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/SOURCE-PROTECTION.md",
+          "line_start": 13,
+          "line_end": 16,
+          "sha256": "55ea2ad92fc7686e875d3d2bf11635a46d0c010000e01c0416b88d92c7c74bff"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/CODEOWNERS",
+          "line_start": 1,
+          "line_end": 6
+        },
+        {
+          "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+          "line_start": 25,
+          "line_end": 28
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 5,
+          "line_end": 11
+        }
+      ],
+      "observed_alignment": [
+        "Ownership configuration exists at docs/CODEOWNERS: the wildcard and listed deployment/infrastructure/governance paths name @nakul175. Its location is a supported CODEOWNERS location. Actual required code-owner review, fresh-review/ruleset/bypass enforcement and authenticated source-review authority remain external and were not queried. File presence or agent/preservation checks do not prove enforcement."
+      ],
+      "missing_or_unresolved_fields": [
+        "actual branch/ruleset required-review and fresh-review configuration",
+        "verified protection of source/pins/checker/export logic",
+        "safe-PR narrowing/control-change enforcement evidence",
+        "trusted external reconciliation if used and bypass review"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-020",
+      "requirement": "Configure portable package:/repo:/relative root; canonical criteria snapshot must be local inside root. Local references reject absolute paths,traversal and symlink escapes; absolutebase only explicitoverride.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-11"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/EVIDENCE-ROOT.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/EVIDENCE-ROOT.md",
+          "line_start": 2,
+          "line_end": 18,
+          "sha256": "d7d4d3b170cf7003207a83c525ec6703aca75eba61c0528e64fd2b773c168ef2"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 51,
+          "line_end": 88,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 53,
+          "line_end": 57
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 39,
+          "line_end": 41
+        }
+      ],
+      "observed_alignment": [
+        "Sensitive raw evidence is kept outside Git and public-safe receipts retained. No QA scope evidence_root, root-confined reference/symlink enforcement, evidence access owner or retention declaration is adopted for these registers."
+      ],
+      "missing_or_unresolved_fields": [
+        "portable evidence_root",
+        "allowed reference policy and escape checks",
+        "immutable store/access control",
+        "retention/redaction owner"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-021",
+      "requirement": "PASS/FAIL require actual identified execution/predeclared oracle; BLOCKED,NOT_RUN,SKIPPED,NOT_APPLICABLE are separate outcomes; STALE/UNASSESSED are freshness and never currentpass.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-09"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 23,
+          "line_end": 26,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "standards/STATUS-MODEL.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/STATUS-MODEL.md",
+          "line_start": 2,
+          "line_end": 10,
+          "sha256": "bc9a5dab6119a0d54b75986a2ed7e866fdcd91d39c02b6d2016758beb083a1b7"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 90,
+          "line_end": 90
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 21,
+          "line_end": 23
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 1
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 3,
+          "line_end": 15
+        }
+      ],
+      "observed_alignment": [
+        "Documents distinguish planning/execution/acceptance, but vocabularies differ: Notrun/Inprogress versus SPECIFIED_NOT_RUN/NOT_STARTED and historical LocalPass/PendingCI. No explicit package-compatible mapping/freshness field exists."
+      ],
+      "missing_or_unresolved_fields": [
+        "reviewed vocabulary mapping without rewriting historical rows",
+        "CURRENT/STALE/UNASSESSED",
+        "QUALIFICATION/DIAGNOSTIC",
+        "applicability and approval separate from execution"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-022",
+      "requirement": "Immutable eachrun records scope/AC/caseversions,build/artifact/config/environment/tools/times/timezone,data/model/prompt/corpus,procedure,expected/observed,evidence,executor/reviewer.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-10"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 26,
+          "line_end": 26,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "templates/run-evidence.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/templates/run-evidence.md",
+          "line_start": 6,
+          "line_end": 16,
+          "sha256": "f87e6ccd4f0a0bef84da89be737f35e19b80dcde7b2a5271b44e43dc365f28c4"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 178,
+          "line_end": 193,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+          "line_start": 122,
+          "line_end": 126
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 23,
+          "line_end": 23
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 1
+        },
+        {
+          "path": "scripts/run.py",
+          "line_start": 645,
+          "line_end": 701
+        }
+      ],
+      "observed_alignment": [
+        "Run formats are specified and dated release records retain failures, but the central CSV lacks required version/config/digest/reviewer fields. Default runner overwrites fixed application/native report paths; immutable archival is an explicit operational step, not guaranteed by that runner."
+      ],
+      "missing_or_unresolved_fields": [
+        "case/AC version",
+        "artifact/config/tool/data pins",
+        "start/end and procedure/protocol",
+        "executor/reviewer record",
+        "parent/original attempt",
+        "immutable archive/digest and freshness"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-023",
+      "requirement": "Append newruns/defectevents; retain initial failure and diagnostic attempts; snapshot selection uses pins rather than latest timestamp.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-10",
+        "QA-12",
+        "QA-15"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "line_start": 6,
+          "line_end": 8,
+          "sha256": "b97985d780cd5c30ad665561c7e8c3d53d148df22328136389f451ee8cc43dd4"
+        },
+        {
+          "path": "checker/README.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/README.md",
+          "line_start": 23,
+          "line_end": 26,
+          "sha256": "34dd45c0bf49fe95a0b1e5dc7437d07beb00563a05990f5b677d433cb78a6197"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+          "line_start": 122,
+          "line_end": 126
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 23,
+          "line_end": 23
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 1
+        },
+        {
+          "path": "scripts/run.py",
+          "line_start": 645,
+          "line_end": 701
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 215,
+          "line_end": 221
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 79,
+          "line_end": 95
+        },
+        {
+          "path": "docs/QA-DEGRADATION-2026-10.md",
+          "line_start": 29,
+          "line_end": 33
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 157,
+          "line_end": 157
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 213,
+          "line_end": 213
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 79,
+          "line_end": 95
+        }
+      ],
+      "observed_alignment": [
+        "Run formats are specified and dated release records retain failures, but the central CSV lacks required version/config/digest/reviewer fields. Default runner overwrites fixed application/native report paths; immutable archival is an explicit operational step, not guaranteed by that runner.",
+        "Expected/actual/reproduction/owner/independent retest policy exists and original failures are retained. Dated slice defect labels are not an immutable cross-release defect-event register with authenticated downgrade and same-case current-build closure fields.",
+        "No-rerun-until-green and failure preservation are explicit. Attempt_group/protocol/seeds/repeat count/aggregate decision rule and diagnostic selection exclusions are not normalized in the central records."
+      ],
+      "missing_or_unresolved_fields": [
+        "case/AC version",
+        "artifact/config/tool/data pins",
+        "start/end and procedure/protocol",
+        "executor/reviewer record",
+        "parent/original attempt",
+        "immutable archive/digest and freshness",
+        "defect/event/predecessor IDs",
+        "severity-change rationale/review_ref",
+        "case ID/version and candidate/config/data linkage",
+        "same-case PASS/CURRENT retest",
+        "closure authority and reopen trigger",
+        "protocol_ref",
+        "purpose/attempt_group/original-run link",
+        "predeclared repetitions and aggregate decision rule",
+        "all-attempt denominator/flake reporting"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-024",
+      "requirement": "Predeclare qualificationgroup purpose,count,seeds/sampling and aggregate rule; preserve allsamples; extraunplanned attempts areDIAGNOSTIC and cannot rescue deterministicgate by majority vote.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-15"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/REPETITION-POLICY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/REPETITION-POLICY.md",
+          "line_start": 2,
+          "line_end": 6,
+          "sha256": "b4c46d231ecfc8a8fc623c1b1a8cfbf2321d1996603aea2a2e9c781a29c5e4bd"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 157,
+          "line_end": 157
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 213,
+          "line_end": 213
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 79,
+          "line_end": 95
+        }
+      ],
+      "observed_alignment": [
+        "No-rerun-until-green and failure preservation are explicit. Attempt_group/protocol/seeds/repeat count/aggregate decision rule and diagnostic selection exclusions are not normalized in the central records."
+      ],
+      "missing_or_unresolved_fields": [
+        "protocol_ref",
+        "purpose/attempt_group/original-run link",
+        "predeclared repetitions and aggregate decision rule",
+        "all-attempt denominator/flake reporting"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-025",
+      "requirement": "Analyze changed requirements/code/dependencies/data/model/prompt/corpus/infrastructure and invalidate/rerun affected checks pluscriticalsmoke; reuse needs documented relevance/freshness.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-14",
+        "QA-15",
+        "QA-39"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 29,
+          "line_end": 29,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "workflow/AGENT-DETAILS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/AGENT-DETAILS.md",
+          "line_start": 14,
+          "line_end": 14,
+          "sha256": "e0086857aac9628c3cf9b438987f709c5f1bfe4ab8bda09e3edbe499db203aa1"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 69,
+          "line_end": 77
+        },
+        {
+          "path": "docs/agile/WORKING-AGREEMENT.md",
+          "line_start": 27,
+          "line_end": 30
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 157,
+          "line_end": 157
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 213,
+          "line_end": 213
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 79,
+          "line_end": 95
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 205,
+          "line_end": 205
+        },
+        {
+          "path": "docs/governance/AI-MODEL-CARD.md",
+          "line_start": 39,
+          "line_end": 41
+        },
+        {
+          "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "line_start": 23,
+          "line_end": 40
+        }
+      ],
+      "observed_alignment": [
+        "Changes to authority/schema/history/provider/UI invoke named affected portfolio; original assertions and independence rules remain mandatory.",
+        "No-rerun-until-green and failure preservation are explicit. Attempt_group/protocol/seeds/repeat count/aggregate decision rule and diagnostic selection exclusions are not normalized in the central records.",
+        "Change triggers and testedrollback target are described; no pinned same-corpus baselinecomparison, monitored quality/harm/cost drift or actual kill-switch/feedback-label owner evidence is documented."
+      ],
+      "missing_or_unresolved_fields": [
+        "protocol_ref",
+        "purpose/attempt_group/original-run link",
+        "predeclared repetitions and aggregate decision rule",
+        "all-attempt denominator/flake reporting",
+        "candidate/baseline same-corpus slice comparison",
+        "provider-version residual controls/revalidation",
+        "minimized quality/cost/harm monitoring",
+        "feedback labeling/escalation/kill-switch owner"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-026",
+      "requirement": "Derive externally meaningful positive/negative/boundary/state/failure/concurrency/deniedsideeffect cases fromsourceAC+risk; persisted outcome, not onlysuccess toast.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-16",
+        "QA-17",
+        "QA-21"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/FUNCTIONAL-API-E2E.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/FUNCTIONAL-API-E2E.md",
+          "line_start": 2,
+          "line_end": 6,
+          "sha256": "b04934113725756a75cd23ba4a0e8061b7b97898d71489bbe63f3e24988ca105"
+        },
+        {
+          "path": "workflow/AGENT-DETAILS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/AGENT-DETAILS.md",
+          "line_start": 6,
+          "line_end": 8,
+          "sha256": "e0086857aac9628c3cf9b438987f709c5f1bfe4ab8bda09e3edbe499db203aa1"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 88,
+          "line_end": 88
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 131,
+          "line_end": 145
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 25,
+          "line_end": 25
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 9,
+          "line_end": 15
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 139,
+          "line_end": 149
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 33,
+          "line_end": 39
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 159,
+          "line_end": 165
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 36,
+          "line_end": 36
+        },
+        {
+          "path": "Makefile",
+          "line_start": 42,
+          "line_end": 78
+        }
+      ],
+      "observed_alignment": [
+        "Required normal/failure variants and meaningful observable oracles are documented, including malformed fields, stale revisions, same-key changed-intent and natural-person controls. Proposed test status stays unrun.",
+        "API design covers closed schemas, authority, pagination, replay and concurrency, with actual test/source inventory. A complete current implemented-operation-to-case matrix and compatibility/rate/timeout coverage disposition remain absent from the inspected QA records.",
+        "Actual browser suite locations cover persistence/races and target AT journeys exist. Current released role/device/locale/network matrix, meaningful visual-baseline review and complete criterion-to-run mapping are not reconciled."
+      ],
+      "missing_or_unresolved_fields": [
+        "current method/route/DTO-to-case mapping",
+        "rate limit/backcompat/version cases or reviewed exclusions",
+        "no-side-effect/error-leak oracle per denial",
+        "real-provider versus mock evidence pin",
+        "current supported matrix and reviewed exclusions",
+        "case/version-to-browser group mapping",
+        "visual baseline reviewer/change policy",
+        "complete current cross-module journey scope"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-027",
+      "requirement": "Use stablecollision-resistantQAIDs/explicitversions; AUTO locators remain reporelative with discoverablecase marker; preserve canonicalIDs, never allocate rowcount;MANUAL needs procedure.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-06",
+        "QA-48"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "line_start": 2,
+          "line_end": 4,
+          "sha256": "b97985d780cd5c30ad665561c7e8c3d53d148df22328136389f451ee8cc43dd4"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 149,
+          "line_end": 161,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 84,
+          "line_end": 90
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 7,
+          "line_end": 15
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/test-cases.csv",
+          "line_start": 1,
+          "line_end": 3
+        },
+        {
+          "path": "docs/handover/PARALLEL-WORK.md",
+          "line_start": 13,
+          "line_end": 15
+        },
+        {
+          "path": "docs/handover/PARALLEL-WORK.md",
+          "line_start": 24,
+          "line_end": 26
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        }
+      ],
+      "observed_alignment": [
+        "Baseline825 cases, nonprofit108 designed cases and1328 original scenario-task proposals have useful source/oracle links. They are distinct populations; their count is not a validated denominator. Case versions, risk/gate and cleanup bindings are not consistently normalized.",
+        "Test code names and source locations are discoverable; isolated branches/ports/integrator are mandated. No uniform case-version marker/manual procedure binding or serialized immutable QA register mutation contract maps the new PMscenario population."
+      ],
+      "missing_or_unresolved_fields": [
+        "case_version/scenario version",
+        "AC revision and required gate",
+        "risk ID/tier",
+        "dataset version/hash and cleanup",
+        "reviewed applicability",
+        "case ID/version marker or explicit legacy mapping",
+        "AUTO locator and MANUAL procedure",
+        "per-agent record IDs/change files",
+        "duplicate rejection and reviewed register/case invalidation"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-028",
+      "requirement": "Assign separate per-agentrecords/branches; serialize register integration and reviewedversionchanges; never overwrite duplicate rows.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-48"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CODE-IDS-AND-CONCURRENCY.md",
+          "line_start": 6,
+          "line_end": 6,
+          "sha256": "b97985d780cd5c30ad665561c7e8c3d53d148df22328136389f451ee8cc43dd4"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/handover/PARALLEL-WORK.md",
+          "line_start": 13,
+          "line_end": 15
+        },
+        {
+          "path": "docs/handover/PARALLEL-WORK.md",
+          "line_start": 24,
+          "line_end": 26
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        }
+      ],
+      "observed_alignment": [
+        "Test code names and source locations are discoverable; isolated branches/ports/integrator are mandated. No uniform case-version marker/manual procedure binding or serialized immutable QA register mutation contract maps the new PMscenario population."
+      ],
+      "missing_or_unresolved_fields": [
+        "case ID/version marker or explicit legacy mapping",
+        "AUTO locator and MANUAL procedure",
+        "per-agent record IDs/change files",
+        "duplicate rejection and reviewed register/case invalidation"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-029",
+      "requirement": "Retain defect/case identity through append-onlypredecessorchain; severitydecrease requires nonemptyrationale+actualindependent triage review,not agent gatebypass.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-12"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 31,
+          "line_end": 34,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 210,
+          "line_end": 240,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 215,
+          "line_end": 221
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 79,
+          "line_end": 95
+        },
+        {
+          "path": "docs/QA-DEGRADATION-2026-10.md",
+          "line_start": 29,
+          "line_end": 33
+        }
+      ],
+      "observed_alignment": [
+        "Expected/actual/reproduction/owner/independent retest policy exists and original failures are retained. Dated slice defect labels are not an immutable cross-release defect-event register with authenticated downgrade and same-case current-build closure fields."
+      ],
+      "missing_or_unresolved_fields": [
+        "defect/event/predecessor IDs",
+        "severity-change rationale/review_ref",
+        "case ID/version and candidate/config/data linkage",
+        "same-case PASS/CURRENT retest",
+        "closure authority and reopen trigger"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-030",
+      "requirement": "Closed defect needs samecase currentPASSqualification retest on closed-event build with evidence;release closure matches fullcandidatepins; unrelatedpass cannot close.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-12"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 34,
+          "line_end": 34,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 229,
+          "line_end": 235,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 215,
+          "line_end": 221
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 79,
+          "line_end": 95
+        },
+        {
+          "path": "docs/QA-DEGRADATION-2026-10.md",
+          "line_start": 29,
+          "line_end": 33
+        }
+      ],
+      "observed_alignment": [
+        "Expected/actual/reproduction/owner/independent retest policy exists and original failures are retained. Dated slice defect labels are not an immutable cross-release defect-event register with authenticated downgrade and same-case current-build closure fields."
+      ],
+      "missing_or_unresolved_fields": [
+        "defect/event/predecessor IDs",
+        "severity-change rationale/review_ref",
+        "case ID/version and candidate/config/data linkage",
+        "same-case PASS/CURRENT retest",
+        "closure authority and reopen trigger"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-031",
+      "requirement": "Eligibility/nonwaivable obligation review,scope,risk,observedcontrols,authority,approval,expiry/retesttrigger required; exception never turnsFAILintoPASS or grantsdeployment.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-13"
+      ],
+      "package_source_refs": [
+        {
+          "path": "standards/TESTING-STANDARD.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/standards/TESTING-STANDARD.md",
+          "line_start": 28,
+          "line_end": 29,
+          "sha256": "2df37c412a3c14fcfecd2d594eb5d678770d45cb6bf4f0371a7434a2eac6b270"
+        },
+        {
+          "path": "templates/exception.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/templates/exception.md",
+          "line_start": 6,
+          "line_end": 13,
+          "sha256": "4f4079d638d6f5c83eae1fd54ece9d097ea60f2830f2bbf8fd5fcfaa975ad081"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 241,
+          "line_end": 246,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 40,
+          "line_end": 49
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 213,
+          "line_end": 221
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 105,
+          "line_end": 105
+        }
+      ],
+      "observed_alignment": [
+        "Controls cannot be silently waived and exclusions require authorized scope decisions. No QA exception record template/register captures every package expiry/exposure/retest/decision field."
+      ],
+      "missing_or_unresolved_fields": [
+        "exception ID/scope/build/gate",
+        "eligibility/nonwaivable assessment",
+        "observed compensating controls",
+        "exposure limit/remediation owner",
+        "expiry/retest/rollback triggers",
+        "actual approval record"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-032",
+      "requirement": "Gateplan includeslocal/PR/integration/release/deploy/observation stages; requiredchecks mustexecute on exactcandidate/integration artifact and actualrepositoryenforcement verified.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-03",
+        "QA-43"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CI-CD-GATES.md",
+          "line_start": 2,
+          "line_end": 11,
+          "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 21,
+          "line_end": 49
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 99,
+          "line_end": 111
+        },
+        {
+          "path": "docs/release-reviews/release-review-0.39.0.json",
+          "line_start": 3,
+          "line_end": 16
+        },
+        {
+          "path": ".github/workflows/qualification.yml",
+          "line_start": 1,
+          "line_end": 66
+        },
+        {
+          "path": ".github/workflows/checks.yml",
+          "line_start": 1,
+          "line_end": 45
+        },
+        {
+          "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+          "line_start": 13,
+          "line_end": 28
+        }
+      ],
+      "observed_alignment": [
+        "Release gate table and0.39 security/AI review exist, but are not a complete candidate test plan. Latest review explicitly reports G11 Notpassed and G12 Notrun.",
+        "Four qualification jobs plus small always-on checks have explicit triggers/timeouts/permissions. Docs-only qualification is filtered, and pooled subset is advisory. Actual required-check enforcement, safe failure blocking and deployable digest reuse remain unverified."
+      ],
+      "missing_or_unresolved_fields": [
+        "candidate artifact/config/scope pin",
+        "included/excluded story and AC version sets",
+        "execution order/dates/budgets/owners",
+        "threshold/stop rules",
+        "rollout cohort and post-release learning window",
+        "current gate expression and risk selection",
+        "artifact/config scope and retention",
+        "trusted required-check configuration",
+        "authorized safe failure/blocking proof"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-033",
+      "requirement": "Always-run aggregator distinguishes success frommissing,skipped,neutral,cancelled,timeout,unavailable childchecks;trustedreportingsource andmergequeue integration eventswhereused.",
+      "alignment_status": "NOT_VERIFIED",
+      "matched_domain_rows": [
+        "QA-44"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CI-CD-GATES.md",
+          "line_start": 13,
+          "line_end": 15,
+          "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": ".github/workflows/checks.yml",
+          "line_start": 1,
+          "line_end": 23
+        },
+        {
+          "path": ".github/workflows/qualification.yml",
+          "line_start": 6,
+          "line_end": 22
+        }
+      ],
+      "observed_alignment": [
+        "Small checks always run but are not a child-result aggregator. No aggregator is defined in the two inspected workflow files; actual branch required-check/bypass/mergequeue policy is external and not inspected."
+      ],
+      "missing_or_unresolved_fields": [
+        "aggregator required-child manifest/conclusion logic",
+        "missing/skipped/neutral/cancelled/timeout/unavailable refusal",
+        "trusted reporting source",
+        "actual mergequeue events if used",
+        "safe enforcement evidence"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-034",
+      "requirement": "Quarantine requires defect/owner/scope/expiry/replacementvalidation; requiredquarantinedcheck stillblocks unless eligibleactualexception; preservefirstattempt/flakeevidence.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-13",
+        "QA-15"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CI-CD-GATES.md",
+          "line_start": 17,
+          "line_end": 19,
+          "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 40,
+          "line_end": 49
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 213,
+          "line_end": 221
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 105,
+          "line_end": 105
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 157,
+          "line_end": 157
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 213,
+          "line_end": 213
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 79,
+          "line_end": 95
+        }
+      ],
+      "observed_alignment": [
+        "Controls cannot be silently waived and exclusions require authorized scope decisions. No QA exception record template/register captures every package expiry/exposure/retest/decision field.",
+        "No-rerun-until-green and failure preservation are explicit. Attempt_group/protocol/seeds/repeat count/aggregate decision rule and diagnostic selection exclusions are not normalized in the central records."
+      ],
+      "missing_or_unresolved_fields": [
+        "exception ID/scope/build/gate",
+        "eligibility/nonwaivable assessment",
+        "observed compensating controls",
+        "exposure limit/remediation owner",
+        "expiry/retest/rollback triggers",
+        "actual approval record",
+        "protocol_ref",
+        "purpose/attempt_group/original-run link",
+        "predeclared repetitions and aggregate decision rule",
+        "all-attempt denominator/flake reporting"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-035",
+      "requirement": "Pipeline stage records trigger,commands,selection,checkname,environment,budget/permissions,retention,gateexpression; deliberatefailure mustblockmerge in safeauthorisedtest.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-43"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CI-CD-GATES.md",
+          "line_start": 19,
+          "line_end": 25,
+          "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": ".github/workflows/qualification.yml",
+          "line_start": 1,
+          "line_end": 66
+        },
+        {
+          "path": ".github/workflows/checks.yml",
+          "line_start": 1,
+          "line_end": 45
+        },
+        {
+          "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+          "line_start": 13,
+          "line_end": 28
+        }
+      ],
+      "observed_alignment": [
+        "Four qualification jobs plus small always-on checks have explicit triggers/timeouts/permissions. Docs-only qualification is filtered, and pooled subset is advisory. Actual required-check enforcement, safe failure blocking and deployable digest reuse remain unverified."
+      ],
+      "missing_or_unresolved_fields": [
+        "current gate expression and risk selection",
+        "artifact/config scope and retention",
+        "trusted required-check configuration",
+        "authorized safe failure/blocking proof"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-036",
+      "requirement": "Use structuralmode for plans;--release requires frozencriteria/sourcepins,fullcurrentrequiredmappedPASS,knownapplicability,no openD3/D4 and verifiedAUTOlocators.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-45"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/CI-CD-GATES.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/CI-CD-GATES.md",
+          "line_start": 21,
+          "line_end": 22,
+          "sha256": "0a3224427181a434ef5f8b49a188f47ca3fceea91c69871bc95b2de861a6c72d"
+        },
+        {
+          "path": "checker/qa_lint.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/qa_lint.py",
+          "line_start": 278,
+          "line_end": 292,
+          "sha256": "18ec47d95cd7cc716b647eb9ad4e0eced9c72f8622796109c01d6666120490e9"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 15,
+          "line_end": 17
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 3,
+          "line_end": 15
+        }
+      ],
+      "observed_alignment": [
+        "b01a628 contains PM planning/source/publication checks, not installed APLYDQA v1.3 checker/registers. The root new docs/qa audit addendum is outside this baseline and does not install/register/adopt an enforced QA gate."
+      ],
+      "missing_or_unresolved_fields": [
+        "controlled QA register/schema/runner adoption decision",
+        "actual scope/criteria/run-selection pins",
+        "strict record-gate integration and exclusion policy",
+        "separate independent source protection"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-037",
+      "requirement": "AI applicability includes model/classifier/ranking/retrieval/agenttools;canonicalassurance defines usecase,population,authority,prohibitedaction,humanreview,failurecost/fallback.",
+      "alignment_status": "ALIGNED",
+      "matched_domain_rows": [
+        "QA-36"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/AI-ML-EVALUATION.md",
+          "line_start": 2,
+          "line_end": 5,
+          "sha256": "c35e2e2d38d5b0c8305e73da500017a92ec9d164cb292a2e5864756e5bce5f99"
+        },
+        {
+          "path": "workflow/PM-INTEGRATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/PM-INTEGRATION.md",
+          "line_start": 4,
+          "line_end": 4,
+          "sha256": "e58d6be4586dd0b39b386a3b415f11a69fbed9bbc7278ed56c64853ae09c6308"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/governance/AI-MODEL-CARD.md",
+          "line_start": 16,
+          "line_end": 41
+        },
+        {
+          "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "line_start": 7,
+          "line_end": 36
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 43,
+          "line_end": 55
+        }
+      ],
+      "observed_alignment": [
+        "Advisory model, deterministicfeatures, intended human review and forbiddenofficial/arbitraryactions are clearly distinguished. Synthetic provider mechanics explicitly do not prove modelquality."
+      ],
+      "missing_or_unresolved_fields": [],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-038",
+      "requirement": "Pinprovider/model/version/params/prompts/tools/corpus/index/code/data; providermutationcan invalidateevenwithout codechange; unavailableversionpin needs controls/revalidation/residualdecision.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-37",
+        "QA-39"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/AI-ML-EVALUATION.md",
+          "line_start": 5,
+          "line_end": 7,
+          "sha256": "c35e2e2d38d5b0c8305e73da500017a92ec9d164cb292a2e5864756e5bce5f99"
+        },
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/AI-ML-EVALUATION.md",
+          "line_start": 25,
+          "line_end": 25,
+          "sha256": "c35e2e2d38d5b0c8305e73da500017a92ec9d164cb292a2e5864756e5bce5f99"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "line_start": 16,
+          "line_end": 21
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 199,
+          "line_end": 205
+        },
+        {
+          "path": "docs/release-reviews/release-review-0.39.0.json",
+          "line_start": 13,
+          "line_end": 16
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 205,
+          "line_end": 205
+        },
+        {
+          "path": "docs/governance/AI-MODEL-CARD.md",
+          "line_start": 39,
+          "line_end": 41
+        },
+        {
+          "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "line_start": 23,
+          "line_end": 40
+        }
+      ],
+      "observed_alignment": [
+        "Source explicitly says evaluation set/metrics/threshold/red-teamrecord none/TBD andG12Notrun. Planned original200case/20%adversarial contracts are not actual evaluation data, labels or results.",
+        "Change triggers and testedrollback target are described; no pinned same-corpus baselinecomparison, monitored quality/harm/cost drift or actual kill-switch/feedback-label owner evidence is documented."
+      ],
+      "missing_or_unresolved_fields": [
+        "EVAL ID/version/canonicalassurance link",
+        "provider/model revision/prompts/tools/corpus hashes",
+        "dataset provenance/splits/leakage/labels/rubric",
+        "population/slices/sample rationale",
+        "baseline/threshold/CI method/repeats/seeds",
+        "calibrated judge/inter-rater records",
+        "per-sample/per-slice evidence and actual reviewer",
+        "candidate/baseline same-corpus slice comparison",
+        "provider-version residual controls/revalidation",
+        "minimized quality/cost/harm monitoring",
+        "feedback labeling/escalation/kill-switch owner"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-039",
+      "requirement": "Separatedevelopment/validation/heldoutsets with provenance/licensing/labelrubric/revieweragreement/representativeness/duplicates/exclusions; syntheticdoesnotprove real-worldrepresentativeness.",
+      "alignment_status": "MISSING",
+      "matched_domain_rows": [
+        "QA-37"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/AI-ML-EVALUATION.md",
+          "line_start": 7,
+          "line_end": 19,
+          "sha256": "c35e2e2d38d5b0c8305e73da500017a92ec9d164cb292a2e5864756e5bce5f99"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "line_start": 16,
+          "line_end": 21
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 199,
+          "line_end": 205
+        },
+        {
+          "path": "docs/release-reviews/release-review-0.39.0.json",
+          "line_start": 13,
+          "line_end": 16
+        }
+      ],
+      "observed_alignment": [
+        "Source explicitly says evaluation set/metrics/threshold/red-teamrecord none/TBD andG12Notrun. Planned original200case/20%adversarial contracts are not actual evaluation data, labels or results."
+      ],
+      "missing_or_unresolved_fields": [
+        "EVAL ID/version/canonicalassurance link",
+        "provider/model revision/prompts/tools/corpus hashes",
+        "dataset provenance/splits/leakage/labels/rubric",
+        "population/slices/sample rationale",
+        "baseline/threshold/CI method/repeats/seeds",
+        "calibrated judge/inter-rater records",
+        "per-sample/per-slice evidence and actual reviewer"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-040",
+      "requirement": "Evaluate injection/exfiltration/toolpermissions/argumentvalidation/cross-tenantretrieval/unsupportedclaims/refusal/humanescalation/duplicatetoolactions/denialsideeffects; criticalunauthorisedactionsblock.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-38"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/AI-ML-EVALUATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/AI-ML-EVALUATION.md",
+          "line_start": 21,
+          "line_end": 25,
+          "sha256": "c35e2e2d38d5b0c8305e73da500017a92ec9d164cb292a2e5864756e5bce5f99"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 205,
+          "line_end": 205
+        },
+        {
+          "path": "docs/governance/AI-EVALUATION-AND-LIMITS.md",
+          "line_start": 18,
+          "line_end": 36
+        },
+        {
+          "path": "docs/current/threat-register.json",
+          "line_start": 2066,
+          "line_end": 2110
+        }
+      ],
+      "observed_alignment": [
+        "Injection/tenant/secret/officialnumber/tool restrictions have detailed designs and synthetic mechanics. No systematic live-model/human-workflow multilingual/adversarial/OOD safety corpus or fallback effectiveness qualification exists."
+      ],
+      "missing_or_unresolved_fields": [
+        "versioned multilingual/adversarial/OOD corpus",
+        "end-to-end exfiltration/tool/fallback oracles",
+        "live-provider and human escalation evidence",
+        "unwaivable critical-invariant disposition"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-041",
+      "requirement": "Pin threatmodel/selectedverificationstandard;verify auth/session/recovery/objecttenantaccess/injection/files/secrets/dependency/transport/ratelimit/audit/logleak/supplychain/privilegedsafe defaults.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-24",
+        "QA-25",
+        "QA-26"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/SECURITY-PRIVACY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/SECURITY-PRIVACY.md",
+          "line_start": 2,
+          "line_end": 4,
+          "sha256": "74777a88595e3426aeb3010dcc4e9f570f24f48e3694d630f16e42dea07b7874"
+        },
+        {
+          "path": "domains/SECURITY-PRIVACY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/SECURITY-PRIVACY.md",
+          "line_start": 10,
+          "line_end": 10,
+          "sha256": "74777a88595e3426aeb3010dcc4e9f570f24f48e3694d630f16e42dea07b7874"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 21,
+          "line_end": 21
+        },
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 51,
+          "line_end": 71
+        },
+        {
+          "path": "docs/release-reviews/release-review-0.39.0.json",
+          "line_start": 3,
+          "line_end": 16
+        },
+        {
+          "path": "docs/current/threat-register.json",
+          "line_start": 1000,
+          "line_end": 1011
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 175,
+          "line_end": 175
+        },
+        {
+          "path": "docs/current/Impact-Management-Security-Threat-Model-v1.1.md",
+          "line_start": 401,
+          "line_end": 405
+        },
+        {
+          "path": "docs/governance/COMPLIANCE-CONTROL-MAPPING.md",
+          "line_start": 25,
+          "line_end": 32
+        },
+        {
+          "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+          "line_start": 13,
+          "line_end": 33
+        }
+      ],
+      "observed_alignment": [
+        "Current machine-readable threat register supersedes narrative state;0.39 reports14 unresolved critical threats and bothchains BLOCK. Residual decisions are explicitly agent proposals, not independently confirmed.",
+        "ASVS5.0 Level2 is the target, but compliance mapping says unassessed and supplies themes rather than complete selected requirement IDs and test/run outcomes.",
+        "Locked dependencies and CycloneDX inventories exist; source document explicitly records no vulnerability/SAST/secret/container scan, no image provenance/signing and no human review. An inventory is not scanner or release-provenance evidence."
+      ],
+      "missing_or_unresolved_fields": [
+        "actual threat/impact review",
+        "candidate-linked complete retest evidence",
+        "authenticated residual decisions",
+        "authorized independent security assessment",
+        "selected ASVS requirement IDs/version",
+        "scope/applicability rationale",
+        "case/run/build mapping",
+        "independent review and residual findings",
+        "approved scanner scope/tool versions and finding triage",
+        "candidate-produced SBOM/provenance digest",
+        "dependency/license/security reviewer",
+        "fix verification/residual decision"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-042",
+      "requirement": "Verify minimisation/purpose/access/correction/deletion/retention/export/transfers/redaction and deletionpropagation; use syntheticidentities; legalreview depends currentjurisdiction/data/releasedate.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-27"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/SECURITY-PRIVACY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/SECURITY-PRIVACY.md",
+          "line_start": 6,
+          "line_end": 10,
+          "sha256": "74777a88595e3426aeb3010dcc4e9f570f24f48e3694d630f16e42dea07b7874"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/DATA-GOVERNANCE.md",
+          "line_start": 3,
+          "line_end": 35
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 169,
+          "line_end": 175
+        },
+        {
+          "path": "docs/governance/COMPLIANCE-CONTROL-MAPPING.md",
+          "line_start": 5,
+          "line_end": 27
+        }
+      ],
+      "observed_alignment": [
+        "Minimization, tenant-marker negatives, deletion propagation, holds and restored restrictions are planned and draft governance records exist; legal/processor/retention approvals and current complete derivative-store tests are unresolved."
+      ],
+      "missing_or_unresolved_fields": [
+        "current reviewed processing inventory/jurisdiction/source references",
+        "derivative/index/cache/processor coverage",
+        "retention/backup exception expiry",
+        "current complete rights/restore retest and qualified reviewer"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-043",
+      "requirement": "WCAG2.2AA is proposedsubjectto obligations/scope; combineautomated with keyboard/focus/screenreader/error/contrast/reflow/authentication/timing/manualcriticaljourneys; no scan-onlyconformance.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-30"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/ACCESSIBILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/ACCESSIBILITY.md",
+          "line_start": 2,
+          "line_end": 8,
+          "sha256": "41fbd2e1eeaecbfa3792f844716ec30f7d34ced10d56a90943f760860ecf2216"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 189,
+          "line_end": 197
+        },
+        {
+          "path": "docs/current/ACCESSIBILITY-STATEMENT.md",
+          "line_start": 3,
+          "line_end": 14
+        },
+        {
+          "path": "docs/current/ACCESSIBILITY-STATEMENT.md",
+          "line_start": 27,
+          "line_end": 44
+        }
+      ],
+      "observed_alignment": [
+        "WCAG2.2AA target, automated scan and one keyboard journey are documented as partial. Statement explicitly lacks screenreaders, otherbrowsers, zoom/reflow/manual criteria/liveIdP/artifacts/users; current all-journey criterion register is missing."
+      ],
+      "missing_or_unresolved_fields": [
+        "criterion ID/applicability/method/expected/observed/result",
+        "current browser/AT/device matrix",
+        "manual critical-process evidence",
+        "reviewed exception scope/authority"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-044",
+      "requirement": "Derive journeybudgets from needs/SLO/contracts; representative load/stress/spike/soak with offered/completedload/counts/tail/errors/queues/capacity/clientserverboundary/AIcostcaps.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-31",
+        "QA-32"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/PERFORMANCE.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/PERFORMANCE.md",
+          "line_start": 2,
+          "line_end": 6,
+          "sha256": "5b9f4fcdeb98c25a477fed6cc1b010596d2e22f17d26dfb9adb0669dc4d7acd4"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 177,
+          "line_end": 187
+        },
+        {
+          "path": "docs/governance/SLOS-AND-ALERTS.md",
+          "line_start": 5,
+          "line_end": 19
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 41,
+          "line_end": 63
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 179,
+          "line_end": 185
+        },
+        {
+          "path": "docs/QA-PERFORMANCE-2026-10.md",
+          "line_start": 5,
+          "line_end": 12
+        },
+        {
+          "path": "scripts/perf.py",
+          "line_start": 39,
+          "line_end": 56
+        },
+        {
+          "path": "qualification/perf_harness.py",
+          "line_start": 319,
+          "line_end": 329
+        }
+      ],
+      "observed_alignment": [
+        "Original numerical targets are retained, with sandbox breaches and unmeasured boundaries openly stated. Nonprofitservicelevels remain owner decisions. No current threshold register ties metric population/sample/window/error/confidence/version/approval to a release scope.",
+        "Native harness exists with retained rawerrors and closed-loop profiles. Original target externally-paced200ops/s,400burst,60minutepeak,8hoursoak and100Mdata profile are not represented by default120s/600s closed-loop sandbox. Existing shorter measurements must stay bounded; do not lower original targets."
+      ],
+      "missing_or_unresolved_fields": [
+        "threshold ID/version/source/owner",
+        "latency boundary/population/sample/window/error budget",
+        "approval/expiry/exposure",
+        "confidence/generator limitations",
+        "offered/completed arrival counts vs original target",
+        "generator saturation validation",
+        "full data/background-work/coldwarm/cohort scope",
+        "explicit shortened-run nonqualification",
+        "current uncontended full-target evidence"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-045",
+      "requirement": "Test outages/timeouts/boundedretries/duplicateidempotency/partialfailure/concurrency/restart/backlog/offlineresume/migration/compensation; assertno data loss/corruption/unauthorisedeffects.",
+      "alignment_status": "ALIGNED",
+      "matched_domain_rows": [
+        "QA-33"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/RELIABILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/RELIABILITY.md",
+          "line_start": 2,
+          "line_end": 4,
+          "sha256": "0a6b36f7a83b8fc5b5aa011d972af69a8d700a75d36647342d07be39bee9a589"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+          "line_start": 116,
+          "line_end": 120
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 145,
+          "line_end": 149
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 187,
+          "line_end": 187
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 41,
+          "line_end": 57
+        }
+      ],
+      "observed_alignment": [
+        "Target fault points and receipt/data/current-authority invariants are detailed; real restart versus proxy/providerfake boundary is explicit in dated degradation evidence."
+      ],
+      "missing_or_unresolved_fields": [],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-046",
+      "requirement": "Exercise actual backuprestoration with recovereddata/elapsedRPO/RTO; representative syntheticmigrationvolumes and rollback/compensation;safealerts/runbooks; faultinjection needsboundedapprovedtarget.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-34",
+        "QA-35"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/RELIABILITY.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/RELIABILITY.md",
+          "line_start": 6,
+          "line_end": 8,
+          "sha256": "0a6b36f7a83b8fc5b5aa011d972af69a8d700a75d36647342d07be39bee9a589"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/governance/BACKUP-DR.md",
+          "line_start": 19,
+          "line_end": 44
+        },
+        {
+          "path": "docs/governance/SLOS-AND-ALERTS.md",
+          "line_start": 15,
+          "line_end": 19
+        },
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 34,
+          "line_end": 34
+        },
+        {
+          "path": "docs/governance/SLOS-AND-ALERTS.md",
+          "line_start": 19,
+          "line_end": 46
+        }
+      ],
+      "observed_alignment": [
+        "Small native/CI restore checks are distinct from real-hostdrills; governance reports zero real-hostentries, nightlyRPOup24h andRTOunmeasured. Off-server/region/key/object/governance replay evidence remains required.",
+        "Alertcodes/runbooks and CI readinessexercise exist; governance explicitly says no paging/ack/escalation, namedoncall or metric history. No current release-cohort learning/errorbudget record."
+      ],
+      "missing_or_unresolved_fields": [
+        "representative restored-data and elapsed-time record",
+        "current deletion/grant replay before reopening",
+        "off-server/region/object/key/config coverage",
+        "qualified RPO/RTO and operator recovery record",
+        "actual routing/ack/escalation/on-call",
+        "bounded fault blast/stop/recovery authority",
+        "monthly journey/cohort SLO/errorbudget",
+        "incident/learning window and follow-up"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-047",
+      "requirement": "Use syntheticorvalidatedapproveddeidentifieddata;maintainversion/hash/provenance/classification/allowedenv/owner/retention/license/seed/oracles/cleanup; neverembedcredentials.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-28",
+        "QA-29"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/TEST-DATA.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/TEST-DATA.md",
+          "line_start": 2,
+          "line_end": 8,
+          "sha256": "f44972af1fe7e1d43262ea443b8c8bb1a746bfff57cc03d30a866e759f1e73f3"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 108,
+          "line_end": 127
+        },
+        {
+          "path": "docs/current/Impact-Management-Fixture-and-Acceptance-Specification-v1.1.md",
+          "line_start": 49,
+          "line_end": 106
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 47,
+          "line_end": 57
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 110,
+          "line_end": 127
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 57,
+          "line_end": 57
+        },
+        {
+          "path": "docs/current/ACCESSIBILITY-STATEMENT.md",
+          "line_start": 14,
+          "line_end": 14
+        },
+        {
+          "path": "docs/QA-PERFORMANCE-2026-10.md",
+          "line_start": 3,
+          "line_end": 12
+        }
+      ],
+      "observed_alignment": [
+        "Synthetic defaults, deterministicfixture/clock, tenant separation, no livecredentials, controlled reset and immutable cleanup are strong. No unified current dataset register supplies all package ownership/retention/provenance/hash fields; old fixture-clock literals are explicitly historical.",
+        "Dated checks declare concrete runtime/browser/hardware and isolation limits. A single current candidate environment record including flags/config/artifact dependency versions and production differences is not bound to selected QA runs."
+      ],
+      "missing_or_unresolved_fields": [
+        "dataset version/hash/schema/provenance",
+        "access owner/allowed environment/expiry",
+        "generator seed/labels/licensing where applicable",
+        "current fixture-clock and cleanup validation",
+        "environment ID/config/infrastructure/artifact digest",
+        "current dependency/flag/secrets-reference versions",
+        "OS/browser/device/network matrix",
+        "production differences/drift disposition"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-048",
+      "requirement": "Exploration records purpose/risk/timebox/build/data/notes/findings; UAT recordsrelevantparticipants/scenarios/consent/outcomes/actualacceptanceauthority; userapproval≠technicalpass.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-22",
+        "QA-23"
+      ],
+      "package_source_refs": [
+        {
+          "path": "domains/FUNCTIONAL-API-E2E.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/domains/FUNCTIONAL-API-E2E.md",
+          "line_start": 8,
+          "line_end": 8,
+          "sha256": "b04934113725756a75cd23ba4a0e8061b7b97898d71489bbe63f3e24988ca105"
+        },
+        {
+          "path": "templates/exploratory-charter.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/templates/exploratory-charter.md",
+          "line_start": 6,
+          "line_end": 11,
+          "sha256": "f5e2daaf34c1ddde9dfcdaf3ba96be3e281ae53aae14af46db6f017b93c9112f"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 92,
+          "line_end": 106
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 27,
+          "line_end": 45
+        },
+        {
+          "path": "docs/current/UAT-PACK.md",
+          "line_start": 1,
+          "line_end": 32
+        },
+        {
+          "path": "docs/current/UAT-PACK.md",
+          "line_start": 397,
+          "line_end": 426
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 165,
+          "line_end": 165
+        },
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 42,
+          "line_end": 42
+        }
+      ],
+      "observed_alignment": [
+        "No dedicated exploratory charter or charter register was located in the bounded current QA/governance/product document inventory. Scripted tests and incident diagnostics are not automatically exploratory sessions.",
+        "Useful22-scenario UAT pack with track/build/tester and blank signoff exists. Its0.25 scenario body has0.26/0.27 dated corrections; no completed representative-cohort consent/recruitment record or actual acceptance is supplied."
+      ],
+      "missing_or_unresolved_fields": [
+        "charter ID/scope/risk/mission",
+        "timebox/tester/build/data/authorization",
+        "heuristics/notes/evidence",
+        "findings/follow-up owner/decision",
+        "current candidate scripts and hosted/local applicability",
+        "participant relevance/consent/data boundary",
+        "cohort/sample/task-completion denominator",
+        "actual outcomes/facilitator assistance",
+        "qualified acceptance authority"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-049",
+      "requirement": "READY requirescurrentapplicableAC/domainproof,realreviews/approval,closedblockers,feasiblerollout/rollback andoperationalowner;NOT_CONFIGUREDrequiredsourcegovernanceblocksrealrelease.",
+      "alignment_status": "NOT_VERIFIED",
+      "matched_domain_rows": [
+        "QA-40",
+        "QA-41"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/RELEASE-READINESS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/RELEASE-READINESS.md",
+          "line_start": 2,
+          "line_end": 13,
+          "sha256": "5ce632106e51ef4129f96508ffcad88ed3b27891b22982ab6969dbc46e4b887a"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 21,
+          "line_end": 49
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 3,
+          "line_end": 15
+        },
+        {
+          "path": "docs/CODEOWNERS",
+          "line_start": 1,
+          "line_end": 6
+        },
+        {
+          "path": "docs/governance/SECURE-DEV-SUPPLY-CHAIN.md",
+          "line_start": 25,
+          "line_end": 28
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 5,
+          "line_end": 11
+        }
+      ],
+      "observed_alignment": [
+        "Acceptance gates, unassigned signatures and planning/nativepublication versus productready boundaries are honest. No actual current candidate signed scope/evidence/rollout/exception/learning decision exists.",
+        "Ownership configuration exists at docs/CODEOWNERS: the wildcard and listed deployment/infrastructure/governance paths name @nakul175. Its location is a supported CODEOWNERS location. Actual required code-owner review, fresh-review/ruleset/bypass enforcement and authenticated source-review authority remain external and were not queried. File presence or agent/preservation checks do not prove enforcement."
+      ],
+      "missing_or_unresolved_fields": [
+        "current candidate/digest/config/scope",
+        "pergate applicability/threshold/run/freshness/reviewer",
+        "eligible exceptions with expiry",
+        "rollout/rollback/compensation/exposure",
+        "actual authority timestamp",
+        "separate typed quality/approval/readiness/delivery/learning",
+        "actual branch/ruleset required-review and fresh-review configuration",
+        "verified protection of source/pins/checker/export logic",
+        "safe-PR narrowing/control-change enforcement evidence",
+        "trusted external reconciliation if used and bypass review"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-050",
+      "requirement": "Predeclare cohort/exposure/window/latencyerrorharm/stoprollbackowner; smokebasichealthnotallAC;code rollbackmaynotundodata/externalactions;afterwindowactualbaseline/denominator/uncertainty/incidentsdecision.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-35",
+        "QA-40"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/RELEASE-READINESS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/RELEASE-READINESS.md",
+          "line_start": 6,
+          "line_end": 10,
+          "sha256": "5ce632106e51ef4129f96508ffcad88ed3b27891b22982ab6969dbc46e4b887a"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/governance/SLOS-AND-ALERTS.md",
+          "line_start": 19,
+          "line_end": 46
+        },
+        {
+          "path": "docs/current/RELEASE-ACCEPTANCE.md",
+          "line_start": 21,
+          "line_end": 49
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 3,
+          "line_end": 15
+        }
+      ],
+      "observed_alignment": [
+        "Alertcodes/runbooks and CI readinessexercise exist; governance explicitly says no paging/ack/escalation, namedoncall or metric history. No current release-cohort learning/errorbudget record.",
+        "Acceptance gates, unassigned signatures and planning/nativepublication versus productready boundaries are honest. No actual current candidate signed scope/evidence/rollout/exception/learning decision exists."
+      ],
+      "missing_or_unresolved_fields": [
+        "actual routing/ack/escalation/on-call",
+        "bounded fault blast/stop/recovery authority",
+        "monthly journey/cohort SLO/errorbudget",
+        "incident/learning window and follow-up",
+        "current candidate/digest/config/scope",
+        "pergate applicability/threshold/run/freshness/reviewer",
+        "eligible exceptions with expiry",
+        "rollout/rollback/compensation/exposure",
+        "actual authority timestamp",
+        "separate typed quality/approval/readiness/delivery/learning"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-051",
+      "requirement": "Report scope/build,all6outcomes,freshness,firstattempt/reruns,requiredcompletion,ACcoverage,critical/high/exclusions/defects/expiry/slices and limitations; no percentagewithoutpopulation/window/denominator.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-47"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/REPORTING.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/REPORTING.md",
+          "line_start": 2,
+          "line_end": 11,
+          "sha256": "a8780050d47d9b45d21e5954d46e68237d95cecef989012f274fa502a999b6a3"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/nonprofit-ai/v1.0/05-TEST-STRATEGY.md",
+          "line_start": 107,
+          "line_end": 111
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        },
+        {
+          "path": "docs/QUALIFICATION.md",
+          "line_start": 3,
+          "line_end": 23
+        }
+      ],
+      "observed_alignment": [
+        "Narrative reports distinguish overlaps/native/local/planned/acceptance and preserve dated failures. Central CSV does not compute selected required ACmapping counts, currentfreshness, firstattempt/flake and reviewedexception denominators."
+      ],
+      "missing_or_unresolved_fields": [
+        "all six typed execution outcome counts",
+        "required mapping completion vs unique/historical tests",
+        "validated AC/version coverage and unknown applicability",
+        "firstattempt/rerun/quarantine stats",
+        "stale/exception expiry/domain slice reporting"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-052",
+      "requirement": "Canonical requirement/priorityauthority inPM/Linear,code+CIinGitHub,durabletestdesign/evidenceinrepodocs;stablebidirectionallinks; conflictsneedsourceowner;packagegivesno externalwriteauthority.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-46"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/LINEAR-GITHUB.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/LINEAR-GITHUB.md",
+          "line_start": 14,
+          "line_end": 23,
+          "sha256": "b1b354abe72242161c70cb7aa850d31b1235dc8930f27916f5d26082fda13c7f"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 3,
+          "line_end": 17
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 15,
+          "line_end": 29
+        }
+      ],
+      "observed_alignment": [
+        "Current PMhierarchy/canonical IDs and proposed criterion-task map are available. No adopted product-specific QA operating-release/case/run adapter binding to shared Ready/Done and assurance is present at this baseline; package membership checker is a separate root-owned scope."
+      ],
+      "missing_or_unresolved_fields": [
+        "installed PM catalogue/edition/hash binding",
+        "shared Ready/Done/assurance versions",
+        "operating candidate below releasegoal",
+        "explicit QA case/run/defect/decision relationships",
+        "semantic adapter review"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-053",
+      "requirement": "QA PMmapping is referenceadapter,not machinecompatiblePMinput;validate canonicalfieldmembership,aliases andstagegateprefixes against actualinstalledfullcataloguebytes/edition.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-46"
+      ],
+      "package_source_refs": [
+        {
+          "path": "workflow/PM-INTEGRATION.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/PM-INTEGRATION.md",
+          "line_start": 2,
+          "line_end": 9,
+          "sha256": "e58d6be4586dd0b39b386a3b415f11a69fbed9bbc7278ed56c64853ae09c6308"
+        },
+        {
+          "path": "checker/check_pm_mapping.py",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/checker/check_pm_mapping.py",
+          "line_start": 7,
+          "line_end": 35,
+          "sha256": "24d1629d8608ce723f64baabb02e2d1b80aef98650c8ba0d2b13958275fedf80"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 3,
+          "line_end": 17
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 15,
+          "line_end": 29
+        }
+      ],
+      "observed_alignment": [
+        "Current PMhierarchy/canonical IDs and proposed criterion-task map are available. No adopted product-specific QA operating-release/case/run adapter binding to shared Ready/Done and assurance is present at this baseline; package membership checker is a separate root-owned scope."
+      ],
+      "missing_or_unresolved_fields": [
+        "installed PM catalogue/edition/hash binding",
+        "shared Ready/Done/assurance versions",
+        "operating candidate below releasegoal",
+        "explicit QA case/run/defect/decision relationships",
+        "semantic adapter review"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    },
+    {
+      "package_requirement_id": "QA13-054",
+      "requirement": "Inventory existingtests/toolingevidence beforeaddingdependencies; merge QAinstructionsscopewithout replacingrepoAGENTS;pilot requiredsourcegovernance/normalisedregisters/codeIDsin relevantauthorisedwork.",
+      "alignment_status": "PARTIAL",
+      "matched_domain_rows": [
+        "QA-01",
+        "QA-45",
+        "QA-48"
+      ],
+      "package_source_refs": [
+        {
+          "path": "ADOPTION-CHECKLIST.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/ADOPTION-CHECKLIST.md",
+          "line_start": 2,
+          "line_end": 51,
+          "sha256": "bd652fafd7a9f93a87f965d59f136e490eded3ae4e548c8773976638a71bf66d"
+        },
+        {
+          "path": "workflow/AGENT-DETAILS.md",
+          "absolute_path": "/Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/outputs/imprana-qa-v13-audit-20261011/reference/aplyd-testing-qa-v1.3/workflow/AGENT-DETAILS.md",
+          "line_start": 7,
+          "line_end": 7,
+          "sha256": "e0086857aac9628c3cf9b438987f709c5f1bfe4ab8bda09e3edbe499db203aa1"
+        }
+      ],
+      "repository_evidence": [
+        {
+          "path": "docs/product/framework-v4-20261011/START-HERE.md",
+          "line_start": 13,
+          "line_end": 23
+        },
+        {
+          "path": "docs/HANDOVER.md",
+          "line_start": 7,
+          "line_end": 20
+        },
+        {
+          "path": "docs/current/Impact-Management-Test-Strategy-v1.1.md",
+          "line_start": 40,
+          "line_end": 60
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/task-author/README.md",
+          "line_start": 15,
+          "line_end": 17
+        },
+        {
+          "path": "docs/product/framework-v4-20261011/quality/README.md",
+          "line_start": 3,
+          "line_end": 15
+        },
+        {
+          "path": "docs/handover/PARALLEL-WORK.md",
+          "line_start": 13,
+          "line_end": 15
+        },
+        {
+          "path": "docs/handover/PARALLEL-WORK.md",
+          "line_start": 24,
+          "line_end": 26
+        },
+        {
+          "path": "docs/current/EXECUTION-REGISTER.csv",
+          "line_start": 1,
+          "line_end": 3
+        }
+      ],
+      "observed_alignment": [
+        "New product handover pins build0.39/schema43 correctly; the engineering status table says0.36/schema40 and the core strategy current interpretation says0.12 with increments through0.18. Keep those dated records, but add an explicit current QA edition/precedence statement.",
+        "b01a628 contains PM planning/source/publication checks, not installed APLYDQA v1.3 checker/registers. The root new docs/qa audit addendum is outside this baseline and does not install/register/adopt an enforced QA gate.",
+        "Test code names and source locations are discoverable; isolated branches/ports/integrator are mandated. No uniform case-version marker/manual procedure binding or serialized immutable QA register mutation contract maps the new PMscenario population."
+      ],
+      "missing_or_unresolved_fields": [
+        "current QA strategy version/build/schema",
+        "authoritative scope snapshot",
+        "superseded-section markers",
+        "actual strategy reviewer/date",
+        "controlled QA register/schema/runner adoption decision",
+        "actual scope/criteria/run-selection pins",
+        "strict record-gate integration and exclusion policy",
+        "separate independent source protection",
+        "case ID/version marker or explicit legacy mapping",
+        "AUTO locator and MANUAL procedure",
+        "per-agent record IDs/change files",
+        "duplicate rejection and reviewed register/case invalidation"
+      ],
+      "scope_limit": "Documentation alignment only; conservative combined disposition. No executed product test, real approval or live enforcement asserted."
+    }
+  ],
+  "source_scope": "Original b01a628 baseline; subsequent root docs/qa audit addendum excluded. Package IDs are a consolidation crosswalk, not new product criterion IDs."
+}

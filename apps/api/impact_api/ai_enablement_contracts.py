@@ -5,15 +5,43 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.20.0"
+VERSION = "1.45.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
-POLICY_VERSION = "1.26.0"
+POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
 RANKING_VERSION = "1.27.0"
 IMPLEMENTED = [
     ("get", "ai-enablement/catalog"),
     ("post", "ai-enablement/assessment"),
     ("post", "ai-enablement/advisory"),
+    ("post", "ai-enablement/advisory-jobs"),
+    ("get", "ai-enablement/advisory-jobs/{job_id}"),
+    ("post", "ai-enablement/advisory-jobs/{job_id}/actions/cancel"),
+    ("post", "ai-enablement/forecasts"),
+    ("get", "ai-enablement/forecasts/{scenario_id}"),
+    ("get", "ai-enablement/forecasts/{scenario_id}/export"),
+    ("post", "ai-enablement/forecasts/{scenario_id}/versions/{version}/actions/request-adoption"),
+    ("post", "ai-enablement/safety-feedback"),
+    ("get", "ai-enablement/safety-shutdowns"),
+    ("post", "ai-enablement/safety-shutdowns"),
+    ("post", "ai-enablement/safety-shutdowns/{event_id}/actions/approve-recovery"),
+    ("post", "ai-enablement/extractions"),
+    ("post", "ai-enablement/extractions/{draft_id}/actions/apply"),
+    ("post", "ai-enablement/indicator-design/proposals"),
+    ("post", "ai-enablement/indicator-design/drafts"),
+    ("post", "ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/proposals"),
+    ("post", "ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}/actions/apply"),
+    ("post", "ai-enablement/evidence-questions"),
+    ("post", "ai-enablement/numeric-analysis"),
+    ("post", "ai-enablement/report-drafts"),
+    ("post", "ai-enablement/report-drafts/{draft_id}/actions/review"),
+    ("post", "ai-enablement/qualitative-runs"),
+    ("post", "ai-enablement/qualitative-suggestions/{suggestion_id}/actions/review"),
+    ("post", "ai-enablement/detection-tasks"),
+    ("post", "ai-enablement/suggested-findings"),
+    ("post", "ai-enablement/suggested-findings/{suggestion_id}/actions/review"),
+    ("post", "ai-enablement/action-proposals"),
+    ("post", "ai-enablement/action-proposals/{proposal_id}/actions/confirm"),
     ("get", "ai-enablement/solutions"),
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
@@ -43,7 +71,19 @@ POLICY_CAPABILITY = "ai.policy.manage"
 RANKING_MANAGERS = ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"]
 # The four criteria: each has a weight and, per ranked opportunity, a score.
 WEIGHT_FIELDS = ["impact", "effort", "cost", "readiness"]
-USE_CASES = ["ADVISORY_DRAFT", "EXTRACTION", "REPORT_DRAFT", "CHAT"]
+USE_CASES = [
+    "ADVISORY_DRAFT",
+    "EXTRACTION",
+    "REPORT_DRAFT",
+    "CHAT",
+    "INDICATOR_DESIGN",
+    "IMPORT_CLEANING",
+    "EVIDENCE_QUESTION",
+    "NUMERIC_ANALYSIS",
+    "QUALITATIVE_ASSISTANCE",
+    "PROACTIVE_FINDINGS",
+    "ACTION_PROPOSAL",
+]
 DATA_CLASSES = ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"]
 # The closed provider-and-region list. Adding a destination is a reviewed change to this list and to
 # the CHECK constraint of migration 0041; a tenant policy starts with no destination selected.
@@ -76,11 +116,26 @@ def augment(spec, policy):
             "operation_id": {"type": "string", "format": "uuid"},
             "profile": {"$ref": "#/components/schemas/AIEnablementProfile"},
             "consent": {"const": True},
+            "purpose": {"const": "AI_ADOPTION_ADVISORY"},
+            "source_dependencies": {
+                "type": "array",
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": closed(
+                    {
+                        "object_id": {"type": "string", "format": "uuid"},
+                        "revision_id": {"type": "string", "format": "uuid"},
+                        "object_type": {"type": "string", "pattern": "^[A-Z][A-Za-z0-9]{0,99}$"},
+                        "capability": {"type": "string", "pattern": "^[a-z][a-z0-9.-]{0,99}$"},
+                    },
+                    ["object_id", "revision_id", "object_type", "capability"],
+                ),
+            },
             # The policy version shown to the requester ("Policy in force"); a request made against
             # any other version is refused with 409 AI_POLICY_CHANGED before any reservation.
             "policy_version": {"type": "integer", "minimum": 0, "maximum": MAX_POLICY_VERSION},
-            # Tools are never implicit: a tool the use case's policy does not list is refused with
-            # 422 AI_POLICY_BLOCKED. No policy can list a tool in this build.
+            # Tools are never implicit: policy must list each tool and the concrete runtime must
+            # independently expose it from a server-owned catalogue with scoped arguments.
             "tools": {
                 "type": "array",
                 "maxItems": 10,
@@ -88,7 +143,7 @@ def augment(spec, policy):
                 "items": {"type": "string", "pattern": TOOL_PATTERN},
             },
         },
-        ["operation_id", "profile", "consent", "policy_version"],
+        ["operation_id", "profile", "consent", "policy_version", "purpose"],
     )
     policy_schemas(schemas)
     ranking_schemas(schemas)
@@ -107,7 +162,7 @@ def augment(spec, policy):
             "advisory_available",
         ],
     }
-    schemas["AIEnablementAssessment"] = closed({"assessment": {"type": "object"}}, ["assessment"])
+    assessment_schemas(schemas)
     # US-DC-04 (build 0.39.0): closed, and every listing carries a valid commercial disclosure
     # (NONE_KNOWN with no relationship type, or DISCLOSED with at least one and a statement).
     schemas["AISolutionsCatalog"] = catalog_schema()
@@ -118,9 +173,1930 @@ def augment(spec, policy):
             "assessment": {"type": "object"},
             "model": {"type": "string"},
             "disclaimer": {"type": "string"},
+            "trace": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": [
+                    "requester_principal_id",
+                    "scope",
+                    "source_versions",
+                    "use_case_configuration",
+                    "model_identifier",
+                    "tool_receipts",
+                    "proposed_changes",
+                    "review_decisions",
+                    "applied_domain_receipts",
+                    "output_version",
+                    "retention_until",
+                ],
+                "properties": {
+                    "requester_principal_id": {"type": "string", "format": "uuid"},
+                    "scope": {"type": "object"},
+                    "source_versions": {"type": "array", "maxItems": 20},
+                    "use_case_configuration": {"type": "object"},
+                    "model_identifier": {"type": "string", "maxLength": 200},
+                    "tool_receipts": {"type": "array", "maxItems": 20},
+                    "proposed_changes": {"type": "array", "maxItems": 100},
+                    "review_decisions": {"type": "array", "maxItems": 100},
+                    "applied_domain_receipts": {"type": "array", "maxItems": 100},
+                    "output_version": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+                    "retention_until": {"type": "string", "format": "date-time"},
+                },
+            },
         },
-        ["status", "text", "assessment", "model", "disclaimer"],
+        ["status", "text", "assessment", "model", "disclaimer", "trace"],
     )
+    schemas["AIAdvisoryJob"] = closed(
+        {
+            "job_id": {"type": "string", "format": "uuid"},
+            "operation_id": {"type": "string", "format": "uuid"},
+            "state": {
+                "enum": [
+                    "Requested",
+                    "Validating",
+                    "Queued",
+                    "Running",
+                    "Cancelling",
+                    "Succeeded",
+                    "SucceededWithIssues",
+                    "Failed",
+                    "Cancelled",
+                ]
+            },
+            "estimated_units": {"type": "integer", "minimum": 1},
+            "requested_at": {"type": "string", "format": "date-time"},
+            "cancellation_requested": {"type": "boolean"},
+            "progress": {"type": "integer", "minimum": 0, "maximum": 100},
+            "can_cancel": {"type": "boolean"},
+            "outcome": {
+                "type": ["string", "null"],
+                "enum": ["SUCCEEDED", "TIMED_OUT", "CANCELLED", "FAILED", None],
+            },
+            "complete": {"type": ["boolean", "null"]},
+            "label": {"type": ["string", "null"], "enum": ["Advisory draft", "Incomplete draft", None]},
+            "can_publish_final": {"type": "boolean"},
+        },
+        [
+            "job_id",
+            "operation_id",
+            "state",
+            "estimated_units",
+            "requested_at",
+            "cancellation_requested",
+            "progress",
+            "can_cancel",
+            "outcome",
+            "complete",
+            "label",
+            "can_publish_final",
+        ],
+    )
+    forecast_input = closed(
+        {
+            "ordinal": {"type": "integer", "minimum": 1},
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+            "value": {"type": "string"},
+        }
+    )
+    forecast_point = closed(
+        {
+            "step": {"type": "integer", "minimum": 1, "maximum": 24},
+            "value": {"type": "string"},
+            "lower": {"type": "string"},
+            "upper": {"type": "string"},
+        }
+    )
+    schemas["AIForecastRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "scenario_id": {"type": ["string", "null"], "format": "uuid"},
+            "label": {"type": "string", "minLength": 1, "maxLength": 220, "pattern": r"\S"},
+            "horizon": {"type": "integer", "minimum": 1, "maximum": 24},
+            "method": {"const": "LINEAR_TREND_V1"},
+            "assumptions": {
+                "type": "array",
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 500},
+            },
+            "input_result_revisions": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 24,
+                "uniqueItems": True,
+                "items": {"type": "string", "format": "uuid"},
+            },
+        }
+    )
+    schemas["AIForecast"] = closed(
+        {
+            "scenario_id": {"type": "string", "format": "uuid"},
+            "version": {"type": "integer", "minimum": 1},
+            "label": {"type": "string"},
+            "status": {"enum": ["EXPLORATORY", "PROJECTION"]},
+            "horizon": {"type": "integer"},
+            "method": {"const": "LINEAR_TREND_V1"},
+            "assumptions": {"type": "array"},
+            "validation_history": {"type": "object"},
+            "unit": {"type": "string"},
+            "inputs": {"type": "array", "items": forecast_input},
+            "projections": {"type": "array", "items": forecast_point},
+            "can_request_adoption": {"type": "boolean"},
+            "targets_changed": {"const": False},
+            "created_at": {"type": "string", "format": "date-time"},
+        }
+    )
+    schemas["AIForecastExport"] = closed(
+        {
+            "scenario_id": {"type": "string", "format": "uuid"},
+            "version": {"type": "integer"},
+            "series": {"type": "array", "minItems": 2, "maxItems": 2},
+            "approved_targets_changed": {"const": False},
+        }
+    )
+    schemas["AIForecastAdoptionReview"] = closed(
+        {
+            "review_id": {"type": "string", "format": "uuid"},
+            "state": {"const": "PENDING"},
+            "targets_changed": {"const": False},
+        }
+    )
+    category = {
+        "enum": [
+            "SENSITIVE_CITATION",
+            "HARMFUL_CONTENT",
+            "UNSUPPORTED_CLAIM",
+            "UNAUTHORISED_ACTION",
+            "OTHER",
+        ]
+    }
+    schemas["AISafetyFeedbackRequest"] = closed(
+        {
+            "output_kind": {"enum": ["ADVISORY", "ADVISORY_JOB", "FORECAST"]},
+            "output_id": {"type": "string", "format": "uuid"},
+            "category": category,
+            "safe_detail": {"type": "string", "minLength": 1, "maxLength": 1000, "pattern": r"\S"},
+            "reviewer_id": {"type": "string", "format": "uuid"},
+        }
+    )
+    schemas["AISafetyFeedback"] = closed(
+        {
+            "feedback_id": {"type": "string", "format": "uuid"},
+            "output_kind": {"enum": ["ADVISORY", "ADVISORY_JOB", "FORECAST"]},
+            "output_id": {"type": "string", "format": "uuid"},
+            "category": category,
+            "reviewer_id": {"type": "string", "format": "uuid"},
+            "submitted_at": {"type": "string", "format": "date-time"},
+            "source_payload_retained": {"const": False},
+        }
+    )
+    schemas["AIShutdownRequest"] = closed(
+        {
+            "scope_kind": {"enum": ["USE_CASE", "CONFIGURATION", "DESTINATION"]},
+            "scope_value": {"type": "string", "minLength": 1, "maxLength": 300},
+            "action": {"enum": ["DISABLE", "REENABLE"]},
+            "reason_category": category,
+            "disabled_event_id": {"type": ["string", "null"], "format": "uuid"},
+        }
+    )
+    schemas["AIShutdownResult"] = closed(
+        {
+            "event_id": {"type": "string", "format": "uuid"},
+            "scope_kind": {"enum": ["USE_CASE", "CONFIGURATION", "DESTINATION"]},
+            "scope_value": {"type": "string"},
+            "state": {"enum": ["DISABLED", "ENABLED"]},
+            "queued_jobs_stopped": {"type": "array", "items": {"type": "string", "format": "uuid"}},
+            "running_jobs_cancellation_requested": {
+                "type": "array",
+                "items": {"type": "string", "format": "uuid"},
+            },
+            "affected_artifacts": {"type": "array"},
+            "manual_workflows_enabled": {"const": True},
+            "source_payload_retained": {"const": False},
+            "occurred_at": {"type": "string", "format": "date-time"},
+        }
+    )
+    schemas["AIShutdownStatus"] = closed(
+        {
+            "shutdowns": {"type": "array"},
+            "affected_artifacts": {"type": "array"},
+            "manual_workflows_enabled": {"const": True},
+        }
+    )
+    schemas["AIRecoveryApprovalRequest"] = closed(
+        {
+            "fix_evidence_object_id": {"type": "string", "format": "uuid"},
+            "fix_evidence_revision_id": {"type": "string", "format": "uuid"},
+        }
+    )
+    schemas["AIRecoveryApproval"] = closed(
+        {
+            "shutdown_event_id": {"type": "string", "format": "uuid"},
+            "fix_evidence_object_id": {"type": "string", "format": "uuid"},
+            "fix_evidence_revision_id": {"type": "string", "format": "uuid"},
+            "approved_by": {"type": "string", "format": "uuid"},
+            "state": {"const": "REGRESSION_APPROVED"},
+        }
+    )
+    extraction_location = closed(
+        {
+            "line": {"type": "integer", "minimum": 1},
+            "section": {"type": ["string", "null"], "maxLength": 200},
+        }
+    )
+    schemas["AIExtractionRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "source_object_id": {"type": "string", "format": "uuid"},
+            "source_revision_id": {"type": "string", "format": "uuid"},
+            "policy_version": {"type": "integer", "minimum": 1},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        }
+    )
+    schemas["AIExtractionDraft"] = closed(
+        {
+            "draft_id": {"type": "string", "format": "uuid"},
+            "source_object_id": {"type": "string", "format": "uuid"},
+            "source_revision_id": {"type": "string", "format": "uuid"},
+            "proposals": {
+                "type": "array",
+                "maxItems": 500,
+                "items": closed(
+                    {
+                        "proposal_id": {"type": "string", "format": "uuid"},
+                        "field_key": {"type": "string"},
+                        "proposed_value": {"type": "string"},
+                        "classification": {"enum": ["EXTRACTED", "INFERRED", "SUGGESTED"]},
+                        "location": extraction_location,
+                        "evidence_span": {"type": "string"},
+                        "conflict": {"type": "boolean"},
+                    }
+                ),
+            },
+            "missing_fields": {"type": "array", "items": {"type": "string"}},
+            "activation_blocked": {"type": "boolean"},
+            "domain_objects_changed": {"const": False},
+        }
+    )
+    schemas["AIExtractionApplyRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "selected_proposal_ids": {
+                "type": "array",
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": {"type": "string", "format": "uuid"},
+            },
+            "human_additions": {
+                "type": "array",
+                "maxItems": 20,
+                "items": closed(
+                    {
+                        "field_key": {"type": "string", "minLength": 1, "maxLength": 100},
+                        "value": {"type": "string", "minLength": 1, "maxLength": 2000},
+                        "rationale": {"type": "string", "minLength": 1, "maxLength": 1000},
+                    }
+                ),
+            },
+        }
+    )
+    schemas["AIExtractionReview"] = closed(
+        {
+            "draft_id": {"type": "string", "format": "uuid"},
+            "state": {"enum": ["BLOCKED", "READY_FOR_DOMAIN_DRAFT"]},
+            "accepted_fields": {"type": "object"},
+            "unresolved_fields": {"type": "array", "items": {"type": "string"}},
+            "domain_objects_changed": {"const": False},
+        }
+    )
+    indicator_source = {
+        "operation_id": {"type": "string", "format": "uuid"},
+        "library_definition_id": {"type": "string", "format": "uuid"},
+        "library_definition_revision_id": {"type": "string", "format": "uuid"},
+        "programme_id": {"type": "string", "format": "uuid"},
+        "programme_revision_id": {"type": "string", "format": "uuid"},
+        "policy_version": {"type": "integer", "minimum": 1},
+        "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        "proxy_basis": {"enum": ["DIRECT", "PROXY"]},
+    }
+    schemas["AIIndicatorProposalRequest"] = closed(
+        {key: value for key, value in indicator_source.items() if key != "operation_id"},
+        [key for key in indicator_source if key != "operation_id"],
+    )
+    schemas["AIIndicatorProposal"] = closed(
+        {
+            "library_definition_id": {"type": "string", "format": "uuid"},
+            "library_definition_revision_id": {"type": "string", "format": "uuid"},
+            "proposed_fields": {"type": "object"},
+            "warnings": {"type": "array", "items": {"type": "string"}},
+            "programme_context": {"type": "object"},
+            "model_confidence": {"type": "null"},
+            "can_approve": {"const": False},
+            "standard_mapping_created": {"const": False},
+        }
+    )
+    schemas["AIIndicatorDraftRequest"] = closed(
+        {
+            **indicator_source,
+            "selected_fields": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 100},
+            },
+        },
+        [*indicator_source, "selected_fields"],
+    )
+    schemas["AIIndicatorDraftReceipt"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+            "business_state": {"const": "Draft"},
+            "saved_at": {"type": "string", "format": "date-time"},
+            "correlation_id": {"type": "string"},
+            "source_definition_revision_id": {"type": "string", "format": "uuid"},
+            "programme_revision_id": {"type": "string", "format": "uuid"},
+            "warnings": {"type": "array", "items": {"type": "string"}},
+            "submit_ready": {"type": "boolean"},
+            "standard_mapping_created": {"const": False},
+        }
+    )
+    schemas["AIImportProposalRequest"] = closed(
+        {
+            "policy_version": {"type": "integer", "minimum": 1},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        ["policy_version", "language"],
+    )
+    schemas["AIImportProposals"] = closed(
+        {
+            "batch_id": {"type": "string", "format": "uuid"},
+            "batch_revision_id": {"type": "string", "format": "uuid"},
+            "raw_sha256": {"type": ["string", "null"]},
+            "current_mapping": {"type": ["object", "null"]},
+            "proposals": {"type": "array", "maxItems": 200},
+            "destructive_actions_available": {"const": False},
+        }
+    )
+    schemas["AIImportApplyRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "policy_version": {"type": "integer", "minimum": 1},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+            "selected_proposal_ids": {
+                "type": "array",
+                "maxItems": 200,
+                "uniqueItems": True,
+                "items": {"type": "string", "format": "uuid"},
+            },
+        },
+        ["operation_id", "policy_version", "language", "selected_proposal_ids"],
+    )
+    schemas["AIImportApplyReceipt"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+            "business_state": {"const": "Draft"},
+            "saved_at": {"type": "string", "format": "date-time"},
+            "correlation_id": {"type": "string"},
+            "raw_sha256": {"type": ["string", "null"]},
+            "mapping_diff": {"type": "object"},
+            "applied_proposal_ids": {"type": "array"},
+            "raw_rows_changed": {"const": False},
+            "identities_merged": {"const": False},
+            "approved_actuals_changed": {"const": False},
+        }
+    )
+    schemas["AIEvidenceQuestionRequest"] = closed(
+        {
+            "question": {"type": "string", "minLength": 1, "maxLength": 2000, "pattern": r"\S"},
+            "programme_id": {"type": ["string", "null"], "format": "uuid"},
+            "programme_revision_id": {"type": ["string", "null"], "format": "uuid"},
+            "period_id": {"type": ["string", "null"], "format": "uuid"},
+            "period_revision_id": {"type": ["string", "null"], "format": "uuid"},
+            "source_mode": {"type": ["string", "null"], "enum": ["SELECTED_GOVERNED_RESULTS", None]},
+            "sources": {
+                "type": "array",
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": closed(
+                    {
+                        "object_id": {"type": "string", "format": "uuid"},
+                        "revision_id": {"type": "string", "format": "uuid"},
+                    },
+                    ["object_id", "revision_id"],
+                ),
+            },
+            "policy_version": {"type": "integer", "minimum": 1},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        [
+            "question",
+            "programme_id",
+            "programme_revision_id",
+            "period_id",
+            "period_revision_id",
+            "source_mode",
+            "sources",
+            "policy_version",
+            "language",
+        ],
+    )
+    evidence_claim = closed(
+        {
+            "text": {"type": "string", "maxLength": 500},
+            "citation_numbers": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": {"type": "integer", "minimum": 1},
+            },
+            "material": {"const": True},
+        },
+        ["text", "citation_numbers", "material"],
+    )
+    evidence_citation = closed(
+        {
+            "number": {"type": "integer", "minimum": 1},
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+            "object_type": {"const": "CalculatedResult"},
+            "location": {"type": "string", "pattern": "^/"},
+        },
+        ["number", "object_id", "revision_id", "object_type", "location"],
+    )
+    evidence_contradiction = closed(
+        {
+            "field": {"type": "string", "maxLength": 100},
+            "indicator_id": {"type": "string", "format": "uuid"},
+            "values": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": {"type": "string", "maxLength": 500},
+            },
+        },
+        ["field", "indicator_id", "values"],
+    )
+    schemas["AIEvidenceQuestionAnswer"] = closed(
+        {
+            "state": {"enum": ["ANSWERED", "CLARIFICATION_REQUIRED", "ABSTAINED"]},
+            "answer": {"type": ["string", "null"], "maxLength": 12000},
+            "clarification_fields": {"type": "array", "maxItems": 8, "items": {"type": "string"}},
+            "claims": {"type": "array", "maxItems": 160, "items": evidence_claim},
+            "citations": {"type": "array", "maxItems": 160, "items": evidence_citation},
+            "missing_evidence": {"type": "array", "maxItems": 20, "items": {"type": "string"}},
+            "contradictions": {
+                "type": "array",
+                "maxItems": 80,
+                "items": evidence_contradiction,
+            },
+            "official_number_guessed": {"const": False},
+            "protected_resource_confirmed": {"const": False},
+            "fabricated_citations": {"const": False},
+        },
+        [
+            "state",
+            "answer",
+            "clarification_fields",
+            "claims",
+            "citations",
+            "missing_evidence",
+            "contradictions",
+            "official_number_guessed",
+            "protected_resource_confirmed",
+            "fabricated_citations",
+        ],
+    )
+    analysis_source = closed(
+        {
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+        },
+        ["object_id", "revision_id"],
+    )
+    analysis_plan = closed(
+        {
+            "measure": {"const": "POOLED_PERCENTAGE"},
+            "sources": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": analysis_source,
+            },
+            "filters": closed({}),
+            "period_id": {"type": "string", "format": "uuid"},
+            "period_revision_id": {"type": "string", "format": "uuid"},
+            "dimensions": {
+                "type": "array",
+                "maxItems": 0,
+                "uniqueItems": True,
+                "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,63}$"},
+            },
+            "source_mode": {"enum": ["OFFICIAL", "PROVISIONAL"]},
+            "permitted_operation": {"const": "POOL_RATIO"},
+        },
+        [
+            "measure",
+            "sources",
+            "filters",
+            "period_id",
+            "period_revision_id",
+            "dimensions",
+            "source_mode",
+            "permitted_operation",
+        ],
+    )
+    schemas["AINumericAnalysisRequest"] = closed(
+        {
+            "question": {"type": "string", "minLength": 1, "maxLength": 2000, "pattern": r"\S"},
+            "plan": analysis_plan,
+            "drafted_claim": {"type": ["string", "null"], "maxLength": 500},
+            "policy_version": {"type": "integer", "minimum": 1},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        ["question", "plan", "drafted_claim", "policy_version", "language"],
+    )
+    schemas["AINumericAnalysisResult"] = closed(
+        {
+            "state": {"const": "ANSWERED"},
+            "plan": analysis_plan,
+            "answer": {"type": "string", "maxLength": 500},
+            "value": {"type": "string", "pattern": "^-?[0-9]+\\.[0-9]{2}$"},
+            "unit": {"const": "percent"},
+            "numerator": {"type": "string"},
+            "denominator": {"type": "string"},
+            "result_references": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 20,
+                "items": closed(
+                    {
+                        "object_id": {"type": "string", "format": "uuid"},
+                        "revision_id": {"type": "string", "format": "uuid"},
+                        "numerator": {"type": "string", "pattern": "^[0-9]+(?:\\.[0-9]+)?$"},
+                        "denominator": {"type": "string", "pattern": "^[0-9]+(?:\\.[0-9]+)?$"},
+                    },
+                    ["object_id", "revision_id", "numerator", "denominator"],
+                ),
+            },
+            "calculation_receipt": closed(
+                {
+                    "receipt_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+                    "tool": {"const": "governed.pool_ratio.v1"},
+                    "precision_digits": {"const": 100},
+                    "rounding_rule": {"const": "HALF_UP"},
+                    "operation": {"const": "POOL_RATIO"},
+                },
+                ["receipt_id", "tool", "precision_digits", "rounding_rule", "operation"],
+            ),
+            "model_recomputed": {"const": False},
+            "arbitrary_query_executed": {"const": False},
+            "official_claim_matches_tool": {"const": True},
+        },
+        [
+            "state",
+            "plan",
+            "answer",
+            "value",
+            "unit",
+            "numerator",
+            "denominator",
+            "result_references",
+            "calculation_receipt",
+            "model_recomputed",
+            "arbitrary_query_executed",
+            "official_claim_matches_tool",
+        ],
+    )
+    report_gap = closed(
+        {
+            "section_code": {"type": "string", "maxLength": 64},
+            "reason": {"enum": ["REQUIRED_SECTION_MISSING", "REQUIRED_BINDINGS_MISSING"]},
+            "binding_codes": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"type": "string", "maxLength": 64},
+            },
+        },
+        ["section_code", "reason"],
+    )
+    schemas["AIReportDraftRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "snapshot_id": {"type": "string", "format": "uuid"},
+            "snapshot_revision_id": {"type": "string", "format": "uuid"},
+            "template_revision_id": {"type": "string", "format": "uuid"},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+            "policy_version": {"type": "integer", "minimum": 1},
+            "section_inputs": {
+                "type": "array",
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": {"$ref": "#/components/schemas/ReportSection"},
+            },
+            "prior_draft_id": {"type": ["string", "null"], "format": "uuid"},
+            "regenerated_section_codes": {
+                "type": "array",
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": {"type": "string", "maxLength": 64},
+            },
+        },
+        [
+            "operation_id",
+            "snapshot_id",
+            "snapshot_revision_id",
+            "template_revision_id",
+            "language",
+            "policy_version",
+            "section_inputs",
+            "prior_draft_id",
+            "regenerated_section_codes",
+        ],
+    )
+    schemas["AIReportDraft"] = closed(
+        {
+            "draft_id": {"type": "string", "format": "uuid"},
+            "generation": {"type": "integer", "minimum": 1},
+            "prior_draft_id": {"type": ["string", "null"], "format": "uuid"},
+            "proposed_sections": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/ReportSection"},
+            },
+            "evidence_gaps": {"type": "array", "maxItems": 200, "items": report_gap},
+            "mandatory_caveat_codes": {
+                "type": "array",
+                "maxItems": 1000,
+                "uniqueItems": True,
+                "items": {"type": "string", "maxLength": 64},
+            },
+            "ai_origin": {"const": True},
+            "domain_objects_changed": {"const": False},
+        },
+        [
+            "draft_id",
+            "generation",
+            "prior_draft_id",
+            "proposed_sections",
+            "evidence_gaps",
+            "mandatory_caveat_codes",
+            "ai_origin",
+            "domain_objects_changed",
+        ],
+    )
+    schemas["AIReportDraftReviewRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "final_sections": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/ReportSection"},
+            },
+            "mandatory_caveat_codes": {
+                "type": "array",
+                "maxItems": 1000,
+                "uniqueItems": True,
+                "items": {"type": "string", "maxLength": 64},
+            },
+        },
+        ["operation_id", "final_sections", "mandatory_caveat_codes"],
+    )
+    schemas["AIReportDraftReview"] = closed(
+        {
+            "draft_id": {"type": "string", "format": "uuid"},
+            "state": {"const": "HUMAN_REVIEWED"},
+            "corrections": {
+                "type": "array",
+                "maxItems": 100,
+                "items": closed(
+                    {
+                        "section_code": {"type": "string", "maxLength": 64},
+                        "before": {"$ref": "#/components/schemas/ReportSection"},
+                        "after": {"$ref": "#/components/schemas/ReportSection"},
+                    },
+                    ["section_code", "before", "after"],
+                ),
+            },
+            "final_sections": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/ReportSection"},
+            },
+            "ai_origin_retained": {"const": True},
+            "domain_objects_changed": {"const": False},
+        },
+        [
+            "draft_id",
+            "state",
+            "corrections",
+            "final_sections",
+            "ai_origin_retained",
+            "domain_objects_changed",
+        ],
+    )
+    qualitative_source = closed(
+        {
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        ["object_id", "revision_id", "language"],
+    )
+    qualitative_candidate = closed(
+        {
+            "source_revision_id": {"type": "string", "format": "uuid"},
+            "viewpoint": {"type": "string", "minLength": 1, "maxLength": 200},
+            "start_character": {"type": "integer", "minimum": 0},
+            "end_character": {"type": "integer", "minimum": 1},
+            "excerpt": {"type": "string", "minLength": 1, "maxLength": 4000},
+            "excerpt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "speaker_reference": {"type": ["string", "null"], "maxLength": 200},
+            "suggested_codes": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 64},
+            },
+            "theme": {"type": "string", "minLength": 1, "maxLength": 500},
+            "translation_language": {
+                "type": ["string", "null"],
+                "pattern": LANGUAGE_PATTERN,
+            },
+            "translation_text": {"type": ["string", "null"], "maxLength": 4000},
+        },
+        [
+            "source_revision_id",
+            "viewpoint",
+            "start_character",
+            "end_character",
+            "excerpt",
+            "excerpt_sha256",
+            "speaker_reference",
+            "suggested_codes",
+            "theme",
+            "translation_language",
+            "translation_text",
+        ],
+    )
+    qualitative_suggestion = deepcopy(qualitative_candidate)
+    qualitative_suggestion["properties"].update(
+        {
+            "suggestion_id": {"type": "string", "format": "uuid"},
+            "source_object_id": {"type": "string", "format": "uuid"},
+            "source_classification": {"enum": DATA_CLASSES},
+            "source_language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+            "translation_status": {"enum": ["NOT_REQUESTED", "MACHINE_UNREVIEWED"]},
+        }
+    )
+    qualitative_suggestion["required"] += [
+        "suggestion_id",
+        "source_object_id",
+        "source_classification",
+        "source_language",
+        "translation_status",
+    ]
+    schemas["AIQualitativeRunRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "codebook_id": {"type": "string", "format": "uuid"},
+            "codebook_revision_id": {"type": "string", "format": "uuid"},
+            "sources": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": qualitative_source,
+            },
+            "candidates": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "items": qualitative_candidate,
+            },
+            "policy_version": {"type": "integer", "minimum": 1},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        [
+            "operation_id",
+            "codebook_id",
+            "codebook_revision_id",
+            "sources",
+            "candidates",
+            "policy_version",
+            "language",
+        ],
+    )
+    schemas["AIQualitativeRun"] = closed(
+        {
+            "run_id": {"type": "string", "format": "uuid"},
+            "codebook_revision_id": {"type": "string", "format": "uuid"},
+            "suggestions": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "items": qualitative_suggestion,
+            },
+            "individual_review_required": {"const": True},
+            "consensus_inferred": {"const": False},
+        },
+        [
+            "run_id",
+            "codebook_revision_id",
+            "suggestions",
+            "individual_review_required",
+            "consensus_inferred",
+        ],
+    )
+    schemas["AIQualitativeReviewRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "disposition": {"enum": ["ACCEPTED", "REJECTED"]},
+            "final_codes": {
+                "type": "array",
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 64},
+            },
+            "final_theme": {"type": ["string", "null"], "maxLength": 500},
+            "final_translation": {"type": ["string", "null"], "maxLength": 4000},
+            "translation_reviewed": {"type": "boolean"},
+        },
+        [
+            "operation_id",
+            "disposition",
+            "final_codes",
+            "final_theme",
+            "final_translation",
+            "translation_reviewed",
+        ],
+    )
+    schemas["AIQualitativeReview"] = closed(
+        {
+            "suggestion_id": {"type": "string", "format": "uuid"},
+            "disposition": {"enum": ["ACCEPTED", "REJECTED"]},
+            "translation_status": {"enum": ["NOT_REQUESTED", "MACHINE_UNREVIEWED", "HUMAN_REVIEWED"]},
+            "qualitative_extract_id": {"type": ["string", "null"], "format": "uuid"},
+            "qualitative_extract_revision_id": {
+                "type": ["string", "null"],
+                "format": "uuid",
+            },
+            "source_classification_inherited": {"type": "boolean"},
+        },
+        [
+            "suggestion_id",
+            "disposition",
+            "translation_status",
+            "qualitative_extract_id",
+            "qualitative_extract_revision_id",
+            "source_classification_inherited",
+        ],
+    )
+    finding_selector = closed(
+        {
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+        },
+        ["object_id", "revision_id"],
+    )
+    schemas["AIDetectionTaskRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "task_code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$"},
+            "scope_object_id": {"type": "string", "format": "uuid"},
+            "scope_revision_id": {"type": "string", "format": "uuid"},
+            "owner_principal_id": {"type": "string", "format": "uuid"},
+            "cooldown_seconds": {"type": "integer", "minimum": 60, "maximum": 2592000},
+            "noise_limit": {"type": "integer", "minimum": 1, "maximum": 100},
+            "enabled": {"type": "boolean"},
+            "policy_version": {"type": "integer", "minimum": 1},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        [
+            "operation_id",
+            "task_code",
+            "scope_object_id",
+            "scope_revision_id",
+            "owner_principal_id",
+            "cooldown_seconds",
+            "noise_limit",
+            "enabled",
+            "policy_version",
+            "language",
+        ],
+    )
+    schemas["AIDetectionTask"] = closed(
+        {
+            "task_id": {"type": "string", "format": "uuid"},
+            "task_code": {"type": "string"},
+            "scope_object_id": {"type": "string", "format": "uuid"},
+            "scope_revision_id": {"type": "string", "format": "uuid"},
+            "owner_principal_id": {"type": "string", "format": "uuid"},
+            "cooldown_seconds": {"type": "integer"},
+            "noise_limit": {"type": "integer"},
+            "enabled": {"type": "boolean"},
+            "policy_version": {"type": "integer"},
+        },
+        [
+            "task_id",
+            "task_code",
+            "scope_object_id",
+            "scope_revision_id",
+            "owner_principal_id",
+            "cooldown_seconds",
+            "noise_limit",
+            "enabled",
+            "policy_version",
+        ],
+    )
+    schemas["AISuggestedFindingRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "task_id": {"type": "string", "format": "uuid"},
+            "detection_event_key": {"type": "string", "minLength": 1, "maxLength": 200},
+            "affected_results": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": finding_selector,
+            },
+            "evidence": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": finding_selector,
+            },
+            "summary": {"type": "string", "minLength": 1, "maxLength": 500},
+            "limitation": {"type": "string", "minLength": 1, "maxLength": 1000},
+            "proposed_follow_up": {"type": "string", "minLength": 1, "maxLength": 1000},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        [
+            "operation_id",
+            "task_id",
+            "detection_event_key",
+            "affected_results",
+            "evidence",
+            "summary",
+            "limitation",
+            "proposed_follow_up",
+            "language",
+        ],
+    )
+    schemas["AISuggestedFinding"] = closed(
+        {
+            "suggestion_id": {"type": "string", "format": "uuid"},
+            "task_id": {"type": "string", "format": "uuid"},
+            "affected_results": {"type": "array", "items": finding_selector},
+            "evidence": {"type": "array", "items": finding_selector},
+            "summary": {"type": "string"},
+            "limitation": {"type": "string"},
+            "proposed_follow_up": {"type": "string"},
+            "owner_principal_id": {"type": "string", "format": "uuid"},
+            "status": {"const": "SUGGESTED"},
+            "confirmed_finding": {"const": False},
+        },
+        [
+            "suggestion_id",
+            "task_id",
+            "affected_results",
+            "evidence",
+            "summary",
+            "limitation",
+            "proposed_follow_up",
+            "owner_principal_id",
+            "status",
+            "confirmed_finding",
+        ],
+    )
+    schemas["AIFindingReviewRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "decision": {"enum": ["VERIFIED", "DISMISSED", "ASSIGNED"]},
+            "reason": {"type": "string", "minLength": 1, "maxLength": 1000},
+            "assigned_to": {"type": ["string", "null"], "format": "uuid"},
+        },
+        ["operation_id", "decision", "reason", "assigned_to"],
+    )
+    schemas["AIFindingReview"] = closed(
+        {
+            "suggestion_id": {"type": "string", "format": "uuid"},
+            "decision": {"enum": ["VERIFIED", "DISMISSED", "ASSIGNED"]},
+            "assigned_to": {"type": ["string", "null"], "format": "uuid"},
+            "reason": {"type": "string"},
+            "source_values_changed": {"const": False},
+        },
+        ["suggestion_id", "decision", "assigned_to", "reason", "source_values_changed"],
+    )
+    action_source = closed(
+        {
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+            "object_type": {"enum": ["Evidence", "CalculatedResult"]},
+        },
+        ["object_id", "revision_id", "object_type"],
+    )
+    schemas["AIActionProposalRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "command_type": {"const": "CREATE_WORK_ITEM_DRAFT"},
+            "scope_object_id": {"type": "string", "format": "uuid"},
+            "scope_revision_id": {"type": "string", "format": "uuid"},
+            "after_values": {"$ref": "#/components/schemas/WorkItemDraftData"},
+            "affected_versions": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": action_source,
+            },
+            "policy_version": {"type": "integer", "minimum": 1},
+            "consequences": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 500},
+            },
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        [
+            "operation_id",
+            "command_type",
+            "scope_object_id",
+            "scope_revision_id",
+            "after_values",
+            "affected_versions",
+            "policy_version",
+            "consequences",
+            "language",
+        ],
+    )
+    schemas["AIActionProposal"] = closed(
+        {
+            "proposal_id": {"type": "string", "format": "uuid"},
+            "command_type": {"const": "CREATE_WORK_ITEM_DRAFT"},
+            "scope_object_id": {"type": "string", "format": "uuid"},
+            "scope_revision_id": {"type": "string", "format": "uuid"},
+            "before_values": {"type": "null"},
+            "after_values": {"$ref": "#/components/schemas/WorkItemDraftData"},
+            "affected_versions": {"type": "array", "items": action_source},
+            "policy_version": {"type": "integer"},
+            "consequences": {"type": "array", "items": {"type": "string"}},
+            "confirmation_required": {"const": True},
+            "domain_side_effects_created": {"const": False},
+        },
+        [
+            "proposal_id",
+            "command_type",
+            "scope_object_id",
+            "scope_revision_id",
+            "before_values",
+            "after_values",
+            "affected_versions",
+            "policy_version",
+            "consequences",
+            "confirmation_required",
+            "domain_side_effects_created",
+        ],
+    )
+    schemas["AIActionConfirmationRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        ["operation_id", "language"],
+    )
+    schemas["AIActionConfirmation"] = closed(
+        {
+            "proposal_id": {"type": "string", "format": "uuid"},
+            "outcome_object_id": {"type": "string", "format": "uuid"},
+            "outcome_revision_id": {"type": "string", "format": "uuid"},
+            "ordinary_command": {"const": "create_work_items"},
+            "protected_write": {"const": False},
+        },
+        [
+            "proposal_id",
+            "outcome_object_id",
+            "outcome_revision_id",
+            "ordinary_command",
+            "protected_write",
+        ],
+    )
+    safety_base = "/v1/tenants/{tenant_id}/ai-enablement"
+    safety_ops = [
+        (
+            "post",
+            safety_base + "/safety-feedback",
+            "create_ai_safety_feedback",
+            "ai.advisory.request",
+            "AISafetyFeedbackRequest",
+            "AISafetyFeedback",
+            ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+        ),
+        (
+            "get",
+            safety_base + "/safety-shutdowns",
+            "get_ai_safety_shutdowns",
+            "ai.policy.manage",
+            None,
+            "AIShutdownStatus",
+            ["TENANT_ADMIN"],
+        ),
+        (
+            "post",
+            safety_base + "/safety-shutdowns",
+            "manage_ai_safety_shutdown",
+            "ai.policy.manage",
+            "AIShutdownRequest",
+            "AIShutdownResult",
+            ["TENANT_ADMIN"],
+        ),
+        (
+            "post",
+            safety_base + "/safety-shutdowns/{event_id}/actions/approve-recovery",
+            "approve_ai_safety_recovery",
+            "ai.policy.manage",
+            "AIRecoveryApprovalRequest",
+            "AIRecoveryApproval",
+            ["TENANT_ADMIN"],
+        ),
+    ]
+    for method, path, operation, capability, request, response, roles in safety_ops:
+        entry = {
+            "operationId": operation,
+            "summary": operation.replace("_", " "),
+            "x-capability": capability,
+            "x-contract-version": VERSION,
+            "responses": {
+                "200": {
+                    "description": "AI safety containment record",
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
+                }
+            },
+        }
+        if request:
+            entry["requestBody"] = {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            }
+        for status in ["400", "401", "403", "404", "409", "503"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{event_id}" in path:
+            parameters.append(
+                {
+                    "name": "event_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        node = spec["paths"].setdefault(path, {"parameters": parameters})
+        node[method] = entry
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": method.upper(),
+                "path": path,
+                "capability": capability,
+                "role_templates": roles,
+                "purpose_required": False,
+                "fresh_assurance_seconds": 300
+                if operation in {"manage_ai_safety_shutdown", "approve_ai_safety_recovery"}
+                else None,
+                "audit": False,
+            }
+        )
+    extraction_base = "/v1/tenants/{tenant_id}/ai-enablement/extractions"
+    extraction_ops = [
+        (
+            "post",
+            extraction_base,
+            "create_ai_extraction",
+            "AIExtractionRequest",
+            "AIExtractionDraft",
+        ),
+        (
+            "post",
+            extraction_base + "/{draft_id}/actions/apply",
+            "review_ai_extraction",
+            "AIExtractionApplyRequest",
+            "AIExtractionReview",
+        ),
+    ]
+    for method, path, operation, request, response in extraction_ops:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{draft_id}" in path:
+            parameters.append(
+                {
+                    "name": "draft_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        entry = {
+            "operationId": operation,
+            "summary": operation.replace("_", " "),
+            "x-capability": "ai.advisory.request",
+            "x-contract-version": VERSION,
+            "requestBody": {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            },
+            "responses": {
+                "200": {
+                    "description": "Traceable review-only extraction",
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
+                }
+            },
+        }
+        for status in ["400", "401", "403", "404", "409", "422", "503"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        spec["paths"][path] = {"parameters": parameters, method: entry}
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": method.upper(),
+                "path": path,
+                "capability": "ai.advisory.request",
+                "role_templates": ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
+            }
+        )
+    indicator_base = "/v1/tenants/{tenant_id}/ai-enablement/indicator-design"
+    for path, operation, request, response, capability in [
+        (
+            indicator_base + "/proposals",
+            "create_ai_indicator_proposal",
+            "AIIndicatorProposalRequest",
+            "AIIndicatorProposal",
+            "ai.advisory.request",
+        ),
+        (
+            indicator_base + "/drafts",
+            "create_ai_indicator_draft",
+            "AIIndicatorDraftRequest",
+            "AIIndicatorDraftReceipt",
+            "indicator-definitions.draft.create",
+        ),
+    ]:
+        entry = {
+            "operationId": operation,
+            "summary": operation.replace("_", " "),
+            "x-capability": capability,
+            "x-contract-version": VERSION,
+            "requestBody": {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            },
+            "responses": {
+                "200": {
+                    "description": "Governed indicator design result",
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
+                }
+            },
+        }
+        for status in ["400", "401", "403", "404", "409", "422", "503"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        spec["paths"][path] = {
+            "parameters": [
+                {
+                    "name": "tenant_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            ],
+            "post": entry,
+        }
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": "POST",
+                "path": path,
+                "capability": capability,
+                "role_templates": ["MEL_ADMIN"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": operation == "create_ai_indicator_draft",
+            }
+        )
+    import_base = "/v1/tenants/{tenant_id}/ai-enablement/import-assistance/{batch_id}/revisions/{revision_id}"
+    for suffix, operation, request, response, capability in [
+        (
+            "/proposals",
+            "create_ai_import_proposals",
+            "AIImportProposalRequest",
+            "AIImportProposals",
+            "imports.read",
+        ),
+        (
+            "/actions/apply",
+            "apply_ai_import_proposals",
+            "AIImportApplyRequest",
+            "AIImportApplyReceipt",
+            "imports.draft.edit",
+        ),
+    ]:
+        path = import_base + suffix
+        entry = {
+            "operationId": operation,
+            "summary": operation.replace("_", " "),
+            "x-capability": capability,
+            "x-contract-version": VERSION,
+            "requestBody": {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            },
+            "responses": {
+                "200": {
+                    "description": "Non-destructive import assistance result",
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
+                }
+            },
+        }
+        for status in ["400", "401", "403", "404", "409", "422", "503"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        spec["paths"][path] = {
+            "parameters": [
+                {
+                    "name": name,
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+                for name in ["tenant_id", "batch_id", "revision_id"]
+            ],
+            "post": entry,
+        }
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": "POST",
+                "path": path,
+                "capability": capability,
+                "role_templates": ["DATA_STEWARD", "MEL_ADMIN"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": operation == "apply_ai_import_proposals",
+            }
+        )
+    question_path = "/v1/tenants/{tenant_id}/ai-enablement/evidence-questions"
+    spec["paths"][question_path] = {
+        "parameters": [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ],
+        "post": {
+            "operationId": "answer_ai_evidence_question",
+            "summary": "answer evidence question",
+            "x-capability": "ai.advisory.request",
+            "x-contract-version": VERSION,
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {"schema": {"$ref": "#/components/schemas/AIEvidenceQuestionRequest"}}
+                },
+            },
+            "responses": {
+                "200": {
+                    "description": "Cited answer, clarification or bounded abstention",
+                    "content": {
+                        "application/json": {
+                            "schema": {"$ref": "#/components/schemas/AIEvidenceQuestionAnswer"}
+                        }
+                    },
+                },
+                **{
+                    status: {
+                        "description": "Request refused",
+                        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+                    }
+                    for status in ["400", "401", "403", "409", "422", "503"]
+                },
+            },
+        },
+    }
+    policy["operations"].append(
+        {
+            "operation_id": "answer_ai_evidence_question",
+            "method": "POST",
+            "path": question_path,
+            "capability": "ai.advisory.request",
+            "role_templates": ["PROGRAMME_MANAGER", "MEL_ADMIN"],
+            "purpose_required": False,
+            "fresh_assurance_seconds": None,
+            "audit": False,
+        }
+    )
+    draft_path = "/v1/tenants/{tenant_id}/ai-enablement/report-drafts"
+    review_path = draft_path + "/{draft_id}/actions/review"
+    for method, path, operation, request, response, summary in [
+        (
+            "post",
+            draft_path,
+            "create_ai_report_draft",
+            "AIReportDraftRequest",
+            "AIReportDraft",
+            "create a snapshot-bound report proposal",
+        ),
+        (
+            "post",
+            review_path,
+            "review_ai_report_draft",
+            "AIReportDraftReviewRequest",
+            "AIReportDraftReview",
+            "record human corrections and final wording",
+        ),
+    ]:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{draft_id}" in path:
+            parameters.append(
+                {
+                    "name": "draft_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        spec["paths"][path] = {
+            "parameters": parameters,
+            method: {
+                "operationId": operation,
+                "summary": summary,
+                "x-capability": (
+                    "reports.draft.edit" if operation == "review_ai_report_draft" else "reports.draft.create"
+                ),
+                "x-contract-version": VERSION,
+                "requestBody": {
+                    "required": True,
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+                },
+                "responses": {
+                    "200": {
+                        "description": summary,
+                        "content": {
+                            "application/json": {"schema": {"$ref": "#/components/schemas/" + response}}
+                        },
+                    },
+                    **{
+                        status: {
+                            "description": "Request refused",
+                            "content": {
+                                "application/json": {"schema": {"$ref": "#/components/schemas/Error"}}
+                            },
+                        }
+                        for status in ["400", "401", "403", "404", "409", "422", "503"]
+                    },
+                },
+            },
+        }
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": "POST",
+                "path": path,
+                "capability": (
+                    "reports.draft.edit" if operation == "review_ai_report_draft" else "reports.draft.create"
+                ),
+                "role_templates": ["AUTHOR", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
+            }
+        )
+    qualitative_path = "/v1/tenants/{tenant_id}/ai-enablement/qualitative-runs"
+    qualitative_review_path = (
+        "/v1/tenants/{tenant_id}/ai-enablement/qualitative-suggestions/{suggestion_id}/actions/review"
+    )
+    for path, operation, request, response, summary in [
+        (
+            qualitative_path,
+            "create_ai_qualitative_run",
+            "AIQualitativeRunRequest",
+            "AIQualitativeRun",
+            "create source-verifiable qualitative suggestions",
+        ),
+        (
+            qualitative_review_path,
+            "review_ai_qualitative_suggestion",
+            "AIQualitativeReviewRequest",
+            "AIQualitativeReview",
+            "accept or reject one qualitative suggestion",
+        ),
+    ]:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{suggestion_id}" in path:
+            parameters.append(
+                {
+                    "name": "suggestion_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        spec["paths"][path] = {
+            "parameters": parameters,
+            "post": {
+                "operationId": operation,
+                "summary": summary,
+                "x-capability": "qualitative-extracts.draft.create",
+                "x-contract-version": VERSION,
+                "requestBody": {
+                    "required": True,
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+                },
+                "responses": {
+                    "200": {
+                        "description": summary,
+                        "content": {
+                            "application/json": {"schema": {"$ref": "#/components/schemas/" + response}}
+                        },
+                    },
+                    **{
+                        status: {
+                            "description": "Request refused",
+                            "content": {
+                                "application/json": {"schema": {"$ref": "#/components/schemas/Error"}}
+                            },
+                        }
+                        for status in ["400", "401", "403", "404", "409", "422", "503"]
+                    },
+                },
+            },
+        }
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": "POST",
+                "path": path,
+                "capability": "qualitative-extracts.draft.create",
+                "role_templates": ["ANALYST", "MEL_ADMIN"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
+            }
+        )
+    finding_routes = [
+        (
+            "/v1/tenants/{tenant_id}/ai-enablement/detection-tasks",
+            "configure_ai_detection_task",
+            "AIDetectionTaskRequest",
+            "AIDetectionTask",
+            "configure one immutable scoped detection task",
+            "ai.enablement.manage",
+            ["MEL_ADMIN"],
+        ),
+        (
+            "/v1/tenants/{tenant_id}/ai-enablement/suggested-findings",
+            "create_ai_suggested_finding",
+            "AISuggestedFindingRequest",
+            "AISuggestedFinding",
+            "create an explicitly unconfirmed source-bound suggestion",
+            "calculated-results.read",
+            ["ANALYST", "MEL_ADMIN"],
+        ),
+        (
+            "/v1/tenants/{tenant_id}/ai-enablement/suggested-findings/{suggestion_id}/actions/review",
+            "review_ai_suggested_finding",
+            "AIFindingReviewRequest",
+            "AIFindingReview",
+            "verify, dismiss or assign one suggested finding",
+            "ai.enablement.manage",
+            ["MEL_ADMIN", "PROGRAMME_MANAGER"],
+        ),
+    ]
+    for path, operation, request, response, summary, capability, roles in finding_routes:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{suggestion_id}" in path:
+            parameters.append(
+                {
+                    "name": "suggestion_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        spec["paths"][path] = {
+            "parameters": parameters,
+            "post": {
+                "operationId": operation,
+                "summary": summary,
+                "x-capability": capability,
+                "x-contract-version": VERSION,
+                "requestBody": {
+                    "required": True,
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+                },
+                "responses": {
+                    "200": {
+                        "description": summary,
+                        "content": {
+                            "application/json": {"schema": {"$ref": "#/components/schemas/" + response}}
+                        },
+                    },
+                    **{
+                        status: {
+                            "description": "Request refused",
+                            "content": {
+                                "application/json": {"schema": {"$ref": "#/components/schemas/Error"}}
+                            },
+                        }
+                        for status in ["400", "401", "403", "404", "409", "422", "503"]
+                    },
+                },
+            },
+        }
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": "POST",
+                "path": path,
+                "capability": capability,
+                "role_templates": roles,
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
+            }
+        )
+    action_routes = [
+        (
+            "/v1/tenants/{tenant_id}/ai-enablement/action-proposals",
+            "create_ai_action_proposal",
+            "AIActionProposalRequest",
+            "AIActionProposal",
+            "create an inspectable draft-only action proposal",
+        ),
+        (
+            "/v1/tenants/{tenant_id}/ai-enablement/action-proposals/{proposal_id}/actions/confirm",
+            "confirm_ai_action_proposal",
+            "AIActionConfirmationRequest",
+            "AIActionConfirmation",
+            "confirm through the current ordinary draft command",
+        ),
+    ]
+    for path, operation, request, response, summary in action_routes:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{proposal_id}" in path:
+            parameters.append(
+                {
+                    "name": "proposal_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        spec["paths"][path] = {
+            "parameters": parameters,
+            "post": {
+                "operationId": operation,
+                "summary": summary,
+                "x-capability": "work-items.draft.create",
+                "x-contract-version": VERSION,
+                "requestBody": {
+                    "required": True,
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+                },
+                "responses": {
+                    "200": {
+                        "description": summary,
+                        "content": {
+                            "application/json": {"schema": {"$ref": "#/components/schemas/" + response}}
+                        },
+                    },
+                    **{
+                        status: {
+                            "description": "Request refused",
+                            "content": {
+                                "application/json": {"schema": {"$ref": "#/components/schemas/Error"}}
+                            },
+                        }
+                        for status in ["400", "401", "403", "404", "409", "422", "503"]
+                    },
+                },
+            },
+        }
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": "POST",
+                "path": path,
+                "capability": "work-items.draft.create",
+                "role_templates": ["PROGRAMME_MANAGER", "MEL_ADMIN"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
+            }
+        )
+    analysis_path = "/v1/tenants/{tenant_id}/ai-enablement/numeric-analysis"
+    spec["paths"][analysis_path] = {
+        "parameters": [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ],
+        "post": {
+            "operationId": "execute_ai_numeric_analysis",
+            "summary": "execute governed numeric analysis",
+            "x-capability": "calculated-results.read",
+            "x-contract-version": VERSION,
+            "requestBody": {
+                "required": True,
+                "content": {
+                    "application/json": {"schema": {"$ref": "#/components/schemas/AINumericAnalysisRequest"}}
+                },
+            },
+            "responses": {
+                "200": {
+                    "description": "Deterministic typed analysis result",
+                    "content": {
+                        "application/json": {
+                            "schema": {"$ref": "#/components/schemas/AINumericAnalysisResult"}
+                        }
+                    },
+                },
+                **{
+                    status: {
+                        "description": "Request refused",
+                        "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+                    }
+                    for status in ["400", "401", "403", "404", "409", "422", "503"]
+                },
+            },
+        },
+    }
+    policy["operations"].append(
+        {
+            "operation_id": "execute_ai_numeric_analysis",
+            "method": "POST",
+            "path": analysis_path,
+            "capability": "calculated-results.read",
+            "role_templates": ["ANALYST", "MEL_ADMIN"],
+            "purpose_required": False,
+            "fresh_assurance_seconds": None,
+            "audit": False,
+        }
+    )
+    forecast_base = "/v1/tenants/{tenant_id}/ai-enablement/forecasts"
+    forecast_ops = [
+        ("post", forecast_base, "create_ai_forecast", "AIForecastRequest", "AIForecast"),
+        ("get", forecast_base + "/{scenario_id}", "get_ai_forecast", None, "AIForecast"),
+        ("get", forecast_base + "/{scenario_id}/export", "export_ai_forecast", None, "AIForecastExport"),
+        (
+            "post",
+            forecast_base + "/{scenario_id}/versions/{version}/actions/request-adoption",
+            "request_ai_forecast_adoption",
+            None,
+            "AIForecastAdoptionReview",
+        ),
+    ]
+    for method, path, operation, request, response in forecast_ops:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{scenario_id}" in path:
+            parameters.append(
+                {
+                    "name": "scenario_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        if "{version}" in path:
+            parameters.append(
+                {
+                    "name": "version",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "integer", "minimum": 1},
+                }
+            )
+        elif method == "get":
+            parameters.append(
+                {
+                    "name": "version",
+                    "in": "query",
+                    "required": False,
+                    "schema": {"type": "integer", "minimum": 1},
+                }
+            )
+        entry = {
+            "operationId": operation,
+            "summary": operation.replace("_", " "),
+            "x-capability": "ai.advisory.request",
+            "x-contract-version": VERSION,
+            "responses": {
+                "200": {
+                    "description": "Versioned forecast planning artifact",
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + response}}},
+                }
+            },
+        }
+        if request:
+            entry["requestBody"] = {
+                "required": True,
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+            }
+        for status in ["400", "401", "403", "404", "409"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        spec["paths"][path] = {"parameters": parameters, method: entry}
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": method.upper(),
+                "path": path,
+                "capability": "ai.advisory.request",
+                "role_templates": ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
+            }
+        )
     for method, route, op, cap, request, response, roles in [
         (
             "get",
@@ -206,8 +2182,158 @@ def augment(spec, policy):
                 "audit": op == "create_ai_advisory",
             }
         )
+    job_base = "/v1/tenants/{tenant_id}/ai-enablement/advisory-jobs"
+    for method, path, operation in [
+        ("post", job_base, "create_ai_advisory_job"),
+        ("get", job_base + "/{job_id}", "get_ai_advisory_job"),
+        ("post", job_base + "/{job_id}/actions/cancel", "cancel_ai_advisory_job"),
+    ]:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{job_id}" in path:
+            parameters.append(
+                {
+                    "name": "job_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        success = "202" if operation == "create_ai_advisory_job" else "200"
+        entry = {
+            "operationId": operation,
+            "summary": operation.replace("_", " "),
+            "x-capability": "ai.advisory.request",
+            "x-contract-version": VERSION,
+            "responses": {
+                success: {
+                    "description": "Durable AI job",
+                    "content": {
+                        "application/json": {"schema": {"$ref": "#/components/schemas/AIAdvisoryJob"}}
+                    },
+                }
+            },
+        }
+        if operation == "create_ai_advisory_job":
+            entry["requestBody"] = {
+                "required": True,
+                "content": {
+                    "application/json": {"schema": {"$ref": "#/components/schemas/AIAdvisoryRequest"}}
+                },
+            }
+        for status in ["400", "401", "403", "404", "409", "429", "503"]:
+            entry["responses"][status] = {
+                "description": "Request refused",
+                "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}},
+            }
+        spec["paths"][path] = {"parameters": parameters, method: entry}
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": method.upper(),
+                "path": path,
+                "capability": "ai.advisory.request",
+                "role_templates": ["TENANT_ADMIN", "MEL_ADMIN", "PROGRAMME_MANAGER"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
+            }
+        )
     policy_paths(spec, policy)
     ranking_paths(spec, policy)
+
+
+def assessment_schemas(schemas):
+    strings = {"type": "array", "maxItems": 100, "items": {"type": "string", "maxLength": 1000}}
+    score = {
+        "dimension_id": {
+            "enum": [
+                "DATA_FOUNDATION",
+                "PEOPLE_AND_SKILLS",
+                "GOVERNANCE_AND_SAFETY",
+                "WORKFLOW_FIT",
+                "DELIVERY_CAPACITY",
+            ]
+        },
+        "score": {"type": "integer", "minimum": 1, "maximum": 5},
+        "level": {"enum": ["FOUNDATION_NEEDED", "EARLY", "DEVELOPING", "PREPARED", "ESTABLISHED"]},
+        "scale_min": {"const": 1},
+        "scale_max": {"const": 5},
+        "explanation": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "rule_id": {"type": "string", "pattern": "^DR-[A-Z]+-[0-9]{2}$"},
+        "input_fields": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 6,
+            "uniqueItems": True,
+            "items": {
+                "enum": [
+                    "sector",
+                    "team_size",
+                    "goal",
+                    "data_readiness",
+                    "ai_experience",
+                    "sensitive_data",
+                ]
+            },
+        },
+        "self_reported": {"const": True},
+    }
+    schemas["AIMaturityScore"] = closed(score, list(score))
+    framework = {
+        "framework_id": {"const": "IMPRANA_DIGITAL_READINESS"},
+        "framework_version": {"const": "2026-10-v1-editorial-draft"},
+        "framework_status": {"const": "EDITORIAL_DRAFT"},
+        "method": {"const": "DETERMINISTIC_SELF_REPORT_RULES"},
+        "scores": {
+            "type": "array",
+            "minItems": 5,
+            "maxItems": 5,
+            "items": {"$ref": "#/components/schemas/AIMaturityScore"},
+        },
+        "limitations": deepcopy(strings),
+    }
+    schemas["AIMaturityFrameworkResult"] = closed(framework, list(framework))
+    recommendation = {
+        "use_case_id": {"type": "string", "maxLength": 100},
+        "priority": {"type": "integer", "minimum": 1},
+        "status": {"type": "string", "maxLength": 100},
+        "reasons": deepcopy(strings),
+        "capacity_gaps": deepcopy(strings),
+        "human_approval_needs": deepcopy(strings),
+    }
+    schemas["AIEnablementRecommendation"] = closed(recommendation, list(recommendation))
+    payload = {
+        "schema_version": {"type": "string"},
+        "content_version": {"type": "string"},
+        "method": {"const": "DETERMINISTIC_RULES"},
+        "maturity_framework": {"$ref": "#/components/schemas/AIMaturityFrameworkResult"},
+        "readiness": closed(
+            {"stage": {"type": "string"}, "reasons": deepcopy(strings)},
+            ["stage", "reasons"],
+        ),
+        "recommendations": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {"$ref": "#/components/schemas/AIEnablementRecommendation"},
+        },
+        "capacity_gaps": deepcopy(strings),
+        "learning_path_ids": deepcopy(strings),
+        "next_steps": deepcopy(strings),
+        "human_approval_needs": deepcopy(strings),
+        "limitations": deepcopy(strings),
+    }
+    schemas["AIEnablementAssessmentPayload"] = closed(payload, list(payload))
+    schemas["AIEnablementAssessment"] = closed(
+        {"assessment": {"$ref": "#/components/schemas/AIEnablementAssessmentPayload"}},
+        ["assessment"],
+    )
 
 
 def _strings(enum=None, pattern=None, maximum=10, length=None):
@@ -232,8 +2358,14 @@ def policy_schemas(schemas):
         "languages": _strings(pattern=LANGUAGE_PATTERN, maximum=20),
         "review_mode": {"enum": list(REVIEW_MODES)},
         "budget_units": {"type": "integer", "minimum": 0, "maximum": MAX_BUDGET_UNITS},
-        # Empty by default and, in this build, always: no tool catalogue exists yet.
-        "tools": {"type": "array", "maxItems": 0, "items": {"type": "string", "pattern": TOOL_PATTERN}},
+        # Use-case enablement never implies a tool. Each reviewed tool identifier is named separately,
+        # and require() refuses any requested tool absent from this exact rule.
+        "tools": {
+            "type": "array",
+            "maxItems": 20,
+            "uniqueItems": True,
+            "items": {"type": "string", "pattern": TOOL_PATTERN},
+        },
     }
     schemas["AIUseCasePolicy"] = closed(rule, list(rule))
     schemas["AIPolicyData"] = closed(

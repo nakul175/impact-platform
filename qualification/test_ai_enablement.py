@@ -26,7 +26,7 @@ def advisory_rule(**changes):
         "enabled": True,
         "data_classes": ["INTERNAL"],
         "destinations": ["openai-us"],
-        "purposes": ["planning advice"],
+        "purposes": ["AI_ADOPTION_ADVISORY"],
         "languages": ["en"],
         "review_mode": "HUMAN_REVIEW",
         "budget_units": 100,
@@ -40,6 +40,7 @@ def body():
         "operation_id": str(uuid4()),
         "consent": True,
         "policy_version": 1,
+        "purpose": "AI_ADOPTION_ADVISORY",
         "profile": {
             "sector": "GENERAL",
             "team_size": 8,
@@ -130,6 +131,8 @@ class Database:
             return Cursor(self.requests.get(tuple(values)))
         if "SELECT * FROM impact.ai_advisory_result" in sql:
             return Cursor(self.results.get(tuple(values)))
+        if "FROM impact.ai_advisory_source" in sql:
+            return Cursor(None, [])
         if "INSERT INTO impact.ai_advisory_request" in sql:
             tenant, request, object_id, principal, fingerprint, policy_version_id = values
             self.requests[tenant, request] = {
@@ -150,6 +153,14 @@ class Database:
 class Provider:
     configured = True
     destination = "openai-us"
+    evaluation_configuration = {
+        "destination": "openai-us",
+        "model": "synthetic-test",
+        "prompt_version": "synthetic-test-v1",
+        "policy_gate_version": "synthetic-policy-gate-v1",
+        "retrieval": "NONE",
+        "tools": [],
+    }
 
     def __init__(self, db):
         self.db, self.calls, self.fail, self.revoke = db, 0, False, False
@@ -181,6 +192,10 @@ def engine(monkeypatch):
 
     monkeypatch.setattr(module, "context", context)
     monkeypatch.setattr(module, "authorize", authorize)
+    # This suite isolates advisory claim/replay and policy behavior. The evaluation gate has its
+    # own fail-closed qualification; use a synthetic passed candidate here.
+    monkeypatch.setattr(module, "require_exposure", lambda use_case, configuration: {})
+    monkeypatch.setattr(module, "require_safety_available", lambda *args, **kwargs: None)
     monkeypatch.setattr(
         module,
         "write",
@@ -503,7 +518,7 @@ def test_catalog_reports_available_only_when_server_policy_and_use_case_are_on(e
         ({"destinations": []}, "not an allowed destination"),
         ({"languages": ["hi"]}, "language (en) is not covered"),
         ({"budget_units": 0}, "no budget is approved"),
-        ({"purposes": []}, "no approved purpose"),
+        ({"purposes": []}, "requested purpose is not approved"),
     ],
 )
 def test_every_unmet_rule_blocks_before_reservation(engine, rule, fragment):

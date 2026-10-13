@@ -1,0 +1,1564 @@
+{
+  "schema_version": "imprana-refinement-task-import/v1",
+  "source_commit": "8a1e405f0086033dfb25ad834689a08bfe9f1eea",
+  "story_offsets": [
+    94,
+    124
+  ],
+  "project_uuid": "2de29065-7bb5-46ca-9b8c-4c4ef66cc046",
+  "native_payload_sha256": "74dd7c68916a9dad290dd968fbbfab311264e82e84975ce5d5b9a0bc9e2e70c9",
+  "refinement_sha256": "cbb61315088ee2ecdc2106d8f472ab5ee052bf3034d9172c32973e4c941a7c7e",
+  "native_plan_sha256": "dc4339d763ca4cdc6af2ab1312fa27dc36ea14c10078704741e58e613c570b36",
+  "expected_count": 90,
+  "count": 90,
+  "complete": true,
+  "status": "COMPLETE_VERIFIED",
+  "owner_approval": {
+    "message": "karde bhai",
+    "context": "Direct response approving remaining complete task payloads and story updates in existing Imprana Commons Linear project"
+  },
+  "tasks": {
+    "TASK-FR-IND-008-01": {
+      "id": "APL-1656",
+      "uuid": "2d8c2cbb-8d94-4307-beee-c1bbd646dcc1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1656/task-fr-ind-008-01-definition-child-version-comparability-contract",
+      "story_id": "FR-IND-008",
+      "title": "[TASK-FR-IND-008-01] Definition child-version comparability contract",
+      "parent_id": "APL-528",
+      "parent_uuid": "b8b432d1-da43-4b76-b0b6-a1393ef10383",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T12:42:27.086Z",
+      "reconciled": false
+    },
+    "TASK-FR-IND-010-01": {
+      "id": "APL-1658",
+      "uuid": "fdc2f9c2-db79-4a19-855b-5adaff713fa9",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1658/task-fr-ind-010-01-actual-mode-and-reviewed-override-contract",
+      "story_id": "FR-IND-010",
+      "title": "[TASK-FR-IND-010-01] Actual-mode and reviewed override contract",
+      "parent_id": "APL-532",
+      "parent_uuid": "d9a55c57-11c7-4d6d-9a8f-2ef2d3cdfc8a",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T12:42:32.723Z",
+      "reconciled": false
+    },
+    "TASK-FR-IND-008-02": {
+      "id": "APL-1660",
+      "uuid": "3b416186-3a22-4cca-82a7-740f474c11d3",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1660/task-fr-ind-008-02-audited-definition-revisions-and-trend-gates",
+      "story_id": "FR-IND-008",
+      "title": "[TASK-FR-IND-008-02] Audited definition revisions and trend gates",
+      "parent_id": "APL-528",
+      "parent_uuid": "b8b432d1-da43-4b76-b0b6-a1393ef10383",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-IND-008-01"
+      ],
+      "blocked_by": [
+        "2d8c2cbb-8d94-4307-beee-c1bbd646dcc1"
+      ],
+      "created_at": "2026-10-10T12:42:34.931Z",
+      "reconciled": false
+    },
+    "TASK-FR-IND-012-01": {
+      "id": "APL-1661",
+      "uuid": "0b9843d3-7aed-4829-b928-25008d5d0841",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1661/task-fr-ind-012-01-dated-indicator-obligation-and-owner-contract",
+      "story_id": "FR-IND-012",
+      "title": "[TASK-FR-IND-012-01] Dated indicator obligation and owner contract",
+      "parent_id": "APL-534",
+      "parent_uuid": "892c22d3-fc5f-49de-8378-67472308eb3c",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T12:42:37.367Z",
+      "reconciled": false
+    },
+    "TASK-FR-IND-010-02": {
+      "id": "APL-1663",
+      "uuid": "70ef3d50-3a02-4885-b2a5-927dce751719",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1663/task-fr-ind-010-02-attributable-override-and-restoration-revisions",
+      "story_id": "FR-IND-010",
+      "title": "[TASK-FR-IND-010-02] Attributable override and restoration revisions",
+      "parent_id": "APL-532",
+      "parent_uuid": "d9a55c57-11c7-4d6d-9a8f-2ef2d3cdfc8a",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-IND-010-01"
+      ],
+      "blocked_by": [
+        "fdc2f9c2-db79-4a19-855b-5adaff713fa9"
+      ],
+      "created_at": "2026-10-10T12:42:41.482Z",
+      "reconciled": false
+    },
+    "TASK-FR-IND-008-03": {
+      "id": "APL-1666",
+      "uuid": "05a46a58-e47a-48cf-8b13-3f0b7f7ed465",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1666/task-fr-ind-008-03-household-to-people-comparability-checks",
+      "story_id": "FR-IND-008",
+      "title": "[TASK-FR-IND-008-03] Household-to-people comparability checks",
+      "parent_id": "APL-528",
+      "parent_uuid": "b8b432d1-da43-4b76-b0b6-a1393ef10383",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-IND-008-02"
+      ],
+      "blocked_by": [
+        "3b416186-3a22-4cca-82a7-740f474c11d3"
+      ],
+      "created_at": "2026-10-10T12:42:46.825Z",
+      "reconciled": false
+    },
+    "TASK-FR-IND-010-03": {
+      "id": "APL-1668",
+      "uuid": "d80300bf-058c-4835-8667-c19b23ea8448",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1668/task-fr-ind-010-03-ninety-four-to-ninety-override-checks",
+      "story_id": "FR-IND-010",
+      "title": "[TASK-FR-IND-010-03] Ninety-four-to-ninety override checks",
+      "parent_id": "APL-532",
+      "parent_uuid": "d9a55c57-11c7-4d6d-9a8f-2ef2d3cdfc8a",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-IND-010-02"
+      ],
+      "blocked_by": [
+        "70ef3d50-3a02-4885-b2a5-927dce751719"
+      ],
+      "created_at": "2026-10-10T12:42:47.824Z",
+      "reconciled": false
+    },
+    "TASK-FR-IND-012-02": {
+      "id": "APL-1669",
+      "uuid": "ad586c28-0228-4562-81a4-1c354c84ead9",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1669/task-fr-ind-012-02-assignment-preview-and-departure-reassignment",
+      "story_id": "FR-IND-012",
+      "title": "[TASK-FR-IND-012-02] Assignment preview and departure reassignment",
+      "parent_id": "APL-534",
+      "parent_uuid": "892c22d3-fc5f-49de-8378-67472308eb3c",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-IND-012-01"
+      ],
+      "blocked_by": [
+        "0b9843d3-7aed-4829-b928-25008d5d0841"
+      ],
+      "created_at": "2026-10-10T12:42:51.185Z",
+      "reconciled": false
+    },
+    "TASK-FR-IND-012-03": {
+      "id": "APL-1672",
+      "uuid": "66fdcab6-2b07-4c00-bec2-8b35749e2326",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1672/task-fr-ind-012-03-collector-suspended-before-due-checks",
+      "story_id": "FR-IND-012",
+      "title": "[TASK-FR-IND-012-03] Collector suspended before due checks",
+      "parent_id": "APL-534",
+      "parent_uuid": "892c22d3-fc5f-49de-8378-67472308eb3c",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-IND-012-02"
+      ],
+      "blocked_by": [
+        "ad586c28-0228-4562-81a4-1c354c84ead9"
+      ],
+      "created_at": "2026-10-10T12:42:55.618Z",
+      "reconciled": false
+    },
+    "TASK-FR-INT-001-01": {
+      "id": "APL-1680",
+      "uuid": "0f621132-54ff-4343-accb-866982b3a31b",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1680/task-fr-int-001-01-connector-qualification-profile-and-manifest",
+      "story_id": "FR-INT-001",
+      "title": "[TASK-FR-INT-001-01] Connector qualification profile and manifest",
+      "parent_id": "APL-536",
+      "parent_uuid": "f42e09a2-2f72-4771-aac2-a6c876b7ad79",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T12:43:16.508Z",
+      "reconciled": false
+    },
+    "TASK-FR-INT-002-01": {
+      "id": "APL-1682",
+      "uuid": "6da2839b-4526-4a60-ad71-8a27430c2778",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1682/task-fr-int-002-01-protected-connection-and-credential-contract",
+      "story_id": "FR-INT-002",
+      "title": "[TASK-FR-INT-002-01] Protected connection and credential contract",
+      "parent_id": "APL-539",
+      "parent_uuid": "c10f961d-61f5-4f6b-80d1-fd51ad238fbb",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T12:43:20.400Z",
+      "reconciled": false
+    },
+    "TASK-FR-INT-003-01": {
+      "id": "APL-1685",
+      "uuid": "005d9a0a-be9a-498f-9dee-e94ac907a51d",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1685/task-fr-int-003-01-connector-checkpoint-and-per-item-attempt-contract",
+      "story_id": "FR-INT-003",
+      "title": "[TASK-FR-INT-003-01] Connector checkpoint and per-item attempt contract",
+      "parent_id": "APL-543",
+      "parent_uuid": "6cda6c7f-3890-4224-82d9-ffd0b2c85207",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T12:43:25.701Z",
+      "reconciled": false
+    },
+    "TASK-FR-INT-001-02": {
+      "id": "APL-1687",
+      "uuid": "86009833-4be8-4bf3-891f-7e170c51d62e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1687/task-fr-int-001-02-fixture-gated-connector-activation",
+      "story_id": "FR-INT-001",
+      "title": "[TASK-FR-INT-001-02] Fixture-gated connector activation",
+      "parent_id": "APL-536",
+      "parent_uuid": "f42e09a2-2f72-4771-aac2-a6c876b7ad79",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-INT-001-01"
+      ],
+      "blocked_by": [
+        "0f621132-54ff-4343-accb-866982b3a31b"
+      ],
+      "created_at": "2026-10-10T12:43:30.311Z",
+      "reconciled": false
+    },
+    "TASK-FR-INT-003-02": {
+      "id": "APL-1690",
+      "uuid": "164fa211-38e7-436a-9ae1-da38fed804a4",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1690/task-fr-int-003-02-bounded-resume-retry-and-permanent-pause",
+      "story_id": "FR-INT-003",
+      "title": "[TASK-FR-INT-003-02] Bounded resume retry and permanent pause",
+      "parent_id": "APL-543",
+      "parent_uuid": "6cda6c7f-3890-4224-82d9-ffd0b2c85207",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-INT-003-01"
+      ],
+      "blocked_by": [
+        "005d9a0a-be9a-498f-9dee-e94ac907a51d"
+      ],
+      "created_at": "2026-10-10T12:54:12.179Z",
+      "reconciled": false
+    },
+    "TASK-FR-INT-001-03": {
+      "id": "APL-1718",
+      "uuid": "b9011eb3-6344-4683-b5f3-fad49607f723",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1718/task-fr-int-001-03-connector-create-update-delete-replay-and",
+      "story_id": "FR-INT-001",
+      "title": "[TASK-FR-INT-001-03] Connector create update delete replay and attachment checks",
+      "parent_id": "APL-536",
+      "parent_uuid": "f42e09a2-2f72-4771-aac2-a6c876b7ad79",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-INT-001-02"
+      ],
+      "blocked_by": [
+        "86009833-4be8-4bf3-891f-7e170c51d62e"
+      ],
+      "created_at": "2026-10-10T12:59:54.953Z",
+      "reconciled": false,
+      "timeout_exact_retry": true
+    },
+    "TASK-FR-INT-002-02": {
+      "id": "APL-1719",
+      "uuid": "6a05f8bc-1c0f-4076-b563-85c2dd74d204",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1719/task-fr-int-002-02-revocable-connection-lifecycle",
+      "story_id": "FR-INT-002",
+      "title": "[TASK-FR-INT-002-02] Revocable connection lifecycle",
+      "parent_id": "APL-539",
+      "parent_uuid": "c10f961d-61f5-4f6b-80d1-fd51ad238fbb",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-INT-002-01"
+      ],
+      "blocked_by": [
+        "6da2839b-4526-4a60-ad71-8a27430c2778"
+      ],
+      "created_at": "2026-10-10T13:00:00.081Z",
+      "reconciled": false,
+      "timeout_exact_retry": true
+    },
+    "TASK-FR-INT-002-03": {
+      "id": "APL-1727",
+      "uuid": "a54ad075-ca6f-44dc-90eb-80af244f8ca1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1727/task-fr-int-002-03-queued-credential-revocation-and-secret-readback",
+      "story_id": "FR-INT-002",
+      "title": "[TASK-FR-INT-002-03] Queued credential-revocation and secret-readback checks",
+      "parent_id": "APL-539",
+      "parent_uuid": "c10f961d-61f5-4f6b-80d1-fd51ad238fbb",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-INT-002-02"
+      ],
+      "blocked_by": [
+        "6a05f8bc-1c0f-4076-b563-85c2dd74d204"
+      ],
+      "created_at": "2026-10-10T13:01:01.982Z",
+      "reconciled": false
+    },
+    "TASK-FR-INT-003-03": {
+      "id": "APL-1742",
+      "uuid": "6cb8ca6c-a013-4042-9c6e-94d14f6fc4f8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1742/task-fr-int-003-03-sixty-of-hundred-interruption-checks",
+      "story_id": "FR-INT-003",
+      "title": "[TASK-FR-INT-003-03] Sixty-of-hundred interruption checks",
+      "parent_id": "APL-543",
+      "parent_uuid": "6cda6c7f-3890-4224-82d9-ffd0b2c85207",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-INT-003-02"
+      ],
+      "blocked_by": [
+        "164fa211-38e7-436a-9ae1-da38fed804a4"
+      ],
+      "created_at": "2026-10-10T13:02:52.229Z",
+      "reconciled": false
+    },
+    "TASK-FR-MIG-007-01": {
+      "id": "APL-1744",
+      "uuid": "71df0bc0-384f-4f0f-b8ed-655e0aeaa2cb",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1744/task-fr-mig-007-01-tenant-relationship-package-and-manifest-contract",
+      "story_id": "FR-MIG-007",
+      "title": "[TASK-FR-MIG-007-01] Tenant relationship package and manifest contract",
+      "parent_id": "APL-547",
+      "parent_uuid": "790348c7-1844-4218-a14c-ed9c8c712e8d",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:02:56.300Z",
+      "reconciled": false
+    },
+    "TASK-FR-MIG-007-02": {
+      "id": "APL-1745",
+      "uuid": "bffb3d06-b705-4d1c-b31f-1538dd653e52",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1745/task-fr-mig-007-02-permission-governed-complete-tenant-package",
+      "story_id": "FR-MIG-007",
+      "title": "[TASK-FR-MIG-007-02] Permission-governed complete tenant package",
+      "parent_id": "APL-547",
+      "parent_uuid": "790348c7-1844-4218-a14c-ed9c8c712e8d",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-MIG-007-01"
+      ],
+      "blocked_by": [
+        "71df0bc0-384f-4f0f-b8ed-655e0aeaa2cb"
+      ],
+      "created_at": "2026-10-10T13:03:02.273Z",
+      "reconciled": false
+    },
+    "TASK-FR-MIG-007-03": {
+      "id": "APL-1746",
+      "uuid": "3f04f476-a2ad-48f1-bc7f-d2ddb06c8c5e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1746/task-fr-mig-007-03-external-reconstruction-and-secret-exclusion-checks",
+      "story_id": "FR-MIG-007",
+      "title": "[TASK-FR-MIG-007-03] External reconstruction and secret-exclusion checks",
+      "parent_id": "APL-547",
+      "parent_uuid": "790348c7-1844-4218-a14c-ed9c8c712e8d",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-MIG-007-02"
+      ],
+      "blocked_by": [
+        "bffb3d06-b705-4d1c-b31f-1538dd653e52"
+      ],
+      "created_at": "2026-10-10T13:03:06.643Z",
+      "reconciled": false
+    },
+    "TASK-VF-AIQ-001-01": {
+      "id": "APL-1747",
+      "uuid": "7c995a15-dd45-4275-9a18-12f6bf1180b4",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1747/task-vf-aiq-001-01-representative-held-out-evaluation-inventory",
+      "story_id": "VF-AIQ-001",
+      "title": "[TASK-VF-AIQ-001-01] Representative held-out evaluation inventory",
+      "parent_id": "APL-550",
+      "parent_uuid": "e11f5530-7b0c-4883-8e5c-758b734d3247",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:03:21.467Z",
+      "reconciled": false
+    },
+    "TASK-VF-AIQ-002-01": {
+      "id": "APL-1748",
+      "uuid": "816cc6a8-5f40-4366-aa02-748f658c16bb",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1748/task-vf-aiq-002-01-claim-citation-and-numeric-scoring-protocol",
+      "story_id": "VF-AIQ-002",
+      "title": "[TASK-VF-AIQ-002-01] Claim citation and numeric scoring protocol",
+      "parent_id": "APL-552",
+      "parent_uuid": "7e9b2326-be59-42de-9b05-e3dd45047d99",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:03:24.959Z",
+      "reconciled": false
+    },
+    "TASK-VF-AIQ-001-02": {
+      "id": "APL-1749",
+      "uuid": "1cde0d0e-0e9c-48e6-8132-32d949774734",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1749/task-vf-aiq-001-02-dataset-adequacy-and-exception-review-gate",
+      "story_id": "VF-AIQ-001",
+      "title": "[TASK-VF-AIQ-001-02] Dataset adequacy and exception review gate",
+      "parent_id": "APL-550",
+      "parent_uuid": "e11f5530-7b0c-4883-8e5c-758b734d3247",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-AIQ-001-01"
+      ],
+      "blocked_by": [
+        "7c995a15-dd45-4275-9a18-12f6bf1180b4"
+      ],
+      "created_at": "2026-10-10T13:03:27.509Z",
+      "reconciled": false
+    },
+    "TASK-VF-AIQ-002-02": {
+      "id": "APL-1750",
+      "uuid": "37293356-c1e8-4222-a126-67fedb05b4d3",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1750/task-vf-aiq-002-02-consequential-claim-and-official-number-gate",
+      "story_id": "VF-AIQ-002",
+      "title": "[TASK-VF-AIQ-002-02] Consequential-claim and official-number gate",
+      "parent_id": "APL-552",
+      "parent_uuid": "7e9b2326-be59-42de-9b05-e3dd45047d99",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-AIQ-002-01"
+      ],
+      "blocked_by": [
+        "816cc6a8-5f40-4366-aa02-748f658c16bb"
+      ],
+      "created_at": "2026-10-10T13:03:31.363Z",
+      "reconciled": false
+    },
+    "TASK-VF-AIQ-001-03": {
+      "id": "APL-1751",
+      "uuid": "ce769827-4283-498c-b42a-958fe517ba0c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1751/task-vf-aiq-001-03-held-out-coverage-and-specialist-exception-checks",
+      "story_id": "VF-AIQ-001",
+      "title": "[TASK-VF-AIQ-001-03] Held-out coverage and specialist exception checks",
+      "parent_id": "APL-550",
+      "parent_uuid": "e11f5530-7b0c-4883-8e5c-758b734d3247",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-AIQ-001-02"
+      ],
+      "blocked_by": [
+        "1cde0d0e-0e9c-48e6-8132-32d949774734"
+      ],
+      "created_at": "2026-10-10T13:03:35.249Z",
+      "reconciled": false
+    },
+    "TASK-VF-AIQ-002-03": {
+      "id": "APL-1752",
+      "uuid": "897bd08e-b5b3-4a73-9b86-8688159e72c8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1752/task-vf-aiq-002-03-average-score-masking-refusal-checks",
+      "story_id": "VF-AIQ-002",
+      "title": "[TASK-VF-AIQ-002-03] Average-score masking refusal checks",
+      "parent_id": "APL-552",
+      "parent_uuid": "7e9b2326-be59-42de-9b05-e3dd45047d99",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-AIQ-002-02"
+      ],
+      "blocked_by": [
+        "37293356-c1e8-4222-a126-67fedb05b4d3"
+      ],
+      "created_at": "2026-10-10T13:03:39.146Z",
+      "reconciled": false
+    },
+    "TASK-VF-AIQ-004-01": {
+      "id": "APL-1753",
+      "uuid": "9775a2ee-7049-49bc-b89c-b659fe5db2d8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1753/task-vf-aiq-004-01-tenant-leakage-and-indirect-injection-test-corpus",
+      "story_id": "VF-AIQ-004",
+      "title": "[TASK-VF-AIQ-004-01] Tenant leakage and indirect-injection test corpus",
+      "parent_id": "APL-556",
+      "parent_uuid": "4bf23c16-0ba6-4c15-8375-b0d69ba6b314",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:03:53.281Z",
+      "reconciled": false
+    },
+    "TASK-VF-AUD-001-01": {
+      "id": "APL-1754",
+      "uuid": "c622723a-b34f-4052-949e-7fc97358ac44",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1754/task-vf-aud-001-01-business-and-security-audit-class-matrix",
+      "story_id": "VF-AUD-001",
+      "title": "[TASK-VF-AUD-001-01] Business and security audit class matrix",
+      "parent_id": "APL-562",
+      "parent_uuid": "c7887d90-e1f7-4689-a9f6-923813ae9f9f",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:03:56.670Z",
+      "reconciled": false
+    },
+    "TASK-VF-AIQ-004-02": {
+      "id": "APL-1755",
+      "uuid": "975e8b2b-d5c3-44fe-b445-5c37f4e613fc",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1755/task-vf-aiq-004-02-observed-safety-failure-capability-gate",
+      "story_id": "VF-AIQ-004",
+      "title": "[TASK-VF-AIQ-004-02] Observed safety-failure capability gate",
+      "parent_id": "APL-556",
+      "parent_uuid": "4bf23c16-0ba6-4c15-8375-b0d69ba6b314",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-AIQ-004-01"
+      ],
+      "blocked_by": [
+        "9775a2ee-7049-49bc-b89c-b659fe5db2d8"
+      ],
+      "created_at": "2026-10-10T13:03:58.903Z",
+      "reconciled": false
+    },
+    "TASK-VF-AUD-001-02": {
+      "id": "APL-1756",
+      "uuid": "5b0f7506-9ae3-41ff-a2ca-93091ddd8516",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1756/task-vf-aud-001-02-searchable-secret-free-events-and-governed-expiry",
+      "story_id": "VF-AUD-001",
+      "title": "[TASK-VF-AUD-001-02] Searchable secret-free events and governed expiry",
+      "parent_id": "APL-562",
+      "parent_uuid": "c7887d90-e1f7-4689-a9f6-923813ae9f9f",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-AUD-001-01"
+      ],
+      "blocked_by": [
+        "c622723a-b34f-4052-949e-7fc97358ac44"
+      ],
+      "created_at": "2026-10-10T13:04:02.358Z",
+      "reconciled": false
+    },
+    "TASK-VF-AIQ-004-03": {
+      "id": "APL-1757",
+      "uuid": "f8154837-b461-496b-b711-f50ce250b003",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1757/task-vf-aiq-004-03-zero-success-suite-and-bounded-claim-checks",
+      "story_id": "VF-AIQ-004",
+      "title": "[TASK-VF-AIQ-004-03] Zero-success suite and bounded-claim checks",
+      "parent_id": "APL-556",
+      "parent_uuid": "4bf23c16-0ba6-4c15-8375-b0d69ba6b314",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-AIQ-004-02"
+      ],
+      "blocked_by": [
+        "975e8b2b-d5c3-44fe-b445-5c37f4e613fc"
+      ],
+      "created_at": "2026-10-10T13:04:07.620Z",
+      "reconciled": false
+    },
+    "TASK-VF-AUD-001-03": {
+      "id": "APL-1758",
+      "uuid": "2640a4de-f961-4228-86bc-bd32235700ed",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1758/task-vf-aud-001-03-event-coverage-receipt-and-retention-checks",
+      "story_id": "VF-AUD-001",
+      "title": "[TASK-VF-AUD-001-03] Event coverage receipt and retention checks",
+      "parent_id": "APL-562",
+      "parent_uuid": "c7887d90-e1f7-4689-a9f6-923813ae9f9f",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-AUD-001-02"
+      ],
+      "blocked_by": [
+        "5b0f7506-9ae3-41ff-a2ca-93091ddd8516"
+      ],
+      "created_at": "2026-10-10T13:04:11.609Z",
+      "reconciled": false
+    },
+    "TASK-VF-AVL-001-01": {
+      "id": "APL-1759",
+      "uuid": "042bb48a-b411-4951-a34c-fd09f77f52a0",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1759/task-vf-avl-001-01-per-journey-monthly-availability-measurement",
+      "story_id": "VF-AVL-001",
+      "title": "[TASK-VF-AVL-001-01] Per-journey monthly availability measurement",
+      "parent_id": "APL-565",
+      "parent_uuid": "1a5225c3-6f65-4a7d-8e49-2d32fccfb5ef",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:04:26.226Z",
+      "reconciled": false
+    },
+    "TASK-VF-AVL-001-02": {
+      "id": "APL-1760",
+      "uuid": "9c5416f3-7af8-49f8-b333-8b0cd4ae27e3",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1760/task-vf-avl-001-02-journey-availability-aggregation-and-maintenance",
+      "story_id": "VF-AVL-001",
+      "title": "[TASK-VF-AVL-001-02] Journey availability aggregation and maintenance accounting",
+      "parent_id": "APL-565",
+      "parent_uuid": "1a5225c3-6f65-4a7d-8e49-2d32fccfb5ef",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-AVL-001-01"
+      ],
+      "blocked_by": [
+        "042bb48a-b411-4951-a34c-fd09f77f52a0"
+      ],
+      "created_at": "2026-10-10T13:04:31.813Z",
+      "reconciled": false
+    },
+    "TASK-VF-AVL-002-01": {
+      "id": "APL-1761",
+      "uuid": "ad3e8748-54b8-4075-81a8-f71d00930ee4",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1761/task-vf-avl-002-01-critical-journey-dependency-and-degradation-matrix",
+      "story_id": "VF-AVL-002",
+      "title": "[TASK-VF-AVL-002-01] Critical journey dependency and degradation matrix",
+      "parent_id": "APL-568",
+      "parent_uuid": "21912be2-84c5-4531-9540-9bb3c113b99a",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:04:33.848Z",
+      "reconciled": false
+    },
+    "TASK-VF-AVL-001-03": {
+      "id": "APL-1762",
+      "uuid": "37b5ade7-baa8-44aa-8c65-05419f5b915a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1762/task-vf-avl-001-03-monthly-objective-and-cohort-masking-checks",
+      "story_id": "VF-AVL-001",
+      "title": "[TASK-VF-AVL-001-03] Monthly objective and cohort masking checks",
+      "parent_id": "APL-565",
+      "parent_uuid": "1a5225c3-6f65-4a7d-8e49-2d32fccfb5ef",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-AVL-001-02"
+      ],
+      "blocked_by": [
+        "9c5416f3-7af8-49f8-b333-8b0cd4ae27e3"
+      ],
+      "created_at": "2026-10-10T13:04:37.520Z",
+      "reconciled": false
+    },
+    "TASK-VF-AVL-002-02": {
+      "id": "APL-1763",
+      "uuid": "6a92bb48-91e2-44f6-8d28-a2ed044deed8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1763/task-vf-avl-002-02-truthful-degraded-state-and-manual-path-behaviour",
+      "story_id": "VF-AVL-002",
+      "title": "[TASK-VF-AVL-002-02] Truthful degraded-state and manual-path behaviour",
+      "parent_id": "APL-568",
+      "parent_uuid": "21912be2-84c5-4531-9540-9bb3c113b99a",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-AVL-002-01"
+      ],
+      "blocked_by": [
+        "ad3e8748-54b8-4075-81a8-f71d00930ee4"
+      ],
+      "created_at": "2026-10-10T13:04:45.770Z",
+      "reconciled": false
+    },
+    "TASK-VF-AVL-002-03": {
+      "id": "APL-1764",
+      "uuid": "822184e7-4f85-4b23-8a14-dde96f9aa0db",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1764/task-vf-avl-002-03-independent-dependency-failure-qualification",
+      "story_id": "VF-AVL-002",
+      "title": "[TASK-VF-AVL-002-03] Independent dependency-failure qualification",
+      "parent_id": "APL-568",
+      "parent_uuid": "21912be2-84c5-4531-9540-9bb3c113b99a",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-AVL-002-02"
+      ],
+      "blocked_by": [
+        "6a92bb48-91e2-44f6-8d28-a2ed044deed8"
+      ],
+      "created_at": "2026-10-10T13:04:50.217Z",
+      "reconciled": false
+    },
+    "TASK-VF-DIN-001-01": {
+      "id": "APL-1765",
+      "uuid": "b4c82567-312d-4505-b808-7caedc79cc4c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1765/task-vf-din-001-01-cal01-through-cal20-expected-result-manifest",
+      "story_id": "VF-DIN-001",
+      "title": "[TASK-VF-DIN-001-01] CAL01 through CAL20 expected-result manifest",
+      "parent_id": "APL-571",
+      "parent_uuid": "b1bd4e51-6ad7-4106-ae28-2bc9c58c3ec7",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:05:09.809Z",
+      "reconciled": false
+    },
+    "TASK-VF-DIN-002-01": {
+      "id": "APL-1766",
+      "uuid": "d478db16-8b24-4069-8bdb-6160671c8d19",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1766/task-vf-din-002-01-native-concurrent-operation-outcome-matrix",
+      "story_id": "VF-DIN-002",
+      "title": "[TASK-VF-DIN-002-01] Native concurrent-operation outcome matrix",
+      "parent_id": "APL-574",
+      "parent_uuid": "9b98caaa-0178-4e9e-a895-aace3e0ecc50",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:05:16.986Z",
+      "reconciled": false
+    },
+    "TASK-VF-DIN-001-02": {
+      "id": "APL-1767",
+      "uuid": "0e4955c2-6066-4ff3-8a85-77616888c8bb",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1767/task-vf-din-001-02-exact-golden-and-report-binding-gate",
+      "story_id": "VF-DIN-001",
+      "title": "[TASK-VF-DIN-001-02] Exact golden and report-binding gate",
+      "parent_id": "APL-571",
+      "parent_uuid": "b1bd4e51-6ad7-4106-ae28-2bc9c58c3ec7",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-DIN-001-01"
+      ],
+      "blocked_by": [
+        "b4c82567-312d-4505-b808-7caedc79cc4c"
+      ],
+      "created_at": "2026-10-10T13:05:17.530Z",
+      "reconciled": false
+    },
+    "TASK-VF-DIN-002-02": {
+      "id": "APL-1768",
+      "uuid": "2f230d44-a8dd-4002-8e27-fc8196ced17f",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1768/task-vf-din-002-02-stale-write-and-retry-safe-transaction-boundaries",
+      "story_id": "VF-DIN-002",
+      "title": "[TASK-VF-DIN-002-02] Stale-write and retry-safe transaction boundaries",
+      "parent_id": "APL-574",
+      "parent_uuid": "9b98caaa-0178-4e9e-a895-aace3e0ecc50",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-DIN-002-01"
+      ],
+      "blocked_by": [
+        "d478db16-8b24-4069-8bdb-6160671c8d19"
+      ],
+      "created_at": "2026-10-10T13:05:22.363Z",
+      "reconciled": false
+    },
+    "TASK-VF-DIN-001-03": {
+      "id": "APL-1769",
+      "uuid": "99386458-08cf-436b-9b84-2f3e973a17a3",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1769/task-vf-din-001-03-unexplained-official-discrepancy-checks",
+      "story_id": "VF-DIN-001",
+      "title": "[TASK-VF-DIN-001-03] Unexplained official discrepancy checks",
+      "parent_id": "APL-571",
+      "parent_uuid": "b1bd4e51-6ad7-4106-ae28-2bc9c58c3ec7",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-DIN-001-02"
+      ],
+      "blocked_by": [
+        "0e4955c2-6066-4ff3-8a85-77616888c8bb"
+      ],
+      "created_at": "2026-10-10T13:05:27.800Z",
+      "reconciled": false
+    },
+    "TASK-VF-DIN-002-03": {
+      "id": "APL-1770",
+      "uuid": "10201d6f-64fd-4fa3-b4a6-9da368b65fa7",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1770/task-vf-din-002-03-no-overwrite-no-duplicate-no-stale-approval-races",
+      "story_id": "VF-DIN-002",
+      "title": "[TASK-VF-DIN-002-03] No-overwrite no-duplicate no-stale-approval races",
+      "parent_id": "APL-574",
+      "parent_uuid": "9b98caaa-0178-4e9e-a895-aace3e0ecc50",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-DIN-002-02"
+      ],
+      "blocked_by": [
+        "2f230d44-a8dd-4002-8e27-fc8196ced17f"
+      ],
+      "created_at": "2026-10-10T13:05:28.017Z",
+      "reconciled": false
+    },
+    "TASK-VF-OBS-001-03": {
+      "id": "APL-1775",
+      "uuid": "8fc2221b-9248-4fe4-beed-6ed1787ee67f",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1775/task-vf-obs-001-03-injected-stage-correlation-and-alert-timing-checks",
+      "story_id": "VF-OBS-001",
+      "title": "[TASK-VF-OBS-001-03] Injected-stage correlation and alert timing checks",
+      "parent_id": "APL-576",
+      "parent_uuid": "108645e8-1f1c-4329-841b-2cd6bdea62df",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-OBS-001-02"
+      ],
+      "blocked_by": [
+        "03d6cee0-c391-4a17-9554-8233e0a2da59"
+      ],
+      "created_at": "2026-10-10T13:06:03.127Z",
+      "reconciled": true
+    },
+    "TASK-VF-PER-001-02": {
+      "id": "APL-1774",
+      "uuid": "c466a3da-2b2a-49d1-a36b-56479687b5fb",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1774/task-vf-per-001-02-per-action-native-performance-instrumentation",
+      "story_id": "VF-PER-001",
+      "title": "[TASK-VF-PER-001-02] Per-action native performance instrumentation",
+      "parent_id": "APL-579",
+      "parent_uuid": "998011cc-c4b6-4720-bbdf-145fc89a8841",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-PER-001-01"
+      ],
+      "blocked_by": [
+        "99a1cb8e-b806-4c1b-b884-637589888bba"
+      ],
+      "created_at": "2026-10-10T13:05:57.703Z",
+      "reconciled": true
+    },
+    "TASK-VF-OBS-001-02": {
+      "id": "APL-1773",
+      "uuid": "03d6cee0-c391-4a17-9554-8233e0a2da59",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1773/task-vf-obs-001-02-context-safe-failure-diagnostics-and-alerts",
+      "story_id": "VF-OBS-001",
+      "title": "[TASK-VF-OBS-001-02] Context-safe failure diagnostics and alerts",
+      "parent_id": "APL-576",
+      "parent_uuid": "108645e8-1f1c-4329-841b-2cd6bdea62df",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-OBS-001-01"
+      ],
+      "blocked_by": [
+        "aba5e3b5-96b0-467b-9872-13a117a26a0b"
+      ],
+      "created_at": "2026-10-10T13:05:49.901Z",
+      "reconciled": true
+    },
+    "TASK-VF-PER-001-01": {
+      "id": "APL-1772",
+      "uuid": "99a1cb8e-b806-4c1b-b884-637589888bba",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1772/task-vf-per-001-01-interactive-action-workload-and-timing-protocol",
+      "story_id": "VF-PER-001",
+      "title": "[TASK-VF-PER-001-01] Interactive action workload and timing protocol",
+      "parent_id": "APL-579",
+      "parent_uuid": "998011cc-c4b6-4720-bbdf-145fc89a8841",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:05:49.476Z",
+      "reconciled": true
+    },
+    "TASK-VF-OBS-001-01": {
+      "id": "APL-1771",
+      "uuid": "aba5e3b5-96b0-467b-9872-13a117a26a0b",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1771/task-vf-obs-001-01-action-job-and-integration-correlation-contract",
+      "story_id": "VF-OBS-001",
+      "title": "[TASK-VF-OBS-001-01] Action job and integration correlation contract",
+      "parent_id": "APL-576",
+      "parent_uuid": "108645e8-1f1c-4329-841b-2cd6bdea62df",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:05:43.913Z",
+      "reconciled": true
+    },
+    "TASK-VF-PER-001-03": {
+      "id": "APL-1786",
+      "uuid": "51293ffc-8f60-4291-ae57-01acb400b88b",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1786/task-vf-per-001-03-peak-soak-and-percentile-masking-checks",
+      "story_id": "VF-PER-001",
+      "title": "[TASK-VF-PER-001-03] Peak soak and percentile masking checks",
+      "parent_id": "APL-579",
+      "parent_uuid": "998011cc-c4b6-4720-bbdf-145fc89a8841",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-PER-001-02"
+      ],
+      "blocked_by": [
+        "c466a3da-2b2a-49d1-a36b-56479687b5fb"
+      ],
+      "created_at": "2026-10-10T13:10:06.625Z",
+      "reconciled": false
+    },
+    "TASK-VF-PER-006-01": {
+      "id": "APL-1797",
+      "uuid": "ee2cc4e5-2612-41d9-a3df-08003216e751",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1797/task-vf-per-006-01-approved-result-propagation-event-protocol",
+      "story_id": "VF-PER-006",
+      "title": "[TASK-VF-PER-006-01] Approved-result propagation event protocol",
+      "parent_id": "APL-581",
+      "parent_uuid": "2241d0cd-3c5a-4294-8e6d-bae8cb2c81a1",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:11:02.839Z",
+      "reconciled": false
+    },
+    "TASK-VF-PRT-001-01": {
+      "id": "APL-1798",
+      "uuid": "01b56031-7806-4316-a2c2-5e2ef118ce63",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1798/task-vf-prt-001-01-large-tenant-export-workload-and-reconstruction",
+      "story_id": "VF-PRT-001",
+      "title": "[TASK-VF-PRT-001-01] Large tenant export workload and reconstruction protocol",
+      "parent_id": "APL-582",
+      "parent_uuid": "5b6b257d-858c-4bf4-959f-d49b0757b3b2",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:11:07.469Z",
+      "reconciled": false
+    },
+    "TASK-VF-PER-006-02": {
+      "id": "APL-1800",
+      "uuid": "c9967930-f510-44ec-80f2-be2d14e93738",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1800/task-vf-per-006-02-version-proven-dashboard-freshness-instrumentation",
+      "story_id": "VF-PER-006",
+      "title": "[TASK-VF-PER-006-02] Version-proven dashboard freshness instrumentation",
+      "parent_id": "APL-581",
+      "parent_uuid": "2241d0cd-3c5a-4294-8e6d-bae8cb2c81a1",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-PER-006-01"
+      ],
+      "blocked_by": [
+        "ee2cc4e5-2612-41d9-a3df-08003216e751"
+      ],
+      "created_at": "2026-10-10T13:11:10.324Z",
+      "reconciled": false
+    },
+    "TASK-VF-PRT-001-02": {
+      "id": "APL-1802",
+      "uuid": "d265212f-3bd7-4a22-9a43-bc582471774c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1802/task-vf-prt-001-02-async-complete-package-progress-and-integrity-flow",
+      "story_id": "VF-PRT-001",
+      "title": "[TASK-VF-PRT-001-02] Async complete-package progress and integrity flow",
+      "parent_id": "APL-582",
+      "parent_uuid": "5b6b257d-858c-4bf4-959f-d49b0757b3b2",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-PRT-001-01"
+      ],
+      "blocked_by": [
+        "01b56031-7806-4316-a2c2-5e2ef118ce63"
+      ],
+      "created_at": "2026-10-10T13:11:14.881Z",
+      "reconciled": false
+    },
+    "TASK-VF-PER-006-03": {
+      "id": "APL-1804",
+      "uuid": "ebdbdb73-5b2c-41eb-a336-bfa9230217ce",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1804/task-vf-per-006-03-sixty-second-p95-freshness-checks",
+      "story_id": "VF-PER-006",
+      "title": "[TASK-VF-PER-006-03] Sixty-second p95 freshness checks",
+      "parent_id": "APL-581",
+      "parent_uuid": "2241d0cd-3c5a-4294-8e6d-bae8cb2c81a1",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-PER-006-02"
+      ],
+      "blocked_by": [
+        "c9967930-f510-44ec-80f2-be2d14e93738"
+      ],
+      "created_at": "2026-10-10T13:11:19.199Z",
+      "reconciled": false
+    },
+    "TASK-VF-PRT-001-03": {
+      "id": "APL-1806",
+      "uuid": "cf722b7c-8053-47a8-bcfc-07b2add14798",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1806/task-vf-prt-001-03-twenty-four-hour-complete-export-qualification",
+      "story_id": "VF-PRT-001",
+      "title": "[TASK-VF-PRT-001-03] Twenty-four-hour complete export qualification",
+      "parent_id": "APL-582",
+      "parent_uuid": "5b6b257d-858c-4bf4-959f-d49b0757b3b2",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-PRT-001-02"
+      ],
+      "blocked_by": [
+        "d265212f-3bd7-4a22-9a43-bc582471774c"
+      ],
+      "created_at": "2026-10-10T13:11:23.584Z",
+      "reconciled": false
+    },
+    "TASK-VF-DR-001-01": {
+      "id": "APL-1810",
+      "uuid": "677d3625-ebfa-4571-bee5-8b126b43d493",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1810/task-vf-dr-001-01-regional-disaster-and-receipt-reconciliation",
+      "story_id": "VF-DR-001",
+      "title": "[TASK-VF-DR-001-01] Regional disaster and receipt reconciliation protocol",
+      "parent_id": "APL-584",
+      "parent_uuid": "c39ca4d0-036b-41ab-8176-91a30dee93d5",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:11:39.599Z",
+      "reconciled": false
+    },
+    "TASK-VF-DR-002-01": {
+      "id": "APL-1812",
+      "uuid": "979b534c-36b5-4de0-abc7-1eaacda71603",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1812/task-vf-dr-002-01-durable-acknowledgement-failure-protocol",
+      "story_id": "VF-DR-002",
+      "title": "[TASK-VF-DR-002-01] Durable acknowledgement failure protocol",
+      "parent_id": "APL-587",
+      "parent_uuid": "92936296-f313-4a94-8ab3-d35b8e953004",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:11:45.185Z",
+      "reconciled": false
+    },
+    "TASK-VF-DR-001-02": {
+      "id": "APL-1813",
+      "uuid": "d2cb7a66-87e7-4c43-ae55-e861e43d8c6b",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1813/task-vf-dr-001-02-complete-governance-safe-recovery-procedure",
+      "story_id": "VF-DR-001",
+      "title": "[TASK-VF-DR-001-02] Complete governance-safe recovery procedure",
+      "parent_id": "APL-584",
+      "parent_uuid": "c39ca4d0-036b-41ab-8176-91a30dee93d5",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-DR-001-01"
+      ],
+      "blocked_by": [
+        "677d3625-ebfa-4571-bee5-8b126b43d493"
+      ],
+      "created_at": "2026-10-10T13:11:51.316Z",
+      "reconciled": false
+    },
+    "TASK-VF-DR-002-02": {
+      "id": "APL-1814",
+      "uuid": "11daea1d-ec19-496c-80c7-ac250671db55",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1814/task-vf-dr-002-02-receipt-confirmed-persistence-and-uncertain-recovery",
+      "story_id": "VF-DR-002",
+      "title": "[TASK-VF-DR-002-02] Receipt-confirmed persistence and uncertain recovery",
+      "parent_id": "APL-587",
+      "parent_uuid": "92936296-f313-4a94-8ab3-d35b8e953004",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-DR-002-01"
+      ],
+      "blocked_by": [
+        "979b534c-36b5-4de0-abc7-1eaacda71603"
+      ],
+      "created_at": "2026-10-10T13:11:56.027Z",
+      "reconciled": false
+    },
+    "TASK-VF-DR-001-03": {
+      "id": "APL-1815",
+      "uuid": "1a4a3706-b72e-4a23-926d-49003b37390a",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1815/task-vf-dr-001-03-timed-regional-recovery-and-actual-loss-checks",
+      "story_id": "VF-DR-001",
+      "title": "[TASK-VF-DR-001-03] Timed regional recovery and actual-loss checks",
+      "parent_id": "APL-584",
+      "parent_uuid": "c39ca4d0-036b-41ab-8176-91a30dee93d5",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-DR-001-02"
+      ],
+      "blocked_by": [
+        "d2cb7a66-87e7-4c43-ae55-e861e43d8c6b"
+      ],
+      "created_at": "2026-10-10T13:12:00.596Z",
+      "reconciled": false
+    },
+    "TASK-VF-DR-002-03": {
+      "id": "APL-1816",
+      "uuid": "5fb8c45f-dd75-483e-9108-67e204bc1bea",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1816/task-vf-dr-002-03-acknowledged-save-component-interruption-checks",
+      "story_id": "VF-DR-002",
+      "title": "[TASK-VF-DR-002-03] Acknowledged-save component-interruption checks",
+      "parent_id": "APL-587",
+      "parent_uuid": "92936296-f313-4a94-8ab3-d35b8e953004",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-DR-002-02"
+      ],
+      "blocked_by": [
+        "11daea1d-ec19-496c-80c7-ac250671db55"
+      ],
+      "created_at": "2026-10-10T13:12:05.206Z",
+      "reconciled": false
+    },
+    "TASK-VF-DR-003-01": {
+      "id": "APL-1821",
+      "uuid": "cd5a91b1-138a-4e6f-947f-788681851ef2",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1821/task-vf-dr-003-01-protected-backup-and-rehearsal-inventory",
+      "story_id": "VF-DR-003",
+      "title": "[TASK-VF-DR-003-01] Protected backup and rehearsal inventory",
+      "parent_id": "APL-590",
+      "parent_uuid": "70e9ec2d-1ca3-4a3a-886c-3c8df0cb4672",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:12:20.303Z",
+      "reconciled": false
+    },
+    "TASK-VF-SUP-001-01": {
+      "id": "APL-1823",
+      "uuid": "74ed38a1-385b-4ce4-ab42-9a8f86dde433",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1823/task-vf-sup-001-01-critical-capability-support-readiness-matrix",
+      "story_id": "VF-SUP-001",
+      "title": "[TASK-VF-SUP-001-01] Critical capability support readiness matrix",
+      "parent_id": "APL-593",
+      "parent_uuid": "5f06c603-63d0-478a-8fa1-03a10927f907",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:12:24.572Z",
+      "reconciled": false
+    },
+    "TASK-VF-DR-003-02": {
+      "id": "APL-1825",
+      "uuid": "a1867f38-4618-4ee1-9d89-e553bbb99c0e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1825/task-vf-dr-003-02-retention-and-complete-restore-verification",
+      "story_id": "VF-DR-003",
+      "title": "[TASK-VF-DR-003-02] Retention and complete restore verification procedure",
+      "parent_id": "APL-590",
+      "parent_uuid": "70e9ec2d-1ca3-4a3a-886c-3c8df0cb4672",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-DR-003-01"
+      ],
+      "blocked_by": [
+        "cd5a91b1-138a-4e6f-947f-788681851ef2"
+      ],
+      "created_at": "2026-10-10T13:12:29.728Z",
+      "reconciled": false
+    },
+    "TASK-VF-SUP-001-02": {
+      "id": "APL-1826",
+      "uuid": "fbc1c01d-769f-4131-8747-c825adc35384",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1826/task-vf-sup-001-02-accountable-incident-and-recovery-rehearsal-pack",
+      "story_id": "VF-SUP-001",
+      "title": "[TASK-VF-SUP-001-02] Accountable incident and recovery rehearsal pack",
+      "parent_id": "APL-593",
+      "parent_uuid": "5f06c603-63d0-478a-8fa1-03a10927f907",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-SUP-001-01"
+      ],
+      "blocked_by": [
+        "74ed38a1-385b-4ce4-ab42-9a8f86dde433"
+      ],
+      "created_at": "2026-10-10T13:12:34.634Z",
+      "reconciled": false
+    },
+    "TASK-VF-DR-003-03": {
+      "id": "APL-1827",
+      "uuid": "8b5991fa-0617-4948-a783-f3921a9e67e3",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1827/task-vf-dr-003-03-restore-completion-and-retention-exception-checks",
+      "story_id": "VF-DR-003",
+      "title": "[TASK-VF-DR-003-03] Restore-completion and retention-exception checks",
+      "parent_id": "APL-590",
+      "parent_uuid": "70e9ec2d-1ca3-4a3a-886c-3c8df0cb4672",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-DR-003-02"
+      ],
+      "blocked_by": [
+        "a1867f38-4618-4ee1-9d89-e553bbb99c0e"
+      ],
+      "created_at": "2026-10-10T13:12:40.745Z",
+      "reconciled": false
+    },
+    "TASK-VF-SUP-001-03": {
+      "id": "APL-1828",
+      "uuid": "2e5f8d92-ea54-4906-b9a8-abd10337e5fb",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1828/task-vf-sup-001-03-continuous-on-call-and-production-readiness-review",
+      "story_id": "VF-SUP-001",
+      "title": "[TASK-VF-SUP-001-03] Continuous on-call and production-readiness review",
+      "parent_id": "APL-593",
+      "parent_uuid": "5f06c603-63d0-478a-8fa1-03a10927f907",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-VF-SUP-001-02"
+      ],
+      "blocked_by": [
+        "fbc1c01d-769f-4131-8747-c825adc35384"
+      ],
+      "created_at": "2026-10-10T13:12:43.091Z",
+      "reconciled": false
+    },
+    "TASK-NFR-08-01": {
+      "id": "APL-1832",
+      "uuid": "efaf6d99-e2ec-488f-9143-8c8d6c2d110e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1832/task-nfr-08-01-commercial-neutrality-scoring-review-protocol",
+      "story_id": "NFR-08",
+      "title": "[TASK-NFR-08-01] Commercial-neutrality scoring review protocol",
+      "parent_id": "APL-596",
+      "parent_uuid": "bc43fa46-c044-4706-ba04-0c5eeb8acfe6",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:13:00.667Z",
+      "reconciled": false
+    },
+    "TASK-US-OP-01-01": {
+      "id": "APL-1835",
+      "uuid": "b4154fae-5d34-4407-9edd-f130ea4e4aeb",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1835/task-us-op-01-01-advisor-case-stage-and-next-action-model",
+      "story_id": "US-OP-01",
+      "title": "[TASK-US-OP-01-01] Advisor case stage and next-action model",
+      "parent_id": "APL-599",
+      "parent_uuid": "eaced014-296a-4f4b-a96f-876db0e6beaf",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:13:05.231Z",
+      "reconciled": false
+    },
+    "TASK-NFR-08-02": {
+      "id": "APL-1837",
+      "uuid": "e7fb072e-e25d-4bb0-839b-88de78e53f4c",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1837/task-nfr-08-02-independent-annual-recommendation-review-record",
+      "story_id": "NFR-08",
+      "title": "[TASK-NFR-08-02] Independent annual recommendation review record",
+      "parent_id": "APL-596",
+      "parent_uuid": "bc43fa46-c044-4706-ba04-0c5eeb8acfe6",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-NFR-08-01"
+      ],
+      "blocked_by": [
+        "efaf6d99-e2ec-488f-9143-8c8d6c2d110e"
+      ],
+      "created_at": "2026-10-10T13:13:08.473Z",
+      "reconciled": false
+    },
+    "TASK-US-OP-01-02": {
+      "id": "APL-1838",
+      "uuid": "83d9e234-af9e-42ee-9b8a-7ab501d1f4a0",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1838/task-us-op-01-02-scoped-advisor-case-queue",
+      "story_id": "US-OP-01",
+      "title": "[TASK-US-OP-01-02] Scoped advisor case queue",
+      "parent_id": "APL-599",
+      "parent_uuid": "eaced014-296a-4f4b-a96f-876db0e6beaf",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-US-OP-01-01"
+      ],
+      "blocked_by": [
+        "b4154fae-5d34-4407-9edd-f130ea4e4aeb"
+      ],
+      "created_at": "2026-10-10T13:13:14.117Z",
+      "reconciled": false
+    },
+    "TASK-NFR-08-03": {
+      "id": "APL-1839",
+      "uuid": "cdfd2e11-6755-47fc-a4db-692c96e8305e",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1839/task-nfr-08-03-commercial-influence-and-missed-review-checks",
+      "story_id": "NFR-08",
+      "title": "[TASK-NFR-08-03] Commercial-influence and missed-review checks",
+      "parent_id": "APL-596",
+      "parent_uuid": "bc43fa46-c044-4706-ba04-0c5eeb8acfe6",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-NFR-08-02"
+      ],
+      "blocked_by": [
+        "e7fb072e-e25d-4bb0-839b-88de78e53f4c"
+      ],
+      "created_at": "2026-10-10T13:13:18.699Z",
+      "reconciled": false
+    },
+    "TASK-US-OP-01-03": {
+      "id": "APL-1842",
+      "uuid": "3d5e9f6c-a55f-4cec-b420-ccc9761d603b",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1842/task-us-op-01-03-stage-cohort-urgency-filter-checks",
+      "story_id": "US-OP-01",
+      "title": "[TASK-US-OP-01-03] Stage cohort urgency filter checks",
+      "parent_id": "APL-599",
+      "parent_uuid": "eaced014-296a-4f4b-a96f-876db0e6beaf",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-US-OP-01-02"
+      ],
+      "blocked_by": [
+        "83d9e234-af9e-42ee-9b8a-7ab501d1f4a0"
+      ],
+      "created_at": "2026-10-10T13:13:26.247Z",
+      "reconciled": false
+    },
+    "TASK-US-PT-05-01": {
+      "id": "APL-1852",
+      "uuid": "d7edc543-93a1-413c-98b1-19a74983a8e9",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1852/task-us-pt-05-01-partner-flow-down-obligations-matrix",
+      "story_id": "US-PT-05",
+      "title": "[TASK-US-PT-05-01] Partner flow-down obligations matrix",
+      "parent_id": "APL-602",
+      "parent_uuid": "7a23b5ce-94c6-43f9-bbb1-2398ef810b7d",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:13:43.329Z",
+      "reconciled": false
+    },
+    "TASK-US-OP-02-01": {
+      "id": "APL-1854",
+      "uuid": "a9733593-75a0-467a-ad93-365705056f54",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1854/task-us-op-02-01-advisor-stage-time-entry-contract",
+      "story_id": "US-OP-02",
+      "title": "[TASK-US-OP-02-01] Advisor stage-time entry contract",
+      "parent_id": "APL-600",
+      "parent_uuid": "82c32299-8493-41dc-a56b-9c916678b268",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:13:48.817Z",
+      "reconciled": false
+    },
+    "TASK-US-PT-05-02": {
+      "id": "APL-1855",
+      "uuid": "a0cc39fc-60af-4453-88f5-0a6e53763298",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1855/task-us-pt-05-02-standard-partner-agreement-coverage-record",
+      "story_id": "US-PT-05",
+      "title": "[TASK-US-PT-05-02] Standard partner agreement coverage record",
+      "parent_id": "APL-602",
+      "parent_uuid": "7a23b5ce-94c6-43f9-bbb1-2398ef810b7d",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-US-PT-05-01"
+      ],
+      "blocked_by": [
+        "d7edc543-93a1-413c-98b1-19a74983a8e9"
+      ],
+      "created_at": "2026-10-10T13:13:50.414Z",
+      "reconciled": false
+    },
+    "TASK-US-OP-02-02": {
+      "id": "APL-1857",
+      "uuid": "d95bbcf0-c834-478c-9e9e-44ae7338dbe5",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1857/task-us-op-02-02-stage-bound-time-capture-and-monthly-summary",
+      "story_id": "US-OP-02",
+      "title": "[TASK-US-OP-02-02] Stage-bound time capture and monthly summary",
+      "parent_id": "APL-600",
+      "parent_uuid": "82c32299-8493-41dc-a56b-9c916678b268",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-US-OP-02-01"
+      ],
+      "blocked_by": [
+        "a9733593-75a0-467a-ad93-365705056f54"
+      ],
+      "created_at": "2026-10-10T13:13:56.063Z",
+      "reconciled": false
+    },
+    "TASK-US-PT-05-03": {
+      "id": "APL-1859",
+      "uuid": "e7c153b5-5c92-4ec6-925b-375daad38cf4",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1859/task-us-pt-05-03-incomplete-partner-term-review",
+      "story_id": "US-PT-05",
+      "title": "[TASK-US-PT-05-03] Incomplete partner-term review",
+      "parent_id": "APL-602",
+      "parent_uuid": "7a23b5ce-94c6-43f9-bbb1-2398ef810b7d",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-US-PT-05-02"
+      ],
+      "blocked_by": [
+        "a0cc39fc-60af-4453-88f5-0a6e53763298"
+      ],
+      "created_at": "2026-10-10T13:14:02.466Z",
+      "reconciled": false
+    },
+    "TASK-US-OP-02-03": {
+      "id": "APL-1862",
+      "uuid": "739ec75a-3a2c-4bf2-bb78-ff194c30ffe8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1862/task-us-op-02-03-unstaged-time-and-monthly-total-checks",
+      "story_id": "US-OP-02",
+      "title": "[TASK-US-OP-02-03] Unstaged time and monthly-total checks",
+      "parent_id": "APL-600",
+      "parent_uuid": "82c32299-8493-41dc-a56b-9c916678b268",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-US-OP-02-02"
+      ],
+      "blocked_by": [
+        "d95bbcf0-c834-478c-9e9e-44ae7338dbe5"
+      ],
+      "created_at": "2026-10-10T13:14:06.923Z",
+      "reconciled": false
+    },
+    "TASK-US-PL-03-01": {
+      "id": "APL-1869",
+      "uuid": "34f56151-3b48-49bc-a297-0ce76e0fbcd6",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1869/task-us-pl-03-01-provider-dns-bounce-and-send-limit-contract",
+      "story_id": "US-PL-03",
+      "title": "[TASK-US-PL-03-01] Provider DNS bounce and send-limit contract",
+      "parent_id": "APL-605",
+      "parent_uuid": "026e66da-b0bb-43dc-abb5-0b0ff2eae5d3",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:14:23.905Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-001-01": {
+      "id": "APL-1871",
+      "uuid": "f4aa0132-21ad-407d-b32a-23fc054b3bfd",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1871/task-fr-prv-001-01-field-and-source-classification-inventory",
+      "story_id": "FR-PRV-001",
+      "title": "[TASK-FR-PRV-001-01] Field and source classification inventory",
+      "parent_id": "APL-606",
+      "parent_uuid": "a1c1497f-fb69-42ed-be31-38858105c3cb",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:14:28.686Z",
+      "reconciled": false
+    },
+    "TASK-US-PL-03-02": {
+      "id": "APL-1874",
+      "uuid": "92c2d64e-4166-4ae3-9aef-5e5330a5fe8f",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1874/task-us-pl-03-02-approved-smtp-delivery-and-feedback-integration",
+      "story_id": "US-PL-03",
+      "title": "[TASK-US-PL-03-02] Approved SMTP delivery and feedback integration",
+      "parent_id": "APL-605",
+      "parent_uuid": "026e66da-b0bb-43dc-abb5-0b0ff2eae5d3",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-US-PL-03-01"
+      ],
+      "blocked_by": [
+        "34f56151-3b48-49bc-a297-0ce76e0fbcd6"
+      ],
+      "created_at": "2026-10-10T13:14:34.777Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-001-02": {
+      "id": "APL-1875",
+      "uuid": "1134e6ff-e62f-404a-986a-f327d9c292f5",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1875/task-fr-prv-001-02-reviewed-reclassification-and-channel-enforcement",
+      "story_id": "FR-PRV-001",
+      "title": "[TASK-FR-PRV-001-02] Reviewed reclassification and channel enforcement",
+      "parent_id": "APL-606",
+      "parent_uuid": "a1c1497f-fb69-42ed-be31-38858105c3cb",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-001-01"
+      ],
+      "blocked_by": [
+        "f4aa0132-21ad-407d-b32a-23fc054b3bfd"
+      ],
+      "created_at": "2026-10-10T13:14:37.050Z",
+      "reconciled": false
+    },
+    "TASK-US-PL-03-03": {
+      "id": "APL-1877",
+      "uuid": "5373857c-69c2-4793-a50c-96e07e061939",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1877/task-us-pl-03-03-real-email-readiness-and-unsafe-send-checks",
+      "story_id": "US-PL-03",
+      "title": "[TASK-US-PL-03-03] Real-email readiness and unsafe-send checks",
+      "parent_id": "APL-605",
+      "parent_uuid": "026e66da-b0bb-43dc-abb5-0b0ff2eae5d3",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-US-PL-03-02"
+      ],
+      "blocked_by": [
+        "92c2d64e-4166-4ae3-9aef-5e5330a5fe8f"
+      ],
+      "created_at": "2026-10-10T13:14:41.109Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-001-03": {
+      "id": "APL-1879",
+      "uuid": "d71c6187-b334-4a4c-8042-3a8a1b5fc511",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1879/task-fr-prv-001-03-restricted-participant-field-channel-checks",
+      "story_id": "FR-PRV-001",
+      "title": "[TASK-FR-PRV-001-03] Restricted participant-field channel checks",
+      "parent_id": "APL-606",
+      "parent_uuid": "a1c1497f-fb69-42ed-be31-38858105c3cb",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-001-02"
+      ],
+      "blocked_by": [
+        "1134e6ff-e62f-404a-986a-f327d9c292f5"
+      ],
+      "created_at": "2026-10-10T13:14:45.325Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-002-01": {
+      "id": "APL-1885",
+      "uuid": "5d8f52e2-e1f7-40dd-8419-ed4994552af1",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1885/task-fr-prv-002-01-personal-field-necessity-and-use-scope-contract",
+      "story_id": "FR-PRV-002",
+      "title": "[TASK-FR-PRV-002-01] Personal-field necessity and use-scope contract",
+      "parent_id": "APL-609",
+      "parent_uuid": "52e5e4e0-a0b2-44be-8286-b45b7e631e0e",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [],
+      "blocked_by": [],
+      "created_at": "2026-10-10T13:15:02.553Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-002-02": {
+      "id": "APL-1887",
+      "uuid": "d413d6c2-29e2-4987-a79a-ee4dc9dfb7f0",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1887/task-fr-prv-002-02-purpose-bound-collection-and-reuse-gate",
+      "story_id": "FR-PRV-002",
+      "title": "[TASK-FR-PRV-002-02] Purpose-bound collection and reuse gate",
+      "parent_id": "APL-609",
+      "parent_uuid": "52e5e4e0-a0b2-44be-8286-b45b7e631e0e",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-002-01"
+      ],
+      "blocked_by": [
+        "5d8f52e2-e1f7-40dd-8419-ed4994552af1"
+      ],
+      "created_at": "2026-10-10T13:15:08.970Z",
+      "reconciled": false
+    },
+    "TASK-FR-PRV-002-03": {
+      "id": "APL-1891",
+      "uuid": "bc83e515-2e0e-4dac-aefa-3eef817c42e8",
+      "url": "https://linear.app/aplyd-sandbox/issue/APL-1891/task-fr-prv-002-03-monitoring-purpose-shared-training-refusal-checks",
+      "story_id": "FR-PRV-002",
+      "title": "[TASK-FR-PRV-002-03] Monitoring-purpose shared-training refusal checks",
+      "parent_id": "APL-609",
+      "parent_uuid": "52e5e4e0-a0b2-44be-8286-b45b7e631e0e",
+      "milestone_id": "bd62b22d-8817-47b3-84ff-c41489959050",
+      "depends_on": [
+        "TASK-FR-PRV-002-02"
+      ],
+      "blocked_by": [
+        "d413d6c2-29e2-4987-a79a-ee4dc9dfb7f0"
+      ],
+      "created_at": "2026-10-10T13:15:16.056Z",
+      "reconciled": false
+    }
+  },
+  "last_errors": [],
+  "reconciliation_history": [
+    {
+      "canonical_id": "TASK-FR-INT-001-03",
+      "error": "Error: {\"content\":[{\"type\":\"text\",\"text\":\"The automatic permission approval review did not finish before its deadline. Do not assume the action is unsafe based on the timeout alone. You may retry once, or ask the user for guidance or explicit approval.\"}],\"isError\":true}",
+      "response_uncertain": true,
+      "reconciliation_at": "2026-10-10T12:59:30.944Z",
+      "native_matches": []
+    },
+    {
+      "canonical_id": "TASK-FR-INT-002-02",
+      "error": "Error: {\"content\":[{\"type\":\"text\",\"text\":\"The automatic permission approval review did not finish before its deadline. Do not assume the action is unsafe based on the timeout alone. You may retry once, or ask the user for guidance or explicit approval.\"}],\"isError\":true}",
+      "response_uncertain": true,
+      "reconciliation_at": "2026-10-10T12:59:30.944Z",
+      "native_matches": []
+    },
+    {
+      "code": "user_interruption_resume_full_native_readback",
+      "verified_task_count": 50,
+      "previous_acknowledged_count": 45,
+      "recovered_canonical_ids": [
+        "TASK-VF-OBS-001-03",
+        "TASK-VF-PER-001-02",
+        "TASK-VF-OBS-001-02",
+        "TASK-VF-PER-001-01",
+        "TASK-VF-OBS-001-01"
+      ],
+      "snapshot_sha256": "702118b3e93f1564dd951194741e476673278660d3ec266ea7d097d123ead708"
+    }
+  ],
+  "pending_exact_timeout_retries": [],
+  "timeout_retry_attempts": {
+    "TASK-FR-INT-001-03": 1,
+    "TASK-FR-INT-002-02": 1
+  },
+  "integrated_readback": {
+    "path": "readback-verification.json",
+    "sha256": "87429ad970ace7baac3414016e9f6efe276c2359d55dc71558f18df7d2acf2ed",
+    "result": "PASS"
+  }
+}

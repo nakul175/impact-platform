@@ -1,0 +1,56 @@
+{
+  "phase": "evidence review following separate source review",
+  "reviewer": "root agent, not independent human acceptance",
+  "observed_at": "2026-10-11T10:16:16.251464+00:00",
+  "parent_head": "9c46977de5fc6dc052fe18161f6f231035e93378",
+  "tested_source_sha256": {
+    "qualification/test_ai_diagnosis_idp.py": "5284cbccd8c010ffd29af81ebf993dbd5992e2ca6a477221b9006e2f53496fb2"
+  },
+  "source_changes_during_run": [],
+  "actual_native_provider_suite": {
+    "passed": 18,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "existing_provider_cases": 17,
+    "new_diagnosis_provider_case": 1
+  },
+  "initial_runner_attempt": "Exit2 incorrect multi-target arguments; no test executed; retained",
+  "initial_fixture_attempt": "17passed1failed author MFA fixture mismatch; raw retained privately, sanitized log retained here; fixed to existing password-only fixture flow",
+  "raw_failed_log_sha256": "44d17e8bdaa119e940919c3bdd7ad5be90d3f6a654e470b3997abfce291eec8d",
+  "historical_evidence_restored_byte_exact": [
+    "docs/evidence/idp-qualification.json",
+    "docs/evidence/idp-native-tests.xml"
+  ],
+  "cluster_stopped": true,
+  "local_provider": "Keycloak26.7.4 development mode, synthetic fixtures, private PostgreSQL17.10",
+  "rendered_browser_or_container_claim": false,
+  "full_application_after_new_test": "NOT RERUN; existing full regression/native results remain bound to their preceding checkpoints",
+  "remaining": [
+    "Container deployment-path qualification",
+    "Required current-head hosted CI/checks",
+    "Human security/accessibility and owner acceptance",
+    "Reviewed existing tenant access upgrade",
+    "Delivery workflow/financial/human enforcement activation"
+  ],
+  "story_done": false,
+  "next_story_started": false,
+  "remote_push_pr_merge_deploy": false,
+  "paid_resources": false,
+  "artifact_hashes": {
+    "RUN-RECEIPT.json": "7258da9f6a0887cc3b2e919cdc723df593d779f814a1d303c34b5cda1c27dc4a",
+    "failed-fixture-RUN-RECEIPT.json": "be1b9d287d81c7d698198c96b73c2f21376f24e1f1ef6d7140cad3e32fb5a674",
+    "cluster-start.log": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad",
+    "cluster-stop.log": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+    "local-orchestration-source.py": "91e0118c65a196a55ed4a6c91d31acd92a5d0579a53fe5a3ffc3f76fef03395c",
+    "SOURCE-REVIEW.json": "f21cc4c9936c21cb3fa98790fdfab509eaae07a2f4784bb3b07bc08f1c116d14",
+    "idp-native.log": "006725558ee65fb692940d58774f0cdbe71eb316d6f9eea85a706738489f934c",
+    "failed-runner-argument.log": "7eebac72cef6b3e6d0be660f4b1f23a83d173968f2ff2b0058339c03e0120128",
+    "RUNTIME-RECEIPT.json": "ada7ff07bbf2176abf7e8735327fdd55720b51dabf96c5728209e8866ea63b6e",
+    "failed-fixture-attempt-sanitized.log": "09fb0d50bef52605bea7249bfdcf3e6a950d3196871506e37f86ba539f17a560",
+    "initdb.log": "faa436fc3ad3b3b3cff531e46cf141c68731e950e853b2d9bb877be1142b5495",
+    "failed-runner-RUN-RECEIPT.json": "8f37ca3dbc7413c7a7693db305ab5691d0b451e6a48bd8489f890fb88fcdc568",
+    "generated-evidence/idp-qualification.json": "d97e39b31d4c632248a6ece9bd9c28f584507a4867e727d9502e1ffc5db858a5",
+    "generated-evidence/idp-native-tests.xml": "be9192d14180cdf17ee893d2d0c6725c7d5581c4d473112cd1972e07ece88fd1"
+  }
+}

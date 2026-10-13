@@ -1,0 +1,38 @@
+{
+  "state": "LOCAL_SUPPORTED_DIAGNOSIS_ERASURE_CANDIDATE_QUALIFIED_NOT_REGISTERED_OR_RELEASED",
+  "tested_base_head": "ba3fbbf7fba14659179231d4f1406a356a9e3fcf",
+  "exact_diff_pins": "run-2/RUN-RECEIPT.json",
+  "native_passed": 130,
+  "native_failed": 0,
+  "native_errors": 0,
+  "native_skipped": 0,
+  "new_native_cases": 6,
+  "retained_native_cases": 124,
+  "separate_units": 56,
+  "unit_failed": 0,
+  "unit_errors": 0,
+  "unit_skipped": 0,
+  "new_plan_units": 3,
+  "registered_schema": 46,
+  "unregistered_candidates": [
+    "diagnosis-evidence-linkage.CANDIDATE.sql",
+    "diagnosis-privacy-scope.CANDIDATE.sql"
+  ],
+  "source_pins_stable": true,
+  "executable_pin_count": 287,
+  "cluster_stop_exit_code": 0,
+  "new_fixture_grants": false,
+  "actual_erasure": "Public API intake/plan/independent existing privacy actor approval/execution, revision-bound digest. Synthetic member-owned diagnosis/source preparation uses fixture writes, not HTTP diagnosis-create credit. AVAILABLE and new insert-only RESTRICTED payloads removed; binding cleanup; immutable metadata/hash retained; source Evidence/official numbers unchanged. Exact replay has noextraeffects. Holds and postapproval revisionchange refuse/preserve asdeclared. Foreignkind/missing/wrongowner/schema selectors refuse.",
+  "code_review": "Supporting agent final read-only review:3defects corrected; no further concrete defect. Registered schema46 projection mismatch remains explicit releaseblock. No human signoff.",
+  "evidence_review": "Root separately checked raw130native and56unit XML, exactpins and cleanup; zero failures/skips; prior128pass receipt retained. Units fakeSQL notnative concurrency evidence.",
+  "remaining": [
+    "registration of column/linkage in next contiguous migration; schema/version/contracts/dictionary consistency",
+    "registered checksum/retry/populated upgrade/recovery",
+    "currenthead full/browser/provider/container/hostedchecks",
+    "actual human release/product/operational review",
+    "financial permission/export automatic approval boundary"
+  ],
+  "verified_delivered_stories": 0,
+  "human_signoff": false,
+  "production_acceptance": false
+}

@@ -392,6 +392,7 @@
 | POST | `/v1/tenants/{tenant_id}/qualitative-agreements` | `dashboards.draft.create` |
 | POST | `/v1/tenants/{tenant_id}/qualitative-assignments` | `dashboards.draft.create` |
 | POST | `/v1/tenants/{tenant_id}/qualitative-codebooks` | `dashboards.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/quotation-references` | `dashboards.draft.create` |
 | POST | `/v1/tenants/{tenant_id}/reference-defaults` | `reference-data.manage` |
 | GET | `/v1/tenants/{tenant_id}/renewal-requests` | `memberships.read` |
 | POST | `/v1/tenants/{tenant_id}/renewal-requests` | `membership.renew.request` |
@@ -455,6 +456,8 @@
 | GET | `/v1/tenants/{tenant_id}/targets/{object_id}` | `targets.read` |
 | PATCH | `/v1/tenants/{tenant_id}/targets/{object_id}` | `targets.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/targets/{object_id}/actions/submit` | `target.submit` |
+| POST | `/v1/tenants/{tenant_id}/transcript-corrections` | `dashboards.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/transcription-requests` | `dashboards.draft.create` |
 | POST | `/v1/tenants/{tenant_id}/uploads` | `upload.create` |
 | GET | `/v1/tenants/{tenant_id}/uploads/{object_id}` | `uploads.read` |
 | POST | `/v1/tenants/{tenant_id}/uploads/{object_id}/actions/complete` | `upload.write` |

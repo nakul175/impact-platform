@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.28.0"
+VERSION = "1.29.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -71,6 +71,9 @@ IMPLEMENTED = {
     ("post", "qualitative-assignments"),
     ("post", "qualitative-adjudications"),
     ("post", "qualitative-agreements"),
+    ("post", "transcription-requests"),
+    ("post", "transcript-corrections"),
+    ("post", "quotation-references"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -1069,6 +1072,60 @@ def augment(spec, policy):
                     }
                 },
                 ["pairs"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    segment = closed(
+        {
+            "segment_id": {"type": "string", "minLength": 1},
+            "start_ms": {"type": ["integer", "null"], "minimum": 0},
+            "end_ms": {"type": ["integer", "null"], "minimum": 0},
+            "speaker": NULLABLE_TEXT,
+            "text": {"type": "string", "minLength": 1},
+        },
+        ["segment_id", "start_ms", "end_ms", "speaker", "text"],
+    )
+    schemas["TranscriptionRequest"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "recording_id": UUID,
+                    "destination_id": UUID,
+                    "language": {"type": "string", "minLength": 2},
+                    "task": {"enum": ["TRANSCRIBE", "TRANSLATE"]},
+                    "segments": {"type": "array", "minItems": 1, "items": segment},
+                },
+                ["recording_id", "destination_id", "language", "task", "segments"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["TranscriptCorrection"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "artifact_id": UUID,
+                    "segment_id": {"type": "string", "minLength": 1},
+                    "corrected_text": {"type": "string", "minLength": 1},
+                },
+                ["artifact_id", "segment_id", "corrected_text"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["QuotationReferenceCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "artifact_id": UUID,
+                    "segment_id": {"type": "string", "minLength": 1},
+                    "original_meaning_reviewed": {"type": "boolean"},
+                },
+                ["artifact_id", "segment_id", "original_meaning_reviewed"],
             ),
         },
         ["operation_id", "data"],
@@ -2179,6 +2236,21 @@ def augment(spec, policy):
         ("qualitative-assignments", "QualitativeAssignmentCreate", "assign_qualitative_codes"),
         ("qualitative-adjudications", "QualitativeAdjudicationCreate", "adjudicate_qualitative_coding"),
         ("qualitative-agreements", "QualitativeAgreementCreate", "calculate_qualitative_agreement"),
+    ]:
+        entry = deepcopy(analysis_create)
+        entry.update(
+            operationId=operation,
+            summary=operation.replace("_", " ").title(),
+            **{"x-contract-version": VERSION},
+        )
+        entry["requestBody"]["content"]["application/json"]["schema"] = {
+            "$ref": f"#/components/schemas/{schema_name}"
+        }
+        paths[prefix + route] = {"post": entry}
+    for route, schema_name, operation in [
+        ("transcription-requests", "TranscriptionRequest", "request_transcription"),
+        ("transcript-corrections", "TranscriptCorrection", "correct_transcript_segment"),
+        ("quotation-references", "QuotationReferenceCreate", "create_reviewed_quotation"),
     ]:
         entry = deepcopy(analysis_create)
         entry.update(

@@ -46,6 +46,7 @@ from .analysis_packages import AnalysisPackages
 from .learning_agenda import LearningAgenda
 from .management_responses import ManagementResponses
 from .qualitative_evidence import QualitativeEvidence
+from .transcription import Transcription
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
@@ -251,6 +252,7 @@ def create_app():
     learning_agenda = LearningAgenda(service)
     management_responses = ManagementResponses(service)
     qualitative_evidence = QualitativeEvidence(service)
+    transcription = Transcription(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
@@ -2138,6 +2140,30 @@ def create_app():
             uuid(tenant),
             body,
             request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/transcription-requests", status_code=201)
+    async def transcription_request(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("TranscriptionRequest", body)
+        return await run_in_threadpool(
+            transcription.request, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/transcript-corrections", status_code=201)
+    async def transcript_correction(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("TranscriptCorrection", body)
+        return await run_in_threadpool(
+            transcription.correct, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/quotation-references", status_code=201)
+    async def quotation_reference(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("QuotationReferenceCreate", body)
+        return await run_in_threadpool(
+            transcription.quote, auth.resolve(request), uuid(tenant), body, request.state.correlation
         )
 
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy", status_code=201)

@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.124.0",
+    "version": "1.125.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -13523,7 +13523,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -45171,7 +45171,7 @@
             }
           }
         },
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "parameters": [
           {
             "name": "limit",
@@ -45313,7 +45313,7 @@
             }
           }
         },
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "parameters": [
           {
             "name": "limit",
@@ -45446,7 +45446,7 @@
             }
           }
         },
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "parameters": [
           {
             "name": "limit",
@@ -45588,7 +45588,7 @@
             }
           }
         },
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "parameters": [
           {
             "name": "limit",
@@ -45728,7 +45728,7 @@
             }
           }
         },
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "parameters": [
           {
             "name": "viewport",
@@ -45864,7 +45864,7 @@
             }
           }
         },
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "parameters": [
           {
             "name": "widget_id",
@@ -46005,7 +46005,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -46117,7 +46117,7 @@
             }
           }
         },
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "parameters": [
           {
             "name": "recipient_id",
@@ -46258,7 +46258,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -46379,7 +46379,7 @@
             }
           }
         },
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "parameters": []
       }
     },
@@ -46490,7 +46490,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -46621,7 +46621,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -46732,7 +46732,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -46863,7 +46863,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -46994,7 +46994,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -47105,7 +47105,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -47236,7 +47236,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -47367,7 +47367,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -47478,7 +47478,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -47609,7 +47609,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -47740,7 +47740,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -47871,7 +47871,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -47982,7 +47982,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -48094,7 +48094,7 @@
             }
           }
         },
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "parameters": []
       }
     },
@@ -48225,7 +48225,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -48336,7 +48336,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -48467,7 +48467,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -48598,7 +48598,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -48729,7 +48729,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -48841,7 +48841,7 @@
             }
           }
         },
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "parameters": [
           {
             "name": "disclosure_id",
@@ -48982,7 +48982,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -49113,7 +49113,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -49244,7 +49244,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -49355,7 +49355,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -49466,7 +49466,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -49577,7 +49577,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -49688,7 +49688,340 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/transcription-requests": {
+      "post": {
+        "operationId": "request_transcription",
+        "summary": "Request Transcription",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TranscriptionRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.29.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/transcript-corrections": {
+      "post": {
+        "operationId": "correct_transcript_segment",
+        "summary": "Correct Transcript Segment",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TranscriptCorrection"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.29.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/quotation-references": {
+      "post": {
+        "operationId": "create_reviewed_quotation",
+        "summary": "Create Reviewed Quotation",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuotationReferenceCreate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -49819,7 +50152,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -49950,7 +50283,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "x-audit-required": true
       }
     },
@@ -50071,7 +50404,7 @@
             }
           }
         },
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "parameters": []
       }
     },
@@ -50192,7 +50525,7 @@
             }
           }
         },
-        "x-contract-version": "1.28.0",
+        "x-contract-version": "1.29.0",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -98805,6 +99138,170 @@
             },
             "required": [
               "pairs"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "TranscriptionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "recording_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "destination_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "language": {
+                "type": "string",
+                "minLength": 2
+              },
+              "task": {
+                "enum": [
+                  "TRANSCRIBE",
+                  "TRANSLATE"
+                ]
+              },
+              "segments": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "segment_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "start_ms": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "minimum": 0
+                    },
+                    "end_ms": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "minimum": 0
+                    },
+                    "speaker": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "maxLength": 2000
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "segment_id",
+                    "start_ms",
+                    "end_ms",
+                    "speaker",
+                    "text"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "recording_id",
+              "destination_id",
+              "language",
+              "task",
+              "segments"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "TranscriptCorrection": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "artifact_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "segment_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "corrected_text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "artifact_id",
+              "segment_id",
+              "corrected_text"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "QuotationReferenceCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "artifact_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "segment_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "original_meaning_reviewed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "artifact_id",
+              "segment_id",
+              "original_meaning_reviewed"
             ]
           }
         },

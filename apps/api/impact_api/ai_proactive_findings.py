@@ -34,10 +34,10 @@ class AIProactiveFindings:
                 if bytes(replay["request_hash"]) != fingerprint:
                     raise DomainError("CONFLICT_OPERATION", 409)
                 return self._task_view(replay)
-            scope = revision(c, ctx, body["scope_revision_id"], body["scope_type"], body["scope_capability"])
+            scope = revision(c, ctx, body["scope_revision_id"], "Programme", "programmes.read")
             if str(scope["object_id"]) != body["scope_object_id"]:
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
-            head = load(c, ctx, body["scope_object_id"], body["scope_type"], body["scope_capability"])
+            head = load(c, ctx, body["scope_object_id"], "Programme", "programmes.read")
             if str(head["head_revision"]) != body["scope_revision_id"]:
                 raise DomainError("CONFLICT_VERSION", 409, reason="DETECTION_SCOPE_CHANGED")
             self._person(c, tenant, body["owner_principal_id"])
@@ -93,6 +93,12 @@ class AIProactiveFindings:
             ).fetchone()
             if not task or not task["enabled"]:
                 raise DomainError("RESOURCE_UNAVAILABLE", 404, reason="DETECTION_TASK_NOT_ENABLED")
+            scope = revision(c, ctx, task["scope_revision_id"], "Programme", "programmes.read")
+            if str(scope["object_id"]) != str(task["scope_object_id"]):
+                raise DomainError("RESOURCE_UNAVAILABLE", 404)
+            scope_head = load(c, ctx, task["scope_object_id"], "Programme", "programmes.read")
+            if str(scope_head["head_revision"]) != str(task["scope_revision_id"]):
+                raise DomainError("CONFLICT_VERSION", 409, reason="DETECTION_SCOPE_CHANGED")
             self._person(c, tenant, task["owner_principal_id"])
             latest = c.execute(
                 "SELECT created_at FROM impact.ai_suggested_finding WHERE tenant_id=%s AND task_id=%s ORDER BY created_at DESC LIMIT 1",
@@ -150,6 +156,16 @@ class AIProactiveFindings:
                     fingerprint,
                 ),
             ).fetchone()
+            for selector in body["affected_results"]:
+                c.execute(
+                    "INSERT INTO impact.ai_suggested_finding_result VALUES(%s,%s,%s,%s)",
+                    (tenant, row["suggestion_id"], selector["object_id"], selector["revision_id"]),
+                )
+            for selector in body["evidence"]:
+                c.execute(
+                    "INSERT INTO impact.ai_suggested_finding_evidence VALUES(%s,%s,%s,%s)",
+                    (tenant, row["suggestion_id"], selector["object_id"], selector["revision_id"]),
+                )
             return self._suggestion_view(row)
 
     def review(self, identity, tenant, suggestion_id, body):
@@ -173,6 +189,11 @@ class AIProactiveFindings:
                 (tenant, suggestion_id),
             ).fetchone():
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
+            if c.execute(
+                "SELECT 1 FROM impact.ai_finding_feedback WHERE tenant_id=%s AND suggestion_id=%s",
+                (tenant, suggestion_id),
+            ).fetchone():
+                raise DomainError("CONFLICT_OPERATION", 409, reason="FINDING_ALREADY_REVIEWED")
             assigned = body["assigned_to"] if body["decision"] == "ASSIGNED" else None
             if assigned:
                 self._person(c, tenant, assigned)

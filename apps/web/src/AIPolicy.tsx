@@ -50,6 +50,7 @@ const USE_CASE_NAMES: Record<string, string> = {
   EVIDENCE_QUESTION: "evidence questions",
   NUMERIC_ANALYSIS: "governed numerical analysis",
   QUALITATIVE_ASSISTANCE: "qualitative assistance",
+  PROACTIVE_FINDINGS: "proactive finding suggestions",
 };
 const USE_CASES = Object.keys(USE_CASE_NAMES);
 const REVIEW_NAMES: Record<string, string> = {

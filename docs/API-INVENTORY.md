@@ -35,6 +35,7 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/assessment` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/catalog` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/cost-comparison` | `ai.enablement.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/detection-tasks` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses` | `ai.diagnosis.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses` | `ai.diagnosis.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/diagnoses/{object_id}` | `ai.diagnosis.read` |
@@ -140,6 +141,8 @@
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/solutions` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/sponsor-value-reports` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/sponsor-value-reports/{object_id}` | `publication.download` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/suggested-findings` | `calculated-results.read` |
+| POST | `/v1/tenants/{tenant_id}/ai-enablement/suggested-findings/{suggestion_id}/actions/review` | `ai.enablement.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/task-templates` | `ai.enablement.read` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/trials` | `ai.enablement.read` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/trials` | `ai.solution-fit.score` |

@@ -1,5 +1,5 @@
 {
-  "version": "1.96.0",
+  "version": "1.97.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -7079,6 +7079,44 @@
       "role_templates": [
         "ANALYST",
         "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "configure_ai_detection_task",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/detection-tasks",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "create_ai_suggested_finding",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/suggested-findings",
+      "capability": "calculated-results.read",
+      "role_templates": [
+        "ANALYST",
+        "MEL_ADMIN"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "review_ai_suggested_finding",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/ai-enablement/suggested-findings/{suggestion_id}/actions/review",
+      "capability": "ai.enablement.manage",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER"
       ],
       "purpose_required": false,
       "fresh_assurance_seconds": null,

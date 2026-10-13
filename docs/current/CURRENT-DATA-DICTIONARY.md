@@ -7102,3 +7102,11 @@ COMMIT;
 | Migration | SHA256 |
 |---|---|
 | 0090_ai_qualitative_assistance.sql | 26df65381b9b5721f284fb63423eab228c55f21c60c45e0fdfd8e577381a62f5 |
+
+## Migration0091 — governed proactive finding suggestions (local1.07 coding candidate)
+
+`0091_ai_proactive_findings.sql` SHA256 `0c3a6d1c8570bff2e1c816baa97fc9d3aa0bcf3d6f8aba1a4afce8e82a5a38a9`. Schema91 adds tenant-fenced, insert-only detection-task configurations, suggested findings and individual feedback. Tasks pin exact Programme revisions, active human owners, cooldown and rolling noise limits. Suggestions pin exact CalculatedResult and Evidence revisions and remain explicitly unconfirmed. Review writes feedback or assignment only and never changes source values. All0001–0090 remain byte-exact. Candidate is untested, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0091_ai_proactive_findings.sql | 0c3a6d1c8570bff2e1c816baa97fc9d3aa0bcf3d6f8aba1a4afce8e82a5a38a9 |

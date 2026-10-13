@@ -5,7 +5,7 @@ from copy import deepcopy
 from .ai_solutions_catalog import catalog_schema
 from .measurement_contracts import closed
 
-VERSION = "1.43.0"
+VERSION = "1.44.0"
 # FR-AI-001 (build 0.37.0): the tenant AI policy routes and the advisory request's policy pin.
 POLICY_VERSION = "1.80.0"
 # US-MP-03 (build 0.38.0): the organisation's ranking weights and the weighted opportunity ranking.
@@ -37,6 +37,9 @@ IMPLEMENTED = [
     ("post", "ai-enablement/report-drafts/{draft_id}/actions/review"),
     ("post", "ai-enablement/qualitative-runs"),
     ("post", "ai-enablement/qualitative-suggestions/{suggestion_id}/actions/review"),
+    ("post", "ai-enablement/detection-tasks"),
+    ("post", "ai-enablement/suggested-findings"),
+    ("post", "ai-enablement/suggested-findings/{suggestion_id}/actions/review"),
     ("get", "ai-enablement/solutions"),
     ("get", "ai-enablement/policy"),
     ("put", "ai-enablement/policy"),
@@ -76,6 +79,7 @@ USE_CASES = [
     "EVIDENCE_QUESTION",
     "NUMERIC_ANALYSIS",
     "QUALITATIVE_ASSISTANCE",
+    "PROACTIVE_FINDINGS",
 ]
 DATA_CLASSES = ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"]
 # The closed provider-and-region list. Adding a destination is a reviewed change to this list and to
@@ -1054,6 +1058,144 @@ def augment(spec, policy):
             "source_classification_inherited",
         ],
     )
+    finding_selector = closed(
+        {
+            "object_id": {"type": "string", "format": "uuid"},
+            "revision_id": {"type": "string", "format": "uuid"},
+        },
+        ["object_id", "revision_id"],
+    )
+    schemas["AIDetectionTaskRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "task_code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$"},
+            "scope_object_id": {"type": "string", "format": "uuid"},
+            "scope_revision_id": {"type": "string", "format": "uuid"},
+            "owner_principal_id": {"type": "string", "format": "uuid"},
+            "cooldown_seconds": {"type": "integer", "minimum": 60, "maximum": 2592000},
+            "noise_limit": {"type": "integer", "minimum": 1, "maximum": 100},
+            "enabled": {"type": "boolean"},
+            "policy_version": {"type": "integer", "minimum": 1},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        [
+            "operation_id",
+            "task_code",
+            "scope_object_id",
+            "scope_revision_id",
+            "owner_principal_id",
+            "cooldown_seconds",
+            "noise_limit",
+            "enabled",
+            "policy_version",
+            "language",
+        ],
+    )
+    schemas["AIDetectionTask"] = closed(
+        {
+            "task_id": {"type": "string", "format": "uuid"},
+            "task_code": {"type": "string"},
+            "scope_object_id": {"type": "string", "format": "uuid"},
+            "scope_revision_id": {"type": "string", "format": "uuid"},
+            "owner_principal_id": {"type": "string", "format": "uuid"},
+            "cooldown_seconds": {"type": "integer"},
+            "noise_limit": {"type": "integer"},
+            "enabled": {"type": "boolean"},
+            "policy_version": {"type": "integer"},
+        },
+        [
+            "task_id",
+            "task_code",
+            "scope_object_id",
+            "scope_revision_id",
+            "owner_principal_id",
+            "cooldown_seconds",
+            "noise_limit",
+            "enabled",
+            "policy_version",
+        ],
+    )
+    schemas["AISuggestedFindingRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "task_id": {"type": "string", "format": "uuid"},
+            "detection_event_key": {"type": "string", "minLength": 1, "maxLength": 200},
+            "affected_results": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": finding_selector,
+            },
+            "evidence": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "uniqueItems": True,
+                "items": finding_selector,
+            },
+            "summary": {"type": "string", "minLength": 1, "maxLength": 500},
+            "limitation": {"type": "string", "minLength": 1, "maxLength": 1000},
+            "proposed_follow_up": {"type": "string", "minLength": 1, "maxLength": 1000},
+            "language": {"type": "string", "pattern": LANGUAGE_PATTERN},
+        },
+        [
+            "operation_id",
+            "task_id",
+            "detection_event_key",
+            "affected_results",
+            "evidence",
+            "summary",
+            "limitation",
+            "proposed_follow_up",
+            "language",
+        ],
+    )
+    schemas["AISuggestedFinding"] = closed(
+        {
+            "suggestion_id": {"type": "string", "format": "uuid"},
+            "task_id": {"type": "string", "format": "uuid"},
+            "affected_results": {"type": "array", "items": finding_selector},
+            "evidence": {"type": "array", "items": finding_selector},
+            "summary": {"type": "string"},
+            "limitation": {"type": "string"},
+            "proposed_follow_up": {"type": "string"},
+            "owner_principal_id": {"type": "string", "format": "uuid"},
+            "status": {"const": "SUGGESTED"},
+            "confirmed_finding": {"const": False},
+        },
+        [
+            "suggestion_id",
+            "task_id",
+            "affected_results",
+            "evidence",
+            "summary",
+            "limitation",
+            "proposed_follow_up",
+            "owner_principal_id",
+            "status",
+            "confirmed_finding",
+        ],
+    )
+    schemas["AIFindingReviewRequest"] = closed(
+        {
+            "operation_id": {"type": "string", "format": "uuid"},
+            "decision": {"enum": ["VERIFIED", "DISMISSED", "ASSIGNED"]},
+            "reason": {"type": "string", "minLength": 1, "maxLength": 1000},
+            "assigned_to": {"type": ["string", "null"], "format": "uuid"},
+        },
+        ["operation_id", "decision", "reason", "assigned_to"],
+    )
+    schemas["AIFindingReview"] = closed(
+        {
+            "suggestion_id": {"type": "string", "format": "uuid"},
+            "decision": {"enum": ["VERIFIED", "DISMISSED", "ASSIGNED"]},
+            "assigned_to": {"type": ["string", "null"], "format": "uuid"},
+            "reason": {"type": "string"},
+            "source_values_changed": {"const": False},
+        },
+        ["suggestion_id", "decision", "assigned_to", "reason", "source_values_changed"],
+    )
     safety_base = "/v1/tenants/{tenant_id}/ai-enablement"
     safety_ops = [
         (
@@ -1551,6 +1693,95 @@ def augment(spec, policy):
                 "path": path,
                 "capability": "qualitative-extracts.draft.create",
                 "role_templates": ["ANALYST", "MEL_ADMIN"],
+                "purpose_required": False,
+                "fresh_assurance_seconds": None,
+                "audit": False,
+            }
+        )
+    finding_routes = [
+        (
+            "/v1/tenants/{tenant_id}/ai-enablement/detection-tasks",
+            "configure_ai_detection_task",
+            "AIDetectionTaskRequest",
+            "AIDetectionTask",
+            "configure one immutable scoped detection task",
+            "ai.enablement.manage",
+            ["MEL_ADMIN"],
+        ),
+        (
+            "/v1/tenants/{tenant_id}/ai-enablement/suggested-findings",
+            "create_ai_suggested_finding",
+            "AISuggestedFindingRequest",
+            "AISuggestedFinding",
+            "create an explicitly unconfirmed source-bound suggestion",
+            "calculated-results.read",
+            ["ANALYST", "MEL_ADMIN"],
+        ),
+        (
+            "/v1/tenants/{tenant_id}/ai-enablement/suggested-findings/{suggestion_id}/actions/review",
+            "review_ai_suggested_finding",
+            "AIFindingReviewRequest",
+            "AIFindingReview",
+            "verify, dismiss or assign one suggested finding",
+            "ai.enablement.manage",
+            ["MEL_ADMIN", "PROGRAMME_MANAGER"],
+        ),
+    ]
+    for path, operation, request, response, summary, capability, roles in finding_routes:
+        parameters = [
+            {
+                "name": "tenant_id",
+                "in": "path",
+                "required": True,
+                "schema": {"type": "string", "format": "uuid"},
+            }
+        ]
+        if "{suggestion_id}" in path:
+            parameters.append(
+                {
+                    "name": "suggestion_id",
+                    "in": "path",
+                    "required": True,
+                    "schema": {"type": "string", "format": "uuid"},
+                }
+            )
+        spec["paths"][path] = {
+            "parameters": parameters,
+            "post": {
+                "operationId": operation,
+                "summary": summary,
+                "x-capability": capability,
+                "x-contract-version": VERSION,
+                "requestBody": {
+                    "required": True,
+                    "content": {"application/json": {"schema": {"$ref": "#/components/schemas/" + request}}},
+                },
+                "responses": {
+                    "200": {
+                        "description": summary,
+                        "content": {
+                            "application/json": {"schema": {"$ref": "#/components/schemas/" + response}}
+                        },
+                    },
+                    **{
+                        status: {
+                            "description": "Request refused",
+                            "content": {
+                                "application/json": {"schema": {"$ref": "#/components/schemas/Error"}}
+                            },
+                        }
+                        for status in ["400", "401", "403", "404", "409", "422", "503"]
+                    },
+                },
+            },
+        }
+        policy["operations"].append(
+            {
+                "operation_id": operation,
+                "method": "POST",
+                "path": path,
+                "capability": capability,
+                "role_templates": roles,
                 "purpose_required": False,
                 "fresh_assurance_seconds": None,
                 "audit": False,

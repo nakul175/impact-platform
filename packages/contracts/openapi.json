@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.96.0",
+    "version": "1.97.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -46690,7 +46690,7 @@
         "operationId": "create_ai_safety_feedback",
         "summary": "create ai safety feedback",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -46791,7 +46791,7 @@
         "operationId": "get_ai_safety_shutdowns",
         "summary": "get ai safety shutdowns",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -46869,7 +46869,7 @@
         "operationId": "manage_ai_safety_shutdown",
         "summary": "manage ai safety shutdown",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -46979,7 +46979,7 @@
         "operationId": "approve_ai_safety_recovery",
         "summary": "approve ai safety recovery",
         "x-capability": "ai.policy.manage",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "AI safety containment record",
@@ -47080,7 +47080,7 @@
         "operationId": "create_ai_extraction",
         "summary": "create ai extraction",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47200,7 +47200,7 @@
         "operationId": "review_ai_extraction",
         "summary": "review ai extraction",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47311,7 +47311,7 @@
         "operationId": "create_ai_indicator_proposal",
         "summary": "create ai indicator proposal",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47422,7 +47422,7 @@
         "operationId": "create_ai_indicator_draft",
         "summary": "create ai indicator draft",
         "x-capability": "indicator-definitions.draft.create",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47551,7 +47551,7 @@
         "operationId": "create_ai_import_proposals",
         "summary": "create ai import proposals",
         "x-capability": "imports.read",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47680,7 +47680,7 @@
         "operationId": "apply_ai_import_proposals",
         "summary": "apply ai import proposals",
         "x-capability": "imports.draft.edit",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47791,7 +47791,7 @@
         "operationId": "answer_ai_evidence_question",
         "summary": "answer evidence question",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -47892,7 +47892,7 @@
         "operationId": "create_ai_report_draft",
         "summary": "create a snapshot-bound report proposal",
         "x-capability": "reports.draft.create",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -48012,7 +48012,7 @@
         "operationId": "review_ai_report_draft",
         "summary": "record human corrections and final wording",
         "x-capability": "reports.draft.edit",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -48123,7 +48123,7 @@
         "operationId": "create_ai_qualitative_run",
         "summary": "create source-verifiable qualitative suggestions",
         "x-capability": "qualitative-extracts.draft.create",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -48243,7 +48243,7 @@
         "operationId": "review_ai_qualitative_suggestion",
         "summary": "accept or reject one qualitative suggestion",
         "x-capability": "qualitative-extracts.draft.create",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -48338,6 +48338,348 @@
         }
       }
     },
+    "/v1/tenants/{tenant_id}/ai-enablement/detection-tasks": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "configure_ai_detection_task",
+        "summary": "configure one immutable scoped detection task",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.44.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIDetectionTaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "configure one immutable scoped detection task",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIDetectionTask"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/suggested-findings": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "create_ai_suggested_finding",
+        "summary": "create an explicitly unconfirmed source-bound suggestion",
+        "x-capability": "calculated-results.read",
+        "x-contract-version": "1.44.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AISuggestedFindingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "create an explicitly unconfirmed source-bound suggestion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AISuggestedFinding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tenants/{tenant_id}/ai-enablement/suggested-findings/{suggestion_id}/actions/review": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "suggestion_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "review_ai_suggested_finding",
+        "summary": "verify, dismiss or assign one suggested finding",
+        "x-capability": "ai.enablement.manage",
+        "x-contract-version": "1.44.0",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIFindingReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "verify, dismiss or assign one suggested finding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AIFindingReview"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Request refused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/tenants/{tenant_id}/ai-enablement/numeric-analysis": {
       "parameters": [
         {
@@ -48354,7 +48696,7 @@
         "operationId": "execute_ai_numeric_analysis",
         "summary": "execute governed numeric analysis",
         "x-capability": "calculated-results.read",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "requestBody": {
           "required": true,
           "content": {
@@ -48465,7 +48807,7 @@
         "operationId": "create_ai_forecast",
         "summary": "create ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -48574,7 +48916,7 @@
         "operationId": "get_ai_forecast",
         "summary": "get ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -48673,7 +49015,7 @@
         "operationId": "export_ai_forecast",
         "summary": "export ai forecast",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -48772,7 +49114,7 @@
         "operationId": "request_ai_forecast_adoption",
         "summary": "request ai forecast adoption",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "Versioned forecast planning artifact",
@@ -48853,7 +49195,7 @@
         "operationId": "get_ai_enablement_catalog",
         "summary": "get ai enablement catalog",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -48954,7 +49296,7 @@
         "operationId": "assess_ai_enablement",
         "summary": "assess ai enablement",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -49065,7 +49407,7 @@
         "operationId": "get_ai_solutions",
         "summary": "get ai solutions",
         "x-capability": "ai.enablement.read",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -49166,7 +49508,7 @@
         "operationId": "create_ai_advisory",
         "summary": "create ai advisory",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "Editorial content or unapproved draft",
@@ -49277,7 +49619,7 @@
         "operationId": "create_ai_advisory_job",
         "summary": "create ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "202": {
             "description": "Durable AI job",
@@ -49397,7 +49739,7 @@
         "operationId": "get_ai_advisory_job",
         "summary": "get ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -49507,7 +49849,7 @@
         "operationId": "cancel_ai_advisory_job",
         "summary": "cancel ai advisory job",
         "x-capability": "ai.advisory.request",
-        "x-contract-version": "1.43.0",
+        "x-contract-version": "1.44.0",
         "responses": {
           "200": {
             "description": "Durable AI job",
@@ -91772,7 +92114,8 @@
               "IMPORT_CLEANING",
               "EVIDENCE_QUESTION",
               "NUMERIC_ANALYSIS",
-              "QUALITATIVE_ASSISTANCE"
+              "QUALITATIVE_ASSISTANCE",
+              "PROACTIVE_FINDINGS"
             ]
           },
           "enabled": {
@@ -91858,7 +92201,7 @@
         "properties": {
           "use_cases": {
             "type": "array",
-            "maxItems": 9,
+            "maxItems": 10,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -91945,7 +92288,7 @@
           },
           "use_cases": {
             "type": "array",
-            "maxItems": 9,
+            "maxItems": 10,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -91991,7 +92334,7 @@
           },
           "use_cases": {
             "type": "array",
-            "maxItems": 9,
+            "maxItems": 10,
             "items": {
               "$ref": "#/components/schemas/AIUseCasePolicy"
             }
@@ -92020,7 +92363,8 @@
                 "IMPORT_CLEANING",
                 "EVIDENCE_QUESTION",
                 "NUMERIC_ANALYSIS",
-                "QUALITATIVE_ASSISTANCE"
+                "QUALITATIVE_ASSISTANCE",
+                "PROACTIVE_FINDINGS"
               ]
             }
           }
@@ -95250,6 +95594,369 @@
           "qualitative_extract_id",
           "qualitative_extract_revision_id",
           "source_classification_inherited"
+        ]
+      },
+      "AIDetectionTaskRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "task_code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{2,63}$"
+          },
+          "scope_object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "scope_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "owner_principal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cooldown_seconds": {
+            "type": "integer",
+            "minimum": 60,
+            "maximum": 2592000
+          },
+          "noise_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "language": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$"
+          }
+        },
+        "required": [
+          "operation_id",
+          "task_code",
+          "scope_object_id",
+          "scope_revision_id",
+          "owner_principal_id",
+          "cooldown_seconds",
+          "noise_limit",
+          "enabled",
+          "policy_version",
+          "language"
+        ]
+      },
+      "AIDetectionTask": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "task_code": {
+            "type": "string"
+          },
+          "scope_object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "scope_revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "owner_principal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cooldown_seconds": {
+            "type": "integer"
+          },
+          "noise_limit": {
+            "type": "integer"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "policy_version": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "task_id",
+          "task_code",
+          "scope_object_id",
+          "scope_revision_id",
+          "owner_principal_id",
+          "cooldown_seconds",
+          "noise_limit",
+          "enabled",
+          "policy_version"
+        ]
+      },
+      "AISuggestedFindingRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "task_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "detection_event_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "affected_results": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "object_id",
+                "revision_id"
+              ]
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "object_id",
+                "revision_id"
+              ]
+            }
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "limitation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "proposed_follow_up": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "language": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$"
+          }
+        },
+        "required": [
+          "operation_id",
+          "task_id",
+          "detection_event_key",
+          "affected_results",
+          "evidence",
+          "summary",
+          "limitation",
+          "proposed_follow_up",
+          "language"
+        ]
+      },
+      "AISuggestedFinding": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "suggestion_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "task_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "affected_results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "object_id",
+                "revision_id"
+              ]
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "object_id",
+                "revision_id"
+              ]
+            }
+          },
+          "summary": {
+            "type": "string"
+          },
+          "limitation": {
+            "type": "string"
+          },
+          "proposed_follow_up": {
+            "type": "string"
+          },
+          "owner_principal_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "const": "SUGGESTED"
+          },
+          "confirmed_finding": {
+            "const": false
+          }
+        },
+        "required": [
+          "suggestion_id",
+          "task_id",
+          "affected_results",
+          "evidence",
+          "summary",
+          "limitation",
+          "proposed_follow_up",
+          "owner_principal_id",
+          "status",
+          "confirmed_finding"
+        ]
+      },
+      "AIFindingReviewRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "decision": {
+            "enum": [
+              "VERIFIED",
+              "DISMISSED",
+              "ASSIGNED"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "assigned_to": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "operation_id",
+          "decision",
+          "reason",
+          "assigned_to"
+        ]
+      },
+      "AIFindingReview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "suggestion_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "decision": {
+            "enum": [
+              "VERIFIED",
+              "DISMISSED",
+              "ASSIGNED"
+            ]
+          },
+          "assigned_to": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "source_values_changed": {
+            "const": false
+          }
+        },
+        "required": [
+          "suggestion_id",
+          "decision",
+          "assigned_to",
+          "reason",
+          "source_values_changed"
         ]
       },
       "AITaskPracticeData": {

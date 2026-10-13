@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.21.0"
+VERSION = "1.22.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -48,6 +48,8 @@ IMPLEMENTED = {
     ("post", "external-analytics-connections"),
     ("post", "external-analytics-connections/{object_id}/actions/refresh"),
     ("post", "external-analytics-connections/{object_id}/actions/revoke"),
+    ("post", "anomaly-runs"),
+    ("post", "anomaly-findings/{object_id}/actions/review"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -378,6 +380,111 @@ def augment(spec, policy):
             "remote_copy_status": {"const": "TRACKED_NOT_REMOTELY_ERASED"},
         },
         list(schemas["Receipt"]["required"]) + ["last_successful_extract", "remote_copy_status"],
+    )
+    eligible_observation = closed({"object_id": UUID, "revision_id": UUID}, ["object_id", "revision_id"])
+    schemas["AnomalyRunCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "method_version": {"const": "ROBUST_MAD_1"},
+                    "eligible_observations": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 100,
+                        "items": eligible_observation,
+                    },
+                    "comparison_window": closed(
+                        {
+                            "starts_at": {"type": "string", "format": "date-time"},
+                            "ends_at": {"type": "string", "format": "date-time"},
+                        },
+                        ["starts_at", "ends_at"],
+                    ),
+                    "owner_id": UUID,
+                },
+                [
+                    "method_version",
+                    "eligible_observations",
+                    "comparison_window",
+                    "owner_id",
+                ],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["AnomalyFindingReview"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "decision": {"enum": ["CONFIRMED", "DISMISSED", "DEFERRED"]},
+                    "reason": {"type": ["string", "null"], "maxLength": 500},
+                },
+                ["decision"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    anomaly_finding = closed(
+        {
+            "finding_id": UUID,
+            "observation_id": UUID,
+            "observation_revision": UUID,
+            "state": {"const": "SUGGESTED"},
+            "severity": {"const": "REVIEW"},
+            "owner_id": UUID,
+            "explanation": {"type": "string", "maxLength": 1000},
+            "method_output": closed(
+                {
+                    "median": {"type": "string", "pattern": DECIMAL},
+                    "mad": {"type": "string", "pattern": DECIMAL},
+                    "score": {"type": "string", "pattern": DECIMAL},
+                },
+                ["median", "mad", "score"],
+            ),
+            "review": {"type": "null"},
+        },
+        [
+            "finding_id",
+            "observation_id",
+            "observation_revision",
+            "state",
+            "severity",
+            "owner_id",
+            "explanation",
+            "method_output",
+            "review",
+        ],
+    )
+    schemas["AnomalyRunOutcome"] = closed(
+        {
+            "run_id": UUID,
+            "run_revision": UUID,
+            "method_version": {"const": "ROBUST_MAD_1"},
+            "eligible_revision_count": {"type": "integer", "minimum": 0, "maximum": 100},
+            "findings": {"type": "array", "maxItems": 1, "items": anomaly_finding},
+            "source_mutation": {"const": False},
+            "person_fraud_label": {"const": False},
+        },
+        [
+            "run_id",
+            "run_revision",
+            "method_version",
+            "eligible_revision_count",
+            "findings",
+            "source_mutation",
+            "person_fraud_label",
+        ],
+    )
+    schemas["AnomalyReviewOutcome"] = closed(
+        {
+            **receipt_properties,
+            "decision": {"enum": ["CONFIRMED", "DISMISSED", "DEFERRED"]},
+            "confirmed_quality_defect": {"type": "boolean"},
+            "source_mutation": {"const": False},
+        },
+        list(schemas["Receipt"]["required"]) + ["decision", "confirmed_quality_defect", "source_mutation"],
     )
     preview_widget = closed(
         {
@@ -1257,6 +1364,35 @@ def augment(spec, policy):
     paths[prefix + "external-analytics-connections/{object_id}/actions/revoke"] = {
         "parameters": deepcopy(dashboard_item["parameters"]),
         "post": external_revoke,
+    }
+    anomaly_run = deepcopy(external_create)
+    anomaly_run.update(
+        operationId="create_anomaly_run",
+        summary="Run versioned suggestion-only anomaly assistance",
+        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+    )
+    anomaly_run["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/AnomalyRunCreate"
+    }
+    anomaly_run["responses"]["201"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/AnomalyRunOutcome"
+    }
+    paths[prefix + "anomaly-runs"] = {"post": anomaly_run}
+    anomaly_review = deepcopy(alert_evaluate)
+    anomaly_review.update(
+        operationId="review_anomaly_finding",
+        summary="Confirm, dismiss or defer an anomaly suggestion without changing source data",
+        **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+    )
+    anomaly_review["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/AnomalyFindingReview"
+    }
+    anomaly_review["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/AnomalyReviewOutcome"
+    }
+    paths[prefix + "anomaly-findings/{object_id}/actions/review"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": anomaly_review,
     }
     pivot_preview = deepcopy(copy_entry)
     pivot_preview.update(

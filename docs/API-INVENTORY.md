@@ -158,6 +158,8 @@
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/lock` | `ai.value-case.manage` |
 | POST | `/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/actions/revise` | `ai.value-case.manage` |
 | GET | `/v1/tenants/{tenant_id}/ai-enablement/value-cases/{object_id}/revisions/{revision_id}` | `ai.value-case.read` |
+| POST | `/v1/tenants/{tenant_id}/anomaly-findings/{object_id}/actions/review` | `dashboards.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/anomaly-runs` | `dashboards.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/assignments` | `assignments.read` |
 | POST | `/v1/tenants/{tenant_id}/assignments` | `assignments.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/assignments/{object_id}` | `assignments.read` |

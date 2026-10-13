@@ -39,6 +39,7 @@ from .dashboard_authoring import DashboardAuthoring
 from .dashboard_alerts import DashboardAlerts
 from .dashboard_publication import DashboardPublication
 from .external_analytics import ExternalAnalytics
+from .anomaly_assistance import AnomalyAssistance
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
@@ -237,6 +238,7 @@ def create_app():
     dashboard_alerts = DashboardAlerts(service)
     dashboard_publication = DashboardPublication(service)
     external_analytics = ExternalAnalytics(service)
+    anomaly_assistance = AnomalyAssistance(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
@@ -1854,6 +1856,31 @@ def create_app():
         validate("ExternalAnalyticsRevoke", body)
         return await run_in_threadpool(
             external_analytics.revoke,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/anomaly-runs", status_code=201)
+    async def anomaly_run_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("AnomalyRunCreate", body)
+        return await run_in_threadpool(
+            anomaly_assistance.run,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/anomaly-findings/{obj}/actions/review")
+    async def anomaly_finding_review(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("AnomalyFindingReview", body)
+        return await run_in_threadpool(
+            anomaly_assistance.review,
             auth.resolve(request),
             uuid(tenant),
             uuid(obj),

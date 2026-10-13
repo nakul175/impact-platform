@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.117.0",
+    "version": "1.118.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -45291,7 +45291,7 @@
             }
           }
         },
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": [
           {
             "name": "limit",
@@ -45433,7 +45433,7 @@
             }
           }
         },
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": [
           {
             "name": "limit",
@@ -45566,7 +45566,7 @@
             }
           }
         },
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": [
           {
             "name": "limit",
@@ -45708,7 +45708,7 @@
             }
           }
         },
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": [
           {
             "name": "limit",
@@ -45848,7 +45848,7 @@
             }
           }
         },
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": [
           {
             "name": "viewport",
@@ -45984,7 +45984,7 @@
             }
           }
         },
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": [
           {
             "name": "widget_id",
@@ -46125,7 +46125,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "x-audit-required": true
       }
     },
@@ -46237,7 +46237,7 @@
             }
           }
         },
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": [
           {
             "name": "recipient_id",
@@ -46378,7 +46378,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "x-audit-required": true
       }
     },
@@ -46499,7 +46499,7 @@
             }
           }
         },
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": []
       }
     },
@@ -46610,7 +46610,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "x-audit-required": true
       }
     },
@@ -46741,7 +46741,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "x-audit-required": true
       }
     },
@@ -46852,7 +46852,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "x-audit-required": true
       }
     },
@@ -46983,7 +46983,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "x-audit-required": true
       }
     },
@@ -47114,7 +47114,249 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/anomaly-runs": {
+      "post": {
+        "operationId": "create_anomaly_run",
+        "summary": "Run versioned suggestion-only anomaly assistance",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnomalyRunOutcome"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnomalyRunCreate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.22.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/anomaly-findings/{object_id}/actions/review": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "review_anomaly_finding",
+        "summary": "Confirm, dismiss or defer an anomaly suggestion without changing source data",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.edit",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnomalyReviewOutcome"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnomalyFindingReview"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.22.0",
         "x-audit-required": true
       }
     },
@@ -47245,7 +47487,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "x-audit-required": true
       }
     },
@@ -47376,7 +47618,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "x-audit-required": true
       }
     },
@@ -47497,7 +47739,7 @@
             }
           }
         },
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": []
       }
     },
@@ -47618,7 +47860,7 @@
             }
           }
         },
-        "x-contract-version": "1.21.0",
+        "x-contract-version": "1.22.0",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -94412,6 +94654,286 @@
           "correlation_id",
           "last_successful_extract",
           "remote_copy_status"
+        ]
+      },
+      "AnomalyRunCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "method_version": {
+                "const": "ROBUST_MAD_1"
+              },
+              "eligible_observations": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "object_id",
+                    "revision_id"
+                  ]
+                }
+              },
+              "comparison_window": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "starts_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "ends_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "starts_at",
+                  "ends_at"
+                ]
+              },
+              "owner_id": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "method_version",
+              "eligible_observations",
+              "comparison_window",
+              "owner_id"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "AnomalyFindingReview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "decision": {
+                "enum": [
+                  "CONFIRMED",
+                  "DISMISSED",
+                  "DEFERRED"
+                ]
+              },
+              "reason": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 500
+              }
+            },
+            "required": [
+              "decision"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "AnomalyRunOutcome": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "run_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "method_version": {
+            "const": "ROBUST_MAD_1"
+          },
+          "eligible_revision_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "findings": {
+            "type": "array",
+            "maxItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "finding_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "observation_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "observation_revision": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "state": {
+                  "const": "SUGGESTED"
+                },
+                "severity": {
+                  "const": "REVIEW"
+                },
+                "owner_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "explanation": {
+                  "type": "string",
+                  "maxLength": 1000
+                },
+                "method_output": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "median": {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    "mad": {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    "score": {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    }
+                  },
+                  "required": [
+                    "median",
+                    "mad",
+                    "score"
+                  ]
+                },
+                "review": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "finding_id",
+                "observation_id",
+                "observation_revision",
+                "state",
+                "severity",
+                "owner_id",
+                "explanation",
+                "method_output",
+                "review"
+              ]
+            }
+          },
+          "source_mutation": {
+            "const": false
+          },
+          "person_fraud_label": {
+            "const": false
+          }
+        },
+        "required": [
+          "run_id",
+          "run_revision",
+          "method_version",
+          "eligible_revision_count",
+          "findings",
+          "source_mutation",
+          "person_fraud_label"
+        ]
+      },
+      "AnomalyReviewOutcome": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "business_state": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "job_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "decision": {
+            "enum": [
+              "CONFIRMED",
+              "DISMISSED",
+              "DEFERRED"
+            ]
+          },
+          "confirmed_quality_defect": {
+            "type": "boolean"
+          },
+          "source_mutation": {
+            "const": false
+          }
+        },
+        "required": [
+          "operation_id",
+          "object_id",
+          "revision_id",
+          "business_state",
+          "saved_at",
+          "correlation_id",
+          "decision",
+          "confirmed_quality_defect",
+          "source_mutation"
         ]
       },
       "DashboardPreview": {

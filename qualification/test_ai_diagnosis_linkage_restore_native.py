@@ -14,7 +14,13 @@ import pytest
 from clone_connections import clone_login_dsn
 
 from test_ai_diagnosis_evidence_live import external, linked, source_access
-from test_ai_diagnosis_linkage_candidate_native import ROOT, linkage, registered_linkage, rows  # noqa: F401
+from test_ai_diagnosis_linkage_candidate_native import (  # noqa: F401
+    LATEST_SCHEMA_VERSION,
+    ROOT,
+    linkage,
+    registered_linkage,
+    rows,
+)
 from test_ai_diagnosis_live import action, action_body, save
 from test_ai_diagnosis_payload_native import insert_copy, payload
 from test_ai_diagnosis_upgrade_native import snapshot
@@ -55,7 +61,7 @@ def test_real_restored_linkage_preserves_history_triggers_and_runtime_fences(liv
             (live.local / "diagnosis-linkage-restore.json").write_text(json.dumps(result, indent=2) + "\n")
             assert result["outcome"] == "PASS" and all(result["checks"].values())
             assert result["dump"]["bytes"] > 0 and result["restore"]["warnings"] is None
-            assert result["migration"]["schema_version"] == (47 if registered else 46)
+            assert result["migration"]["schema_version"] == LATEST_SCHEMA_VERSION
             assert result["migration"]["applied"] == []
             with psycopg.connect(make_conninfo(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], dbname=target)) as c:
                 assert registered_linkage(c) is registered

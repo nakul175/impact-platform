@@ -20,7 +20,11 @@ import test_privacy_requests as privacy
 
 from clone_connections import clone_login_dsn
 
-from test_ai_diagnosis_linkage_candidate_native import linkage, registered_linkage  # noqa: F401
+from test_ai_diagnosis_linkage_candidate_native import (  # noqa: F401
+    LATEST_SCHEMA_VERSION,
+    linkage,
+    registered_linkage,
+)
 from test_ai_diagnosis_privacy_candidate_native import diagnosis_privacy_scope, owned, stored  # noqa: F401
 from test_live_application import cmd, expect
 
@@ -139,7 +143,8 @@ def test_post_erasure_backup_restored_api_keeps_removed_payloads_and_exact_priva
             keep=True,
         )
         assert drill["outcome"] == "PASS" and all(drill["checks"].values())
-        assert drill["migration"]["schema_version"] == 47 and drill["migration"]["applied"] == []
+        assert drill["migration"]["schema_version"] == LATEST_SCHEMA_VERSION
+        assert drill["migration"]["applied"] == []
         with psycopg.connect(make_conninfo(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], dbname=target)) as c:
             assert registered_linkage(c)
         result["restore"] = drill

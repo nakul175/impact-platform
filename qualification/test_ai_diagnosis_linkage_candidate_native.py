@@ -28,6 +28,9 @@ from test_native_concurrency import sender
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTERED = ROOT / "infrastructure/migrations/0047_diagnosis_evidence_privacy.sql"
+LATEST_SCHEMA_VERSION = max(
+    int(path.name[:4]) for path in (ROOT / "infrastructure/migrations").glob("[0-9][0-9][0-9][0-9]_*.sql")
+)
 pytestmark = pytest.mark.skipif(
     os.environ.get("IMPACT_NATIVE_TEST") != "1",
     reason="Native typed linkage requires restricted PostgreSQL logins",
@@ -58,7 +61,9 @@ def _registered_linkage(c):
     present = c.execute("SELECT to_regclass('impact.diagnosis_evidence_binding')").fetchone()[0]
     if registered is None:
         return False
-    assert c.execute("SELECT max(version) FROM impact.schema_migration").fetchone() == (47,)
+    # Migration 47 remains the registration authority for this storage even
+    # after later, additive stories have advanced the database schema.
+    assert c.execute("SELECT max(version) >= 47 FROM impact.schema_migration").fetchone() == (True,)
     assert registered == (hashlib.sha256(REGISTERED.read_bytes()).hexdigest(),)
     assert present is not None
     columns = {
@@ -164,7 +169,7 @@ def test_all_tenant_candidate_backfill_preserves_exact_history(linkage, live):
             ).fetchall()
             assert [x[0] for x in after] == [x["v"] for x in before]
         if REGISTERED.exists() and registered_linkage(c):
-            assert c.execute("SELECT max(version) FROM impact.schema_migration").fetchone() == (47,)
+            assert c.execute("SELECT max(version) >= 47 FROM impact.schema_migration").fetchone() == (True,)
         else:
             assert c.execute("SELECT max(version) FROM impact.schema_migration").fetchone() == (46,)
 

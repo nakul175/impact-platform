@@ -16,7 +16,12 @@ import test_ai_diagnosis_recovery as recovery
 from clone_connections import clone_login_dsn
 
 from test_ai_diagnosis_evidence_live import external, linked, source_access
-from test_ai_diagnosis_linkage_candidate_native import ROOT, linkage, registered_linkage  # noqa: F401
+from test_ai_diagnosis_linkage_candidate_native import (  # noqa: F401
+    LATEST_SCHEMA_VERSION,
+    ROOT,
+    linkage,
+    registered_linkage,
+)
 
 pytestmark = pytest.mark.skipif(
     os.environ.get("IMPACT_NATIVE_TEST") != "1",
@@ -61,7 +66,7 @@ def test_restored_linked_api_replays_exact_history_restarts_and_refuses_lost_sou
                 keep=True,
             )
             assert drill["outcome"] == "PASS" and all(drill["checks"].values())
-            assert drill["migration"]["schema_version"] == (47 if registered else 46)
+            assert drill["migration"]["schema_version"] == LATEST_SCHEMA_VERSION
             assert drill["migration"]["applied"] == []
             with psycopg.connect(make_conninfo(os.environ["IMPACT_LOGIN_DSN_MIGRATOR"], dbname=target)) as c:
                 assert registered_linkage(c) is registered

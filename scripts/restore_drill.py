@@ -124,10 +124,22 @@ def security_map(dsn):
             "WHERE n.nspname='impact' AND c.relkind IN ('r','p') ORDER BY c.relname"
         ).fetchall()
         functions = c.execute(
-            "SELECT p.proname,pg_get_userbyid(p.proowner),p.prosecdef FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname='impact' ORDER BY p.proname"
+            "SELECT p.proname || '(' || pg_get_function_identity_arguments(p.oid) || ')',"
+            "pg_get_userbyid(p.proowner),p.prosecdef FROM pg_proc p JOIN pg_namespace n "
+            "ON n.oid=p.pronamespace WHERE n.nspname='impact' "
+            "ORDER BY p.proname,pg_get_function_identity_arguments(p.oid)"
         ).fetchall()
+        # Compare effective privileges instead of raw ACL entries. A dump and
+        # restore may legally consolidate equivalent entries from different
+        # grantors; the runtime authority they confer must remain identical.
         grants = c.execute(
-            "SELECT c.relname,g.rolname,a.privilege_type,a.is_grantable FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace, aclexplode(c.relacl) a JOIN pg_roles g ON g.oid=a.grantee WHERE n.nspname='impact' AND c.relkind IN ('r','p') ORDER BY 1,2,3,4"
+            "SELECT c.relname,g.rolname,p.privilege,"
+            "has_table_privilege(g.oid,c.oid,p.privilege) FROM pg_class c "
+            "JOIN pg_namespace n ON n.oid=c.relnamespace CROSS JOIN pg_roles g "
+            "CROSS JOIN unnest(ARRAY['SELECT','INSERT','UPDATE','DELETE','TRUNCATE',"
+            "'REFERENCES','TRIGGER']) p(privilege) WHERE n.nspname='impact' "
+            "AND c.relkind IN ('r','p') AND g.rolname LIKE 'impact\\_%' ESCAPE '\\' "
+            "ORDER BY 1,2,3"
         ).fetchall()
     return {
         "tables": {
@@ -358,7 +370,12 @@ def run(admin_dsn, fixture_dsn, passwords, pg_bin=None, keep=False):
     result["finished_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     result["outcome"] = "PASS" if all(checks.values()) else "FAIL"
     if result["outcome"] != "PASS":
-        raise RuntimeError("Restore drill checks failed: " + json.dumps(checks))
+        raise RuntimeError(
+            "Restore drill checks failed: "
+            + json.dumps(checks)
+            + "; security details: "
+            + json.dumps(result["security"])
+        )
     return result
 
 

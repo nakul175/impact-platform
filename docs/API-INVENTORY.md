@@ -221,6 +221,8 @@
 | GET | `/v1/tenants/{tenant_id}/disclosures` | `disclosures.read` |
 | GET | `/v1/tenants/{tenant_id}/disclosures/{object_id}` | `disclosures.read` |
 | GET | `/v1/tenants/{tenant_id}/effective-entitlements` | `subscriptions.read` |
+| POST | `/v1/tenants/{tenant_id}/evaluations` | `dashboards.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/evaluations/{object_id}/actions/stage-gate` | `dashboards.draft.edit` |
 | GET | `/v1/tenants/{tenant_id}/evidence` | `evidence.read` |
 | POST | `/v1/tenants/{tenant_id}/evidence` | `evidence.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/evidence/{object_id}` | `evidence.read` |

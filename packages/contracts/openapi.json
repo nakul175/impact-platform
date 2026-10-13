@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.118.0",
+    "version": "1.119.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -13417,33 +13417,12 @@
       }
     },
     "/v1/tenants/{tenant_id}/evaluations": {
-      "parameters": [
-        {
-          "name": "tenant_id",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
-      ],
-      "get": {
-        "operationId": "list_evaluations",
-        "summary": "list evaluations",
-        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-        "x-capability": "evaluations.read",
+      "post": {
+        "operationId": "create_evaluation_registration",
+        "summary": "Register a controlled evaluation without approving sensitive processing",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.create",
         "responses": {
-          "200": {
-            "description": "Successful bounded response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EvaluationList"
-                }
-              }
-            }
-          },
           "default": {
             "description": "Successful bounded response",
             "content": {
@@ -13513,112 +13492,13 @@
                 }
               }
             }
-          }
-        },
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 100,
-              "default": 50
-            }
           },
-          {
-            "name": "cursor",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "maxLength": 4096
-            }
-          }
-        ],
-        "x-contract-version": "1.1.0"
-      },
-      "post": {
-        "operationId": "create_evaluations",
-        "summary": "create evaluations",
-        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "evaluations.draft.create",
-        "responses": {
-          "200": {
+          "201": {
             "description": "Successful bounded response",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Receipt"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Successful bounded response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "AUTH_REQUIRED",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "RESOURCE_UNAVAILABLE",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "CONFLICT_VERSION",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "VALIDATION_FAILED",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "LIMIT_EXCEEDED",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -13629,7 +13509,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EvaluationCreate"
+                "$ref": "#/components/schemas/EvaluationRegistrationCreate"
               }
             }
           }
@@ -13643,7 +13523,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.1.0",
+        "x-contract-version": "1.23.0",
         "x-audit-required": true
       }
     },
@@ -45291,7 +45171,7 @@
             }
           }
         },
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "parameters": [
           {
             "name": "limit",
@@ -45433,7 +45313,7 @@
             }
           }
         },
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "parameters": [
           {
             "name": "limit",
@@ -45566,7 +45446,7 @@
             }
           }
         },
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "parameters": [
           {
             "name": "limit",
@@ -45708,7 +45588,7 @@
             }
           }
         },
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "parameters": [
           {
             "name": "limit",
@@ -45848,7 +45728,7 @@
             }
           }
         },
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "parameters": [
           {
             "name": "viewport",
@@ -45984,7 +45864,7 @@
             }
           }
         },
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "parameters": [
           {
             "name": "widget_id",
@@ -46125,7 +46005,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "x-audit-required": true
       }
     },
@@ -46237,7 +46117,7 @@
             }
           }
         },
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "parameters": [
           {
             "name": "recipient_id",
@@ -46378,7 +46258,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "x-audit-required": true
       }
     },
@@ -46499,7 +46379,7 @@
             }
           }
         },
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "parameters": []
       }
     },
@@ -46610,7 +46490,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "x-audit-required": true
       }
     },
@@ -46741,7 +46621,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "x-audit-required": true
       }
     },
@@ -46852,7 +46732,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "x-audit-required": true
       }
     },
@@ -46983,7 +46863,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "x-audit-required": true
       }
     },
@@ -47114,7 +46994,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "x-audit-required": true
       }
     },
@@ -47225,7 +47105,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "x-audit-required": true
       }
     },
@@ -47356,7 +47236,138 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/evaluations/{object_id}/actions/stage-gate": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "evaluate_evaluation_stage_gate",
+        "summary": "Check pinned method and policy documents before an evaluation stage",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "dashboards.draft.edit",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationStageGateOutcome"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationStageGate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.23.0",
         "x-audit-required": true
       }
     },
@@ -47487,7 +47498,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "x-audit-required": true
       }
     },
@@ -47618,7 +47629,7 @@
             "bearer": []
           }
         ],
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "x-audit-required": true
       }
     },
@@ -47739,7 +47750,7 @@
             }
           }
         },
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "parameters": []
       }
     },
@@ -47860,7 +47871,7 @@
             }
           }
         },
-        "x-contract-version": "1.22.0",
+        "x-contract-version": "1.23.0",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -94934,6 +94945,322 @@
           "decision",
           "confirmed_quality_defect",
           "source_mutation"
+        ]
+      },
+      "EvaluationRegistrationCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "study_type": {
+                "enum": [
+                  "BASELINE",
+                  "MIDLINE",
+                  "ENDLINE",
+                  "OTHER"
+                ]
+              },
+              "programme_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "period_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "questions": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 50,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000
+                }
+              },
+              "study_design": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "programme_baseline_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uuid"
+              },
+              "evaluator": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              },
+              "independence": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "claimed": {
+                    "type": "boolean"
+                  },
+                  "basis": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "claimed"
+                ]
+              },
+              "ethics_requirements": {
+                "type": "array",
+                "maxItems": 30,
+                "items": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              },
+              "budget": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "amount": {
+                    "type": "string",
+                    "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "pattern": "^[A-Z]{3}$"
+                  }
+                },
+                "required": [
+                  "amount",
+                  "currency"
+                ]
+              },
+              "deliverables": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 50,
+                "items": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              },
+              "required_documents": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "FIELD_COLLECTION": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                      "enum": [
+                        "METHODOLOGY",
+                        "ETHICS",
+                        "SAFEGUARDING",
+                        "ANALYSIS_PLAN",
+                        "DISCLOSURE_REVIEW"
+                      ]
+                    }
+                  },
+                  "PUBLICATION": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                      "enum": [
+                        "METHODOLOGY",
+                        "ETHICS",
+                        "SAFEGUARDING",
+                        "ANALYSIS_PLAN",
+                        "DISCLOSURE_REVIEW"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "FIELD_COLLECTION",
+                  "PUBLICATION"
+                ]
+              },
+              "sensitive_processing": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "title",
+              "study_type",
+              "programme_id",
+              "period_id",
+              "questions",
+              "study_design",
+              "evaluator",
+              "independence",
+              "ethics_requirements",
+              "budget",
+              "deliverables",
+              "required_documents",
+              "sensitive_processing"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "EvaluationStageGate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "stage": {
+                "enum": [
+                  "FIELD_COLLECTION",
+                  "PUBLICATION"
+                ]
+              },
+              "documents": {
+                "type": "array",
+                "maxItems": 20,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "METHODOLOGY",
+                        "ETHICS",
+                        "SAFEGUARDING",
+                        "ANALYSIS_PLAN",
+                        "DISCLOSURE_REVIEW"
+                      ]
+                    },
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "object_id",
+                    "revision_id"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "stage",
+              "documents"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "EvaluationStageGateOutcome": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "evaluation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "stage": {
+            "enum": [
+              "FIELD_COLLECTION",
+              "PUBLICATION"
+            ]
+          },
+          "status": {
+            "enum": [
+              "PASSED",
+              "BLOCKED"
+            ]
+          },
+          "missing_document_kinds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "METHODOLOGY",
+                "ETHICS",
+                "SAFEGUARDING",
+                "ANALYSIS_PLAN",
+                "DISCLOSURE_REVIEW"
+              ]
+            }
+          },
+          "pinned_documents": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "METHODOLOGY",
+                    "ETHICS",
+                    "SAFEGUARDING",
+                    "ANALYSIS_PLAN",
+                    "DISCLOSURE_REVIEW"
+                  ]
+                },
+                "object_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "kind",
+                "object_id",
+                "revision_id"
+              ]
+            }
+          },
+          "sensitive_processing_approved": {
+            "const": false
+          }
+        },
+        "required": [
+          "evaluation_id",
+          "stage",
+          "status",
+          "missing_document_kinds",
+          "pinned_documents",
+          "sensitive_processing_approved"
         ]
       },
       "DashboardPreview": {

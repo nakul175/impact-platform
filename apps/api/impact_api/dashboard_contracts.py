@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.22.0"
+VERSION = "1.23.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -50,6 +50,8 @@ IMPLEMENTED = {
     ("post", "external-analytics-connections/{object_id}/actions/revoke"),
     ("post", "anomaly-runs"),
     ("post", "anomaly-findings/{object_id}/actions/review"),
+    ("post", "evaluations"),
+    ("post", "evaluations/{object_id}/actions/stage-gate"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -485,6 +487,135 @@ def augment(spec, policy):
             "source_mutation": {"const": False},
         },
         list(schemas["Receipt"]["required"]) + ["decision", "confirmed_quality_defect", "source_mutation"],
+    )
+    document_kind = {"enum": ["METHODOLOGY", "ETHICS", "SAFEGUARDING", "ANALYSIS_PLAN", "DISCLOSURE_REVIEW"]}
+    schemas["EvaluationRegistrationCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "title": {"type": "string", "minLength": 1, "maxLength": 200},
+                    "study_type": {"enum": ["BASELINE", "MIDLINE", "ENDLINE", "OTHER"]},
+                    "programme_id": UUID,
+                    "period_id": UUID,
+                    "questions": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 50,
+                        "items": {"type": "string", "minLength": 1, "maxLength": 1000},
+                    },
+                    "study_design": {"type": "string", "minLength": 1, "maxLength": 4000},
+                    "programme_baseline_id": NULLABLE_UUID,
+                    "evaluator": {"type": "string", "minLength": 1, "maxLength": 500},
+                    "independence": closed(
+                        {
+                            "claimed": {"type": "boolean"},
+                            "basis": {"type": ["string", "null"], "maxLength": 1000},
+                        },
+                        ["claimed"],
+                    ),
+                    "ethics_requirements": {
+                        "type": "array",
+                        "maxItems": 30,
+                        "items": {"type": "string", "maxLength": 500},
+                    },
+                    "budget": closed(
+                        {
+                            "amount": {"type": "string", "pattern": DECIMAL},
+                            "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+                        },
+                        ["amount", "currency"],
+                    ),
+                    "deliverables": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 50,
+                        "items": {"type": "string", "maxLength": 500},
+                    },
+                    "required_documents": closed(
+                        {
+                            "FIELD_COLLECTION": {
+                                "type": "array",
+                                "uniqueItems": True,
+                                "items": document_kind,
+                            },
+                            "PUBLICATION": {
+                                "type": "array",
+                                "uniqueItems": True,
+                                "items": document_kind,
+                            },
+                        },
+                        ["FIELD_COLLECTION", "PUBLICATION"],
+                    ),
+                    "sensitive_processing": {"type": "boolean"},
+                },
+                [
+                    "title",
+                    "study_type",
+                    "programme_id",
+                    "period_id",
+                    "questions",
+                    "study_design",
+                    "evaluator",
+                    "independence",
+                    "ethics_requirements",
+                    "budget",
+                    "deliverables",
+                    "required_documents",
+                    "sensitive_processing",
+                ],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["EvaluationStageGate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "stage": {"enum": ["FIELD_COLLECTION", "PUBLICATION"]},
+                    "documents": {
+                        "type": "array",
+                        "maxItems": 20,
+                        "items": closed(
+                            {"kind": document_kind, "object_id": UUID, "revision_id": UUID},
+                            ["kind", "object_id", "revision_id"],
+                        ),
+                    },
+                },
+                ["stage", "documents"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["EvaluationStageGateOutcome"] = closed(
+        {
+            "evaluation_id": UUID,
+            "stage": {"enum": ["FIELD_COLLECTION", "PUBLICATION"]},
+            "status": {"enum": ["PASSED", "BLOCKED"]},
+            "missing_document_kinds": {
+                "type": "array",
+                "uniqueItems": True,
+                "items": document_kind,
+            },
+            "pinned_documents": {
+                "type": "array",
+                "maxItems": 20,
+                "items": closed(
+                    {"kind": document_kind, "object_id": UUID, "revision_id": UUID},
+                    ["kind", "object_id", "revision_id"],
+                ),
+            },
+            "sensitive_processing_approved": {"const": False},
+        },
+        [
+            "evaluation_id",
+            "stage",
+            "status",
+            "missing_document_kinds",
+            "pinned_documents",
+            "sensitive_processing_approved",
+        ],
     )
     preview_widget = closed(
         {
@@ -1393,6 +1524,35 @@ def augment(spec, policy):
     paths[prefix + "anomaly-findings/{object_id}/actions/review"] = {
         "parameters": deepcopy(dashboard_item["parameters"]),
         "post": anomaly_review,
+    }
+    evaluation_create = deepcopy(anomaly_run)
+    evaluation_create.update(
+        operationId="create_evaluation_registration",
+        summary="Register a controlled evaluation without approving sensitive processing",
+        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+    )
+    evaluation_create["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationRegistrationCreate"
+    }
+    evaluation_create["responses"]["201"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/Receipt"
+    }
+    paths[prefix + "evaluations"] = {"post": evaluation_create}
+    evaluation_gate = deepcopy(anomaly_review)
+    evaluation_gate.update(
+        operationId="evaluate_evaluation_stage_gate",
+        summary="Check pinned method and policy documents before an evaluation stage",
+        **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+    )
+    evaluation_gate["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationStageGate"
+    }
+    evaluation_gate["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationStageGateOutcome"
+    }
+    paths[prefix + "evaluations/{object_id}/actions/stage-gate"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": evaluation_gate,
     }
     pivot_preview = deepcopy(copy_entry)
     pivot_preview.update(

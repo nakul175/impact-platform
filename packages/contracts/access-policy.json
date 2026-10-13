@@ -1,5 +1,5 @@
 {
-  "version": "1.118.0",
+  "version": "1.119.0",
   "roles": [
     "OWNER",
     "TENANT_ADMIN",
@@ -2121,45 +2121,6 @@
       "field_filter_required": true,
       "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
       "audit": false
-    },
-    {
-      "operation_id": "list_evaluations",
-      "method": "GET",
-      "path": "/v1/tenants/{tenant_id}/evaluations",
-      "capability": "evaluations.read",
-      "role_templates": [
-        "MEL_ADMIN",
-        "PROGRAMME_MANAGER",
-        "AUTHOR",
-        "REVIEWER",
-        "ANALYST",
-        "DATA_STEWARD",
-        "EXTERNAL"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": false
-    },
-    {
-      "operation_id": "create_evaluations",
-      "method": "POST",
-      "path": "/v1/tenants/{tenant_id}/evaluations",
-      "capability": "evaluations.draft.create",
-      "role_templates": [
-        "AUTHOR",
-        "ANALYST"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": false,
-      "state_guard": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-      "audit": true
     },
     {
       "operation_id": "get_evaluations",

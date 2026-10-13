@@ -40,6 +40,7 @@ from .dashboard_alerts import DashboardAlerts
 from .dashboard_publication import DashboardPublication
 from .external_analytics import ExternalAnalytics
 from .anomaly_assistance import AnomalyAssistance
+from .evaluation_registry import EvaluationRegistry
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
@@ -239,6 +240,7 @@ def create_app():
     dashboard_publication = DashboardPublication(service)
     external_analytics = ExternalAnalytics(service)
     anomaly_assistance = AnomalyAssistance(service)
+    evaluation_registry = EvaluationRegistry(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
@@ -1881,6 +1883,31 @@ def create_app():
         validate("AnomalyFindingReview", body)
         return await run_in_threadpool(
             anomaly_assistance.review,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluations", status_code=201)
+    async def evaluation_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("EvaluationRegistrationCreate", body)
+        return await run_in_threadpool(
+            evaluation_registry.create,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluations/{obj}/actions/stage-gate")
+    async def evaluation_stage_gate(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("EvaluationStageGate", body)
+        return await run_in_threadpool(
+            evaluation_registry.gate,
             auth.resolve(request),
             uuid(tenant),
             uuid(obj),

@@ -81,6 +81,8 @@ def augment(spec, policy):
         properties["disaggregation"] = SCHEME
         properties["cumulative_baseline"] = NUMBER
         properties["cumulative_baseline_basis"] = text(2000)
+        properties["allows_negative_adjustments"] = {"type": "boolean"}
+        properties["negative_adjustment_basis"] = text(2000)
     schemas["CalculatedResultData"]["properties"]["disaggregation"] = BREAKDOWN
     schemas["CalculatedResultData"]["properties"].update(
         calculation_precision_digits={"type": "integer", "const": 100},
@@ -96,6 +98,8 @@ def augment(spec, policy):
                 "stored_scale_digits": {"type": "integer", "const": 12},
                 "rounding_boundary": {"const": "OUTPUT_ONLY"},
                 "max_contributors": {"type": "integer", "const": 10000},
+                "allows_negative_adjustments": {"type": "boolean"},
+                "negative_adjustment_basis": {"type": ["string", "null"], "maxLength": 2000},
                 "statistic_label": {"enum": METHODS + ["UNWEIGHTED_MEAN"]},
                 "weighting_basis": {
                     "enum": ["DENOMINATOR_WEIGHTED", "EQUAL_CONTRIBUTOR_WEIGHT", "NOT_APPLICABLE"]

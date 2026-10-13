@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Platform \u2014 implemented domain API",
-    "version": "1.102.0",
+    "version": "1.103.0",
     "description": "Implemented domain subset only. Support, authentication and health routes are documented in docs/IMPLEMENTATION.md."
   },
   "servers": [
@@ -48771,6 +48771,15 @@
             "minLength": 1,
             "maxLength": 2000,
             "pattern": "\\S"
+          },
+          "allows_negative_adjustments": {
+            "type": "boolean"
+          },
+          "negative_adjustment_basis": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
           }
         },
         "required": []
@@ -49048,6 +49057,15 @@
             "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
           },
           "cumulative_baseline_basis": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "allows_negative_adjustments": {
+            "type": "boolean"
+          },
+          "negative_adjustment_basis": {
             "type": "string",
             "minLength": 1,
             "maxLength": 2000,
@@ -50757,6 +50775,16 @@
               "max_contributors": {
                 "type": "integer",
                 "const": 10000
+              },
+              "allows_negative_adjustments": {
+                "type": "boolean"
+              },
+              "negative_adjustment_basis": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 2000
               },
               "statistic_label": {
                 "enum": [

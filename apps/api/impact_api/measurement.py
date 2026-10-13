@@ -40,6 +40,11 @@ def definition_ready(data):
             raise DomainError("VALIDATION_FAILED", reason="CUMULATIVE_BASELINE_REQUIRED")
         if decimal_value(data["cumulative_baseline"]) < 0:
             raise DomainError("VALIDATION_FAILED", reason="CUMULATIVE_BASELINE_INVALID")
+    if data.get("allows_negative_adjustments"):
+        if data.get("measurement_type") != "DECIMAL":
+            raise DomainError("VALIDATION_FAILED", reason="NEGATIVE_ADJUSTMENT_TYPE_INVALID")
+        if not str(data.get("negative_adjustment_basis", "")).strip():
+            raise DomainError("VALIDATION_FAILED", reason="NEGATIVE_ADJUSTMENT_BASIS_REQUIRED")
     validate_scheme(data)
 
 

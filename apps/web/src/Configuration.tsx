@@ -426,6 +426,9 @@ function ConfigurationEditor({
     [measure, setMeasure] = useState(row?.data.measurement_type || "COUNT"),
     [semantic, setSemantic] = useState(row?.data.time_semantic || "FLOW"),
     [method, setMethod] = useState(row?.data.combination_rule || "SUM"),
+    [negativeAdjustments, setNegativeAdjustments] = useState(
+      row?.data.allows_negative_adjustments || false,
+    ),
     [dimension, setDimension] = useState<any>(
       row?.data.disaggregation?.dimensions?.[0] || null,
     );
@@ -530,6 +533,7 @@ function ConfigurationEditor({
         time_semantic: semantic,
         combination_rule: method,
         display_decimals: Number(data.display_decimals),
+        allows_negative_adjustments: negativeAdjustments,
         ...(dimension
           ? {
               disaggregation: {
@@ -775,6 +779,31 @@ function ConfigurationEditor({
                     The result is the latest approved position minus this
                     reviewed baseline. A decline is refused until a correction
                     or explicit reset method is approved.
+                  </p>
+                </fieldset>
+              )}
+              {measure === "DECIMAL" && (
+                <fieldset>
+                  <legend>Negative adjustments</legend>
+                  <label className="checkbox">
+                    <input
+                      type="checkbox"
+                      checked={negativeAdjustments}
+                      onChange={(e) => setNegativeAdjustments(e.target.checked)}
+                    />
+                    Permit reviewed negative adjustment values
+                  </label>
+                  {negativeAdjustments &&
+                    input(
+                      "negative_adjustment_basis",
+                      "Approved adjustment meaning and basis",
+                      true,
+                      true,
+                    )}
+                  <p className="muted">
+                    Counts and ratio quantities cannot be negative. Decimal
+                    adjustments require this rule and basis in the approved
+                    definition; values are never clipped automatically.
                   </p>
                 </fieldset>
               )}

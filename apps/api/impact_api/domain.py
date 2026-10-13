@@ -87,8 +87,10 @@ def display(value, places):
 
 def ratio(definition, n, d):
     """One contributor's or one pool's ratio; the multiplier is applied after pooling (FR-CAL-003)."""
-    if n < 0 or d < 0 or (definition["measurement_type"] == "PERCENTAGE" and n > d):
-        raise DomainError("INCOMPATIBLE_MEASURE")
+    if n < 0 or d < 0:
+        raise DomainError("INCOMPATIBLE_MEASURE", reason="NEGATIVE_RATIO_QUANTITY")
+    if definition["measurement_type"] == "PERCENTAGE" and n > d:
+        raise DomainError("INCOMPATIBLE_MEASURE", reason="PERCENTAGE_OUT_OF_RANGE")
     if d == 0:
         return None
     return n / d * (100 if definition["measurement_type"] == "PERCENTAGE" else 1)
@@ -243,6 +245,14 @@ def calculate(definition, observations):
             value = sum(parts, Decimal(0)) / len(parts)
         else:
             numbers = [decimal_value(o["value"]) for o in values]
+            if definition["measurement_type"] == "COUNT" and any(v < 0 for v in numbers):
+                raise DomainError("INCOMPATIBLE_MEASURE", reason="NEGATIVE_COUNT")
+            if (
+                definition["measurement_type"] == "DECIMAL"
+                and any(v < 0 for v in numbers)
+                and not definition.get("allows_negative_adjustments", False)
+            ):
+                raise DomainError("INCOMPATIBLE_MEASURE", reason="NEGATIVE_ADJUSTMENT_NOT_APPROVED")
             if rule == "SUM":
                 value = sum(numbers, Decimal(0))
             elif rule == "COUNT":

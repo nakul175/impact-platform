@@ -35,7 +35,7 @@ SPECIAL_READS = {
 }
 PERIOD_REQUIRED = {"programme_dashboard", "indicator_dashboard_sources", "indicator_definition_portfolio"}
 # Per-operation contract tag; the integrator aligns it with the build's API version.
-VERSION = "1.27.0"
+VERSION = "1.28.0"
 ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DATA_STEWARD", "EXTERNAL"]
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
@@ -67,6 +67,10 @@ IMPLEMENTED = {
     ("post", "evaluation-recommendations/{object_id}/response"),
     ("post", "management-actions/{object_id}/actions/complete"),
     ("post", "management-actions/{object_id}/actions/escalate-overdue"),
+    ("post", "qualitative-codebooks"),
+    ("post", "qualitative-assignments"),
+    ("post", "qualitative-adjudications"),
+    ("post", "qualitative-agreements"),
     ("post", "dashboards/{object_id}/pivot-preview"),
     ("post", "dashboards/{object_id}/actions/run-pivot"),
     ("get", "dashboards/{object_id}/pivot-jobs/{job_id}"),
@@ -969,6 +973,103 @@ def augment(spec, policy):
         {
             "operation_id": UUID,
             "data": closed({"reason": {"type": "string", "minLength": 1, "maxLength": 2000}}, ["reason"]),
+        },
+        ["operation_id", "data"],
+    )
+    code_id = {"type": "string", "pattern": "^[A-Z][A-Z0-9_-]{0,63}$"}
+    schemas["QualitativeCodebookCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "version": {"type": "string", "minLength": 1},
+                    "codes": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 500,
+                        "items": closed(
+                            {
+                                "code_id": code_id,
+                                "meaning": {"type": "string", "minLength": 1},
+                                "inclusion_examples": {
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "items": {"type": "string"},
+                                },
+                                "exclusion_examples": {
+                                    "type": "array",
+                                    "minItems": 1,
+                                    "items": {"type": "string"},
+                                },
+                            },
+                            ["code_id", "meaning", "inclusion_examples", "exclusion_examples"],
+                        ),
+                    },
+                },
+                ["version", "codes"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["QualitativeAssignmentCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "source_type": {"enum": ["Evidence", "TranscriptArtifact"]},
+                    "source_id": UUID,
+                    "unit_id": {"type": "string", "minLength": 1},
+                    "excerpt": {"type": "string", "minLength": 1},
+                    "memo": NULLABLE_TEXT,
+                    "codebook_id": UUID,
+                    "codebook_revision": UUID,
+                    "code_ids": {"type": "array", "minItems": 1, "uniqueItems": True, "items": code_id},
+                },
+                [
+                    "source_type",
+                    "source_id",
+                    "unit_id",
+                    "excerpt",
+                    "memo",
+                    "codebook_id",
+                    "codebook_revision",
+                    "code_ids",
+                ],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["QualitativeAdjudicationCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "left_assignment_id": UUID,
+                    "right_assignment_id": UUID,
+                    "final_code_ids": {"type": "array", "minItems": 1, "items": code_id},
+                    "rationale": {"type": "string", "minLength": 1},
+                },
+                ["left_assignment_id", "right_assignment_id", "final_code_ids", "rationale"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    schemas["QualitativeAgreementCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "pairs": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": closed(
+                            {"left_assignment_id": UUID, "right_assignment_id": UUID},
+                            ["left_assignment_id", "right_assignment_id"],
+                        ),
+                    }
+                },
+                ["pairs"],
+            ),
         },
         ["operation_id", "data"],
     )
@@ -2073,6 +2174,22 @@ def augment(spec, policy):
             "$ref": f"#/components/schemas/{schema_name}"
         }
         paths[prefix + route] = {"parameters": deepcopy(dashboard_item["parameters"]), "post": entry}
+    for route, schema_name, operation in [
+        ("qualitative-codebooks", "QualitativeCodebookCreate", "create_qualitative_codebook"),
+        ("qualitative-assignments", "QualitativeAssignmentCreate", "assign_qualitative_codes"),
+        ("qualitative-adjudications", "QualitativeAdjudicationCreate", "adjudicate_qualitative_coding"),
+        ("qualitative-agreements", "QualitativeAgreementCreate", "calculate_qualitative_agreement"),
+    ]:
+        entry = deepcopy(analysis_create)
+        entry.update(
+            operationId=operation,
+            summary=operation.replace("_", " ").title(),
+            **{"x-contract-version": VERSION},
+        )
+        entry["requestBody"]["content"]["application/json"]["schema"] = {
+            "$ref": f"#/components/schemas/{schema_name}"
+        }
+        paths[prefix + route] = {"post": entry}
     pivot_preview = deepcopy(copy_entry)
     pivot_preview.update(
         operationId="preview_dashboard_pivot",

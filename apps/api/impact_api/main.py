@@ -45,6 +45,7 @@ from .evaluation_methodology import EvaluationMethodology
 from .analysis_packages import AnalysisPackages
 from .learning_agenda import LearningAgenda
 from .management_responses import ManagementResponses
+from .qualitative_evidence import QualitativeEvidence
 from .dashboard_pivots import DashboardPivots
 from .dashboard_geography import DashboardGeography
 from .logframe import LogframeExports, MEDIA as LOGFRAME_MEDIA
@@ -249,6 +250,7 @@ def create_app():
     analysis_packages = AnalysisPackages(service)
     learning_agenda = LearningAgenda(service)
     management_responses = ManagementResponses(service)
+    qualitative_evidence = QualitativeEvidence(service)
     dashboard_pivots = DashboardPivots(service)
     dashboard_geography = DashboardGeography(service)
     ai_impact = AIImpactReferences(service, dashboards)
@@ -2090,6 +2092,50 @@ def create_app():
             auth.resolve(request),
             uuid(tenant),
             uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/qualitative-codebooks", status_code=201)
+    async def qualitative_codebook_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("QualitativeCodebookCreate", body)
+        return await run_in_threadpool(
+            qualitative_evidence.create_codebook,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/qualitative-assignments", status_code=201)
+    async def qualitative_assignment_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("QualitativeAssignmentCreate", body)
+        return await run_in_threadpool(
+            qualitative_evidence.assign, auth.resolve(request), uuid(tenant), body, request.state.correlation
+        )
+
+    @app.post("/v1/tenants/{tenant}/qualitative-adjudications", status_code=201)
+    async def qualitative_adjudication_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("QualitativeAdjudicationCreate", body)
+        return await run_in_threadpool(
+            qualitative_evidence.adjudicate,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/qualitative-agreements", status_code=201)
+    async def qualitative_agreement_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("QualitativeAgreementCreate", body)
+        return await run_in_threadpool(
+            qualitative_evidence.agreement,
+            auth.resolve(request),
+            uuid(tenant),
             body,
             request.state.correlation,
         )

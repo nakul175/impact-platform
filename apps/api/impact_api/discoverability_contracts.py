@@ -25,8 +25,12 @@ def augment(spec, policy):
         },
         ["title", "search_text", "definition_id", "definition_revision"],
     )
-    schemas["SavedViewData"] = data
     schemas["SavedViewDraftData"] = deepcopy(data)
+    data["properties"].update(
+        binding_state={"enum": ["CURRENT", "PINNED_REVISION"]},
+        definition_revision_in_use=deepcopy(uid),
+    )
+    schemas["SavedViewData"] = data
     for suffix in ("", "List", "Create", "Patch"):
         schemas["SavedView" + suffix] = __import__("json").loads(
             __import__("json").dumps(schemas["Programme" + suffix]).replace("Programme", "SavedView")

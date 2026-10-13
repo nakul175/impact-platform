@@ -66,7 +66,29 @@ class WorkCenter:
         if row["object_type"] == "SavedView":
             if str(row["owner_id"]) != str(ctx.principal_id):
                 unavailable()
-            return result or envelope(row)
+            result = result or envelope(row)
+            data = dict(result["data"])
+            definition = load(
+                c,
+                ctx,
+                data["definition_id"],
+                "IndicatorDefinition",
+                "indicator-definitions.read",
+            )
+            pinned = c.execute(
+                "SELECT 1 FROM impact.object_revision WHERE tenant_id=%s AND object_id=%s AND revision_id=%s AND object_type='IndicatorDefinition' AND restriction_state='AVAILABLE'",
+                (ctx.tenant_id, data["definition_id"], data["definition_revision"]),
+            ).fetchone()
+            if not pinned:
+                unavailable()
+            data["binding_state"] = (
+                "CURRENT"
+                if str(definition["head_revision"]) == data["definition_revision"]
+                else "PINNED_REVISION"
+            )
+            data["definition_revision_in_use"] = data["definition_revision"]
+            result["data"] = data
+            return result
         if row["object_type"] not in {"WorkItem", "Notification"}:
             return result or envelope(row)
         self.ensure_visible(ctx, row)
@@ -116,9 +138,7 @@ class WorkCenter:
                         if invalidations[0]["replacement_result_id"]
                         else None
                     ),
-                    "dependency_counts": {
-                        item["dependency_type"]: item["count"] for item in dependencies
-                    },
+                    "dependency_counts": {item["dependency_type"]: item["count"] for item in dependencies},
                 }
         result["data"] = data
         return result
@@ -285,9 +305,7 @@ class WorkCenter:
             needle = str(result["head_revision"])
             for report in report_rows:
                 if self._contains_revision(report["payload"], needle):
-                    dependencies.append(
-                        ("UNPUBLISHED_REPORT", report["object_id"], report["head_revision"])
-                    )
+                    dependencies.append(("UNPUBLISHED_REPORT", report["object_id"], report["head_revision"]))
             for dependency_type, object_id, revision_id in dependencies:
                 c.execute(
                     "INSERT INTO impact.calculation_invalidation_dependency "

@@ -302,6 +302,9 @@ export function DashboardsPanel({
     [viewport, setViewport] = useState<"DESKTOP" | "MOBILE" | "TABLE">(
       "DESKTOP",
     ),
+    [drillLevel, setDrillLevel] = useState(""),
+    [filterField, setFilterField] = useState("programme"),
+    [filterValue, setFilterValue] = useState(""),
     [sourcesFor, setSourcesFor] = useState(""),
     [sources, setSources] = useState<any>(null),
     [error, setError] = useState(""),
@@ -412,10 +415,12 @@ export function DashboardsPanel({
       setAuthoredPreview(null);
       return;
     }
-    request(`${base}dashboards/${savedDashboard}/preview?viewport=${viewport}`)
+    request(
+      `${base}dashboards/${savedDashboard}/preview?viewport=${viewport}${drillLevel ? `&drill_level=${drillLevel}` : ""}`,
+    )
       .then(setAuthoredPreview)
       .catch((e) => setError(explain(e)));
-  }, [mode, savedDashboard, viewport, base, tick]);
+  }, [mode, savedDashboard, viewport, drillLevel, base, tick]);
   const widgetFor = (result: Row, position: number) => ({
     widget_id: crypto.randomUUID(),
     type: "METRIC",
@@ -434,6 +439,9 @@ export function DashboardsPanel({
     },
     position,
     width: 6,
+    compatible_filters: ["programme", "period", "indicator"],
+    drilldown_levels: ["PORTFOLIO", "PARTNER", "PROGRAMME"],
+    approved_slices: [],
   });
   async function createAuthoredDashboard() {
     const result = calculatedResults[0];
@@ -498,6 +506,37 @@ export function DashboardsPanel({
         },
       );
       setSavedDashboard(receipt.object_id);
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function applyDashboardFilter() {
+    const dashboard = savedDashboards.find(
+      (row) => row.object_id === savedDashboard,
+    );
+    if (!dashboard) return;
+    try {
+      await request(base + "dashboards/" + dashboard.object_id, {
+        method: "PATCH",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          expected_revision: dashboard.revision_id,
+          data: {
+            filters: {
+              terms: filterValue
+                ? [
+                    {
+                      field: filterField,
+                      operator: "EQ",
+                      values: [filterValue],
+                    },
+                  ]
+                : [],
+            },
+          },
+        }),
+      });
       setTick((value) => value + 1);
     } catch (e) {
       setError(explain(e));
@@ -605,6 +644,18 @@ export function DashboardsPanel({
                 <option>TABLE</option>
               </select>
             </label>
+            <label>
+              Drill level
+              <select
+                value={drillLevel}
+                onChange={(event) => setDrillLevel(event.target.value)}
+              >
+                <option value="">No drill</option>
+                <option>PORTFOLIO</option>
+                <option>PARTNER</option>
+                <option>PROGRAMME</option>
+              </select>
+            </label>
             <button type="button" onClick={createAuthoredDashboard}>
               New draft
             </button>
@@ -615,6 +666,49 @@ export function DashboardsPanel({
               Copy privately
             </button>
           </div>
+          <div className="planning-toolbar">
+            <label>
+              Filter field
+              <select
+                value={filterField}
+                onChange={(event) => setFilterField(event.target.value)}
+              >
+                <option value="programme">Programme</option>
+                <option value="period">Period</option>
+                <option value="indicator">Indicator</option>
+                <option value="geography">Geography</option>
+                <option value="dimension">Dimension</option>
+                <option value="approval">Approval</option>
+              </select>
+            </label>
+            <label>
+              Current filter value
+              <input
+                value={filterValue}
+                onChange={(event) => setFilterValue(event.target.value)}
+              />
+            </label>
+            <button
+              type="button"
+              className="secondary"
+              onClick={applyDashboardFilter}
+            >
+              Apply visible filter
+            </button>
+          </div>
+          {authoredPreview?.current_filters?.terms?.length ? (
+            <p role="status">
+              Current filters:{" "}
+              {authoredPreview.current_filters.terms
+                .map(
+                  (term: any) =>
+                    `${words(term.field)} = ${term.values.join(", ")}`,
+                )
+                .join("; ")}
+            </p>
+          ) : (
+            <p className="muted">No filters applied.</p>
+          )}
           {authoredPreview?.widgets.map((widget: any) => (
             <article className="dashboard-card" key={widget.widget_id}>
               <h3>{widget.title}</h3>
@@ -647,6 +741,12 @@ export function DashboardsPanel({
               <p className="muted">
                 Quality context is always visible · {words(widget.view_mode)}
               </p>
+              {widget.non_applicable_filters.length ? (
+                <p role="status">
+                  Not affected by:{" "}
+                  {widget.non_applicable_filters.map(words).join(", ")}
+                </p>
+              ) : null}
             </article>
           ))}
         </section>

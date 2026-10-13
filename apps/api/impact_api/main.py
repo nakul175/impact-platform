@@ -1777,8 +1777,16 @@ def create_app():
         )
 
     @app.get("/v1/tenants/{tenant}/dashboards/{obj}/preview")
-    def dashboard_preview(request: Request, tenant: str, obj: str, viewport: str = "DESKTOP"):
-        return dashboard_authoring.preview(auth.resolve(request), uuid(tenant), uuid(obj), viewport)
+    def dashboard_preview(
+        request: Request,
+        tenant: str,
+        obj: str,
+        viewport: str = "DESKTOP",
+        drill_level: str | None = None,
+    ):
+        return dashboard_authoring.preview(
+            auth.resolve(request), uuid(tenant), uuid(obj), viewport, drill_level
+        )
 
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy", status_code=201)
     async def dashboard_copy(request: Request, tenant: str, obj: str):

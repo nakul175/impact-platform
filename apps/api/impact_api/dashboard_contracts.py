@@ -79,6 +79,32 @@ def augment(spec, policy):
             "disclosure_context": disclosure,
             "position": {"type": "integer", "minimum": 0, "maximum": 9},
             "width": {"type": "integer", "minimum": 1, "maximum": 12},
+            "compatible_filters": {
+                "type": "array",
+                "uniqueItems": True,
+                "maxItems": 6,
+                "items": {"enum": ["programme", "period", "geography", "dimension", "indicator", "approval"]},
+            },
+            "drilldown_levels": {
+                "type": "array",
+                "uniqueItems": True,
+                "maxItems": 3,
+                "items": {"enum": ["PORTFOLIO", "PARTNER", "PROGRAMME"]},
+            },
+            "approved_slices": {
+                "type": "array",
+                "maxItems": 20,
+                "items": closed(
+                    {
+                        "field": {
+                            "enum": ["programme", "period", "geography", "dimension", "indicator", "approval"]
+                        },
+                        "value": {"type": "string", "minLength": 1, "maxLength": 200},
+                        "binding": binding,
+                    },
+                    ["field", "value", "binding"],
+                ),
+            },
         },
         [
             "widget_id",
@@ -91,6 +117,9 @@ def augment(spec, policy):
             "disclosure_context",
             "position",
             "width",
+            "compatible_filters",
+            "drilldown_levels",
+            "approved_slices",
         ],
     )
     schemas["Widget"] = widget
@@ -116,8 +145,18 @@ def augment(spec, policy):
             "chart_values": {"type": "array", "maxItems": 100, "items": NULLABLE_DECIMAL},
             "table_rows": {"type": "array", "maxItems": 100, "items": {"type": "object"}},
             "quality_context": {"type": ["object", "null"]},
+            "filter_effect": {"enum": ["NONE", "APPLIED", "NOT_APPLICABLE", "UNAVAILABLE"]},
+            "non_applicable_filters": {"type": "array", "items": {"type": "string"}},
         },
-        list(widget["required"]) + ["availability", "chart_values", "table_rows", "quality_context"],
+        list(widget["required"])
+        + [
+            "availability",
+            "chart_values",
+            "table_rows",
+            "quality_context",
+            "filter_effect",
+            "non_applicable_filters",
+        ],
     )
     schemas["DashboardPreview"] = closed(
         {
@@ -126,9 +165,20 @@ def augment(spec, policy):
             "title": {"type": "string"},
             "mode": {"const": "PRIVATE_DRAFT"},
             "viewport": {"enum": ["DESKTOP", "MOBILE", "TABLE"]},
+            "drill_level": {"enum": ["PORTFOLIO", "PARTNER", "PROGRAMME", None]},
+            "current_filters": schemas["FilterSet"],
             "widgets": {"type": "array", "maxItems": 10, "items": preview_widget},
         },
-        ["dashboard_id", "dashboard_revision", "title", "mode", "viewport", "widgets"],
+        [
+            "dashboard_id",
+            "dashboard_revision",
+            "title",
+            "mode",
+            "viewport",
+            "drill_level",
+            "current_filters",
+            "widgets",
+        ],
     )
 
     category = closed(
@@ -448,9 +498,9 @@ def augment(spec, policy):
         template = deepcopy(paths[prefix + base + "/{object_id}"])
         entry = template["get"]
         entry.pop("parameters", None)
-        entry["responses"]["200"]["content"]["application/json"]["schema"] = {
-            "$ref": "#/components/schemas/" + schema
-        }
+        entry["responses"]["200"]["content"]["application/json"]["schema"] = (
+            {"$ref": "#/components/schemas/" + schema},
+        )
         entry.update(
             operationId=op,
             summary=op.replace("_", " "),
@@ -488,7 +538,12 @@ def augment(spec, policy):
             "name": "viewport",
             "in": "query",
             "schema": {"enum": ["DESKTOP", "MOBILE", "TABLE"], "default": "DESKTOP"},
-        }
+        },
+        {
+            "name": "drill_level",
+            "in": "query",
+            "schema": {"enum": ["PORTFOLIO", "PARTNER", "PROGRAMME"]},
+        },
     ]
     preview["responses"]["200"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/DashboardPreview"

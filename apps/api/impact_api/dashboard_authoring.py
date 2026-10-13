@@ -25,29 +25,56 @@ def validate_dashboard(c, ctx, data):
     for item in widgets:
         if item["disclosure_context"].get("quality_context_required") is not True:
             raise DomainError("VALIDATION_FAILED", reason="QUALITY_CONTEXT_REQUIRED")
-        binding = item["binding"]
-        kind, capability = BINDINGS[binding["resource_type"]]
-        row = load(c, ctx, binding["object_id"], kind, capability)
-        if str(row["head_revision"]) != binding["revision_id"]:
-            raise DomainError("CONFLICT_VERSION", 409, reason="DASHBOARD_BINDING_REBIND_REQUIRED")
+        bindings = [item["binding"]] + [entry["binding"] for entry in item.get("approved_slices", [])]
+        for binding in bindings:
+            kind, capability = BINDINGS[binding["resource_type"]]
+            row = load(c, ctx, binding["object_id"], kind, capability)
+            if str(row["head_revision"]) != binding["revision_id"]:
+                raise DomainError("CONFLICT_VERSION", 409, reason="DASHBOARD_BINDING_REBIND_REQUIRED")
 
 
 class DashboardAuthoring:
     def __init__(self, service):
         self.service = service
 
-    def preview(self, identity, tenant, dashboard_id, viewport):
+    def preview(self, identity, tenant, dashboard_id, viewport, drill_level=None):
         if viewport not in VIEWPORTS:
             raise DomainError("VALIDATION_FAILED", fields=[{"path": "viewport", "message": "Unsupported."}])
+        if drill_level not in {None, "PORTFOLIO", "PARTNER", "PROGRAMME"}:
+            raise DomainError("VALIDATION_FAILED", reason="DRILL_LEVEL_NOT_PERMITTED")
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
             authorize(c, ctx, "preview_dashboards", dashboard_id, hidden=True)
             dashboard = load(c, ctx, dashboard_id, "Dashboard", "dashboards.read")
             items = []
+            terms = dashboard["payload"]["filters"]["terms"]
             for widget in sorted(dashboard["payload"]["widgets"], key=lambda value: value["position"]):
+                compatible = set(widget.get("compatible_filters", []))
+                applicable = [term for term in terms if term["field"] in compatible]
+                non_applicable = [term["field"] for term in terms if term["field"] not in compatible]
                 binding = widget["binding"]
+                filter_effect = "NONE" if not terms else "NOT_APPLICABLE" if not applicable else "UNAVAILABLE"
+                if applicable:
+                    slices = widget.get("approved_slices", [])
+                    if len(applicable) == 1 and len(applicable[0]["values"]) == 1:
+                        selected = next(
+                            (
+                                item
+                                for item in slices
+                                if item["field"] == applicable[0]["field"]
+                                and item["value"] == applicable[0]["values"][0]
+                            ),
+                            None,
+                        )
+                        if selected:
+                            binding = selected["binding"]
+                            filter_effect = "APPLIED"
+                if drill_level and drill_level not in widget.get("drilldown_levels", []):
+                    filter_effect = "UNAVAILABLE"
                 kind, capability = BINDINGS[binding["resource_type"]]
                 try:
+                    if filter_effect == "UNAVAILABLE":
+                        unavailable()
                     current = load(c, ctx, binding["object_id"], kind, capability)
                     if str(current["head_revision"]) != binding["revision_id"]:
                         unavailable()
@@ -79,6 +106,8 @@ class DashboardAuthoring:
                                 "freshness": payload.get("freshness"),
                                 "limitations": payload.get("limitations", []),
                             },
+                            "filter_effect": filter_effect,
+                            "non_applicable_filters": non_applicable,
                         }
                     )
                 except DomainError as error:
@@ -92,6 +121,8 @@ class DashboardAuthoring:
                             "chart_values": [],
                             "table_rows": [],
                             "quality_context": None,
+                            "filter_effect": filter_effect,
+                            "non_applicable_filters": non_applicable,
                         }
                     )
             return {
@@ -100,6 +131,8 @@ class DashboardAuthoring:
                 "title": dashboard["payload"]["title"],
                 "mode": dashboard["payload"]["mode"],
                 "viewport": viewport,
+                "drill_level": drill_level,
+                "current_filters": dashboard["payload"]["filters"],
                 "widgets": items,
             }
 

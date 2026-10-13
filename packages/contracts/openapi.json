@@ -2,7 +2,7 @@
   "openapi": "3.1.1",
   "info": {
     "title": "Impact Management Platform API Contract",
-    "version": "1.108.0",
+    "version": "1.109.0",
     "description": "Implementation specification. Closed nested DTOs, typed dynamic maps, command receipts and resumable upload protocol. Application and lifecycle tests remain required. This file supersedes the API blueprint in Engineering Assets v1.0."
   },
   "servers": [
@@ -45212,9 +45212,11 @@
             "description": "Successful bounded response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProgrammeDashboard"
-                }
+                "schema": [
+                  {
+                    "$ref": "#/components/schemas/ProgrammeDashboard"
+                  }
+                ]
               }
             }
           },
@@ -45352,9 +45354,11 @@
             "description": "Successful bounded response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndicatorDashboardSeries"
-                }
+                "schema": [
+                  {
+                    "$ref": "#/components/schemas/IndicatorDashboardSeries"
+                  }
+                ]
               }
             }
           },
@@ -45483,9 +45487,11 @@
             "description": "Successful bounded response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndicatorDashboardSources"
-                }
+                "schema": [
+                  {
+                    "$ref": "#/components/schemas/IndicatorDashboardSources"
+                  }
+                ]
               }
             }
           },
@@ -45623,9 +45629,11 @@
             "description": "Successful bounded response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndicatorPortfolio"
-                }
+                "schema": [
+                  {
+                    "$ref": "#/components/schemas/IndicatorPortfolio"
+                  }
+                ]
               }
             }
           },
@@ -45852,6 +45860,17 @@
                 "TABLE"
               ],
               "default": "DESKTOP"
+            }
+          },
+          {
+            "name": "drill_level",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "PORTFOLIO",
+                "PARTNER",
+                "PROGRAMME"
+              ]
             }
           }
         ]
@@ -72821,6 +72840,88 @@
                   "type": "integer",
                   "minimum": 1,
                   "maximum": 12
+                },
+                "compatible_filters": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "maxItems": 6,
+                  "items": {
+                    "enum": [
+                      "programme",
+                      "period",
+                      "geography",
+                      "dimension",
+                      "indicator",
+                      "approval"
+                    ]
+                  }
+                },
+                "drilldown_levels": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "maxItems": 3,
+                  "items": {
+                    "enum": [
+                      "PORTFOLIO",
+                      "PARTNER",
+                      "PROGRAMME"
+                    ]
+                  }
+                },
+                "approved_slices": {
+                  "type": "array",
+                  "maxItems": 20,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "field": {
+                        "enum": [
+                          "programme",
+                          "period",
+                          "geography",
+                          "dimension",
+                          "indicator",
+                          "approval"
+                        ]
+                      },
+                      "value": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "binding": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "resource_type": {
+                            "enum": [
+                              "CALCULATED_RESULT",
+                              "EVIDENCE"
+                            ]
+                          },
+                          "object_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "revision_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          }
+                        },
+                        "required": [
+                          "resource_type",
+                          "object_id",
+                          "revision_id"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "field",
+                      "value",
+                      "binding"
+                    ]
+                  }
                 }
               },
               "required": [
@@ -72833,7 +72934,10 @@
                 "dimensions",
                 "disclosure_context",
                 "position",
-                "width"
+                "width",
+                "compatible_filters",
+                "drilldown_levels",
+                "approved_slices"
               ]
             }
           },
@@ -73065,6 +73169,88 @@
                   "type": "integer",
                   "minimum": 1,
                   "maximum": 12
+                },
+                "compatible_filters": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "maxItems": 6,
+                  "items": {
+                    "enum": [
+                      "programme",
+                      "period",
+                      "geography",
+                      "dimension",
+                      "indicator",
+                      "approval"
+                    ]
+                  }
+                },
+                "drilldown_levels": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "maxItems": 3,
+                  "items": {
+                    "enum": [
+                      "PORTFOLIO",
+                      "PARTNER",
+                      "PROGRAMME"
+                    ]
+                  }
+                },
+                "approved_slices": {
+                  "type": "array",
+                  "maxItems": 20,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "field": {
+                        "enum": [
+                          "programme",
+                          "period",
+                          "geography",
+                          "dimension",
+                          "indicator",
+                          "approval"
+                        ]
+                      },
+                      "value": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "binding": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "resource_type": {
+                            "enum": [
+                              "CALCULATED_RESULT",
+                              "EVIDENCE"
+                            ]
+                          },
+                          "object_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "revision_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          }
+                        },
+                        "required": [
+                          "resource_type",
+                          "object_id",
+                          "revision_id"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "field",
+                      "value",
+                      "binding"
+                    ]
+                  }
                 }
               },
               "required": [
@@ -73077,7 +73263,10 @@
                 "dimensions",
                 "disclosure_context",
                 "position",
-                "width"
+                "width",
+                "compatible_filters",
+                "drilldown_levels",
+                "approved_slices"
               ]
             }
           },
@@ -78254,6 +78443,88 @@
             "type": "integer",
             "minimum": 1,
             "maximum": 12
+          },
+          "compatible_filters": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 6,
+            "items": {
+              "enum": [
+                "programme",
+                "period",
+                "geography",
+                "dimension",
+                "indicator",
+                "approval"
+              ]
+            }
+          },
+          "drilldown_levels": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 3,
+            "items": {
+              "enum": [
+                "PORTFOLIO",
+                "PARTNER",
+                "PROGRAMME"
+              ]
+            }
+          },
+          "approved_slices": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "field": {
+                  "enum": [
+                    "programme",
+                    "period",
+                    "geography",
+                    "dimension",
+                    "indicator",
+                    "approval"
+                  ]
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "binding": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "resource_type": {
+                      "enum": [
+                        "CALCULATED_RESULT",
+                        "EVIDENCE"
+                      ]
+                    },
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "resource_type",
+                    "object_id",
+                    "revision_id"
+                  ]
+                }
+              },
+              "required": [
+                "field",
+                "value",
+                "binding"
+              ]
+            }
           }
         },
         "required": [
@@ -78266,7 +78537,10 @@
           "dimensions",
           "disclosure_context",
           "position",
-          "width"
+          "width",
+          "compatible_filters",
+          "drilldown_levels",
+          "approved_slices"
         ]
       },
       "TemplateSection": {
@@ -82577,7 +82851,7 @@
           "items"
         ]
       },
-      "SavedViewData": {
+      "SavedViewDraftData": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -82607,7 +82881,7 @@
           "definition_revision"
         ]
       },
-      "SavedViewDraftData": {
+      "SavedViewData": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -82626,6 +82900,16 @@
             "format": "uuid"
           },
           "definition_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "binding_state": {
+            "enum": [
+              "CURRENT",
+              "PINNED_REVISION"
+            ]
+          },
+          "definition_revision_in_use": {
             "type": "string",
             "format": "uuid"
           }
@@ -91443,6 +91727,30 @@
               "TABLE"
             ]
           },
+          "drill_level": {
+            "enum": [
+              "PORTFOLIO",
+              "PARTNER",
+              "PROGRAMME",
+              null
+            ]
+          },
+          "current_filters": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "terms": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/FilterTerm"
+                },
+                "maxItems": 20
+              }
+            },
+            "required": [
+              "terms"
+            ]
+          },
           "widgets": {
             "type": "array",
             "maxItems": 10,
@@ -91544,6 +91852,88 @@
                   "minimum": 1,
                   "maximum": 12
                 },
+                "compatible_filters": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "maxItems": 6,
+                  "items": {
+                    "enum": [
+                      "programme",
+                      "period",
+                      "geography",
+                      "dimension",
+                      "indicator",
+                      "approval"
+                    ]
+                  }
+                },
+                "drilldown_levels": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "maxItems": 3,
+                  "items": {
+                    "enum": [
+                      "PORTFOLIO",
+                      "PARTNER",
+                      "PROGRAMME"
+                    ]
+                  }
+                },
+                "approved_slices": {
+                  "type": "array",
+                  "maxItems": 20,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "field": {
+                        "enum": [
+                          "programme",
+                          "period",
+                          "geography",
+                          "dimension",
+                          "indicator",
+                          "approval"
+                        ]
+                      },
+                      "value": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "binding": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "resource_type": {
+                            "enum": [
+                              "CALCULATED_RESULT",
+                              "EVIDENCE"
+                            ]
+                          },
+                          "object_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "revision_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          }
+                        },
+                        "required": [
+                          "resource_type",
+                          "object_id",
+                          "revision_id"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "field",
+                      "value",
+                      "binding"
+                    ]
+                  }
+                },
                 "availability": {
                   "enum": [
                     "AVAILABLE",
@@ -91573,6 +91963,20 @@
                     "object",
                     "null"
                   ]
+                },
+                "filter_effect": {
+                  "enum": [
+                    "NONE",
+                    "APPLIED",
+                    "NOT_APPLICABLE",
+                    "UNAVAILABLE"
+                  ]
+                },
+                "non_applicable_filters": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 }
               },
               "required": [
@@ -91586,10 +91990,15 @@
                 "disclosure_context",
                 "position",
                 "width",
+                "compatible_filters",
+                "drilldown_levels",
+                "approved_slices",
                 "availability",
                 "chart_values",
                 "table_rows",
-                "quality_context"
+                "quality_context",
+                "filter_effect",
+                "non_applicable_filters"
               ]
             }
           }
@@ -91600,6 +92009,8 @@
           "title",
           "mode",
           "viewport",
+          "drill_level",
+          "current_filters",
           "widgets"
         ]
       },

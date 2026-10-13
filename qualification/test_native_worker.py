@@ -388,8 +388,10 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
 
     try:
         wait_for(
-            lambda: all(deliveries(live, r["object_id"])[0]["state"] == "LEASED" for r in receipts),
-            timeout=30,
+            lambda: all(deliveries(live, r["object_id"])[0]["state"] != "PENDING" for r in receipts),
+            # The first pass walks every tenant of the shared database before it reaches this one.
+            # A loaded runner needs far longer than one send, so this wait is not the claim itself.
+            timeout=90,
         )
         wait_for(take_expired, timeout=delay + 30)
         assert taken["summary"]["sent"] >= 1

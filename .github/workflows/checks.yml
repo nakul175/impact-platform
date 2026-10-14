@@ -33,10 +33,28 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          # Two commits, so the release review can diff the change set against the first parent:
-          # on a pull request that is the base branch of the test merge commit, on a main push the
-          # previous main commit. The same parent is what the docs-only decision below uses.
-          fetch-depth: 2
+          # The event-specific base below may be older than the previous commit (for example a
+          # manual run on a multi-commit pull-request branch), so retain the history needed to
+          # inspect the whole candidate instead of silently checking only its final commit.
+          fetch-depth: 0
+      - name: Resolve the complete change-set base
+        id: base
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PUSH_BASE: ${{ github.event.before }}
+          MERGE_GROUP_BASE: ${{ github.event.merge_group.base_sha }}
+        run: |
+          set -euo pipefail
+          case "$EVENT_NAME" in
+            pull_request) base="$PR_BASE" ;;
+            push) base="$PUSH_BASE" ;;
+            merge_group) base="$MERGE_GROUP_BASE" ;;
+            workflow_dispatch) base="$(git merge-base HEAD origin/main)" ;;
+            *) echo "unsupported event: $EVENT_NAME" >&2; exit 1 ;;
+          esac
+          git rev-parse --verify "$base^{commit}" >/dev/null
+          echo "sha=$base" >> "$GITHUB_OUTPUT"
       - name: Decide whether this change needs the web install, lint and type check
         id: scope
         run: |
@@ -46,7 +64,8 @@ jobs:
             echo "run_full=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          if ! git rev-parse --verify --quiet HEAD^1 >/dev/null; then
+          base="${{ steps.base.outputs.sha }}"
+          if ! git rev-parse --verify --quiet "$base^{commit}" >/dev/null; then
             echo "run_full=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -59,7 +78,7 @@ jobs:
               docs/*|*.md) ;;
               *) run_full=true ;;
             esac
-          done < <(git diff --name-only --diff-filter=ACDMRTUXB HEAD^1 HEAD)
+          done < <(git diff --name-only --diff-filter=ACDMRTUXB "$base" HEAD)
           if [ "$found" = false ]; then
             run_full=true
           fi
@@ -78,7 +97,7 @@ jobs:
       - name: Release security review (threat register, chains, open critical threats, impact reviews)
         # The register and the review files live under docs/, so a documentation-only change
         # can fail this step. It stays on the short path.
-        run: .venv/bin/python scripts/release_review.py --check --base HEAD^1
+        run: .venv/bin/python scripts/release_review.py --check --base "${{ steps.base.outputs.sha }}"
       - name: Unit tests without a database
         # Unit tests read the threat register, the data dictionary and the release reviews.
         # Skipping them on a documentation-only change would weaken this check.

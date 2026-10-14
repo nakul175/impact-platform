@@ -376,7 +376,11 @@ def test_native_batch_outliving_its_lease_sends_every_row_once(live):
     )
     slow.sink = Path(slow.s.synthetic_sink)
     fast = Worker(
-        settings(live, batch_size=6, lease_seconds=30, synthetic_delay=0),
+        # slow may have claimed and released up to 94 older due rows while isolating this test's
+        # six targets. Claim the same bounded window so those rows cannot consume the takeover
+        # worker's six slots before the target batch. This keeps the scenario deterministic in a
+        # full-suite database without deleting or weakening any earlier delivery evidence.
+        settings(live, batch_size=100, lease_seconds=30, synthetic_delay=0),
         worker_id="native-batch-b-" + uuid4().hex[:6],
     )
     fast.sink = Path(fast.s.synthetic_sink)

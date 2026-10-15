@@ -196,8 +196,11 @@
 | POST | `/v1/tenants/{tenant_id}/commercial-invoices/{invoice_id}/actions/issue` | `subscription.admin` |
 | GET | `/v1/tenants/{tenant_id}/connections` | `connections.read` |
 | GET | `/v1/tenants/{tenant_id}/connections/{object_id}` | `connections.read` |
+| GET | `/v1/tenants/{tenant_id}/dashboard-alert-rules` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/dashboard-alert-rules` | `dashboards.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/dashboard-alert-rules/{object_id}` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/dashboard-alert-rules/{object_id}/actions/evaluate` | `dashboards.draft.edit` |
+| GET | `/v1/tenants/{tenant_id}/dashboard-alert-rules/{object_id}/incidents` | `dashboards.read` |
 | GET | `/v1/tenants/{tenant_id}/dashboards` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/dashboards` | `dashboards.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/dashboards/{object_id}` | `dashboards.read` |

@@ -346,6 +346,17 @@ export function DashboardsPanel({
     }),
     [publicationMessage, setPublicationMessage] = useState(""),
     [alertRule, setAlertRule] = useState(""),
+    [alertRules, setAlertRules] = useState<any[]>([]),
+    [alertIncidents, setAlertIncidents] = useState<any[]>([]),
+    [alertResult, setAlertResult] = useState(""),
+    [alertOperator, setAlertOperator] = useState<"LT" | "GT">("LT"),
+    [alertThreshold, setAlertThreshold] = useState("0"),
+    [alertCoverage, setAlertCoverage] = useState(75),
+    [alertFreshness, setAlertFreshness] = useState(2678400),
+    [alertCadence, setAlertCadence] = useState<"DAILY" | "WEEKLY" | "MONTHLY">(
+      "MONTHLY",
+    ),
+    [alertCooldown, setAlertCooldown] = useState(86400),
     [alertOutcome, setAlertOutcome] = useState<any>(null),
     [sourcesFor, setSourcesFor] = useState(""),
     [sources, setSources] = useState<any>(null),
@@ -446,16 +457,32 @@ export function DashboardsPanel({
     Promise.all([
       all(request, base + "dashboards"),
       all(request, base + "calculated-results"),
+      all(request, base + "dashboard-alert-rules"),
     ])
-      .then(([dashboards, results]) => {
+      .then(([dashboards, results, rules]) => {
         setSavedDashboards(dashboards);
         setCalculatedResults(results);
+        setAlertRules(rules);
+        setAlertRule((current) =>
+          rules.some((row: any) => row.object_id === current)
+            ? current
+            : rules[0]?.object_id || "",
+        );
         setSavedDashboard(
           (current) => current || dashboards[0]?.object_id || "",
         );
       })
       .catch((e) => setError(explain(e)));
   }, [mode, canAuthor, base, tick]);
+  useEffect(() => {
+    if (mode !== "authored" || !alertRule) {
+      setAlertIncidents([]);
+      return;
+    }
+    all(request, `${base}dashboard-alert-rules/${alertRule}/incidents`)
+      .then(setAlertIncidents)
+      .catch((e) => setError(explain(e)));
+  }, [mode, alertRule, base, tick]);
   useEffect(() => {
     if (mode !== "authored" || !savedDashboard) {
       setAuthoredPreview(null);
@@ -703,23 +730,24 @@ export function DashboardsPanel({
           operation_id: crypto.randomUUID(),
           data: {
             measure_id: indicator,
-            operator: "LT",
-            threshold: "0",
-            minimum_coverage: 75,
-            max_freshness_seconds: 2678400,
-            evaluation_cadence: "MONTHLY",
+            operator: alertOperator,
+            threshold: alertThreshold,
+            minimum_coverage: alertCoverage,
+            max_freshness_seconds: alertFreshness,
+            evaluation_cadence: alertCadence,
             recipient_ids: [recipientId],
-            cooldown_seconds: 86400,
+            cooldown_seconds: alertCooldown,
           },
         }),
       });
       setAlertRule(receipt.object_id);
+      setTick((value) => value + 1);
     } catch (e) {
       setError(explain(e));
     }
   }
-  async function evaluateMissingAlert() {
-    if (!alertRule) return;
+  async function evaluateAlert() {
+    if (!alertRule || !period) return;
     try {
       setAlertOutcome(
         await request(
@@ -728,11 +756,15 @@ export function DashboardsPanel({
             method: "POST",
             body: JSON.stringify({
               operation_id: crypto.randomUUID(),
-              data: {},
+              data: {
+                period_id: period,
+                ...(alertResult ? { result_id: alertResult } : {}),
+              },
             }),
           },
         ),
       );
+      setTick((value) => value + 1);
     } catch (e) {
       setError(explain(e));
     }
@@ -937,22 +969,134 @@ export function DashboardsPanel({
             <button type="button" className="secondary" onClick={previewMap}>
               Preview safe map
             </button>
-            <button
-              type="button"
-              className="secondary"
-              onClick={createAlertRule}
-            >
-              Create monthly alert
-            </button>
-            <button
-              type="button"
-              className="secondary"
-              disabled={!alertRule}
-              onClick={evaluateMissingAlert}
-            >
-              Evaluate missed result
-            </button>
           </div>
+          <fieldset aria-label="Dashboard alerts">
+            <legend>Dashboard alerts</legend>
+            <div className="planning-toolbar">
+              <label>
+                Existing rule
+                <select
+                  value={alertRule}
+                  onChange={(event) => setAlertRule(event.target.value)}
+                >
+                  <option value="">Select rule</option>
+                  {alertRules.map((row) => (
+                    <option key={row.object_id} value={row.object_id}>
+                      {words(row.data.evaluation_cadence)} · {row.data.operator}{" "}
+                      {row.data.threshold}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Condition
+                <select
+                  value={alertOperator}
+                  onChange={(event) =>
+                    setAlertOperator(event.target.value as "LT" | "GT")
+                  }
+                >
+                  <option value="LT">Below</option>
+                  <option value="GT">Above</option>
+                </select>
+              </label>
+              <label>
+                Threshold
+                <input
+                  value={alertThreshold}
+                  onChange={(event) => setAlertThreshold(event.target.value)}
+                />
+              </label>
+              <label>
+                Minimum coverage %
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={alertCoverage}
+                  onChange={(event) =>
+                    setAlertCoverage(Number(event.target.value))
+                  }
+                />
+              </label>
+              <label>
+                Maximum freshness seconds
+                <input
+                  type="number"
+                  min="60"
+                  value={alertFreshness}
+                  onChange={(event) =>
+                    setAlertFreshness(Number(event.target.value))
+                  }
+                />
+              </label>
+              <label>
+                Cadence
+                <select
+                  value={alertCadence}
+                  onChange={(event) =>
+                    setAlertCadence(event.target.value as typeof alertCadence)
+                  }
+                >
+                  <option>DAILY</option>
+                  <option>WEEKLY</option>
+                  <option>MONTHLY</option>
+                </select>
+              </label>
+              <label>
+                Cooldown seconds
+                <input
+                  type="number"
+                  min="60"
+                  value={alertCooldown}
+                  onChange={(event) =>
+                    setAlertCooldown(Number(event.target.value))
+                  }
+                />
+              </label>
+              <button
+                type="button"
+                className="secondary"
+                disabled={!indicator || !recipientId}
+                onClick={createAlertRule}
+              >
+                Create alert rule
+              </button>
+              <label>
+                Evaluation result
+                <select
+                  value={alertResult}
+                  onChange={(event) => setAlertResult(event.target.value)}
+                >
+                  <option value="">Missed or absent result</option>
+                  {calculatedResults.map((row) => (
+                    <option key={row.object_id} value={row.object_id}>
+                      {row.object_id}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                type="button"
+                className="secondary"
+                disabled={!alertRule || !period}
+                onClick={evaluateAlert}
+              >
+                Evaluate due period
+              </button>
+            </div>
+            {alertRules.find((row) => row.object_id === alertRule) ? (
+              <p className="muted">
+                Next due{" "}
+                {when(
+                  alertRules.find((row) => row.object_id === alertRule).data
+                    .next_evaluation_at,
+                )}
+                . The selected period and exact result revision are retained
+                with every incident.
+              </p>
+            ) : null}
+          </fieldset>
           <fieldset aria-label="Sharing and publication">
             <legend>Sharing and publication</legend>
             <div className="planning-toolbar">
@@ -1102,7 +1246,45 @@ export function DashboardsPanel({
               Alert outcome: {words(alertOutcome.outcome)} ·{" "}
               {words(alertOutcome.reason_code)}
               {alertOutcome.coalesced ? " · cooldown incident updated" : ""}
+              {alertOutcome.incident_id
+                ? ` · incident ${alertOutcome.incident_id}`
+                : ""}
+              {alertOutcome.result_revision
+                ? ` · result revision ${alertOutcome.result_revision}`
+                : ""}
+              {alertOutcome.occurrence_count
+                ? ` · occurrence ${alertOutcome.occurrence_count}`
+                : ""}
             </p>
+          ) : null}
+          {alertIncidents.length ? (
+            <section aria-label="Alert incident history">
+              <h3>Alert incident history</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Reason</th>
+                    <th>Period</th>
+                    <th>Result revision</th>
+                    <th>Occurrences</th>
+                    <th>Last evaluated</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {alertIncidents.map((row) => (
+                    <tr key={row.object_id}>
+                      <td>{words(row.data.alert_type)}</td>
+                      <td>{words(row.data.reason_code)}</td>
+                      <td>{row.data.evaluation_period_id}</td>
+                      <td>{row.data.result_revision || "No result"}</td>
+                      <td>{row.data.occurrence_count}</td>
+                      <td>{when(row.data.last_evaluated_at)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
           ) : null}
           <div className="planning-toolbar" aria-label="Pivot analysis">
             <label>

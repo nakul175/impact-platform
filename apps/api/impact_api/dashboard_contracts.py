@@ -44,6 +44,9 @@ IMPLEMENTED = {
     ("post", "dashboards/{object_id}/actions/publish"),
     ("get", "dashboards/{object_id}/publications/{publication_id}"),
     ("post", "dashboard-alert-rules"),
+    ("get", "dashboard-alert-rules"),
+    ("get", "dashboard-alert-rules/{object_id}"),
+    ("get", "dashboard-alert-rules/{object_id}/incidents"),
     ("post", "dashboard-alert-rules/{object_id}/actions/evaluate"),
     ("post", "external-analytics-connections"),
     ("post", "external-analytics-connections/{object_id}/actions/refresh"),
@@ -303,7 +306,7 @@ def augment(spec, policy):
     schemas["DashboardAlertEvaluate"] = closed(
         {
             "operation_id": UUID,
-            "data": closed({"result_id": NULLABLE_UUID}, []),
+            "data": closed({"period_id": UUID, "result_id": NULLABLE_UUID}, ["period_id"]),
         },
         ["operation_id", "data"],
     )
@@ -314,9 +317,97 @@ def augment(spec, policy):
             "reason_code": {"type": "string", "maxLength": 64},
             "incident_id": NULLABLE_UUID,
             "result_revision": NULLABLE_UUID,
+            "evaluation_period_id": UUID,
+            "occurrence_count": {"type": "integer", "minimum": 0},
             "coalesced": {"type": "boolean"},
         },
-        ["rule_id", "outcome", "reason_code", "incident_id", "result_revision", "coalesced"],
+        [
+            "rule_id",
+            "outcome",
+            "reason_code",
+            "incident_id",
+            "result_revision",
+            "evaluation_period_id",
+            "occurrence_count",
+            "coalesced",
+        ],
+    )
+    alert_rule_view_data = deepcopy(alert_rule_data)
+    alert_rule_view_data["properties"].update(
+        {
+            "next_evaluation_at": {"type": "string", "format": "date-time"},
+            "last_evaluated_at": {"type": "string", "format": "date-time"},
+            "last_period_id": UUID,
+        }
+    )
+    alert_rule_view_data["required"].append("next_evaluation_at")
+    resource_base = {
+        "object_id": UUID,
+        "tenant_id": UUID,
+        "revision_id": UUID,
+        "schema_version": {"type": "string"},
+        "lifecycle_state": {"type": "string"},
+        "classification": {"type": "string"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "created_by": UUID,
+        "updated_at": {"type": "string", "format": "date-time"},
+        "updated_by": UUID,
+    }
+    resource_required = list(resource_base)
+    schemas["DashboardAlertRule"] = closed(
+        {**resource_base, "owner_id": UUID, "data": alert_rule_view_data},
+        resource_required + ["data"],
+    )
+    schemas["DashboardAlertRuleList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/DashboardAlertRule"},
+            },
+            "next_cursor": {"type": ["string", "null"], "maxLength": 4096},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
+    )
+    alert_incident_data = closed(
+        {
+            "rule_id": UUID,
+            "alert_type": {"enum": ["MISSINGNESS", "STALE_INPUT", "THRESHOLD"]},
+            "reason_code": {"type": "string", "maxLength": 64},
+            "result_id": NULLABLE_UUID,
+            "result_revision": NULLABLE_UUID,
+            "evaluation_period_id": UUID,
+            "recipient_ids": {"type": "array", "maxItems": 50, "items": UUID},
+            "occurrence_count": {"type": "integer", "minimum": 1},
+            "last_evaluated_at": {"type": "string", "format": "date-time"},
+        },
+        [
+            "rule_id",
+            "alert_type",
+            "reason_code",
+            "result_id",
+            "result_revision",
+            "evaluation_period_id",
+            "recipient_ids",
+            "occurrence_count",
+            "last_evaluated_at",
+        ],
+    )
+    schemas["DashboardAlertIncident"] = closed(
+        {**resource_base, "owner_id": UUID, "data": alert_incident_data}, resource_required + ["data"]
+    )
+    schemas["DashboardAlertIncidentList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/DashboardAlertIncident"},
+            },
+            "next_cursor": {"type": ["string", "null"], "maxLength": 4096},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
     )
     external_dataset = closed(
         {
@@ -2152,7 +2243,41 @@ def augment(spec, policy):
     alert_create["responses"]["201"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/Receipt"
     }
-    paths[prefix + "dashboard-alert-rules"] = {"post": alert_create}
+    alert_list = deepcopy(paths[prefix + "dashboards"]["get"])
+    alert_list.update(
+        operationId="list_dashboard_alert_rules",
+        summary="List governed dashboard alert rules",
+        **{"x-capability": "dashboards.read", "x-contract-version": VERSION},
+    )
+    alert_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardAlertRuleList"
+    }
+    paths[prefix + "dashboard-alert-rules"] = {"get": alert_list, "post": alert_create}
+    alert_read = deepcopy(paths[prefix + "dashboards/{object_id}"]["get"])
+    alert_read.update(
+        operationId="read_dashboard_alert_rule",
+        summary="Read a governed dashboard alert rule and its current cadence",
+        **{"x-capability": "dashboards.read", "x-contract-version": VERSION},
+    )
+    alert_read["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardAlertRule"
+    }
+    paths[prefix + "dashboard-alert-rules/{object_id}"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": alert_read,
+    }
+    incident_list = deepcopy(alert_list)
+    incident_list.update(
+        operationId="list_dashboard_alert_incidents",
+        summary="List durable cooldown-coalesced incidents for an alert rule",
+    )
+    incident_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardAlertIncidentList"
+    }
+    paths[prefix + "dashboard-alert-rules/{object_id}/incidents"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": incident_list,
+    }
     alert_evaluate = deepcopy(copy_entry)
     alert_evaluate.update(
         operationId="evaluate_dashboard_alert_rule",
@@ -2630,6 +2755,41 @@ def augment(spec, policy):
             "POST",
             prefix + "dashboards/{object_id}/pivot-jobs/{job_id}/actions/cancel",
             "dashboards.read",
+            True,
+        ),
+        (
+            "create_dashboard_alert_rule",
+            "POST",
+            prefix + "dashboard-alert-rules",
+            "dashboards.draft.create",
+            True,
+        ),
+        (
+            "list_dashboard_alert_rules",
+            "GET",
+            prefix + "dashboard-alert-rules",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "read_dashboard_alert_rule",
+            "GET",
+            prefix + "dashboard-alert-rules/{object_id}",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "list_dashboard_alert_incidents",
+            "GET",
+            prefix + "dashboard-alert-rules/{object_id}/incidents",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "evaluate_dashboard_alert_rule",
+            "POST",
+            prefix + "dashboard-alert-rules/{object_id}/actions/evaluate",
+            "dashboards.draft.edit",
             True,
         ),
     ]:

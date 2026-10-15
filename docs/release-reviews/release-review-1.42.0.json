@@ -342,6 +342,31 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-15",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-05",
+      "change_id": "APL-618-DASHBOARD-ALERTS-COMPLETION",
+      "change": "Governed period-bound dashboard alerts and durable incident history",
+      "paths": [
+        "infrastructure/migrations/0101_dashboard_alert_kinds.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers alert objects with restrictive worker fences; binds evaluation to a due period, current measure and exact result revision; and exposes durable rule and incident reads through current scoped authority.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-15",
+      "confirmed_by": null
     }
   ],
   "evidence": [

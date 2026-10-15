@@ -1830,6 +1830,20 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.get("/v1/tenants/{tenant}/dashboard-alert-rules")
+    def dashboard_alert_rule_list(request: Request, tenant: str, limit: int = 50, cursor: str | None = None):
+        return dashboard_alerts.listing(auth.resolve(request), uuid(tenant), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/dashboard-alert-rules/{obj}")
+    def dashboard_alert_rule_read(request: Request, tenant: str, obj: str):
+        return dashboard_alerts.read(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/dashboard-alert-rules/{obj}/incidents")
+    def dashboard_alert_incident_list(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return dashboard_alerts.incidents(auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor)
+
     @app.post("/v1/tenants/{tenant}/dashboard-alert-rules/{obj}/actions/evaluate")
     async def dashboard_alert_rule_evaluate(request: Request, tenant: str, obj: str):
         body = await strict_body(request)

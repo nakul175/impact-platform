@@ -6726,6 +6726,96 @@
       "audit": true
     },
     {
+      "operation_id": "create_dashboard_alert_rule",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboard-alert-rules",
+      "capability": "dashboards.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "list_dashboard_alert_rules",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboard-alert-rules",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "read_dashboard_alert_rule",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboard-alert-rules/{object_id}",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_dashboard_alert_incidents",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboard-alert-rules/{object_id}/incidents",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "evaluate_dashboard_alert_rule",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboard-alert-rules/{object_id}/actions/evaluate",
+      "capability": "dashboards.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
       "operation_id": "create_audit_export",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/audit-exports",

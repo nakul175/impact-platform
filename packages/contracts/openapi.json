@@ -46384,6 +46384,115 @@
       }
     },
     "/v1/tenants/{tenant_id}/dashboard-alert-rules": {
+      "get": {
+        "operationId": "list_dashboard_alert_rules",
+        "summary": "List governed dashboard alert rules",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "dashboards.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardAlertRuleList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          }
+        ],
+        "x-contract-version": "1.33.0"
+      },
       "post": {
         "operationId": "create_dashboard_alert_rule",
         "summary": "Create a governed dashboard alert rule",
@@ -46492,6 +46601,248 @@
         ],
         "x-contract-version": "1.33.0",
         "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/dashboard-alert-rules/{object_id}": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "read_dashboard_alert_rule",
+        "summary": "Read a governed dashboard alert rule and its current cadence",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "dashboards.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardAlertRule"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.33.0"
+      }
+    },
+    "/v1/tenants/{tenant_id}/dashboard-alert-rules/{object_id}/incidents": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "list_dashboard_alert_incidents",
+        "summary": "List durable cooldown-coalesced incidents for an alert rule",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "dashboards.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardAlertIncidentList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          }
+        ],
+        "x-contract-version": "1.33.0"
       }
     },
     "/v1/tenants/{tenant_id}/dashboard-alert-rules/{object_id}/actions/evaluate": {
@@ -97906,6 +98257,10 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
+              "period_id": {
+                "type": "string",
+                "format": "uuid"
+              },
               "result_id": {
                 "type": [
                   "string",
@@ -97914,7 +98269,9 @@
                 "format": "uuid"
               }
             },
-            "required": []
+            "required": [
+              "period_id"
+            ]
           }
         },
         "required": [
@@ -97956,6 +98313,14 @@
             ],
             "format": "uuid"
           },
+          "evaluation_period_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "occurrence_count": {
+            "type": "integer",
+            "minimum": 0
+          },
           "coalesced": {
             "type": "boolean"
           }
@@ -97966,7 +98331,326 @@
           "reason_code",
           "incident_id",
           "result_revision",
+          "evaluation_period_id",
+          "occurrence_count",
           "coalesced"
+        ]
+      },
+      "DashboardAlertRule": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "schema_version": {
+            "type": "string"
+          },
+          "lifecycle_state": {
+            "type": "string"
+          },
+          "classification": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "owner_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "measure_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "operator": {
+                "enum": [
+                  "LT",
+                  "GT"
+                ]
+              },
+              "threshold": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+              },
+              "minimum_coverage": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "max_freshness_seconds": {
+                "type": "integer",
+                "minimum": 60,
+                "maximum": 31536000
+              },
+              "evaluation_cadence": {
+                "enum": [
+                  "DAILY",
+                  "WEEKLY",
+                  "MONTHLY"
+                ]
+              },
+              "recipient_ids": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 50,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "cooldown_seconds": {
+                "type": "integer",
+                "minimum": 60,
+                "maximum": 2592000
+              },
+              "next_evaluation_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_evaluated_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_period_id": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "measure_id",
+              "operator",
+              "threshold",
+              "minimum_coverage",
+              "max_freshness_seconds",
+              "evaluation_cadence",
+              "recipient_ids",
+              "cooldown_seconds",
+              "next_evaluation_at"
+            ]
+          }
+        },
+        "required": [
+          "object_id",
+          "tenant_id",
+          "revision_id",
+          "schema_version",
+          "lifecycle_state",
+          "classification",
+          "created_at",
+          "created_by",
+          "updated_at",
+          "updated_by",
+          "data"
+        ]
+      },
+      "DashboardAlertRuleList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/DashboardAlertRule"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4096
+          },
+          "scope_label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor",
+          "scope_label"
+        ]
+      },
+      "DashboardAlertIncident": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "schema_version": {
+            "type": "string"
+          },
+          "lifecycle_state": {
+            "type": "string"
+          },
+          "classification": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "owner_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "rule_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "alert_type": {
+                "enum": [
+                  "MISSINGNESS",
+                  "STALE_INPUT",
+                  "THRESHOLD"
+                ]
+              },
+              "reason_code": {
+                "type": "string",
+                "maxLength": 64
+              },
+              "result_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uuid"
+              },
+              "result_revision": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uuid"
+              },
+              "evaluation_period_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "recipient_ids": {
+                "type": "array",
+                "maxItems": 50,
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "occurrence_count": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "last_evaluated_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "rule_id",
+              "alert_type",
+              "reason_code",
+              "result_id",
+              "result_revision",
+              "evaluation_period_id",
+              "recipient_ids",
+              "occurrence_count",
+              "last_evaluated_at"
+            ]
+          }
+        },
+        "required": [
+          "object_id",
+          "tenant_id",
+          "revision_id",
+          "schema_version",
+          "lifecycle_state",
+          "classification",
+          "created_at",
+          "created_by",
+          "updated_at",
+          "updated_by",
+          "data"
+        ]
+      },
+      "DashboardAlertIncidentList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/DashboardAlertIncident"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4096
+          },
+          "scope_label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor",
+          "scope_label"
         ]
       },
       "ExternalAnalyticsConnectionCreate": {

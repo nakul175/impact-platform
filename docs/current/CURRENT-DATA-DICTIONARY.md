@@ -7219,3 +7219,12 @@ These already-present coding candidates were missing from the checksum table. Re
 `0100_effective_access_profile.sql` SHA256 `466aedb33686db5df5a3fc24a9128e91fab9ba857a0e1b9e5224655b165a7622`. Schema100 registers generated access profile hash `18a6cb0dc264d8ef0d3f8cb9f8800fac4a69cb7bf3a650196f00e06f73f03d06` after completing the FR-ACC-003 policy operation metadata. Registration does not activate the profile for an existing tenant; governed preview, independent approval and exact execution remain required. All0001–0099 remain byte-exact.
 
 | 0100_effective_access_profile.sql | 466aedb33686db5df5a3fc24a9128e91fab9ba857a0e1b9e5224655b165a7622 |
+
+
+## Migration0101 — governed dashboard alert registry kinds
+
+`0101_dashboard_alert_kinds.sql` SHA256 `56b6b2d27c18c68469ffebe887e539b5717ea5ee4c956d399fe04afa592b8572`. Schema101 registers the `DashboardAlertRule` and `DashboardAlertIncident` kinds required by APL-618 and adds restrictive delivery-worker fences. Alert evaluation remains an authenticated application duty and no worker access to rule recipients, evaluated periods or incident history is introduced. All0001–0100 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0101_dashboard_alert_kinds.sql | 56b6b2d27c18c68469ffebe887e539b5717ea5ee4c956d399fe04afa592b8572 |

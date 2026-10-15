@@ -36,6 +36,7 @@ import {
 import { PrivacyPanel } from "./Privacy";
 import { NoWorkspace } from "./Landing";
 import { AccessGate } from "./AccessGate";
+import { EffectiveAccessPanel } from "./EffectiveAccess";
 import { ReferenceDataPanel } from "./ReferenceData";
 import { StatusBanner } from "./StatusBanner";
 type RecordRow = {
@@ -983,7 +984,16 @@ function Workspace({
               Dialog={Dialog}
             />
           ) : route === "account" ? (
-            <AccountPanel request={api} explain={explain} />
+            <>
+              <AccountPanel request={api} explain={explain} />
+              {access.capabilities.includes("notifications.read") ? (
+                <EffectiveAccessPanel
+                  base={base}
+                  request={api}
+                  explain={explain}
+                />
+              ) : null}
+            </>
           ) : route === "period-governance" ? (
             <PeriodGovernancePanel
               base={base}
@@ -1143,6 +1153,14 @@ function Workspace({
                 explain={explain}
                 Dialog={Dialog}
               />
+              {access.capabilities.includes("grants.read") ? (
+                <EffectiveAccessPanel
+                  base={base}
+                  request={api}
+                  explain={explain}
+                  simulation
+                />
+              ) : null}
               {access.capabilities.includes("reference-data.manage") && (
                 <ReferenceDataPanel
                   key={tenant + ":reference"}

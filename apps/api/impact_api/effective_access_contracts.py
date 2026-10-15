@@ -1,11 +1,24 @@
 """FR-ACC-003 safe own and administrator effective-access explanations."""
 
 from copy import deepcopy
-from .ai_enablement_contracts import ROLES
 from .measurement_contracts import closed
 
 VERSION = "1.75.0"
 IMPLEMENTED = [("post", "access/effective/self"), ("post", "access/effective/simulations")]
+MEMBER_ROLES = [
+    "TENANT_ADMIN",
+    "MEL_ADMIN",
+    "AUTHOR",
+    "REVIEWER",
+    "PROGRAMME_MANAGER",
+    "DATA_STEWARD",
+    "ENUMERATOR",
+    "ANALYST",
+    "PRIVACY",
+    "AUDIT_READER",
+    "EXTERNAL",
+    "FINANCE",
+]
 
 
 def augment(spec, policy):
@@ -14,15 +27,23 @@ def augment(spec, policy):
     request = {
         "operation_id": {"type": "string", "minLength": 1, "maxLength": 120},
         "object_id": {"oneOf": [deepcopy(uid), {"type": "null"}]},
+        "purpose": {"type": ["string", "null"], "minLength": 1, "maxLength": 100},
+        "field_category": {
+            "type": ["string", "null"],
+            "enum": [None, "PUBLIC", "INTERNAL", "SENSITIVE", "DIRECT_IDENTIFIER"],
+        },
+        "field_access": {"type": ["string", "null"], "enum": [None, "READ", "WRITE"]},
     }
-    s["OwnEffectiveAccessRequest"] = closed(request, list(request))
+    s["OwnEffectiveAccessRequest"] = closed(request, ["operation_id", "object_id"])
     simulation = {**deepcopy(request), "subject_principal_id": deepcopy(uid)}
-    s["EffectiveAccessSimulationRequest"] = closed(simulation, list(simulation))
+    s["EffectiveAccessSimulationRequest"] = closed(
+        simulation, ["operation_id", "object_id", "subject_principal_id"]
+    )
     path_item = closed(
         {
+            "path_id": {"type": "string", "pattern": "^PATH-[1-9][0-9]*$"},
             "source": {"enum": ["DIRECT", "GROUP"]},
             "scope_type": {"enum": ["TENANT", "PROGRAMME", "ASSIGNMENT", "OBJECT_SET"]},
-            "scope_id": deepcopy(uid),
             "record_condition_applied": {"type": "boolean"},
             "readable_field_categories": {
                 "type": ["array", "null"],
@@ -34,14 +55,22 @@ def augment(spec, policy):
                 "items": {"type": "string"},
                 "maxItems": 16,
             },
+            "decision": {"enum": ["PERMITTED", "DENIED"]},
+            "restrictions": {
+                "type": "array",
+                "items": {"enum": ["OUTSIDE_SCOPE", "RECORD_CONDITION", "FIELD_CATEGORY"]},
+                "uniqueItems": True,
+            },
         },
         [
+            "path_id",
             "source",
             "scope_type",
-            "scope_id",
             "record_condition_applied",
             "readable_field_categories",
             "writable_field_categories",
+            "decision",
+            "restrictions",
         ],
     )
     result = {
@@ -49,17 +78,34 @@ def augment(spec, policy):
         "capability": {"type": "string", "minLength": 1, "maxLength": 100},
         "decision": {"enum": ["PERMITTED", "DENIED"]},
         "grant_paths": {"type": "array", "maxItems": 100, "items": path_item},
-        "restrictions": {"type": "array", "items": {"enum": ["RECORD_CONDITION"]}, "uniqueItems": True},
+        "restrictions": {
+            "type": "array",
+            "items": {
+                "enum": [
+                    "OUTSIDE_SCOPE",
+                    "RECORD_CONDITION",
+                    "FIELD_CATEGORY",
+                    "RESOURCE_UNAVAILABLE",
+                ]
+            },
+            "uniqueItems": True,
+        },
         "missing_assurance": {
             "type": "array",
-            "items": {"enum": ["CURRENT_SESSION_ASSURANCE", "MFA_ASSURANCE", "FRESH_AUTHENTICATION"]},
+            "items": {
+                "enum": [
+                    "CURRENT_SESSION_ASSURANCE",
+                    "MFA_ASSURANCE",
+                    "FRESH_AUTHENTICATION",
+                    "PURPOSE_REQUIRED",
+                    "PURPOSE_MISMATCH",
+                ]
+            },
             "uniqueItems": True,
         },
     }
     s["OwnEffectiveAccess"] = closed(result, list(result))
-    s["SimulatedEffectiveAccess"] = closed(
-        {**deepcopy(result), "subject_principal_id": deepcopy(uid)}, [*result, "subject_principal_id"]
-    )
+    s["SimulatedEffectiveAccess"] = closed(deepcopy(result), list(result))
     for suffix, operation, request_schema, response_schema, capability, roles in [
         (
             "self",
@@ -67,7 +113,7 @@ def augment(spec, policy):
             "OwnEffectiveAccessRequest",
             "OwnEffectiveAccess",
             "notifications.read",
-            ROLES,
+            MEMBER_ROLES,
         ),
         (
             "simulations",

@@ -5,7 +5,9 @@ from uuid import UUID
 
 from .contracts import OPERATIONS
 from .domain import DomainError
-from .store import authorize, context
+from .store import _matching_grants, _record_restriction_allows, authorize, context
+
+FIELD_CATEGORIES = {"PUBLIC", "INTERNAL", "SENSITIVE", "DIRECT_IDENTIFIER"}
 
 
 def _invalid():
@@ -19,14 +21,34 @@ class EffectiveAccess:
     @staticmethod
     def _request(body, simulation=False):
         required = {"operation_id", "object_id"} | ({"subject_principal_id"} if simulation else set())
-        if not isinstance(body, dict) or set(body) != required or body["operation_id"] not in OPERATIONS:
+        optional = {"purpose", "field_category", "field_access"}
+        if (
+            not isinstance(body, dict)
+            or not required <= set(body)
+            or set(body) - required - optional
+            or body["operation_id"] not in OPERATIONS
+            or body.get("field_category") not in FIELD_CATEGORIES | {None}
+            or body.get("field_access") not in {"READ", "WRITE", None}
+            or (body.get("field_category") is None) != (body.get("field_access") is None)
+            or (
+                body.get("purpose") is not None
+                and (not isinstance(body["purpose"], str) or not 1 <= len(body["purpose"]) <= 100)
+            )
+        ):
             _invalid()
         try:
             obj = str(UUID(body["object_id"])) if body["object_id"] is not None else None
             subject = str(UUID(body["subject_principal_id"])) if simulation else None
         except (TypeError, ValueError, AttributeError):
             _invalid()
-        return body["operation_id"], obj, subject
+        return (
+            body["operation_id"],
+            obj,
+            subject,
+            body.get("purpose"),
+            body.get("field_category"),
+            body.get("field_access"),
+        )
 
     @staticmethod
     def _grants(c, tenant, principal, membership):
@@ -42,15 +64,44 @@ class EffectiveAccess:
         return [*direct, *groups]
 
     @staticmethod
-    def _explain(c, tenant, operation_id, object_id, grants, identity=None):
+    def _explain(
+        c,
+        tenant,
+        operation_id,
+        object_id,
+        grants,
+        identity=None,
+        purpose=None,
+        field_category=None,
+        field_access=None,
+    ):
         operation = OPERATIONS[operation_id]
+        matching = _matching_grants(grants, operation["capability"], purpose)
+        record_allowed = _record_restriction_allows(matching, object_id)
+        candidate_grants = [grant for grant in grants if grant["capability"] == operation["capability"]]
+        field_key = "writable_field_categories" if field_access == "WRITE" else "readable_field_categories"
+        field_restrictions = [grant.get(field_key) for grant in matching if grant.get(field_key) is not None]
+        field_allowed = (
+            not field_category
+            or not field_restrictions
+            or all(field_category in categories for categories in field_restrictions)
+        )
+        object_available = True
+        if object_id:
+            object_available = bool(
+                c.execute(
+                    "SELECT 1 FROM impact.object_registry WHERE tenant_id=%s AND object_id=%s "
+                    "AND lifecycle_state<>'Deleted'",
+                    (tenant, object_id),
+                ).fetchone()
+            )
         paths = []
-        for grant in grants:
-            if grant["capability"] != operation["capability"] or grant["purpose"] is not None:
-                continue
+        all_restrictions = set()
+        for position, grant in enumerate(matching, 1):
+            restrictions = []
             record_ids = grant.get("record_object_ids")
             if record_ids and (not object_id or object_id not in {str(value) for value in record_ids}):
-                continue
+                restrictions.append("RECORD_CONDITION")
             if grant["scope_type"] != "TENANT":
                 if (
                     not object_id
@@ -59,18 +110,30 @@ class EffectiveAccess:
                         (tenant, grant["scope_id"], object_id),
                     ).fetchone()
                 ):
-                    continue
+                    restrictions.append("OUTSIDE_SCOPE")
+            categories = grant.get(
+                "writable_field_categories" if field_access == "WRITE" else "readable_field_categories"
+            )
+            if field_category and categories is not None and field_category not in categories:
+                restrictions.append("FIELD_CATEGORY")
+            all_restrictions.update(restrictions)
             paths.append(
                 {
+                    "path_id": f"PATH-{position}",
                     "source": grant["source"],
                     "scope_type": grant["scope_type"],
-                    "scope_id": str(grant["scope_id"]),
                     "record_condition_applied": bool(record_ids),
                     "readable_field_categories": grant.get("readable_field_categories"),
                     "writable_field_categories": grant.get("writable_field_categories"),
+                    "decision": "DENIED" if restrictions else "PERMITTED",
+                    "restrictions": restrictions,
                 }
             )
         missing = []
+        if operation.get("purpose_required") and not purpose:
+            missing.append("PURPOSE_REQUIRED")
+        elif purpose and candidate_grants and not matching:
+            missing.append("PURPOSE_MISMATCH")
         seconds = operation.get("fresh_assurance_seconds")
         if seconds:
             if identity is None:
@@ -80,24 +143,47 @@ class EffectiveAccess:
                     missing.append("MFA_ASSURANCE")
                 if (datetime.now(timezone.utc) - identity.auth_time).total_seconds() > seconds:
                     missing.append("FRESH_AUTHENTICATION")
+        if not object_available:
+            all_restrictions.add("RESOURCE_UNAVAILABLE")
+        if not record_allowed:
+            all_restrictions.add("RECORD_CONDITION")
+        if not field_allowed:
+            all_restrictions.add("FIELD_CATEGORY")
+        permitted_path = any(path["decision"] == "PERMITTED" for path in paths)
         return {
             "operation_id": operation_id,
             "capability": operation["capability"],
-            "decision": "PERMITTED" if paths and not missing else "DENIED",
+            "decision": (
+                "PERMITTED"
+                if permitted_path and record_allowed and field_allowed and object_available and not missing
+                else "DENIED"
+            ),
             "grant_paths": paths,
-            "restrictions": ["RECORD_CONDITION"] if any(p["record_condition_applied"] for p in paths) else [],
+            "restrictions": sorted(all_restrictions),
             "missing_assurance": missing,
         }
 
     def own(self, identity, tenant, body):
-        operation, object_id, _ = self._request(body)
+        operation, object_id, _, purpose, field_category, field_access = self._request(body)
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
             authorize(c, ctx, "explain_own_effective_access")
-            return self._explain(c, tenant, operation, object_id, ctx.grants, identity)
+            return self._explain(
+                c,
+                tenant,
+                operation,
+                object_id,
+                ctx.grants,
+                identity,
+                purpose,
+                field_category,
+                field_access,
+            )
 
     def simulate(self, identity, tenant, body):
-        operation, object_id, subject = self._request(body, simulation=True)
+        operation, object_id, subject, purpose, field_category, field_access = self._request(
+            body, simulation=True
+        )
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
             authorize(c, ctx, "simulate_effective_access")
@@ -108,6 +194,13 @@ class EffectiveAccess:
             if not target:
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
             grants = self._grants(c, tenant, target["principal_id"], target["membership_id"])
-            result = self._explain(c, tenant, operation, object_id, grants)
-            result["subject_principal_id"] = subject
-            return result
+            return self._explain(
+                c,
+                tenant,
+                operation,
+                object_id,
+                grants,
+                purpose=purpose,
+                field_category=field_category,
+                field_access=field_access,
+            )

@@ -5500,11 +5500,15 @@
       "role_templates": [
         "TENANT_ADMIN",
         "MEL_ADMIN",
-        "PROGRAMME_MANAGER",
         "AUTHOR",
         "REVIEWER",
-        "ANALYST",
+        "PROGRAMME_MANAGER",
         "DATA_STEWARD",
+        "ENUMERATOR",
+        "ANALYST",
+        "PRIVACY",
+        "AUDIT_READER",
+        "EXTERNAL",
         "FINANCE"
       ],
       "purpose_required": false,

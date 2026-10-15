@@ -297,10 +297,56 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-15",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-03",
+      "change_id": "APL-350-EFFECTIVE-ACCESS-COMPLETION",
+      "change": "Effective-access restriction precedence and safe explanation completion",
+      "paths": [
+        "apps/api/impact_api/effective_access_contracts.py",
+        "apps/api/impact_api/store.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH30"
+      ],
+      "summary": "Aligns request authorization, field checks, list visibility and explanations so attached record and field facets remain effective across conflicting roles; explanations omit protected identifiers and values.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-15",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-04",
+      "change_id": "APL-350-GENERATED-PROFILE-REGISTRATION",
+      "change": "Register current generated access profile after effective-access completion",
+      "paths": [
+        "infrastructure/migrations/0100_effective_access_profile.sql"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers the exact generated profile hash additively without activating it for existing tenants; governed preview, independent approval and execution remain required.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-15",
+      "confirmed_by": null
     }
   ],
   "evidence": [
-    "docs/current/threat-register.json"
+    "docs/current/threat-register.json",
+    "qualification/test_effective_access_unit.py"
   ],
   "notes": [
     "Partial APL-614 coding checkpoint only; cross-workspace copy, approved public disclosure, owner transfer, durable revalidation and focused qualification remain open."

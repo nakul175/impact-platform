@@ -92133,6 +92133,38 @@
                 "type": "null"
               }
             ]
+          },
+          "purpose": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "field_category": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              null,
+              "PUBLIC",
+              "INTERNAL",
+              "SENSITIVE",
+              "DIRECT_IDENTIFIER"
+            ]
+          },
+          "field_access": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              null,
+              "READ",
+              "WRITE"
+            ]
           }
         },
         "required": [
@@ -92158,6 +92190,38 @@
               {
                 "type": "null"
               }
+            ]
+          },
+          "purpose": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "field_category": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              null,
+              "PUBLIC",
+              "INTERNAL",
+              "SENSITIVE",
+              "DIRECT_IDENTIFIER"
+            ]
+          },
+          "field_access": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              null,
+              "READ",
+              "WRITE"
             ]
           },
           "subject_principal_id": {
@@ -92198,6 +92262,10 @@
               "type": "object",
               "additionalProperties": false,
               "properties": {
+                "path_id": {
+                  "type": "string",
+                  "pattern": "^PATH-[1-9][0-9]*$"
+                },
                 "source": {
                   "enum": [
                     "DIRECT",
@@ -92211,10 +92279,6 @@
                     "ASSIGNMENT",
                     "OBJECT_SET"
                   ]
-                },
-                "scope_id": {
-                  "type": "string",
-                  "format": "uuid"
                 },
                 "record_condition_applied": {
                   "type": "boolean"
@@ -92238,15 +92302,34 @@
                     "type": "string"
                   },
                   "maxItems": 16
+                },
+                "decision": {
+                  "enum": [
+                    "PERMITTED",
+                    "DENIED"
+                  ]
+                },
+                "restrictions": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "OUTSIDE_SCOPE",
+                      "RECORD_CONDITION",
+                      "FIELD_CATEGORY"
+                    ]
+                  },
+                  "uniqueItems": true
                 }
               },
               "required": [
+                "path_id",
                 "source",
                 "scope_type",
-                "scope_id",
                 "record_condition_applied",
                 "readable_field_categories",
-                "writable_field_categories"
+                "writable_field_categories",
+                "decision",
+                "restrictions"
               ]
             }
           },
@@ -92254,7 +92337,10 @@
             "type": "array",
             "items": {
               "enum": [
-                "RECORD_CONDITION"
+                "OUTSIDE_SCOPE",
+                "RECORD_CONDITION",
+                "FIELD_CATEGORY",
+                "RESOURCE_UNAVAILABLE"
               ]
             },
             "uniqueItems": true
@@ -92265,7 +92351,9 @@
               "enum": [
                 "CURRENT_SESSION_ASSURANCE",
                 "MFA_ASSURANCE",
-                "FRESH_AUTHENTICATION"
+                "FRESH_AUTHENTICATION",
+                "PURPOSE_REQUIRED",
+                "PURPOSE_MISMATCH"
               ]
             },
             "uniqueItems": true
@@ -92307,6 +92395,10 @@
               "type": "object",
               "additionalProperties": false,
               "properties": {
+                "path_id": {
+                  "type": "string",
+                  "pattern": "^PATH-[1-9][0-9]*$"
+                },
                 "source": {
                   "enum": [
                     "DIRECT",
@@ -92320,10 +92412,6 @@
                     "ASSIGNMENT",
                     "OBJECT_SET"
                   ]
-                },
-                "scope_id": {
-                  "type": "string",
-                  "format": "uuid"
                 },
                 "record_condition_applied": {
                   "type": "boolean"
@@ -92347,15 +92435,34 @@
                     "type": "string"
                   },
                   "maxItems": 16
+                },
+                "decision": {
+                  "enum": [
+                    "PERMITTED",
+                    "DENIED"
+                  ]
+                },
+                "restrictions": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "OUTSIDE_SCOPE",
+                      "RECORD_CONDITION",
+                      "FIELD_CATEGORY"
+                    ]
+                  },
+                  "uniqueItems": true
                 }
               },
               "required": [
+                "path_id",
                 "source",
                 "scope_type",
-                "scope_id",
                 "record_condition_applied",
                 "readable_field_categories",
-                "writable_field_categories"
+                "writable_field_categories",
+                "decision",
+                "restrictions"
               ]
             }
           },
@@ -92363,7 +92470,10 @@
             "type": "array",
             "items": {
               "enum": [
-                "RECORD_CONDITION"
+                "OUTSIDE_SCOPE",
+                "RECORD_CONDITION",
+                "FIELD_CATEGORY",
+                "RESOURCE_UNAVAILABLE"
               ]
             },
             "uniqueItems": true
@@ -92374,14 +92484,12 @@
               "enum": [
                 "CURRENT_SESSION_ASSURANCE",
                 "MFA_ASSURANCE",
-                "FRESH_AUTHENTICATION"
+                "FRESH_AUTHENTICATION",
+                "PURPOSE_REQUIRED",
+                "PURPOSE_MISMATCH"
               ]
             },
             "uniqueItems": true
-          },
-          "subject_principal_id": {
-            "type": "string",
-            "format": "uuid"
           }
         },
         "required": [
@@ -92390,8 +92498,7 @@
           "decision",
           "grant_paths",
           "restrictions",
-          "missing_assurance",
-          "subject_principal_id"
+          "missing_assurance"
         ]
       },
       "DerivativeManifestRequest": {

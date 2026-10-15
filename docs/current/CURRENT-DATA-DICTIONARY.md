@@ -7200,3 +7200,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0097_indicator_statistical_interpretation.sql | b71e7826a12642b58407d43b2d612707f1bd675a706848cc97418fe7730000b5 |
+
+## Migration0098 — problem baseline registry kind (qualification repair)
+
+`0098_ai_problem_baseline_kind.sql` SHA256 `a0c78f5fdb2e0fdbd2c45d43d8e26742a9f4dc5fc383b17cd2d75070a6b44a96`. Schema98 registers the `AIProblemBaseline` immutable registry kind omitted by migration0048 and adds restrictive worker fences for its registry and revision rows. All0001–0097 remain byte-exact. Candidate is under exact-candidate qualification, unmerged and undeployed.
+
+| Migration | SHA256 |
+|---|---|
+| 0098_ai_problem_baseline_kind.sql | a0c78f5fdb2e0fdbd2c45d43d8e26742a9f4dc5fc383b17cd2d75070a6b44a96 |

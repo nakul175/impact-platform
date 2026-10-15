@@ -108,10 +108,10 @@ class DashboardPublication:
             if any(item["availability"] != "AVAILABLE" for item in manifest):
                 raise DomainError("CONFLICT_VERSION", 409, reason="PUBLICATION_BINDING_REVALIDATION_REQUIRED")
             if body["data"]["audience"] == "PUBLIC":
-                for item in manifest:
-                    binding = item["binding"]
-                    if binding["resource_type"] != "EVIDENCE" or item["classification"] != "PUBLIC":
-                        raise DomainError("VALIDATION_FAILED", reason="PUBLIC_LIVE_PRIVATE_BINDING_REFUSED")
+                # A PUBLIC registry classification does not prove independent disclosure approval.
+                # Keep anonymous publication closed until a pinned, reviewed dashboard-disclosure
+                # artifact and its retrieval boundary exist.
+                raise DomainError("VALIDATION_FAILED", reason="PUBLIC_DISCLOSURE_NOT_IMPLEMENTED")
             payload = {
                 "dashboard_id": str(dashboard_id),
                 "dashboard_revision": str(dashboard["head_revision"]),

@@ -335,6 +335,16 @@ export function DashboardsPanel({
     [geographicPreview, setGeographicPreview] = useState<any>(null),
     [recipientId, setRecipientId] = useState(""),
     [sharingPreview, setSharingPreview] = useState<any>(null),
+    [publicationId, setPublicationId] = useState(""),
+    [publicationStatus, setPublicationStatus] = useState<any>(null),
+    [publicationAudience, setPublicationAudience] = useState<
+      "INTERNAL" | "PUBLIC"
+    >("INTERNAL"),
+    [publicationExpiry, setPublicationExpiry] = useState(() => {
+      const value = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+      return value.toISOString().slice(0, 16);
+    }),
+    [publicationMessage, setPublicationMessage] = useState(""),
     [alertRule, setAlertRule] = useState(""),
     [alertOutcome, setAlertOutcome] = useState<any>(null),
     [sourcesFor, setSourcesFor] = useState(""),
@@ -350,6 +360,10 @@ export function DashboardsPanel({
     allowed("dashboards.read") &&
     allowed("dashboards.draft.create") &&
     allowed("calculated-results.read");
+  const canCopy =
+    allowed("dashboards.read") && allowed("dashboards.draft.create");
+  const canPublish =
+    allowed("dashboards.read") && allowed("dashboards.draft.edit");
   useEffect(() => {
     if (!permitted) return;
     Promise.all([
@@ -592,6 +606,8 @@ export function DashboardsPanel({
   async function copyDashboard() {
     if (!savedDashboard) return;
     try {
+      setError("");
+      setPublicationMessage("");
       const receipt = await request(
         `${base}dashboards/${savedDashboard}/actions/copy`,
         {
@@ -600,6 +616,10 @@ export function DashboardsPanel({
         },
       );
       setSavedDashboard(receipt.object_id);
+      setSharingPreview(null);
+      setPublicationId("");
+      setPublicationStatus(null);
+      setPublicationMessage("Private draft created. No access was granted.");
       setTick((value) => value + 1);
     } catch (e) {
       setError(explain(e));
@@ -608,6 +628,8 @@ export function DashboardsPanel({
   async function previewSharing() {
     if (!savedDashboard || !recipientId) return;
     try {
+      setError("");
+      setSharingPreview(null);
       setSharingPreview(
         await request(
           base +
@@ -623,19 +645,46 @@ export function DashboardsPanel({
   }
   async function publishDashboard() {
     if (!savedDashboard) return;
-    const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    const expires = new Date(publicationExpiry);
+    if (!Number.isFinite(expires.getTime()) || expires <= new Date()) {
+      return setError("Choose a publication expiry in the future.");
+    }
     try {
-      await request(
+      setError("");
+      setPublicationMessage("");
+      const receipt = await request(
         base + "dashboards/" + savedDashboard + "/actions/publish",
         {
           method: "POST",
           body: JSON.stringify({
             operation_id: crypto.randomUUID(),
-            data: { audience: "INTERNAL", expires_at: expires.toISOString() },
+            data: {
+              audience: publicationAudience,
+              expires_at: expires.toISOString(),
+            },
           }),
         },
       );
+      setPublicationId(receipt.object_id);
+      setPublicationMessage("Pinned publication created.");
+      setPublicationStatus(
+        await request(
+          `${base}dashboards/${savedDashboard}/publications/${receipt.object_id}`,
+        ),
+      );
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function refreshPublicationStatus() {
+    if (!savedDashboard || !publicationId) return;
+    try {
       setError("");
+      setPublicationStatus(
+        await request(
+          `${base}dashboards/${savedDashboard}/publications/${publicationId}`,
+        ),
+      );
     } catch (e) {
       setError(explain(e));
     }
@@ -883,27 +932,6 @@ export function DashboardsPanel({
             <button type="button" className="secondary" onClick={previewMap}>
               Preview safe map
             </button>
-            <button type="button" className="secondary" onClick={copyDashboard}>
-              Copy privately
-            </button>
-            <label>
-              Recipient principal ID
-              <input
-                value={recipientId}
-                onChange={(event) => setRecipientId(event.target.value)}
-                placeholder="UUID"
-              />
-            </label>
-            <button
-              type="button"
-              className="secondary"
-              onClick={previewSharing}
-            >
-              Preview recipient view
-            </button>
-            <button type="button" onClick={publishDashboard}>
-              Publish internally for 30 days
-            </button>
             <button
               type="button"
               className="secondary"
@@ -920,15 +948,149 @@ export function DashboardsPanel({
               Evaluate missed result
             </button>
           </div>
+          <fieldset aria-label="Sharing and publication">
+            <legend>Sharing and publication</legend>
+            <div className="planning-toolbar">
+              {canCopy ? (
+                <button
+                  type="button"
+                  className="secondary"
+                  disabled={!savedDashboard}
+                  onClick={copyDashboard}
+                >
+                  Copy privately
+                </button>
+              ) : null}
+              <label>
+                Recipient principal ID
+                <input
+                  value={recipientId}
+                  onChange={(event) => setRecipientId(event.target.value)}
+                  placeholder="UUID"
+                />
+              </label>
+              <button
+                type="button"
+                className="secondary"
+                disabled={!savedDashboard || !recipientId}
+                onClick={previewSharing}
+              >
+                Preview recipient view
+              </button>
+              {canPublish ? (
+                <>
+                  <label>
+                    Audience
+                    <select
+                      value={publicationAudience}
+                      onChange={(event) =>
+                        setPublicationAudience(
+                          event.target.value as typeof publicationAudience,
+                        )
+                      }
+                    >
+                      <option>INTERNAL</option>
+                      <option>PUBLIC</option>
+                    </select>
+                  </label>
+                  <label>
+                    Expires
+                    <input
+                      type="datetime-local"
+                      value={publicationExpiry}
+                      onChange={(event) =>
+                        setPublicationExpiry(event.target.value)
+                      }
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    disabled={!savedDashboard || !publicationExpiry}
+                    onClick={publishDashboard}
+                  >
+                    Publish pinned dashboard
+                  </button>
+                </>
+              ) : null}
+              {publicationId ? (
+                <button
+                  type="button"
+                  className="secondary"
+                  onClick={refreshPublicationStatus}
+                >
+                  Refresh publication status
+                </button>
+              ) : null}
+            </div>
+            {publicationAudience === "PUBLIC" && canPublish ? (
+              <p className="muted">
+                Public publication is permitted only when every pinned binding
+                is an approved public disclosure artifact.
+              </p>
+            ) : null}
+            {publicationMessage ? (
+              <p role="status" className="muted">
+                {publicationMessage}
+              </p>
+            ) : null}
+          </fieldset>
           {sharingPreview ? (
-            <p role="status" className="muted">
-              Recipient preview:{" "}
-              {sharingPreview.unavailable_binding_count === 0
-                ? "all bindings available"
-                : sharingPreview.unavailable_binding_count +
-                  " bindings unavailable"}
-              . No grants were created.
-            </p>
+            <section aria-label="Recipient sharing preview">
+              <p role="status" className="muted">
+                Recipient preview:{" "}
+                {sharingPreview.unavailable_binding_count === 0
+                  ? "all bindings available"
+                  : sharingPreview.unavailable_binding_count +
+                    " bindings unavailable"}
+                . No grants were created.
+              </p>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Widget</th>
+                    <th>Source</th>
+                    <th>Pinned revision</th>
+                    <th>Classification</th>
+                    <th>Availability</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sharingPreview.widgets.map((widget: any) => (
+                    <tr key={widget.widget_id}>
+                      <td>{widget.widget_id}</td>
+                      <td>
+                        {words(widget.binding.resource_type)} ·{" "}
+                        {widget.binding.object_id}
+                      </td>
+                      <td>{widget.binding.revision_id}</td>
+                      <td>{words(widget.classification || "Unavailable")}</td>
+                      <td>{words(widget.availability)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+          ) : null}
+          {publicationStatus ? (
+            <section aria-label="Publication status" className="callout">
+              <h3>Publication status</h3>
+              <p>
+                <strong>{words(publicationStatus.status)}</strong> ·{" "}
+                {words(publicationStatus.audience)} · expires{" "}
+                {when(publicationStatus.expires_at)}
+              </p>
+              <p className="muted">
+                Publication {publicationStatus.publication_id} pins dashboard
+                revision {publicationStatus.dashboard_revision}.
+              </p>
+              {publicationStatus.status === "SUSPENDED" ? (
+                <p role="alert">
+                  This publication is unavailable:{" "}
+                  {words(publicationStatus.reason_code)}. Rebind or review the
+                  sources, then publish a successor.
+                </p>
+              ) : null}
+            </section>
           ) : null}
           {alertOutcome ? (
             <p role="status" className="muted">

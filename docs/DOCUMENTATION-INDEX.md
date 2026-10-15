@@ -196,6 +196,7 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 - [Release 1.39 coding candidate — variance and forecast](RELEASE-1.39-finance-variance.md)
 - [Release 1.40 — Qualification repair candidate](RELEASE-1.40-qualification-repair.md)
 - [Release 1.41 — Problem baseline qualification repair](RELEASE-1.41-problem-baseline-kind-fix.md)
+- [Release 1.42 — Dashboard publication safety checkpoint](RELEASE-1.42-dashboard-publication-safety.md)
 - [Operations hardening (October 2026) — backups, restore drill, alerts, metrics, owner console](RELEASE-OPS-2026-10.md)
 - [Tola + AI timed development handover](SPRINT-HANDOVER-2026-10-05.md)
 - [Training video — how the platform works, end to end](TRAINING-VIDEO.md)

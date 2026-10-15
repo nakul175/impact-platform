@@ -7208,3 +7208,8 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0098_ai_problem_baseline_kind.sql | a0c78f5fdb2e0fdbd2c45d43d8e26742a9f4dc5fc383b17cd2d75070a6b44a96 |
+| 0099_dashboard_publication_kind.sql | 7b4b5909c45ae99cfdcec7f2fb23b1163e2aec8035937313e4c2188cd378a540 |
+
+## Migration0099 — dashboard publication registry kind
+
+`0099_dashboard_publication_kind.sql` SHA256 `7b4b5909c45ae99cfdcec7f2fb23b1163e2aec8035937313e4c2188cd378a540`. Schema99 registers the immutable `DashboardPublication` registry kind omitted by the original APL-614 candidate and adds restrictive worker fences for its registry and revision rows. All0001–0098 remain byte-exact. This is a partial coding checkpoint: cross-workspace copy, independently approved public disclosure artifacts, owner transfer and durable revalidation remain open, so APL-614 is not coding-complete.

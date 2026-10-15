@@ -5,6 +5,7 @@
 - Registers `DashboardPublication` as an allowed immutable registry kind through additive migration 0099.
 - Keeps publication registry and revision rows unavailable to the background worker, which has no duty for publication manifests.
 - Adds visible recipient-binding previews and publication status controls to the dashboard UI.
+- Requires the exact dashboard revision when publishing and registers the sharing, publish and status operations in the generated access policy.
 - Fails closed for anonymous public publication until independently reviewed dashboard disclosure artifacts and a safe retrieval boundary are implemented.
 
 ## Contract and persistence

@@ -6596,6 +6596,60 @@
       "audit": true
     },
     {
+      "operation_id": "preview_dashboard_sharing",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/sharing-preview",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "action_dashboards_publish",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/publish",
+      "capability": "dashboards.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "read_dashboard_publication",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/publications/{publication_id}",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
       "operation_id": "preview_dashboard_pivot",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/pivot-preview",

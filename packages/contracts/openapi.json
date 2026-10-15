@@ -97555,12 +97555,17 @@
             "type": "string",
             "format": "uuid"
           },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
           "data": {
             "$ref": "#/components/schemas/DashboardPublishData"
           }
         },
         "required": [
           "operation_id",
+          "expected_revision",
           "data"
         ]
       },

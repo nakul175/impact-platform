@@ -645,6 +645,10 @@ export function DashboardsPanel({
   }
   async function publishDashboard() {
     if (!savedDashboard) return;
+    const dashboard = savedDashboards.find(
+      (row) => row.object_id === savedDashboard,
+    );
+    if (!dashboard) return setError("Select a current dashboard draft.");
     const expires = new Date(publicationExpiry);
     if (!Number.isFinite(expires.getTime()) || expires <= new Date()) {
       return setError("Choose a publication expiry in the future.");
@@ -658,6 +662,7 @@ export function DashboardsPanel({
           method: "POST",
           body: JSON.stringify({
             operation_id: crypto.randomUUID(),
+            expected_revision: dashboard.revision_id,
             data: {
               audience: publicationAudience,
               expires_at: expires.toISOString(),

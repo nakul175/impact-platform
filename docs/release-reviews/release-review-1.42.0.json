@@ -274,6 +274,29 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-15",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-02",
+      "change_id": "APL-614-EXACT-CANDIDATE-POLICY",
+      "change": "Exact dashboard candidate and publication-operation policy repair",
+      "paths": [
+        "apps/api/impact_api/dashboard_contracts.py",
+        "packages/contracts/access-policy.json",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "areas": [
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28"
+      ],
+      "summary": "Requires the caller to pin the exact current dashboard revision before publication and registers sharing preview, publish and publication status as explicit policy operations.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-15",
+      "confirmed_by": null
     }
   ],
   "evidence": [

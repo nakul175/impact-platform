@@ -101,6 +101,8 @@ class DashboardPublication:
                     raise DomainError("IDEMPOTENCY_EXPIRED", 409)
                 return old["outcome"]
             dashboard = load(c, ctx, dashboard_id, "Dashboard", "dashboards.read", lock=True)
+            if str(dashboard["head_revision"]) != body["expected_revision"]:
+                raise DomainError("CONFLICT_VERSION", 409, reason="DASHBOARD_REVISION_CHANGED")
             expires = datetime.fromisoformat(body["data"]["expires_at"].replace("Z", "+00:00"))
             if expires <= datetime.now(timezone.utc):
                 raise DomainError("VALIDATION_FAILED", reason="PUBLICATION_EXPIRY_REQUIRED")

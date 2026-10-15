@@ -215,8 +215,12 @@ def augment(spec, policy):
         ["audience", "expires_at"],
     )
     schemas["DashboardPublish"] = closed(
-        {"operation_id": UUID, "data": {"$ref": "#/components/schemas/DashboardPublishData"}},
-        ["operation_id", "data"],
+        {
+            "operation_id": UUID,
+            "expected_revision": UUID,
+            "data": {"$ref": "#/components/schemas/DashboardPublishData"},
+        },
+        ["operation_id", "expected_revision", "data"],
     )
     publication_binding = closed(
         {
@@ -2578,6 +2582,27 @@ def augment(spec, policy):
             prefix + "dashboards/{object_id}/actions/copy",
             "dashboards.draft.create",
             True,
+        ),
+        (
+            "preview_dashboard_sharing",
+            "GET",
+            prefix + "dashboards/{object_id}/sharing-preview",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "action_dashboards_publish",
+            "POST",
+            prefix + "dashboards/{object_id}/actions/publish",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "read_dashboard_publication",
+            "GET",
+            prefix + "dashboards/{object_id}/publications/{publication_id}",
+            "dashboards.read",
+            False,
         ),
         (
             "preview_dashboard_pivot",

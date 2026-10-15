@@ -6816,6 +6816,114 @@
       "audit": true
     },
     {
+      "operation_id": "create_external_analytics_connection",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/external-analytics-connections",
+      "capability": "dashboards.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "list_external_analytics_connections",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/external-analytics-connections",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "read_external_analytics_connection",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_external_analytics_extracts",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}/extracts",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "refresh_external_analytics_connection",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}/actions/refresh",
+      "capability": "dashboards.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "revoke_external_analytics_connection",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}/actions/revoke",
+      "capability": "dashboards.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
       "operation_id": "create_audit_export",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/audit-exports",

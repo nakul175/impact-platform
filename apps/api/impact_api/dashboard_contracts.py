@@ -49,6 +49,9 @@ IMPLEMENTED = {
     ("get", "dashboard-alert-rules/{object_id}/incidents"),
     ("post", "dashboard-alert-rules/{object_id}/actions/evaluate"),
     ("post", "external-analytics-connections"),
+    ("get", "external-analytics-connections"),
+    ("get", "external-analytics-connections/{object_id}"),
+    ("get", "external-analytics-connections/{object_id}/extracts"),
     ("post", "external-analytics-connections/{object_id}/actions/refresh"),
     ("post", "external-analytics-connections/{object_id}/actions/revoke"),
     ("post", "anomaly-runs"),
@@ -432,8 +435,10 @@ def augment(spec, policy):
                     "datasets": {"type": "array", "minItems": 1, "maxItems": 50, "items": external_dataset},
                     "destination": {"type": "string", "minLength": 1, "maxLength": 500},
                     "reuse_terms": {"type": "string", "minLength": 1, "maxLength": 2000},
+                    "backup_owner_id": UUID,
+                    "expires_at": {"type": "string", "format": "date-time"},
                 },
-                ["datasets", "destination", "reuse_terms"],
+                ["datasets", "destination", "reuse_terms", "backup_owner_id", "expires_at"],
             ),
         },
         ["operation_id", "data"],
@@ -507,6 +512,38 @@ def augment(spec, policy):
             "remote_copy_status": {"const": "TRACKED_NOT_REMOTELY_ERASED"},
         },
         list(schemas["Receipt"]["required"]) + ["last_successful_extract", "remote_copy_status"],
+    )
+    schemas["ExternalAnalyticsConnection"] = closed(
+        {**resource_base, "owner_id": UUID, "data": {"type": "object", "additionalProperties": True}},
+        resource_required + ["data"],
+    )
+    schemas["ExternalAnalyticsConnectionList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/ExternalAnalyticsConnection"},
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
+    )
+    schemas["ExternalAnalyticsExtractRecord"] = closed(
+        {**resource_base, "owner_id": UUID, "data": {"type": "object", "additionalProperties": True}},
+        resource_required + ["data"],
+    )
+    schemas["ExternalAnalyticsExtractList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/ExternalAnalyticsExtractRecord"},
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
     )
     eligible_observation = closed({"object_id": UUID, "revision_id": UUID}, ["object_id", "revision_id"])
     schemas["AnomalyRunCreate"] = closed(
@@ -2306,7 +2343,42 @@ def augment(spec, policy):
     external_create["responses"]["201"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/ExternalAnalyticsConnectionReceipt"
     }
-    paths[prefix + "external-analytics-connections"] = {"post": external_create}
+    external_list = deepcopy(alert_list)
+    external_list.update(
+        operationId="list_external_analytics_connections",
+        summary="List governed external analytics connections",
+    )
+    external_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExternalAnalyticsConnectionList"
+    }
+    paths[prefix + "external-analytics-connections"] = {
+        "get": external_list,
+        "post": external_create,
+    }
+    external_read = deepcopy(alert_read)
+    external_read.update(
+        operationId="read_external_analytics_connection",
+        summary="Read a governed external analytics connection without its credential",
+    )
+    external_read["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExternalAnalyticsConnection"
+    }
+    paths[prefix + "external-analytics-connections/{object_id}"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": external_read,
+    }
+    extract_list = deepcopy(external_list)
+    extract_list.update(
+        operationId="list_external_analytics_extracts",
+        summary="List retained external extract disclosures",
+    )
+    extract_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExternalAnalyticsExtractList"
+    }
+    paths[prefix + "external-analytics-connections/{object_id}/extracts"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": extract_list,
+    }
     external_refresh = deepcopy(alert_evaluate)
     external_refresh.update(
         operationId="refresh_external_analytics_connection",
@@ -2789,6 +2861,48 @@ def augment(spec, policy):
             "evaluate_dashboard_alert_rule",
             "POST",
             prefix + "dashboard-alert-rules/{object_id}/actions/evaluate",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "create_external_analytics_connection",
+            "POST",
+            prefix + "external-analytics-connections",
+            "dashboards.draft.create",
+            True,
+        ),
+        (
+            "list_external_analytics_connections",
+            "GET",
+            prefix + "external-analytics-connections",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "read_external_analytics_connection",
+            "GET",
+            prefix + "external-analytics-connections/{object_id}",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "list_external_analytics_extracts",
+            "GET",
+            prefix + "external-analytics-connections/{object_id}/extracts",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "refresh_external_analytics_connection",
+            "POST",
+            prefix + "external-analytics-connections/{object_id}/actions/refresh",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "revoke_external_analytics_connection",
+            "POST",
+            prefix + "external-analytics-connections/{object_id}/actions/revoke",
             "dashboards.draft.edit",
             True,
         ),

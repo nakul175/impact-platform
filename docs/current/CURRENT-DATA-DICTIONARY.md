@@ -7228,3 +7228,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0101_dashboard_alert_kinds.sql | 56b6b2d27c18c68469ffebe887e539b5717ea5ee4c956d399fe04afa592b8572 |
+
+## Migration0102 — governed external analytics registry kinds
+
+`0102_external_analytics_kinds.sql` SHA256 `af66e09a87ac23f839cbab5b8e9399c0d76357f6e2fa370ce298659ec343e67a`. Schema102 registers the `ExternalAnalyticsConnection` and `ExternalAnalyticsExtract` kinds required by APL-620 and adds restrictive delivery-worker fences. BI package creation remains an authenticated application duty; the delivery worker receives no access to credentials, selected datasets, destinations, reuse terms, or extract history. All0001–0101 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0102_external_analytics_kinds.sql | af66e09a87ac23f839cbab5b8e9399c0d76357f6e2fa370ce298659ec343e67a |

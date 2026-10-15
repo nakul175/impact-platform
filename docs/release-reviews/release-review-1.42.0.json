@@ -367,6 +367,32 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-15",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-06",
+      "change_id": "APL-620-EXTERNAL-ANALYTICS-COMPLETION",
+      "change": "Governed revocable external analytics extracts",
+      "paths": [
+        "infrastructure/migrations/0102_external_analytics_kinds.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/external_analytics.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Creates expiring dual-owned service identities with sealed uncertain-operation credential replay; rechecks current source, field and credential authority on every extract; preserves immutable disclosure manifests and explicit remote-copy limits.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-15",
+      "confirmed_by": null
     }
   ],
   "evidence": [

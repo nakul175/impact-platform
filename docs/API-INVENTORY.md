@@ -244,9 +244,12 @@
 | POST | `/v1/tenants/{tenant_id}/evidence/{object_id}/actions/attach` | `evidence.attach` |
 | GET | `/v1/tenants/{tenant_id}/evidence/{object_id}/content` | `evidence.download` |
 | POST | `/v1/tenants/{tenant_id}/expenditure-imports` | `dashboards.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/external-analytics-connections` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/external-analytics-connections` | `dashboards.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}/actions/refresh` | `dashboards.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}/actions/revoke` | `dashboards.draft.edit` |
+| GET | `/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}/extracts` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/external-shares` | `reports.share` |
 | GET | `/v1/tenants/{tenant_id}/external-shares/{share_id}` | `reports.read` |
 | POST | `/v1/tenants/{tenant_id}/external-shares/{share_id}/revocation` | `reports.share` |

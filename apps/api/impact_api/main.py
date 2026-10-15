@@ -1869,6 +1869,18 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.get("/v1/tenants/{tenant}/external-analytics-connections")
+    def external_analytics_connection_list(request: Request, tenant: str, limit: int = 50):
+        return external_analytics.listing(auth.resolve(request), uuid(tenant), limit)
+
+    @app.get("/v1/tenants/{tenant}/external-analytics-connections/{obj}")
+    def external_analytics_connection_read(request: Request, tenant: str, obj: str):
+        return external_analytics.read(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/external-analytics-connections/{obj}/extracts")
+    def external_analytics_extract_list(request: Request, tenant: str, obj: str, limit: int = 50):
+        return external_analytics.extracts(auth.resolve(request), uuid(tenant), uuid(obj), limit)
+
     @app.post("/v1/tenants/{tenant}/external-analytics-connections/{obj}/actions/refresh")
     async def external_analytics_connection_refresh(request: Request, tenant: str, obj: str):
         body = await strict_body(request)

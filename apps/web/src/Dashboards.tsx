@@ -358,6 +358,15 @@ export function DashboardsPanel({
     ),
     [alertCooldown, setAlertCooldown] = useState(86400),
     [alertOutcome, setAlertOutcome] = useState<any>(null),
+    [externalConnections, setExternalConnections] = useState<any[]>([]),
+    [externalConnection, setExternalConnection] = useState(""),
+    [externalExtracts, setExternalExtracts] = useState<any[]>([]),
+    [externalCredential, setExternalCredential] = useState(""),
+    [externalDestination, setExternalDestination] = useState(""),
+    [externalTerms, setExternalTerms] = useState(""),
+    [externalBackupOwner, setExternalBackupOwner] = useState(""),
+    [externalDataset, setExternalDataset] = useState(""),
+    [externalPackage, setExternalPackage] = useState<any>(null),
     [sourcesFor, setSourcesFor] = useState(""),
     [sources, setSources] = useState<any>(null),
     [error, setError] = useState(""),
@@ -458,11 +467,19 @@ export function DashboardsPanel({
       all(request, base + "dashboards"),
       all(request, base + "calculated-results"),
       all(request, base + "dashboard-alert-rules"),
+      all(request, base + "external-analytics-connections"),
     ])
-      .then(([dashboards, results, rules]) => {
+      .then(([dashboards, results, rules, connections]) => {
         setSavedDashboards(dashboards);
         setCalculatedResults(results);
         setAlertRules(rules);
+        setExternalConnections(connections);
+        setExternalConnection((current) =>
+          connections.some((row: any) => row.object_id === current)
+            ? current
+            : connections[0]?.object_id || "",
+        );
+        setExternalDataset((current) => current || results[0]?.object_id || "");
         setAlertRule((current) =>
           rules.some((row: any) => row.object_id === current)
             ? current
@@ -483,6 +500,18 @@ export function DashboardsPanel({
       .then(setAlertIncidents)
       .catch((e) => setError(explain(e)));
   }, [mode, alertRule, base, tick]);
+  useEffect(() => {
+    if (mode !== "authored" || !externalConnection) {
+      setExternalExtracts([]);
+      return;
+    }
+    all(
+      request,
+      `${base}external-analytics-connections/${externalConnection}/extracts`,
+    )
+      .then(setExternalExtracts)
+      .catch((e) => setError(explain(e)));
+  }, [mode, externalConnection, base, tick]);
   useEffect(() => {
     if (mode !== "authored" || !savedDashboard) {
       setAuthoredPreview(null);
@@ -764,6 +793,84 @@ export function DashboardsPanel({
           },
         ),
       );
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function createExternalConnection() {
+    const dataset = calculatedResults.find(
+      (row) => row.object_id === externalDataset,
+    );
+    if (
+      !dataset ||
+      !externalDestination ||
+      !externalTerms ||
+      !externalBackupOwner
+    )
+      return;
+    try {
+      const expiry = new Date(
+        Date.now() + 90 * 24 * 60 * 60 * 1000,
+      ).toISOString();
+      const receipt = await request(base + "external-analytics-connections", {
+        method: "POST",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          data: {
+            datasets: [
+              {
+                kind: "CalculatedResult",
+                object_id: dataset.object_id,
+                revision_id: dataset.revision_id,
+                fields: ["value_state", "value", "mode", "freshness"],
+              },
+            ],
+            destination: externalDestination,
+            reuse_terms: externalTerms,
+            backup_owner_id: externalBackupOwner,
+            expires_at: expiry,
+          },
+        }),
+      });
+      setExternalConnection(receipt.object_id);
+      setExternalCredential(receipt.credential);
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function refreshExternalConnection() {
+    if (!externalConnection || !externalCredential) return;
+    try {
+      setExternalPackage(
+        await request(
+          `${base}external-analytics-connections/${externalConnection}/actions/refresh`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              operation_id: crypto.randomUUID(),
+              credential: externalCredential,
+            }),
+          },
+        ),
+      );
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function revokeExternalConnection() {
+    if (!externalConnection) return;
+    try {
+      await request(
+        `${base}external-analytics-connections/${externalConnection}/actions/revoke`,
+        {
+          method: "POST",
+          body: JSON.stringify({ operation_id: crypto.randomUUID() }),
+        },
+      );
+      setExternalCredential("");
       setTick((value) => value + 1);
     } catch (e) {
       setError(explain(e));
@@ -1095,6 +1202,141 @@ export function DashboardsPanel({
                 . The selected period and exact result revision are retained
                 with every incident.
               </p>
+            ) : null}
+          </fieldset>
+          <fieldset aria-label="External analytics access">
+            <legend>External analytics access</legend>
+            <div className="planning-toolbar">
+              <label>
+                Connection
+                <select
+                  value={externalConnection}
+                  onChange={(event) =>
+                    setExternalConnection(event.target.value)
+                  }
+                >
+                  <option value="">Select connection</option>
+                  {externalConnections.map((row) => (
+                    <option key={row.object_id} value={row.object_id}>
+                      {row.data.destination} · {words(row.data.status)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Calculated dataset
+                <select
+                  value={externalDataset}
+                  onChange={(event) => setExternalDataset(event.target.value)}
+                >
+                  <option value="">Select exact result</option>
+                  {calculatedResults.map((row) => (
+                    <option key={row.object_id} value={row.object_id}>
+                      {row.object_id} · {row.revision_id}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Approved destination
+                <input
+                  value={externalDestination}
+                  onChange={(event) =>
+                    setExternalDestination(event.target.value)
+                  }
+                  placeholder="Named BI workspace"
+                />
+              </label>
+              <label>
+                Reuse terms
+                <input
+                  value={externalTerms}
+                  onChange={(event) => setExternalTerms(event.target.value)}
+                  placeholder="Purpose, retention and onward-sharing terms"
+                />
+              </label>
+              <label>
+                Backup owner principal ID
+                <input
+                  value={externalBackupOwner}
+                  onChange={(event) =>
+                    setExternalBackupOwner(event.target.value)
+                  }
+                  placeholder="Different active person UUID"
+                />
+              </label>
+              <button
+                type="button"
+                disabled={
+                  !externalDataset ||
+                  !externalDestination ||
+                  !externalTerms ||
+                  !externalBackupOwner
+                }
+                onClick={createExternalConnection}
+              >
+                Create governed connection
+              </button>
+              <label>
+                Credential shown at issue/retry only
+                <input
+                  type="password"
+                  value={externalCredential}
+                  onChange={(event) =>
+                    setExternalCredential(event.target.value)
+                  }
+                  autoComplete="off"
+                />
+              </label>
+              <button
+                type="button"
+                className="secondary"
+                disabled={!externalConnection || !externalCredential}
+                onClick={refreshExternalConnection}
+              >
+                Refresh exact package
+              </button>
+              <button
+                type="button"
+                className="secondary"
+                disabled={!externalConnection}
+                onClick={revokeExternalConnection}
+              >
+                Revoke service identity
+              </button>
+            </div>
+            <p className="muted">
+              Revocation stops future refreshes. Prior external copies remain
+              tracked and are never represented as remotely erased. This does
+              not provide unrestricted database access.
+            </p>
+            {externalPackage ? (
+              <p role="status">
+                Extract {externalPackage.extract_id} created with{" "}
+                {externalPackage.package.length} exact dataset revision(s).
+              </p>
+            ) : null}
+            {externalExtracts.length ? (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Extract</th>
+                    <th>Destination</th>
+                    <th>Revisions</th>
+                    <th>Remote copy</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {externalExtracts.map((row) => (
+                    <tr key={row.object_id}>
+                      <td>{row.object_id}</td>
+                      <td>{row.data.destination}</td>
+                      <td>{row.data.dataset_revisions.join(", ")}</td>
+                      <td>{words(row.data.remote_copy_status)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             ) : null}
           </fieldset>
           <fieldset aria-label="Sharing and publication">

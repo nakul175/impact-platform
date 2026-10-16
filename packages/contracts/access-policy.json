@@ -7335,6 +7335,111 @@
       "audit": false
     },
     {
+      "operation_id": "create_evaluation_recommendation",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evaluation-recommendations",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "read_evaluation_recommendation",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/evaluation-recommendations/{object_id}",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "respond_to_evaluation_recommendation",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evaluation-recommendations/{object_id}/response",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "read_management_action",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/management-actions/{object_id}",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "read_management_action_history",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/management-actions/{object_id}/history",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "complete_management_action",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/management-actions/{object_id}/actions/complete",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "escalate_overdue_management_action",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/management-actions/{object_id}/actions/escalate-overdue",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
       "operation_id": "create_qualitative_codebook",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/qualitative-codebooks",

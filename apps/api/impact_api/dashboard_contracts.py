@@ -80,7 +80,11 @@ IMPLEMENTED = {
     ("post", "learning-questions/{object_id}/actions/reopen"),
     ("get", "learning-questions/{object_id}/summary"),
     ("post", "learning-questions/{object_id}/actions/consider-context"),
+    ("post", "evaluation-recommendations"),
+    ("get", "evaluation-recommendations/{object_id}"),
     ("post", "evaluation-recommendations/{object_id}/response"),
+    ("get", "management-actions/{object_id}"),
+    ("get", "management-actions/{object_id}/history"),
     ("post", "management-actions/{object_id}/actions/complete"),
     ("post", "management-actions/{object_id}/actions/escalate-overdue"),
     ("post", "qualitative-codebooks"),
@@ -1263,6 +1267,87 @@ def augment(spec, policy):
         ["operation_id", "expected_revision", "data"],
     )
     schemas["LearningQuestionSummary"] = {"type": "object"}
+    schemas["EvaluationRecommendationCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "title": {"type": "string", "minLength": 1, "maxLength": 200},
+                    "recommendation": {"type": "string", "minLength": 1, "maxLength": 4000},
+                    "source_object_id": UUID,
+                    "source_revision": UUID,
+                    "rationale": {"type": "string", "minLength": 1, "maxLength": 2000},
+                },
+                ["title", "recommendation", "source_object_id", "source_revision", "rationale"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    recommendation_data = deepcopy(schemas["EvaluationRecommendationCreate"]["properties"]["data"])
+    schemas["EvaluationRecommendationResource"] = closed(
+        {**resource_base, "data": recommendation_data}, resource_required + ["data"]
+    )
+    management_action_data = closed(
+        {
+            "management_response_id": UUID,
+            "accepted_scope": {"type": "string", "minLength": 1, "maxLength": 4000},
+            "owner_id": UUID,
+            "due_date": {"type": "string", "format": "date"},
+            "required_completion_evidence": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "items": {"type": "string", "minLength": 1, "maxLength": 500},
+            },
+            "completion_evidence": {
+                "type": "array",
+                "maxItems": 20,
+                "items": evidence_pin,
+            },
+            "action_completion": {"enum": ["PENDING", "COMPLETE"]},
+            "outcome_improvement": {"const": "PENDING_FOLLOW_UP_MEASUREMENT"},
+            "escalation": {"type": "object"},
+        },
+        [
+            "management_response_id",
+            "accepted_scope",
+            "owner_id",
+            "due_date",
+            "required_completion_evidence",
+            "completion_evidence",
+            "action_completion",
+            "outcome_improvement",
+        ],
+    )
+    schemas["ManagementActionResource"] = closed(
+        {**resource_base, "data": management_action_data}, resource_required + ["data"]
+    )
+    schemas["ManagementActionHistory"] = closed(
+        {
+            "object_id": UUID,
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": closed(
+                    {
+                        "revision_id": UUID,
+                        "predecessor_revision": NULLABLE_UUID,
+                        "revision_number": {"type": "integer", "minimum": 1},
+                        "payload": management_action_data,
+                        "created_at": {"type": "string", "format": "date-time"},
+                    },
+                    [
+                        "revision_id",
+                        "predecessor_revision",
+                        "revision_number",
+                        "payload",
+                        "created_at",
+                    ],
+                ),
+            },
+        },
+        ["object_id", "items"],
+    )
     schemas["ManagementResponseCreate"] = closed(
         {
             "operation_id": UUID,
@@ -2912,6 +2997,49 @@ def augment(spec, policy):
         "parameters": deepcopy(dashboard_item["parameters"]),
         "get": learning_summary,
     }
+    recommendation_create = deepcopy(analysis_create)
+    recommendation_create.update(
+        operationId="create_evaluation_recommendation",
+        summary="Create an issued recommendation pinned to exact evidence",
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
+    )
+    recommendation_create["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationRecommendationCreate"
+    }
+    paths[prefix + "evaluation-recommendations"] = {"post": recommendation_create}
+    for route, operation, summary, response_schema in [
+        (
+            "evaluation-recommendations/{object_id}",
+            "read_evaluation_recommendation",
+            "Read one issued evaluation recommendation",
+            "EvaluationRecommendationResource",
+        ),
+        (
+            "management-actions/{object_id}",
+            "read_management_action",
+            "Read one management action",
+            "ManagementActionResource",
+        ),
+        (
+            "management-actions/{object_id}/history",
+            "read_management_action_history",
+            "Read immutable management action history",
+            "ManagementActionHistory",
+        ),
+    ]:
+        entry = deepcopy(preview)
+        entry.update(
+            operationId=operation,
+            summary=summary,
+            **{"x-capability": "evaluations.read", "x-contract-version": VERSION},
+        )
+        entry["responses"]["200"]["content"]["application/json"]["schema"] = {
+            "$ref": f"#/components/schemas/{response_schema}"
+        }
+        paths[prefix + route] = {
+            "parameters": deepcopy(dashboard_item["parameters"]),
+            "get": entry,
+        }
     for route, schema_name, operation in [
         (
             "evaluation-recommendations/{object_id}/response",
@@ -3348,6 +3476,55 @@ def augment(spec, policy):
             False,
         ),
         (
+            "create_evaluation_recommendation",
+            "POST",
+            prefix + "evaluation-recommendations",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "read_evaluation_recommendation",
+            "GET",
+            prefix + "evaluation-recommendations/{object_id}",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "respond_to_evaluation_recommendation",
+            "POST",
+            prefix + "evaluation-recommendations/{object_id}/response",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "read_management_action",
+            "GET",
+            prefix + "management-actions/{object_id}",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "read_management_action_history",
+            "GET",
+            prefix + "management-actions/{object_id}/history",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "complete_management_action",
+            "POST",
+            prefix + "management-actions/{object_id}/actions/complete",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "escalate_overdue_management_action",
+            "POST",
+            prefix + "management-actions/{object_id}/actions/escalate-overdue",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
             "create_qualitative_codebook",
             "POST",
             prefix + "qualitative-codebooks",
@@ -3440,6 +3617,13 @@ def augment(spec, policy):
                     ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "ANALYST"]
                     if op
                     in {
+                        "create_evaluation_recommendation",
+                        "read_evaluation_recommendation",
+                        "respond_to_evaluation_recommendation",
+                        "read_management_action",
+                        "read_management_action_history",
+                        "complete_management_action",
+                        "escalate_overdue_management_action",
                         "create_analysis_package",
                         "register_analysis_result",
                         "create_learning_question",

@@ -37397,6 +37397,525 @@
         ]
       }
     },
+    "/v1/tenants/{tenant_id}/evaluation-recommendations": {
+      "post": {
+        "operationId": "create_evaluation_recommendation",
+        "summary": "Create an issued recommendation pinned to exact evidence",
+        "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
+        "x-capability": "evaluations.draft.edit",
+        "responses": {
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationRecommendationCreate"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sessionCookie": [],
+            "csrfToken": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "x-contract-version": "1.33.0",
+        "x-audit-required": true
+      }
+    },
+    "/v1/tenants/{tenant_id}/evaluation-recommendations/{object_id}": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "read_evaluation_recommendation",
+        "summary": "Read one issued evaluation recommendation",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "evaluations.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationRecommendationResource"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.33.0",
+        "parameters": [
+          {
+            "name": "viewport",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "DESKTOP",
+                "MOBILE",
+                "TABLE"
+              ],
+              "default": "DESKTOP"
+            }
+          },
+          {
+            "name": "drill_level",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "PORTFOLIO",
+                "PARTNER",
+                "PROGRAMME"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/v1/tenants/{tenant_id}/management-actions/{object_id}": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "read_management_action",
+        "summary": "Read one management action",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "evaluations.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManagementActionResource"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.33.0",
+        "parameters": [
+          {
+            "name": "viewport",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "DESKTOP",
+                "MOBILE",
+                "TABLE"
+              ],
+              "default": "DESKTOP"
+            }
+          },
+          {
+            "name": "drill_level",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "PORTFOLIO",
+                "PARTNER",
+                "PROGRAMME"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/v1/tenants/{tenant_id}/management-actions/{object_id}/history": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "read_management_action_history",
+        "summary": "Read immutable management action history",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "evaluations.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManagementActionHistory"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.33.0",
+        "parameters": [
+          {
+            "name": "viewport",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "DESKTOP",
+                "MOBILE",
+                "TABLE"
+              ],
+              "default": "DESKTOP"
+            }
+          },
+          {
+            "name": "drill_level",
+            "in": "query",
+            "schema": {
+              "enum": [
+                "PORTFOLIO",
+                "PARTNER",
+                "PROGRAMME"
+              ]
+            }
+          }
+        ]
+      }
+    },
     "/v1/tenants/{tenant_id}/evaluation-recommendations/{object_id}/response": {
       "parameters": [
         {
@@ -89820,6 +90339,408 @@
       },
       "LearningQuestionSummary": {
         "type": "object"
+      },
+      "EvaluationRecommendationCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "recommendation": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "source_object_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "source_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "rationale": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "title",
+              "recommendation",
+              "source_object_id",
+              "source_revision",
+              "rationale"
+            ]
+          }
+        },
+        "required": [
+          "operation_id",
+          "data"
+        ]
+      },
+      "EvaluationRecommendationResource": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "schema_version": {
+            "type": "string"
+          },
+          "lifecycle_state": {
+            "type": "string"
+          },
+          "classification": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "recommendation": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "source_object_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "source_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "rationale": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "title",
+              "recommendation",
+              "source_object_id",
+              "source_revision",
+              "rationale"
+            ]
+          }
+        },
+        "required": [
+          "object_id",
+          "tenant_id",
+          "revision_id",
+          "schema_version",
+          "lifecycle_state",
+          "classification",
+          "created_at",
+          "created_by",
+          "updated_at",
+          "updated_by",
+          "data"
+        ]
+      },
+      "ManagementActionResource": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "schema_version": {
+            "type": "string"
+          },
+          "lifecycle_state": {
+            "type": "string"
+          },
+          "classification": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "management_response_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "accepted_scope": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "owner_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "due_date": {
+                "type": "string",
+                "format": "date"
+              },
+              "required_completion_evidence": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 500
+                }
+              },
+              "completion_evidence": {
+                "type": "array",
+                "maxItems": 20,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "object_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "object_id",
+                    "revision_id"
+                  ]
+                }
+              },
+              "action_completion": {
+                "enum": [
+                  "PENDING",
+                  "COMPLETE"
+                ]
+              },
+              "outcome_improvement": {
+                "const": "PENDING_FOLLOW_UP_MEASUREMENT"
+              },
+              "escalation": {
+                "type": "object"
+              }
+            },
+            "required": [
+              "management_response_id",
+              "accepted_scope",
+              "owner_id",
+              "due_date",
+              "required_completion_evidence",
+              "completion_evidence",
+              "action_completion",
+              "outcome_improvement"
+            ]
+          }
+        },
+        "required": [
+          "object_id",
+          "tenant_id",
+          "revision_id",
+          "schema_version",
+          "lifecycle_state",
+          "classification",
+          "created_at",
+          "created_by",
+          "updated_at",
+          "updated_by",
+          "data"
+        ]
+      },
+      "ManagementActionHistory": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "predecessor_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "uuid"
+                },
+                "revision_number": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "payload": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "management_response_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "accepted_scope": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4000
+                    },
+                    "owner_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "due_date": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "required_completion_evidence": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 20,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 500
+                      }
+                    },
+                    "completion_evidence": {
+                      "type": "array",
+                      "maxItems": 20,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "object_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "revision_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          }
+                        },
+                        "required": [
+                          "object_id",
+                          "revision_id"
+                        ]
+                      }
+                    },
+                    "action_completion": {
+                      "enum": [
+                        "PENDING",
+                        "COMPLETE"
+                      ]
+                    },
+                    "outcome_improvement": {
+                      "const": "PENDING_FOLLOW_UP_MEASUREMENT"
+                    },
+                    "escalation": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "management_response_id",
+                    "accepted_scope",
+                    "owner_id",
+                    "due_date",
+                    "required_completion_evidence",
+                    "completion_evidence",
+                    "action_completion",
+                    "outcome_improvement"
+                  ]
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "revision_id",
+                "predecessor_revision",
+                "revision_number",
+                "payload",
+                "created_at"
+              ]
+            }
+          }
+        },
+        "required": [
+          "object_id",
+          "items"
+        ]
       },
       "ManagementResponseCreate": {
         "type": "object",

@@ -2168,6 +2168,44 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.post("/v1/tenants/{tenant}/evaluation-recommendations", status_code=201)
+    async def evaluation_recommendation_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("EvaluationRecommendationCreate", body)
+        return await run_in_threadpool(
+            management_responses.create_recommendation,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/evaluation-recommendations/{obj}")
+    def evaluation_recommendation_read(request: Request, tenant: str, obj: str):
+        return management_responses.read(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            "EvaluationRecommendation",
+            "read_evaluation_recommendation",
+        )
+
+    @app.get("/v1/tenants/{tenant}/management-actions/{obj}")
+    def management_action_read(request: Request, tenant: str, obj: str):
+        return management_responses.read(
+            auth.resolve(request), uuid(tenant), uuid(obj), "ManagementAction", "read_management_action"
+        )
+
+    @app.get("/v1/tenants/{tenant}/management-actions/{obj}/history")
+    def management_action_history(request: Request, tenant: str, obj: str):
+        return management_responses.history(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            "ManagementAction",
+            "read_management_action_history",
+        )
+
     @app.post("/v1/tenants/{tenant}/evaluation-recommendations/{obj}/response", status_code=201)
     async def management_response_create(request: Request, tenant: str, obj: str):
         body = await strict_body(request)

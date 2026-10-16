@@ -582,6 +582,32 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-14",
+      "change_id": "APL-639-MANAGEMENT-RESPONSE-COMPLETION",
+      "change": "Accountable recommendation response and immutable action follow-through",
+      "paths": [
+        "infrastructure/migrations/0112_management_response_kinds.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/management_responses.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers recommendation, response and action kinds behind restrictive worker fences; exposes only explicit evaluation operations; pins recommendation and completion to exact current Evidence revisions; expires uncertain-operation receipts; creates owned dated actions for accepted scope; and preserves immutable action history while outcome improvement remains pending follow-up measurement.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [
@@ -595,7 +621,8 @@
     "qualification/test_learning_agenda_live.py",
     "qualification/test_cumulative_difference_live.py",
     "qualification/test_triangulated_findings_live.py",
-    "qualification/test_budget_versions_live.py"
+    "qualification/test_budget_versions_live.py",
+    "qualification/test_management_responses_live.py"
   ],
   "notes": [
     "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."

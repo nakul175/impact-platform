@@ -241,6 +241,8 @@
 | POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/review` | `evaluations.draft.edit` |
 | GET | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/history` | `evaluations.read` |
 | POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/sample-export` | `evaluations.read` |
+| POST | `/v1/tenants/{tenant_id}/evaluation-recommendations` | `evaluations.draft.edit` |
+| GET | `/v1/tenants/{tenant_id}/evaluation-recommendations/{object_id}` | `evaluations.read` |
 | POST | `/v1/tenants/{tenant_id}/evaluation-recommendations/{object_id}/response` | `evaluations.draft.edit` |
 | GET | `/v1/tenants/{tenant_id}/evaluations` | `evaluations.read` |
 | POST | `/v1/tenants/{tenant_id}/evaluations` | `dashboards.draft.create` |
@@ -330,8 +332,10 @@
 | GET | `/v1/tenants/{tenant_id}/learning-questions/{object_id}/summary` | `evaluations.read` |
 | GET | `/v1/tenants/{tenant_id}/lineage-manifests` | `lineage-manifests.read` |
 | GET | `/v1/tenants/{tenant_id}/lineage-manifests/{object_id}` | `lineage-manifests.read` |
+| GET | `/v1/tenants/{tenant_id}/management-actions/{object_id}` | `evaluations.read` |
 | POST | `/v1/tenants/{tenant_id}/management-actions/{object_id}/actions/complete` | `evaluations.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/management-actions/{object_id}/actions/escalate-overdue` | `evaluations.draft.edit` |
+| GET | `/v1/tenants/{tenant_id}/management-actions/{object_id}/history` | `evaluations.read` |
 | GET | `/v1/tenants/{tenant_id}/measurement-changes` | `measurement-changes.read` |
 | POST | `/v1/tenants/{tenant_id}/measurement-changes` | `measurement-changes.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/measurement-changes/{object_id}` | `measurement-changes.read` |

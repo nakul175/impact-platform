@@ -7308,3 +7308,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0111_findings_budget_kinds.sql | 5605f320319b9aafd10b0efabcf375a35061805c91b89bf243bc336d96b1c28b |
+
+## Migration0112 — management response registry kinds
+
+`0112_management_response_kinds.sql` SHA256 `dad432b599971e0e0611647354f05125c8399bb90702496a9420705c9c9ae96d`. Schema112 registers `EvaluationRecommendation`, `ManagementResponse` and `ManagementAction` and places all three kinds behind restrictive delivery-worker fences. The authenticated application retains responsibility for exact Evidence revision pins, dated natural-person ownership, immutable response and action history, exact uncertain-operation retries, and follow-up measurement of outcomes. All0001–0111 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0112_management_response_kinds.sql | dad432b599971e0e0611647354f05125c8399bb90702496a9420705c9c9ae96d |

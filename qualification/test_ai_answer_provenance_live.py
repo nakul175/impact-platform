@@ -15,7 +15,9 @@ from impact_api.service import Service
 from impact_api.store import Database
 from test_administration import action
 from test_ai_enablement_live import profile
+from test_forms import temporary_grants
 from test_live_application import expect
+from test_permission_safe_derivatives_live import fresh_evidence
 
 
 @pytest.fixture(autouse=True)
@@ -33,6 +35,24 @@ def _identity(live, db, actor):
             }
         )
     )
+
+
+def _active_grants(live, capability):
+    tenant = live.fixture["tenant_a"]
+    principal = live.fixture["actors"]["author"]["principal_id"]
+    with live.db() as c:
+        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+        return {
+            str(row["object_id"]): str(row["head_revision"])
+            for row in c.execute(
+                "SELECT r.object_id,r.head_revision FROM impact.object_registry r "
+                "JOIN impact.object_revision v ON v.tenant_id=r.tenant_id "
+                "AND v.revision_id=r.head_revision WHERE r.tenant_id=%s "
+                "AND r.object_type='Grant' AND r.lifecycle_state='Active' "
+                "AND v.payload->>'subject_id'=%s AND v.payload->>'capability'=%s",
+                (tenant, principal, capability),
+            ).fetchall()
+        }
 
 
 def test_saved_answer_pins_exact_sources_and_rechecks_current_access_on_replay(live):
@@ -78,12 +98,18 @@ def test_saved_answer_pins_exact_sources_and_rechecks_current_access_on_replay(l
         },
         str(uuid4()),
     )
-    evidence = expect(live.request(live.path("evidence", live.records["evidence_a"]["object_id"])), 200)
+    before_grants = _active_grants(live, "evidence.manage")
+    temporary_grants(live, "author", ["evidence.manage"])
+    owned_grants = _active_grants(live, "evidence.manage")
+    created_grants = set(owned_grants) - set(before_grants)
+    assert len(created_grants) == 1
+    owned_grant_id = created_grants.pop()
+    evidence = fresh_evidence(live)
     dependency = {
         "object_id": evidence["object_id"],
         "revision_id": evidence["revision_id"],
         "object_type": "Evidence",
-        "capability": "evidence.read",
+        "capability": "evidence.manage",
     }
     request = {
         "operation_id": str(uuid4()),
@@ -118,24 +144,16 @@ def test_saved_answer_pins_exact_sources_and_rechecks_current_access_on_replay(l
         "source_object_id": dependency["object_id"],
         "source_revision_id": dependency["revision_id"],
         "source_object_type": "Evidence",
-        "required_capability": "evidence.read",
+        "required_capability": "evidence.manage",
     }
 
-    grant = live.records["grant:author:evidence.read"]
-    with db.transaction(tenant) as c:
-        current_grant_revision = str(
-            c.execute(
-                "SELECT head_revision FROM impact.object_registry WHERE tenant_id=%s AND object_id=%s",
-                (tenant, grant["object_id"]),
-            ).fetchone()["head_revision"]
-        )
     expect(
         action(
             live,
             "grants",
-            grant["object_id"],
+            owned_grant_id,
             "revoke",
-            current_grant_revision,
+            owned_grants[owned_grant_id],
             actor="admin",
         ),
         200,
@@ -149,3 +167,17 @@ def test_saved_answer_pins_exact_sources_and_rechecks_current_access_on_replay(l
     with pytest.raises(DomainError) as copied:
         api.advisory(partner, tenant, request, str(uuid4()))
     assert copied.value.status == 404
+    with live.db() as c:
+        states = {
+            str(row["object_id"]): row["lifecycle_state"]
+            for row in c.execute(
+                "SELECT object_id,lifecycle_state FROM impact.object_registry "
+                "WHERE tenant_id=%s AND object_id=ANY(%s::uuid[])",
+                (
+                    tenant,
+                    [owned_grant_id, live.records["grant:author:evidence.read"]["object_id"]],
+                ),
+            ).fetchall()
+        }
+    assert states[owned_grant_id] == "Revoked"
+    assert states[live.records["grant:author:evidence.read"]["object_id"]] == "Active"

@@ -132,6 +132,17 @@ def test_advisory_records_exact_handling_and_sends_only_minimized_data(live, mon
             "WHERE r.tenant_id=%s AND r.request_id=%s",
             (tenant, request["operation_id"]),
         ).fetchone()["payload"]
+        request_row = c.execute(
+            "SELECT * FROM impact.ai_advisory_request WHERE tenant_id=%s AND request_id=%s",
+            (tenant, request["operation_id"]),
+        ).fetchone()
+    # The original brief is used transiently to derive the minimized provider request. Durable
+    # request state keeps only its fingerprint and governed metadata; it cannot disclose the raw
+    # email, phone or credential-shaped text to a later database reader.
+    durable = repr({**dict(request_row), "fingerprint": "<digest>"}) + repr(reserved)
+    assert "person@example.org" not in durable
+    assert "555-0198" not in durable
+    assert "synthetic-secret" not in durable
     assert reserved["data_handling"] == {
         "purpose": "AI_ADOPTION_ADVISORY",
         "destination": "openai-us",

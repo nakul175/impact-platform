@@ -7095,6 +7095,123 @@
       "independence_required": true
     },
     {
+      "operation_id": "create_evaluation_methodology",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evaluation-methodologies",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "list_evaluation_methodologies",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/evaluation-methodologies",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "read_evaluation_methodology",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_evaluation_methodology_history",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/history",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "amend_evaluation_methodology",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/amend",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "review_evaluation_methodology",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/review",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "independence_required": true
+    },
+    {
+      "operation_id": "export_evaluation_sample",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/sample-export",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
       "operation_id": "create_audit_export",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/audit-exports",

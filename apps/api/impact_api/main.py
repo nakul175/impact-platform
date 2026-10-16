@@ -2021,6 +2021,33 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.get("/v1/tenants/{tenant}/evaluation-methodologies")
+    async def evaluation_methodology_list(
+        request: Request, tenant: str, evaluation_id: str, limit: int = 50, cursor: str | None = None
+    ):
+        return await run_in_threadpool(
+            evaluation_methodology.listing,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(evaluation_id),
+            limit,
+            cursor,
+        )
+
+    @app.get("/v1/tenants/{tenant}/evaluation-methodologies/{obj}")
+    async def evaluation_methodology_read(request: Request, tenant: str, obj: str):
+        return await run_in_threadpool(
+            evaluation_methodology.read, auth.resolve(request), uuid(tenant), uuid(obj)
+        )
+
+    @app.get("/v1/tenants/{tenant}/evaluation-methodologies/{obj}/history")
+    async def evaluation_methodology_history(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return await run_in_threadpool(
+            evaluation_methodology.history, auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor
+        )
+
     @app.post("/v1/tenants/{tenant}/evaluation-methodologies/{obj}/actions/amend")
     async def evaluation_methodology_amend(request: Request, tenant: str, obj: str):
         body = await strict_body(request)

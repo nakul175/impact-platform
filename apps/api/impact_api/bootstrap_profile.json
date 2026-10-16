@@ -254,6 +254,7 @@
       "dashboards.draft.edit",
       "dashboards.read",
       "decisions.read",
+      "evaluations.draft.edit",
       "evaluations.read",
       "evidence.download",
       "evidence.read",

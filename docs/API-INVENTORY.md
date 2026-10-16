@@ -234,10 +234,13 @@
 | GET | `/v1/tenants/{tenant_id}/disclosures` | `disclosures.read` |
 | GET | `/v1/tenants/{tenant_id}/disclosures/{object_id}` | `disclosures.read` |
 | GET | `/v1/tenants/{tenant_id}/effective-entitlements` | `subscriptions.read` |
+| GET | `/v1/tenants/{tenant_id}/evaluation-methodologies` | `evaluations.read` |
 | POST | `/v1/tenants/{tenant_id}/evaluation-methodologies` | `dashboards.draft.create` |
-| POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/amend` | `dashboards.draft.edit` |
-| POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/review` | `dashboards.draft.edit` |
-| POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/sample-export` | `dashboards.read` |
+| GET | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}` | `evaluations.read` |
+| POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/amend` | `evaluations.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/review` | `evaluations.draft.edit` |
+| GET | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/history` | `evaluations.read` |
+| POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/sample-export` | `evaluations.read` |
 | POST | `/v1/tenants/{tenant_id}/evaluation-recommendations/{object_id}/response` | `dashboards.draft.edit` |
 | GET | `/v1/tenants/{tenant_id}/evaluations` | `evaluations.read` |
 | POST | `/v1/tenants/{tenant_id}/evaluations` | `dashboards.draft.create` |
@@ -252,7 +255,7 @@
 | GET | `/v1/tenants/{tenant_id}/evidence/{object_id}/content` | `evidence.download` |
 | POST | `/v1/tenants/{tenant_id}/expenditure-imports` | `dashboards.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/external-analytics-connections` | `dashboards.read` |
-| POST | `/v1/tenants/{tenant_id}/external-analytics-connections` | `dashboards.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/external-analytics-connections` | `evaluations.draft.edit` |
 | GET | `/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}/actions/refresh` | `dashboards.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}/actions/revoke` | `dashboards.draft.edit` |

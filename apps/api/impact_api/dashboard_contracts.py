@@ -66,6 +66,9 @@ IMPLEMENTED = {
     ("get", "evaluations/{object_id}/stage-gates"),
     ("post", "evaluations/{object_id}/actions/stage-gate"),
     ("post", "evaluation-methodologies"),
+    ("get", "evaluation-methodologies"),
+    ("get", "evaluation-methodologies/{object_id}"),
+    ("get", "evaluation-methodologies/{object_id}/history"),
     ("post", "evaluation-methodologies/{object_id}/actions/amend"),
     ("post", "evaluation-methodologies/{object_id}/actions/review"),
     ("post", "evaluation-methodologies/{object_id}/sample-export"),
@@ -911,7 +914,7 @@ def augment(spec, policy):
             "code": {"type": "string", "minLength": 1, "maxLength": 100},
             "eligible_count": {"type": "integer", "minimum": 0},
             "sampled_count": {"type": "integer", "minimum": 0},
-            "weight": NULLABLE_DECIMAL,
+            "weight": {"type": ["string", "null"], "pattern": r"^(0*[1-9][0-9]{0,25})(\.[0-9]{1,12})?$"},
             "nonresponse_count": {"type": "integer", "minimum": 0},
         },
         ["code", "eligible_count", "sampled_count", "weight", "nonresponse_count"],
@@ -947,6 +950,7 @@ def augment(spec, policy):
     schemas["EvaluationMethodologyAmend"] = closed(
         {
             "operation_id": UUID,
+            "expected_revision": UUID,
             "data": closed(
                 {
                     "reason": {"type": "string", "minLength": 1, "maxLength": 1000},
@@ -956,11 +960,12 @@ def augment(spec, policy):
                 ["reason", "relative_to_data_inspection", "changes"],
             ),
         },
-        ["operation_id", "data"],
+        ["operation_id", "expected_revision", "data"],
     )
     schemas["EvaluationMethodologyReview"] = closed(
         {
             "operation_id": UUID,
+            "expected_revision": UUID,
             "data": closed(
                 {
                     "decision": {"enum": ["APPROVE", "REJECT"]},
@@ -969,7 +974,7 @@ def augment(spec, policy):
                 ["decision", "reason"],
             ),
         },
-        ["operation_id", "data"],
+        ["operation_id", "expected_revision", "data"],
     )
     schemas["EvaluationSampleExportRequest"] = closed(
         {
@@ -1006,6 +1011,60 @@ def augment(spec, policy):
             "strata",
             "nonresponse_rules",
         ],
+    )
+    methodology_data = closed(
+        {
+            "evaluation_id": UUID,
+            **methodology_fields,
+            "evaluation_revision": UUID,
+            "methodology_revision": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+            "amendment": {"type": ["object", "null"]},
+            "review_state": {"enum": ["PENDING", "REVIEWED", "REJECTED"]},
+            "review": {"type": ["object", "null"]},
+        },
+        [
+            "evaluation_id",
+            *methodology_fields.keys(),
+            "evaluation_revision",
+            "methodology_revision",
+            "review_state",
+        ],
+    )
+    schemas["EvaluationMethodologyResource"] = closed(
+        {**resource_base, "owner_id": UUID, "data": methodology_data}, resource_required + ["data"]
+    )
+    schemas["EvaluationMethodologyList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/EvaluationMethodologyResource"},
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
+    )
+    schemas["EvaluationMethodologyHistory"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": closed(
+                    {
+                        "revision_id": UUID,
+                        "revision_number": {"type": "integer", "minimum": 1},
+                        "recorded_at": {"type": "string", "format": "date-time"},
+                        "recorded_by": UUID,
+                        "data": methodology_data,
+                    },
+                    ["revision_id", "revision_number", "recorded_at", "recorded_by", "data"],
+                ),
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
     )
     analysis_variable = {
         "enum": [
@@ -2462,7 +2521,7 @@ def augment(spec, policy):
     external_create.update(
         operationId="create_external_analytics_connection",
         summary="Create a dataset-scoped external analytics identity",
-        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     external_create["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/ExternalAnalyticsConnectionCreate"
@@ -2670,7 +2729,45 @@ def augment(spec, policy):
     methodology_create["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/EvaluationMethodologyCreate"
     }
-    paths[prefix + "evaluation-methodologies"] = {"post": methodology_create}
+    methodology_list = deepcopy(evaluation_list)
+    methodology_list.update(
+        operationId="list_evaluation_methodologies", summary="List methodologies for an evaluation"
+    )
+    methodology_list["parameters"] = [
+        p for p in methodology_list.get("parameters", []) if p["name"] != "programme_id"
+    ]
+    methodology_list["parameters"].append(
+        {"name": "evaluation_id", "in": "query", "required": True, "schema": deepcopy(UUID)}
+    )
+    methodology_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationMethodologyList"
+    }
+    paths[prefix + "evaluation-methodologies"] = {"post": methodology_create, "get": methodology_list}
+    methodology_read = deepcopy(evaluation_read)
+    methodology_read.update(
+        operationId="read_evaluation_methodology", summary="Read a current evaluation methodology"
+    )
+    methodology_read["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationMethodologyResource"
+    }
+    paths[prefix + "evaluation-methodologies/{object_id}"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": methodology_read,
+    }
+    methodology_history = deepcopy(methodology_read)
+    methodology_history.update(
+        operationId="list_evaluation_methodology_history", summary="List immutable methodology revisions"
+    )
+    methodology_history["parameters"] = [
+        p for p in deepcopy(evaluation_list.get("parameters", [])) if p["name"] != "programme_id"
+    ]
+    methodology_history["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationMethodologyHistory"
+    }
+    paths[prefix + "evaluation-methodologies/{object_id}/history"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": methodology_history,
+    }
     for action, schema, operation, summary in [
         (
             "amend",
@@ -2689,7 +2786,7 @@ def augment(spec, policy):
         entry.update(
             operationId=operation,
             summary=summary,
-            **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+            **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
         )
         entry["requestBody"]["content"]["application/json"]["schema"] = {
             "$ref": "#/components/schemas/" + schema
@@ -2705,7 +2802,7 @@ def augment(spec, policy):
     sample_export_entry.update(
         operationId="export_evaluation_sample",
         summary="Export a reviewed sample without silently inventing weights",
-        **{"x-capability": "dashboards.read", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.read", "x-contract-version": VERSION},
     )
     sample_export_entry["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/EvaluationSampleExportRequest"
@@ -3128,6 +3225,55 @@ def augment(spec, policy):
             "evaluations.draft.edit",
             True,
         ),
+        (
+            "create_evaluation_methodology",
+            "POST",
+            prefix + "evaluation-methodologies",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "list_evaluation_methodologies",
+            "GET",
+            prefix + "evaluation-methodologies",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "read_evaluation_methodology",
+            "GET",
+            prefix + "evaluation-methodologies/{object_id}",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "list_evaluation_methodology_history",
+            "GET",
+            prefix + "evaluation-methodologies/{object_id}/history",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "amend_evaluation_methodology",
+            "POST",
+            prefix + "evaluation-methodologies/{object_id}/actions/amend",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "review_evaluation_methodology",
+            "POST",
+            prefix + "evaluation-methodologies/{object_id}/actions/review",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "export_evaluation_sample",
+            "POST",
+            prefix + "evaluation-methodologies/{object_id}/sample-export",
+            "evaluations.read",
+            False,
+        ),
     ]:
         policy["operations"] = [row for row in policy["operations"] if row["operation_id"] != op]
         policy["operations"].append(
@@ -3138,12 +3284,24 @@ def augment(spec, policy):
                 "capability": cap,
                 "role_templates": (
                     ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "ANALYST"]
-                    if op in {"create_evaluation_registration", "evaluate_evaluation_stage_gate"}
+                    if op
+                    in {
+                        "create_evaluation_registration",
+                        "evaluate_evaluation_stage_gate",
+                        "create_evaluation_methodology",
+                        "amend_evaluation_methodology",
+                    }
+                    else ["MEL_ADMIN", "PROGRAMME_MANAGER", "REVIEWER"]
+                    if op == "review_evaluation_methodology"
                     else ROLES
                 ),
                 "purpose_required": False,
                 "fresh_assurance_seconds": None,
                 "audit": audit_event,
-                **({"independence_required": True} if op == "evaluate_evaluation_stage_gate" else {}),
+                **(
+                    {"independence_required": True}
+                    if op in {"evaluate_evaluation_stage_gate", "review_evaluation_methodology"}
+                    else {}
+                ),
             }
         )

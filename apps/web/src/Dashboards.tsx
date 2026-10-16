@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { PortfolioPanel } from "./Portfolio";
 import { EvaluationRegistry } from "./EvaluationRegistry";
+import { EvaluationMethodologies } from "./EvaluationMethodologies";
 import { tabListKeys } from "./a11y";
 
 type Props = {
@@ -983,6 +984,12 @@ export function DashboardsPanel({
   return (
     <section className="dashboards" aria-label="Dashboards">
       <EvaluationRegistry
+        base={base}
+        capabilities={capabilities}
+        request={request}
+        explain={explain}
+      />
+      <EvaluationMethodologies
         base={base}
         capabilities={capabilities}
         request={request}

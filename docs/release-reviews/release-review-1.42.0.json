@@ -446,12 +446,40 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-09",
+      "change_id": "APL-630-METHODOLOGY-COMPLETION",
+      "change": "Versioned sampling methodology and independently reviewed expansion",
+      "paths": [
+        "infrastructure/migrations/0106_evaluation_methodology_kind.sql",
+        "infrastructure/migrations/0107_evaluation_methodology_access_profile.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/evaluation_methodology.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers methodologies behind worker fences; rechecks bound evaluation authority; requires expected revisions and natural-person independent review; refuses missing/non-positive weights, invalid nonresponse and unweighted population claims; registers the exact profile without activation.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [
     "docs/current/threat-register.json",
     "qualification/test_effective_access_unit.py",
-    "qualification/test_evaluation_registry_unit.py"
+    "qualification/test_evaluation_registry_unit.py",
+    "qualification/test_evaluation_methodology_unit.py"
   ],
   "notes": [
     "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."

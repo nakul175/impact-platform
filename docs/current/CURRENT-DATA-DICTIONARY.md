@@ -7260,3 +7260,19 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0105_evaluation_access_profile.sql | a69e5986cf443a781415fd5eb9ca1464cfbf127ec86492216ff637c129c23915 |
+
+## Migration0106 — evaluation methodology registry
+
+`0106_evaluation_methodology_kind.sql` SHA256 `8184185bd2e9cb2a398a8f4b705664740247867cd4ad2f06b799218697fd7fc7`. Schema106 registers `EvaluationMethodology` and restrictive delivery-worker fences. All0001–0105 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0106_evaluation_methodology_kind.sql | 8184185bd2e9cb2a398a8f4b705664740247867cd4ad2f06b799218697fd7fc7 |
+
+## Migration0107 — evaluation methodology access profile
+
+`0107_evaluation_methodology_access_profile.sql` SHA256 `96d9b3dc8e78d395fa303a3b8c9d6388f92c63701a85841fce45065f7c3ab108`. Schema107 registers generated profile hash `1f2160829251bbe5201d9285080a21a9620d1420ee083b058177e4b37e7c1248` without activating it for existing tenants. All0001–0106 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0107_evaluation_methodology_access_profile.sql | 96d9b3dc8e78d395fa303a3b8c9d6388f92c63701a85841fce45065f7c3ab108 |

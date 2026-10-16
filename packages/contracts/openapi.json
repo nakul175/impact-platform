@@ -47208,7 +47208,7 @@
         "operationId": "create_external_analytics_connection",
         "summary": "Create a dataset-scoped external analytics identity",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -48873,6 +48873,366 @@
         ],
         "x-contract-version": "1.33.0",
         "x-audit-required": true
+      },
+      "get": {
+        "operationId": "list_evaluation_methodologies",
+        "summary": "List methodologies for an evaluation",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "evaluations.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationMethodologyList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          },
+          {
+            "name": "evaluation_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "x-contract-version": "1.33.0"
+      }
+    },
+    "/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "read_evaluation_methodology",
+        "summary": "Read a current evaluation methodology",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "evaluations.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationMethodologyResource"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.33.0"
+      }
+    },
+    "/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/history": {
+      "parameters": [
+        {
+          "name": "tenant_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        {
+          "name": "object_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "list_evaluation_methodology_history",
+        "summary": "List immutable methodology revisions",
+        "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
+        "x-capability": "evaluations.read",
+        "responses": {
+          "200": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationMethodologyHistory"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Successful bounded response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "AUTH_REQUIRED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RESOURCE_UNAVAILABLE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "CONFLICT_VERSION",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "VALIDATION_FAILED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "LIMIT_EXCEEDED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SERVICE_UNAVAILABLE (design name DEPENDENCY_UNAVAILABLE): a required dependency failed; retryable, with reason_code when the cause is known.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-contract-version": "1.33.0",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 4096
+            }
+          }
+        ]
       }
     },
     "/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/amend": {
@@ -48900,7 +49260,7 @@
         "operationId": "amend_evaluation_methodology",
         "summary": "Amend methodology with inspection-relative timing",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.edit",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "200": {
             "description": "Successful bounded response",
@@ -49031,7 +49391,7 @@
         "operationId": "review_evaluation_methodology",
         "summary": "Review a pending methodology amendment",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.edit",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "200": {
             "description": "Successful bounded response",
@@ -49162,7 +49522,7 @@
         "operationId": "export_evaluation_sample",
         "summary": "Export a reviewed sample without silently inventing weights",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.read",
+        "x-capability": "evaluations.read",
         "responses": {
           "200": {
             "description": "Successful bounded response",
@@ -101374,7 +101734,7 @@
                         "string",
                         "null"
                       ],
-                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                      "pattern": "^(0*[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
                     },
                     "nonresponse_count": {
                       "type": "integer",
@@ -101430,6 +101790,10 @@
         "additionalProperties": false,
         "properties": {
           "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
             "type": "string",
             "format": "uuid"
           },
@@ -101493,7 +101857,7 @@
                             "string",
                             "null"
                           ],
-                          "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                          "pattern": "^(0*[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
                         },
                         "nonresponse_count": {
                           "type": "integer",
@@ -101539,6 +101903,7 @@
         },
         "required": [
           "operation_id",
+          "expected_revision",
           "data"
         ]
       },
@@ -101547,6 +101912,10 @@
         "additionalProperties": false,
         "properties": {
           "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
             "type": "string",
             "format": "uuid"
           },
@@ -101574,6 +101943,7 @@
         },
         "required": [
           "operation_id",
+          "expected_revision",
           "data"
         ]
       },
@@ -101662,7 +102032,7 @@
                     "string",
                     "null"
                   ],
-                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                  "pattern": "^(0*[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
                 },
                 "nonresponse_count": {
                   "type": "integer",
@@ -101695,6 +102065,394 @@
           "population_estimate",
           "strata",
           "nonresponse_rules"
+        ]
+      },
+      "EvaluationMethodologyResource": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "schema_version": {
+            "type": "string"
+          },
+          "lifecycle_state": {
+            "type": "string"
+          },
+          "classification": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "owner_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "evaluation_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "sampling_frame": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "eligibility_rules": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "assignment_method": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "strata": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "eligible_count": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "sampled_count": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "weight": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^(0*[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    "nonresponse_count": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "eligible_count",
+                    "sampled_count",
+                    "weight",
+                    "nonresponse_count"
+                  ]
+                }
+              },
+              "nonresponse_rules": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "analysis_plan": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8000
+              },
+              "expansion_method": {
+                "enum": [
+                  null,
+                  "HORVITZ_THOMPSON",
+                  "POST_STRATIFIED_WEIGHTED_SUM"
+                ]
+              },
+              "evaluation_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "methodology_revision": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]*$"
+              },
+              "amendment": {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "review_state": {
+                "enum": [
+                  "PENDING",
+                  "REVIEWED",
+                  "REJECTED"
+                ]
+              },
+              "review": {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "evaluation_id",
+              "sampling_frame",
+              "eligibility_rules",
+              "assignment_method",
+              "strata",
+              "nonresponse_rules",
+              "analysis_plan",
+              "expansion_method",
+              "evaluation_revision",
+              "methodology_revision",
+              "review_state"
+            ]
+          }
+        },
+        "required": [
+          "object_id",
+          "tenant_id",
+          "revision_id",
+          "schema_version",
+          "lifecycle_state",
+          "classification",
+          "created_at",
+          "created_by",
+          "updated_at",
+          "updated_by",
+          "data"
+        ]
+      },
+      "EvaluationMethodologyList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/EvaluationMethodologyResource"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "scope_label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor",
+          "scope_label"
+        ]
+      },
+      "EvaluationMethodologyHistory": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_number": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "recorded_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "recorded_by": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "data": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "evaluation_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "sampling_frame": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4000
+                    },
+                    "eligibility_rules": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4000
+                    },
+                    "assignment_method": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4000
+                    },
+                    "strata": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 100,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "code": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "eligible_count": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "sampled_count": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "weight": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "pattern": "^(0*[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                          },
+                          "nonresponse_count": {
+                            "type": "integer",
+                            "minimum": 0
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "eligible_count",
+                          "sampled_count",
+                          "weight",
+                          "nonresponse_count"
+                        ]
+                      }
+                    },
+                    "nonresponse_rules": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4000
+                    },
+                    "analysis_plan": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 8000
+                    },
+                    "expansion_method": {
+                      "enum": [
+                        null,
+                        "HORVITZ_THOMPSON",
+                        "POST_STRATIFIED_WEIGHTED_SUM"
+                      ]
+                    },
+                    "evaluation_revision": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "methodology_revision": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$"
+                    },
+                    "amendment": {
+                      "type": [
+                        "object",
+                        "null"
+                      ]
+                    },
+                    "review_state": {
+                      "enum": [
+                        "PENDING",
+                        "REVIEWED",
+                        "REJECTED"
+                      ]
+                    },
+                    "review": {
+                      "type": [
+                        "object",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "evaluation_id",
+                    "sampling_frame",
+                    "eligibility_rules",
+                    "assignment_method",
+                    "strata",
+                    "nonresponse_rules",
+                    "analysis_plan",
+                    "expansion_method",
+                    "evaluation_revision",
+                    "methodology_revision",
+                    "review_state"
+                  ]
+                }
+              },
+              "required": [
+                "revision_id",
+                "revision_number",
+                "recorded_at",
+                "recorded_by",
+                "data"
+              ]
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "scope_label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor",
+          "scope_label"
         ]
       },
       "AnalysisPackageCreate": {

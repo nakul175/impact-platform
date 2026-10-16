@@ -112,6 +112,8 @@ def main():
         },
         "all_three_intersection": total,
         "runtime_blocked": mapping["blocked_reserved_use_cases"],
+        "default_disabled_use_cases": mapping.get("default_disabled_use_cases", []),
+        "reviewed_runtime_requirement": mapping.get("reviewed_runtime_requirement"),
         "owner_acceptance_count": 0,
         "stories": results,
     }

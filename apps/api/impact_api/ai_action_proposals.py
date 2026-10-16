@@ -5,6 +5,7 @@ from uuid import UUID, uuid4
 from psycopg.types.json import Jsonb
 
 from . import ai_policy
+from .ai_runtime_activation import activated
 from .ai_safety import require_available
 from .domain import DomainError
 from .service import revision
@@ -60,6 +61,7 @@ class AIActionProposals:
                 body["language"],
                 (),
                 PURPOSE,
+                activated_use_cases=activated(self.service),
             )
             require_available(c, tenant, USE_CASE, self.destination, self.configuration)
             self.service.validate_data(c, ctx, "WorkItem", body["after_values"], ctx.principal_id)
@@ -146,6 +148,7 @@ class AIActionProposals:
                 body["language"],
                 (),
                 PURPOSE,
+                activated_use_cases=activated(self.service),
             )
             require_available(c, tenant, USE_CASE, self.destination, self.configuration)
 

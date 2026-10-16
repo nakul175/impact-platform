@@ -830,6 +830,39 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-24",
+      "change_id": "REVIEWED-LOCAL-AI-ACTIVATION",
+      "change": "Default-off explicit reviewed local activation with real tenant policy and shutdown checks",
+      "paths": [
+        "apps/api/impact_api/ai_runtime_activation.py",
+        "apps/api/impact_api/ai_policy.py",
+        "apps/api/impact_api/ai_indicator_design.py",
+        "apps/api/impact_api/ai_import_assistance.py",
+        "apps/api/impact_api/ai_evidence_questions.py",
+        "apps/api/impact_api/ai_numeric_analysis.py",
+        "apps/api/impact_api/ai_qualitative_assistance.py",
+        "apps/api/impact_api/ai_proactive_findings.py",
+        "apps/api/impact_api/ai_action_proposals.py",
+        "apps/api/impact_api/config.py"
+      ],
+      "areas": [
+        "ai-module",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH23",
+        "TH24",
+        "TH28",
+        "TH29"
+      ],
+      "summary": "Owner authorized local activation repair. A strict server-owned closed allowlist permits these seven deterministic assistance handlers only in development/test. Both policy persistence and every runtime require explicit activation, so previously enabled stored policies cannot bypass a narrower process configuration. Tenant policy versions, class/destination/language/tool/purpose checks, current authority and safety shutdown checks remain real. Nonempty allowlists in staging/production fail settings construction. No provider call, production activation, migration or spending change. Seven external HTTP scenarios exercise their ordinary effect/refusal/recovery journeys and actual config rollback, tenant-policy disablement and safety shutdown. Manual activation approval is not human security/release signoff.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [

@@ -38,14 +38,19 @@ def component_services(live, monkeypatch):
     synthetic_policy = {"version": 1, "use_cases": {}}
     policy_calls = []
 
-    def synthetic_require(policy, use_case, version, classification, *rest):
+    def synthetic_require(policy, use_case, version, classification, *rest, **kwargs):
         policy_calls.append((use_case, version, classification))
 
     monkeypatch.setattr(ai_qualitative_assistance.ai_policy, "in_force", lambda *_: synthetic_policy)
     monkeypatch.setattr(ai_qualitative_assistance.ai_policy, "require", synthetic_require)
     for module in (ai_qualitative_assistance, ai_proactive_findings, ai_action_proposals):
         monkeypatch.setattr(module, "require_available", lambda *_: None)
-    settings = Settings(**live.config)
+    settings = Settings(
+        **{
+            **live.config,
+            "ai_reviewed_use_cases": "QUALITATIVE_ASSISTANCE,PROACTIVE_FINDINGS,ACTION_PROPOSAL",
+        }
+    )
     database = Database(settings)
     service = Service(settings, database)
     return SimpleNamespace(

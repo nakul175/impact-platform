@@ -6,6 +6,7 @@ from uuid import UUID, uuid4
 from psycopg.types.json import Jsonb
 
 from . import ai_policy
+from .ai_runtime_activation import activated
 from .ai_safety import require_available
 from .domain import DomainError
 from .service import revision
@@ -72,6 +73,7 @@ class AIQualitativeAssistance:
                 body["language"],
                 (),
                 PURPOSE,
+                activated_use_cases=activated(self.service),
             )
             require_available(c, tenant, USE_CASE, self.destination, self.configuration)
             allowed_codes = {
@@ -199,6 +201,7 @@ class AIQualitativeAssistance:
                 suggestion["source_language"],
                 (),
                 PURPOSE,
+                activated_use_cases=activated(self.service),
             )
             require_available(c, tenant, USE_CASE, self.destination, self.configuration)
             codebook = revision(
@@ -338,6 +341,7 @@ class AIQualitativeAssistance:
             body["language"],
             (),
             PURPOSE,
+            activated_use_cases=activated(self.service),
         )
         require_available(c, ctx.tenant_id, USE_CASE, self.destination, self.configuration)
 

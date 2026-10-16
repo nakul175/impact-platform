@@ -38,10 +38,21 @@ def isolated_reserved_assistance_gate(live, monkeypatch):
         ai_numeric_analysis,
     )
     monkeypatch.setattr(ai_indicator_design.ai_policy, "in_force", lambda *_: synthetic_policy)
-    monkeypatch.setattr(ai_indicator_design.ai_policy, "require", lambda *_: None)
+    monkeypatch.setattr(ai_indicator_design.ai_policy, "require", lambda *_, **kwargs: None)
     for module in modules:
         monkeypatch.setattr(module, "require_available", lambda *_: None)
-    monkeypatch.setattr(Settings, "load", classmethod(lambda cls: Settings(**live.config)))
+    monkeypatch.setattr(
+        Settings,
+        "load",
+        classmethod(
+            lambda cls: Settings(
+                **{
+                    **live.config,
+                    "ai_reviewed_use_cases": "INDICATOR_DESIGN,IMPORT_CLEANING,EVIDENCE_QUESTION,NUMERIC_ANALYSIS",
+                }
+            )
+        ),
+    )
     with TestClient(create_app()) as client:
         live.assistance_component_client = client
         try:

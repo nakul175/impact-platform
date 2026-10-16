@@ -1,14 +1,6 @@
 {
-  "scope": "Bounded local positive, refusal and error/recovery journeys; not all frozen assertions, hosted CI, native concurrency, browser or human acceptance",
-  "blocked_reserved_use_cases": [
-    "APL-533",
-    "APL-535",
-    "APL-537",
-    "APL-538",
-    "APL-597",
-    "APL-601",
-    "APL-541"
-  ],
+  "scope": "Bounded local positive, refusal and error/recovery journeys; seven assistance cases require explicitly reviewed local runtime activation. Not all frozen assertions, hosted CI, native concurrency, browser or human acceptance.",
+  "blocked_reserved_use_cases": [],
   "stories": {
     "APL-351": {
       "test_file": "qualification/test_natural_person_independence_live.py",
@@ -715,7 +707,101 @@
         "authorization_refusal",
         "error_recovery"
       ]
+    },
+    "APL-533": {
+      "test_file": "qualification/test_ai_reviewed_activation_live.py",
+      "nodes": [
+        "test_apl_533_indicator_proposal_refusal_is_atomic_then_valid_draft_recovers"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
+      ],
+      "runtime": "real loopback HTTP subprocess; no policy/safety substitutions; default runtime/tenant-disabled/shutdown refusal probes"
+    },
+    "APL-535": {
+      "test_file": "qualification/test_ai_reviewed_activation_live.py",
+      "nodes": [
+        "test_apl_535_import_diff_applies_only_selected_change_and_recovers_atomically"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
+      ],
+      "runtime": "real loopback HTTP subprocess; no policy/safety substitutions; default runtime/tenant-disabled/shutdown refusal probes"
+    },
+    "APL-537": {
+      "test_file": "qualification/test_ai_reviewed_activation_live.py",
+      "nodes": [
+        "test_apl_537_supported_question_cites_exact_results_and_hidden_selector_abstains"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
+      ],
+      "runtime": "real loopback HTTP subprocess; no policy/safety substitutions; default runtime/tenant-disabled/shutdown refusal probes"
+    },
+    "APL-538": {
+      "test_file": "qualification/test_ai_reviewed_activation_live.py",
+      "nodes": [
+        "test_apl_538_typed_pooling_refuses_mismatched_claim_then_recovers_without_writes"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
+      ],
+      "runtime": "real loopback HTTP subprocess; no policy/safety substitutions; default runtime/tenant-disabled/shutdown refusal probes"
+    },
+    "APL-597": {
+      "test_file": "qualification/test_ai_reviewed_activation_live.py",
+      "nodes": [
+        "test_apl_597_source_bound_suggestions_refuse_fabrication_and_recover"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
+      ],
+      "runtime": "real loopback HTTP subprocess; no policy/safety substitutions; default runtime/tenant-disabled/shutdown refusal probes"
+    },
+    "APL-601": {
+      "test_file": "qualification/test_ai_reviewed_activation_live.py",
+      "nodes": [
+        "test_apl_601_suggestions_remain_unconfirmed_and_disabled_tasks_recover"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
+      ],
+      "runtime": "real loopback HTTP subprocess; no policy/safety substitutions; default runtime/tenant-disabled/shutdown refusal probes"
+    },
+    "APL-541": {
+      "test_file": "qualification/test_ai_reviewed_activation_live.py",
+      "nodes": [
+        "test_apl_541_confirmation_uses_ordinary_command_and_refusal_is_recoverable"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
+      ],
+      "runtime": "real loopback HTTP subprocess; no policy/safety substitutions; default runtime/tenant-disabled/shutdown refusal probes"
     }
   },
-  "status": "SOURCE_REVIEWED_CANDIDATE_MAPPING_EXECUTION_RECEIPT_REQUIRED"
+  "status": "SOURCE_REVIEWED_CANDIDATE_MAPPING_EXECUTION_RECEIPT_REQUIRED",
+  "default_disabled_use_cases": [
+    "APL-533",
+    "APL-535",
+    "APL-537",
+    "APL-538",
+    "APL-597",
+    "APL-601",
+    "APL-541"
+  ],
+  "reviewed_runtime_requirement": "Seven new cases run only under explicit development/test server allowlist and real persisted tenant policy; staging/production activation forbidden."
 }

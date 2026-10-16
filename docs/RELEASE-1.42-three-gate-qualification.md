@@ -1,5 +1,7 @@
 # Release 1.42 — local journey, refusal and recovery qualification
 
+**Preserved checkpoint:** the49/56 results below belong to source645466f. The [reviewed local activation candidate](RELEASE-1.42-reviewed-local-ai-activation.md) extends the test-node map; its final clean-source combined result is recorded separately and is not implied by the historical results below.
+
 ## Delivered
 
 The 56-story review cohort now has an explicit candidate test-node map in

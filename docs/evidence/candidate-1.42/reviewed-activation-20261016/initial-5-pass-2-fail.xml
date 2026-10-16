@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="7" time="7.091" timestamp="2026-10-16T23:04:34.822375+05:30" hostname="Athenas-MacBook-Pro.local"><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_533_indicator_proposal_refusal_is_atomic_then_valid_draft_recovers" time="1.426" /><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_535_import_diff_applies_only_selected_change_and_recovers_atomically" time="1.022" /><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_537_supported_question_cites_exact_results_and_hidden_selector_abstains" time="1.150" /><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_538_typed_pooling_refuses_mismatched_claim_then_recovers_without_writes" time="1.144" /><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_597_source_bound_suggestions_refuse_fabrication_and_recover" time="0.744"><failure message="NameError: name '_seed' is not defined">live = &lt;reviewed_ai_runtime_fixture.runtime.&lt;locals&gt;.Proxy object at 0x10f3b4530&gt;
+governed_ai_grants = None
+component_services = namespace(database=&lt;impact_api.store.Database object at 0x10f40eea0&gt;, qualitative=&lt;test_ai_reviewed_activation_live.HT..._live.HTTPService object at 0x10f40eae0&gt;, actions=&lt;test_ai_reviewed_activation_live.HTTPService object at 0x10f40dd60&gt;)
+
+    def test_apl_597_source_bound_suggestions_refuse_fabrication_and_recover(
+        live, governed_ai_grants, component_services
+    ):
+        """APL-597 component: traceable views, individual review and atomic output refusal."""
+    
+        positive, positive_text = _text_evidence(live, "The service was easy to reach.\n")
+        opposing, opposing_text = _text_evidence(live, "El servicio fue difícil de alcanzar.\n")
+&gt;       codebook = _seed(
+                   ^^^^^
+            live,
+            "Codebook",
+            {"codes": [{"code": "ACCESS_POSITIVE"}, {"code": "ACCESS_BARRIER"}]},
+            "Approved",
+        )
+E       NameError: name '_seed' is not defined
+
+qualification/test_ai_reviewed_activation_live.py:314: NameError</failure></testcase><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_601_suggestions_remain_unconfirmed_and_disabled_tasks_recover" time="0.647"><failure message="NameError: name '_seed' is not defined">live = &lt;reviewed_ai_runtime_fixture.runtime.&lt;locals&gt;.Proxy object at 0x10efc66f0&gt;
+governed_ai_grants = None
+component_services = namespace(database=&lt;impact_api.store.Database object at 0x10f3feea0&gt;, qualitative=&lt;test_ai_reviewed_activation_live.HT..._live.HTTPService object at 0x10f3fea20&gt;, actions=&lt;test_ai_reviewed_activation_live.HTTPService object at 0x10f3fe510&gt;)
+
+    def test_apl_601_suggestions_remain_unconfirmed_and_disabled_tasks_recover(
+        live, governed_ai_grants, component_services
+    ):
+        """APL-601 component: a suggestion can be dismissed without mutating its sources."""
+    
+        programme = _programme(live)
+        source, _ = _text_evidence(live, "A seasonal performance spike was observed.\n")
+&gt;       result = _seed(live, "CalculatedResult", {"value_state": "PRESENT", "value": "25"}, "Approved")
+                 ^^^^^
+E       NameError: name '_seed' is not defined
+
+qualification/test_ai_reviewed_activation_live.py:451: NameError</failure></testcase><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_541_confirmation_uses_ordinary_command_and_refusal_is_recoverable" time="0.720" /></testsuite></testsuites>

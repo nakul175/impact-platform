@@ -4,7 +4,7 @@ from uuid import uuid4
 
 import pytest
 
-from impact_api.ai_safety import require_available
+from impact_api.ai_safety import configuration_id, require_available
 from impact_api.contracts import validate
 from impact_api.domain import DomainError
 from test_ai_forecast_scenarios_live import _official_result
@@ -74,6 +74,12 @@ def test_minimal_feedback_and_scoped_shutdown_contain_ai_without_stopping_manual
 
     tenant = live.fixture["tenant_a"]
     queued_job = str(uuid4())
+    # Keep this containment exercise scoped to its own synthetic configuration. Shutdown events
+    # are deliberately append-only and recovery needs a second tenant administrator, which this
+    # fixture does not invent. A unique selector proves containment without changing the shared
+    # ADVISORY_DRAFT state consumed by later whole-journey tests.
+    configuration = {"qualification_run_id": str(uuid4())}
+    shutdown_value = configuration_id(configuration)
     with live.db() as c:
         c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
         scope = c.execute(
@@ -88,7 +94,8 @@ def test_minimal_feedback_and_scoped_shutdown_contain_ai_without_stopping_manual
                 queued_job,
                 live.fixture["actors"]["admin"]["principal_id"],
                 scope,
-                '{"use_case":"ADVISORY_DRAFT","destination":"openai-us"}',
+                '{"use_case":"ADVISORY_DRAFT","destination":"openai-us",'
+                f'"configuration_id":"{shutdown_value}"}}',
             ),
         )
 
@@ -99,8 +106,8 @@ def test_minimal_feedback_and_scoped_shutdown_contain_ai_without_stopping_manual
             actor="admin",
             method="POST",
             body={
-                "scope_kind": "USE_CASE",
-                "scope_value": "ADVISORY_DRAFT",
+                "scope_kind": "CONFIGURATION",
+                "scope_value": shutdown_value,
                 "action": "DISABLE",
                 "reason_category": "UNSUPPORTED_CLAIM",
                 "disabled_event_id": None,
@@ -126,14 +133,14 @@ def test_minimal_feedback_and_scoped_shutdown_contain_ai_without_stopping_manual
             "reason": "AI_SAFETY_SHUTDOWN",
         }
         with pytest.raises(DomainError) as stopped:
-            require_available(c, tenant, "ADVISORY_DRAFT", "openai-us", {})
+            require_available(c, tenant, "ADVISORY_DRAFT", "openai-us", configuration)
     assert (stopped.value.status, stopped.value.reason) == (503, "AI_SAFETY_SHUTDOWN")
 
     status = expect(live.request(shutdown_path, actor="admin"), 200)
     validate("AIShutdownStatus", status)
     assert any(
-        item["scope_kind"] == "USE_CASE"
-        and item["scope_value"] == "ADVISORY_DRAFT"
+        item["scope_kind"] == "CONFIGURATION"
+        and item["scope_value"] == shutdown_value
         and item["state"] == "DISABLED"
         for item in status["shutdowns"]
     )
@@ -145,8 +152,8 @@ def test_minimal_feedback_and_scoped_shutdown_contain_ai_without_stopping_manual
             actor="admin",
             method="POST",
             body={
-                "scope_kind": "USE_CASE",
-                "scope_value": "ADVISORY_DRAFT",
+                "scope_kind": "CONFIGURATION",
+                "scope_value": shutdown_value,
                 "action": "REENABLE",
                 "reason_category": "OTHER",
                 "disabled_event_id": disabled["event_id"],

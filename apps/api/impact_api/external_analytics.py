@@ -10,6 +10,7 @@ from psycopg.types.json import Jsonb
 
 from .domain import DomainError
 from .keyring import ring
+from .service import revision
 from .store import (
     audit,
     authorize,
@@ -19,7 +20,6 @@ from .store import (
     field_allowed,
     hash_data,
     load,
-    revision,
     visible_sql,
     write,
 )

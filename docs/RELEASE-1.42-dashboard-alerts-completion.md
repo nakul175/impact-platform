@@ -32,13 +32,16 @@ governed access-profile upgrade before newly registered operations can be used.
 
 ## Reproduction
 
-Run the focused pure classification and calendar-cadence checks in
-`qualification/test_dashboard_alerts_unit.py`, then the normal repository lint, unit, contract and
-release-review checks. Database, browser, native PostgreSQL and four-job CI evidence remain separate
-qualification gates and must not be inferred from local source checks.
+The synthetic positive journey
+`qualification/test_dashboard_alerts_live.py::test_author_creates_due_rule_and_receives_a_durable_missingness_incident`
+passed on 16 October 2026. It creates the rule through the HTTP API, reads it back, evaluates a due
+period with an absent result, and verifies the durable recipient-bound missingness incident. The
+focused pure classification and calendar-cadence checks remain in
+`qualification/test_dashboard_alerts_unit.py`. Browser, native PostgreSQL and four-job CI evidence
+remain separate qualification gates and must not be inferred from this local journey.
 
 ## Integration notes
 
 - Story: APL-618 / FR-ANA-009.
-- Requirement movement proposed: coding-complete only; no acceptance or deployment movement.
+- Positive user journey: locally passed; no acceptance, CI or deployment movement.
 - Security-sensitive paths are recorded in `release-review-1.42.0.json`.

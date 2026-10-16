@@ -34,5 +34,10 @@ Existing tenants need their normal governed access-profile upgrade before using 
 ## Integration notes
 
 - Story: APL-620 / FR-ANA-010.
-- Proposed movement: coding-complete only.
+- Positive journey: `qualification/test_external_analytics_live.py` proves that a human author can
+  bind an exact approved result revision and a bounded field set, refresh it into an immutable
+  extract manifest, inspect that history, revoke the connection, and receive a policy refusal when
+  the retired credential is presented again.
+- Local evidence: focused live application run passed 1 test on 16 October 2026. This evidence does
+  not claim CI, independent review, merge, staging deployment, acceptance, or remote erasure.
 - Security-sensitive paths are recorded in `release-review-1.42.0.json`.

@@ -1,5 +1,8 @@
 # Qualification record
 
+**Disposable public demo candidate:** [Public sandbox](RELEASE-1.43-public-sandbox.md) adds a no-login browser-only fictional interface at `/sandbox.html`, linked from sign-in. Twenty sections support local draft interactions and explicitly simulated review; no domain API, organisation data, provider, account or real approval is connected. It is not the full authenticated workflow and promotes no story acceptance.
+
+
 **Status:** the current build, API versions, schema and the verified state of `main`, CI and staging are stated once, at the top of [HANDOVER.md](HANDOVER.md); `VERSION.json` is the source for the version numbers. This file holds the dated qualification records, newest first; each names the build it measured and keeps the figures recorded at the time. The sections from "Build 0.27.0" downwards were written at that build.
 
 **Local coding candidate0.40 (11 October2026; `feat/imprana-diagnosis-20261011`; not merged or deployed):** US-DX-01a/APL-361 adds manual organisation diagnoses: stable problem IDs, description/area/evidence notes, explicit priority order, named completion refusal and immutable completed/correction history. Eight closed domain operations, a separately gated React panel and additive migration0044/profile registration. Original two criteria and saved documentation/test-planning editions remain unchanged. This is author-driven completion, not independent approval, an AI/provider call or an official impact result. Actual bounded local checks and unrun native/release gates are recorded in [release candidate](RELEASE-0.40-ai-diagnosis.md). No requirement status is promoted.

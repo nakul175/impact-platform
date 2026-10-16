@@ -8,7 +8,11 @@ export default defineConfig({
   build: {
     sourcemap: false,
     rollupOptions: {
-      input: { app: "index.html", walkthrough: "ai-walkthrough.html" },
+      input: {
+        app: "index.html",
+        walkthrough: "ai-walkthrough.html",
+        sandbox: "sandbox.html",
+      },
     },
   },
 });

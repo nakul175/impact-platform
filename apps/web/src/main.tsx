@@ -649,7 +649,16 @@ function Login({
         <div>
           <span className="eyebrow">YOUR MEASUREMENT WORKSPACE</span>
           <h2>Welcome back</h2>
-          <p className="muted">Sign in to continue your work.</p>
+          <p className="muted">
+            Explore invented examples without an account, or sign in to your
+            organisation.
+          </p>
+          <a className="primary button" href="/sandbox.html">
+            Explore demo without login →
+          </a>
+          <p className="footnote">
+            Disposable samples only. Demo edits stay in this tab.
+          </p>
           <ErrorBox error={error} />
           {development ? (
             <form onSubmit={submit}>

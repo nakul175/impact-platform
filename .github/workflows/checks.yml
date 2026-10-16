@@ -98,16 +98,17 @@ jobs:
         # The register and the review files live under docs/, so a documentation-only change
         # can fail this step. It stays on the short path.
         run: .venv/bin/python scripts/release_review.py --check --base "${{ steps.base.outputs.sha }}"
-      - name: Unit tests without a database
-        # Unit tests read the threat register, the data dictionary and the release reviews.
-        # Skipping them on a documentation-only change would weaken this check.
-        run: make unit
+      # Browser-local model unit tests execute TypeScript through Node's built-in stripping.
+      # Set up Node before make unit, including on documentation-only changes.
       - uses: actions/setup-node@v6
-        if: steps.scope.outputs.run_full == 'true'
         with:
           node-version: '22'
           cache: npm
           cache-dependency-path: apps/web/package-lock.json
+      - name: Unit tests without a database
+        # Unit tests read the threat register, the data dictionary and the release reviews.
+        # Skipping them on a documentation-only change would weaken this check.
+        run: make unit
       - name: Install the web client dependencies (prettier for make lint, tsc)
         if: steps.scope.outputs.run_full == 'true'
         run: npm ci --prefix apps/web

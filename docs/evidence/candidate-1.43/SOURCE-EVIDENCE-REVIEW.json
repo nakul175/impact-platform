@@ -1,0 +1,31 @@
+{
+  "type": "Separate integration source and evidence self-review; not independent human approval",
+  "base_commit": "f2434a4b3249a63a8574cb70f87430df277daee1",
+  "source_review": {
+    "authentication_files_unchanged": true,
+    "new_route": "Only bundled static HTML; no auth.resolve or database calls",
+    "browser_model": "Fresh mutable state per tab; immutable updates; stale IDs and size limits checked; edits invalidate only simulated review",
+    "outbound_controls": "No fetch, XHR, worker, storage or cookie API; CSP connect-src none and form-action none",
+    "shared_API": "Existing auth/tenant/CSRF/approval code unchanged",
+    "migrations": "All 118 byte-identical; no new migration",
+    "CI": "Node 22 setup moved before make unit so actual TypeScript model tests execute with the declared runtime; no test skipped or weakened"
+  },
+  "evidence_review": {
+    "model_cases": 4,
+    "focused_python_tests": 8,
+    "full_unit": {
+      "passed": 1543,
+      "skipped": 62,
+      "failed": 0
+    },
+    "anonymous_browser_groups": 7,
+    "browser_page_errors": [],
+    "browser_sources_stable": true,
+    "browser_artifact_sha256": "ad4bbba9989cd8a43b38f054dc228b78bc14420f838ff6b07e55aa9736513bcf",
+    "failure_history": "Initial label failure and restricted socket failures retained in external preparation outputs; no passing claim for those runs",
+    "scope": "Browser-only generic demo interactions; not the 56 domain implementations or owner acceptance"
+  },
+  "human_confirmation": null,
+  "hosted_ci": "PENDING",
+  "staging": "PENDING"
+}

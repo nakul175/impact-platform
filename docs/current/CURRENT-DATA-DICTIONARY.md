@@ -7284,3 +7284,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0108_qualitative_transcription_kinds.sql | be549d5fda33fbb7c291515a16b7b8e119d42680f650f34077d5370d327093c3 |
+
+## Migration0109 — analysis package and learning agenda registry kinds
+
+`0109_analysis_learning_kinds.sql` SHA256 `3c8c72c80364111956bf62aca1b3df521528e536852bb1b61a46f66266c530ae`. Schema109 registers `AnalysisPackage`, `AnalysisResultReference`, `LearningQuestion` and `LearningApplicabilityReview` and places all four kinds behind restrictive delivery-worker fences. The authenticated application retains responsibility for exact revision pins, current authority, natural-person independent closure, immutable reasoning history and package integrity. All0001–0108 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0109_analysis_learning_kinds.sql | 3c8c72c80364111956bf62aca1b3df521528e536852bb1b61a46f66266c530ae |

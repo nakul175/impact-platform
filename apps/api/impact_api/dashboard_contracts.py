@@ -1233,6 +1233,7 @@ def augment(spec, policy):
     schemas["LearningQuestionClose"] = closed(
         {
             "operation_id": UUID,
+            "expected_revision": UUID,
             "data": closed(
                 {
                     "conclusion": {"type": "string", "minLength": 1, "maxLength": 4000},
@@ -1241,23 +1242,25 @@ def augment(spec, policy):
                 ["conclusion", "remaining_uncertainty"],
             ),
         },
-        ["operation_id", "data"],
+        ["operation_id", "expected_revision", "data"],
     )
     schemas["LearningQuestionReopen"] = closed(
         {
             "operation_id": UUID,
+            "expected_revision": UUID,
             "data": closed({"reason": {"type": "string", "minLength": 1, "maxLength": 2000}}, ["reason"]),
         },
-        ["operation_id", "data"],
+        ["operation_id", "expected_revision", "data"],
     )
     schemas["LearningContextConsider"] = closed(
         {
             "operation_id": UUID,
+            "expected_revision": UUID,
             "data": closed(
                 {"target_context": {"type": "string", "minLength": 1, "maxLength": 1000}}, ["target_context"]
             ),
         },
-        ["operation_id", "data"],
+        ["operation_id", "expected_revision", "data"],
     )
     schemas["LearningQuestionSummary"] = {"type": "object"}
     schemas["ManagementResponseCreate"] = closed(
@@ -2818,7 +2821,7 @@ def augment(spec, policy):
     analysis_create.update(
         operationId="create_analysis_package",
         summary="Freeze exact approved analysis sources and integrity metadata",
-        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     analysis_create["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/AnalysisPackageCreate"
@@ -2842,7 +2845,7 @@ def augment(spec, policy):
     analysis_result.update(
         operationId="register_analysis_result",
         summary="Register a result against an exact package and methodology revision",
-        **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     analysis_result["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/AnalysisResultRegister"
@@ -2855,7 +2858,7 @@ def augment(spec, policy):
     learning_create.update(
         operationId="create_learning_question",
         summary="Create a contextual versioned learning question",
-        **{"x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     learning_create["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/LearningQuestionCreate"
@@ -2870,7 +2873,7 @@ def augment(spec, policy):
         entry.update(
             operationId=operation,
             summary=operation.replace("_", " ").title(),
-            **{"x-contract-version": VERSION},
+            **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
         )
         entry["requestBody"]["content"]["application/json"]["schema"] = {
             "$ref": f"#/components/schemas/{schema_name}"
@@ -2883,7 +2886,7 @@ def augment(spec, policy):
     learning_summary.update(
         operationId="get_learning_question_summary",
         summary="Read a disclosure-reviewed learning summary",
-        **{"x-contract-version": VERSION},
+        **{"x-capability": "evaluations.read", "x-contract-version": VERSION},
     )
     learning_summary["parameters"] = [
         {"name": "disclosure_id", "in": "query", "required": False, "schema": UUID}
@@ -3275,6 +3278,62 @@ def augment(spec, policy):
             False,
         ),
         (
+            "create_analysis_package",
+            "POST",
+            prefix + "analysis-packages",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "export_analysis_package",
+            "GET",
+            prefix + "analysis-packages/{object_id}/export",
+            "report.export",
+            False,
+        ),
+        (
+            "register_analysis_result",
+            "POST",
+            prefix + "analysis-packages/{object_id}/results",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "create_learning_question",
+            "POST",
+            prefix + "learning-questions",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "close_learning_question",
+            "POST",
+            prefix + "learning-questions/{object_id}/actions/close",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "reopen_learning_question",
+            "POST",
+            prefix + "learning-questions/{object_id}/actions/reopen",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "consider_learning_context",
+            "POST",
+            prefix + "learning-questions/{object_id}/actions/consider-context",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "get_learning_question_summary",
+            "GET",
+            prefix + "learning-questions/{object_id}/summary",
+            "evaluations.read",
+            False,
+        ),
+        (
             "create_qualitative_codebook",
             "POST",
             prefix + "qualitative-codebooks",
@@ -3332,12 +3391,26 @@ def augment(spec, policy):
                 "path": path,
                 "capability": cap,
                 "role_templates": (
-                    ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST"]
+                    ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "ANALYST"]
+                    if op
+                    in {
+                        "create_analysis_package",
+                        "register_analysis_result",
+                        "create_learning_question",
+                        "reopen_learning_question",
+                        "consider_learning_context",
+                    }
+                    else ["MEL_ADMIN", "PROGRAMME_MANAGER", "REVIEWER"]
+                    if op == "close_learning_question"
+                    else ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST"]
+                    if op == "export_analysis_package"
+                    else ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST"]
                     if op
                     in {
                         "create_qualitative_codebook",
                         "assign_qualitative_codes",
                         "adjudicate_qualitative_coding",
+                        "close_learning_question",
                         "calculate_qualitative_agreement",
                         "request_transcription",
                         "correct_transcript_segment",

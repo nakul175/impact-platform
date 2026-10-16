@@ -500,6 +500,33 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-11",
+      "change_id": "APL-632-APL-634-POSITIVE-JOURNEY-REPAIR",
+      "change": "Governed frozen analysis packages and independently closed learning agendas",
+      "paths": [
+        "infrastructure/migrations/0109_analysis_learning_kinds.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/analysis_packages.py",
+        "apps/api/impact_api/learning_agenda.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers analysis and learning kinds behind restrictive worker fences; adds explicit policy operations; rechecks current authority and exact revisions; applies declarative filters; verifies immutable package integrity; requires active human ownership and natural-person independent closure; preserves closed reasoning and prevents automatic conclusion transfer across contexts.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [
@@ -508,7 +535,9 @@
     "qualification/test_evaluation_registry_unit.py",
     "qualification/test_evaluation_methodology_unit.py",
     "qualification/test_qualitative_coding_live.py",
-    "qualification/test_transcription_translation_live.py"
+    "qualification/test_transcription_translation_live.py",
+    "qualification/test_analysis_packages_live.py",
+    "qualification/test_learning_agenda_live.py"
   ],
   "notes": [
     "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."

@@ -16,14 +16,17 @@ class LearningAgenda:
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant, write=True)
             c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
+            authorize(c, ctx, op)
             old = c.execute(
-                "SELECT payload_hash,outcome FROM impact.operation_receipt "
+                "SELECT payload_hash,outcome,expires_at FROM impact.operation_receipt "
                 "WHERE tenant_id=%s AND actor_id=%s AND command_type=%s AND operation_id=%s",
                 (tenant, ctx.principal_id, op, operation_id),
             ).fetchone()
             if old:
                 if bytes(old["payload_hash"]) != fingerprint:
                     raise DomainError("CONFLICT_OPERATION", 409)
+                if old["expires_at"] <= datetime.now(timezone.utc):
+                    raise DomainError("IDEMPOTENCY_EXPIRED", 409)
                 return old["outcome"]
             receipt = fn(c, ctx)
             receipt.update(operation_id=operation_id, correlation_id=correlation)
@@ -46,8 +49,13 @@ class LearningAgenda:
         data = body["data"]
 
         def apply(c, ctx):
-            authorize(c, ctx, "create_dashboards")
-            load(c, ctx, data["decision_id"], "Decision")
+            load(c, ctx, data["decision_id"], "Decision", "decisions.read")
+            if not c.execute(
+                "SELECT 1 FROM impact.tenant_principal WHERE tenant_id=%s AND principal_id=%s "
+                "AND principal_kind='HUMAN' AND active",
+                (tenant, data["owner_id"]),
+            ).fetchone():
+                raise DomainError("RESOURCE_UNAVAILABLE", 404)
             sources = []
             for source in data["evidence"]:
                 row = load(c, ctx, source["object_id"], "Evidence", "evidence.read")
@@ -75,10 +83,17 @@ class LearningAgenda:
 
     def close(self, identity, tenant, question_id, body, correlation):
         def apply(c, ctx):
-            authorize(c, ctx, "patch_dashboards", question_id)
-            row = load(c, ctx, question_id, "LearningQuestion", lock=True)
+            row = load(c, ctx, question_id, "LearningQuestion", "evaluations.read", lock=True)
+            if str(row["head_revision"]) != body["expected_revision"]:
+                raise DomainError("CONFLICT_VERSION", 409)
             if row["lifecycle_state"] != "Open":
                 raise DomainError("INVALID_STATE", 409)
+            if c.execute(
+                "SELECT 1 FROM impact.object_natural_author WHERE tenant_id=%s AND object_id=%s "
+                "AND natural_identity_id=%s",
+                (tenant, question_id, ctx.identity.natural_identity_id),
+            ).fetchone():
+                raise DomainError("INDEPENDENCE_REQUIRED", 409)
             data = body["data"]
             return write(
                 c,
@@ -101,8 +116,9 @@ class LearningAgenda:
 
     def reopen(self, identity, tenant, question_id, body, correlation):
         def apply(c, ctx):
-            authorize(c, ctx, "patch_dashboards", question_id)
-            row = load(c, ctx, question_id, "LearningQuestion", lock=True)
+            row = load(c, ctx, question_id, "LearningQuestion", "evaluations.read", lock=True)
+            if str(row["head_revision"]) != body["expected_revision"]:
+                raise DomainError("CONFLICT_VERSION", 409)
             if row["lifecycle_state"] != "Closed":
                 raise DomainError("INVALID_STATE", 409)
             history = list(row["payload"].get("prior_reasoning", []))
@@ -135,8 +151,8 @@ class LearningAgenda:
     def summary(self, identity, tenant, question_id, disclosure_id=None):
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
-            authorize(c, ctx, "read_dashboards", question_id)
-            row = load(c, ctx, question_id, "LearningQuestion")
+            authorize(c, ctx, "get_learning_question_summary", question_id)
+            row = load(c, ctx, question_id, "LearningQuestion", "evaluations.read")
             restricted = [
                 item for item in row["payload"]["evidence"] if item["classification"] == "RESTRICTED"
             ]
@@ -157,8 +173,9 @@ class LearningAgenda:
 
     def consider_context(self, identity, tenant, question_id, body, correlation):
         def apply(c, ctx):
-            authorize(c, ctx, "patch_dashboards", question_id)
-            row = load(c, ctx, question_id, "LearningQuestion", lock=True)
+            row = load(c, ctx, question_id, "LearningQuestion", "evaluations.read", lock=True)
+            if str(row["head_revision"]) != body["expected_revision"]:
+                raise DomainError("CONFLICT_VERSION", 409)
             return write(
                 c,
                 ctx,

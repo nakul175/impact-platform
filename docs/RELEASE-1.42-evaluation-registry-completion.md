@@ -18,8 +18,8 @@ This coding checkpoint is not merged, deployed or owner-accepted. It does not ve
 
 ## Reproduction
 
-Run `make lint`, `make unit`, `.venv/bin/python scripts/release_review.py --check`, and regenerate implemented contracts and the access profile.
+Run `IMPACT_PORT=8347 .venv/bin/python scripts/run.py test --pytest-path qualification/test_evaluation_registry_live.py` for the disposable synthetic positive journey. Run `make lint`, `make unit`, `.venv/bin/python scripts/release_review.py --check`, and regenerate implemented contracts and the access profile for the broader candidate checks.
 
 ## Integration notes
 
-Requirement FR-EVA-001 may move to coding-complete after review of the exact commit. Test, CI, merge, staging deployment and acceptance remain separate gates.
+The synthetic positive journey `test_evaluation_moves_through_independently_decided_stage_gates` proves registration, exact programme/period pins, independent ordered field-collection and publication decisions, immutable history and continued refusal to approve sensitive processing. CI, merge, staging deployment and acceptance remain separate gates.

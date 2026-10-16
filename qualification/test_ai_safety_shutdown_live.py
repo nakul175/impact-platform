@@ -182,4 +182,12 @@ def test_minimal_feedback_and_scoped_shutdown_contain_ai_without_stopping_manual
             ).fetchall()
         }
         assert not {"source_payload", "prompt", "provider_response", "credentials"} & columns
+    # Refused reenabling leaves containment effective while ordinary manual calculation works.
+    manual_result = _official_result(live, 12)
+    assert manual_result["revision_id"]
+    with live.db() as c:
+        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+        with pytest.raises(DomainError) as still_stopped:
+            require_available(c, tenant, "ADVISORY_DRAFT", "openai-us", configuration)
+    assert still_stopped.value.reason == "AI_SAFETY_SHUTDOWN"
     revoke()

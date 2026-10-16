@@ -197,6 +197,7 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 - [Release 1.40 — Qualification repair candidate](RELEASE-1.40-qualification-repair.md)
 - [Release 1.41 — Problem baseline qualification repair](RELEASE-1.41-problem-baseline-kind-fix.md)
 - [Release 1.42 — reviewable anomaly assistance completion candidate](RELEASE-1.42-anomaly-assistance-completion.md)
+- [Release 1.42 candidate — complete governed dashboard publication](RELEASE-1.42-apl-614-dashboard-governance.md)
 - [Release 1.42 — governed dashboard alert completion candidate](RELEASE-1.42-dashboard-alerts-completion.md)
 - [Release 1.42 — Dashboard publication safety checkpoint](RELEASE-1.42-dashboard-publication-safety.md)
 - [Release 1.42 — Effective access coding completion](RELEASE-1.42-effective-access-completion.md)
@@ -206,6 +207,10 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 - [Operations hardening (October 2026) — backups, restore drill, alerts, metrics, owner console](RELEASE-OPS-2026-10.md)
 - [Tola + AI timed development handover](SPRINT-HANDOVER-2026-10-05.md)
 - [Training video — how the platform works, end to end](TRAINING-VIDEO.md)
+
+### acceptance
+
+- [Release 1.42 — 56-story acceptance manifest](acceptance/RELEASE-1.42-56-STORY-ACCEPTANCE.md)
 
 ### agile
 

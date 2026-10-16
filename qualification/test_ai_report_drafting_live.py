@@ -105,15 +105,19 @@ def test_author_reviews_snapshot_bound_draft_without_publishing_or_changing_sour
         **final_sections[0],
         "narrative": "Human-reviewed access remains {{water}} with the pinned evidence.",
     }
+    review_body = {
+        "operation_id": str(uuid4()),
+        "final_sections": final_sections,
+        "mandatory_caveat_codes": draft["mandatory_caveat_codes"],
+    }
+    review_path = live.path("ai-enablement/report-drafts", draft["draft_id"]) + "/actions/review"
+    expect(live.request(review_path, method="POST", body={**review_body, "publish": True}), 422)
+    assert _domain_counts(live) == before
     reviewed = expect(
         live.request(
             live.path("ai-enablement/report-drafts", draft["draft_id"]) + "/actions/review",
             method="POST",
-            body={
-                "operation_id": str(uuid4()),
-                "final_sections": final_sections,
-                "mandatory_caveat_codes": draft["mandatory_caveat_codes"],
-            },
+            body=review_body,
         ),
         200,
     )
@@ -123,3 +127,4 @@ def test_author_reviews_snapshot_bound_draft_without_publishing_or_changing_sour
     assert reviewed["corrections"][0]["before"]["narrative"] == section["narrative"]
     assert reviewed["corrections"][0]["after"]["narrative"].startswith("Human-reviewed")
     assert _domain_counts(live) == before
+    assert expect(live.request(review_path, method="POST", body=review_body), 200) == reviewed

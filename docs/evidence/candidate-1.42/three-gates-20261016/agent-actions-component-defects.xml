@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="7" time="4.625" timestamp="2026-10-16T18:35:46.134199+05:30" hostname="Athenas-MacBook-Pro.local"><testcase classname="qualification.test_coverage_status_live" name="test_calculation_keeps_approved_pending_and_missing_coverage_explicit" time="0.855" /><testcase classname="qualification.test_precision_rounding_live" name="test_three_exact_inputs_round_only_after_the_unrounded_sum_is_stored" time="0.510" /><testcase classname="qualification.test_calculation_reconciliation_live" name="test_analyst_explains_and_reconciles_a_newly_included_approved_source" time="0.536"><failure message="AssertionError">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x10c56e150&gt;
+
+    def test_analyst_explains_and_reconciles_a_newly_included_approved_source(live):
+        programme, indicator, period, keys = measure(live, keys=2)
+        ratio_source(live, indicator, keys[0], "2", "4")
+        earlier = calculate(live, indicator, period)
+    
+        explanation = expect(
+            live.request(live.path("calculated-results", earlier["object_id"]) + "/explanation"),
+            200,
+        )
+        validate("CalculationExplanation", explanation)
+        assert explanation["result_revision"] == earlier["revision_id"]
+        assert explanation["source_set"]["included_count"] == 1
+        assert explanation["source_set"]["excluded_count"] == 0
+        assert explanation["formula"]["method"] == "POOLED_RATIO"
+        assert explanation["coverage"]["complete"] is False
+    
+        ratio_source(live, indicator, keys[1], "3", "4")
+        later = calculate(live, indicator, period)
+        compared = expect(
+            live.request(
+                live.path("calculated-results", earlier["object_id"]) + "/comparison/" + later["object_id"]
+            ),
+            200,
+        )
+        validate("CalculationComparison", compared)
+        assert compared["earlier_result_revision"] == earlier["revision_id"]
+        assert compared["later_result_revision"] == later["revision_id"]
+        assert compared["difference"] == "12.5"
+        assert compared["reconciled"] is True
+        assert compared["approval_blocked"] is False
+        assert [(item["category"], item["effect"], item["reference_state"]) for item in compared["causes"]] == [
+            ("SOURCE", "12.5", "PERMITTED"),
+            ("FILTER", "0", "PERMITTED"),
+        ]
+        expect(
+            live.request(
+                live.path("calculated-results", earlier["object_id"], tenant=live.fixture["tenant_b"])
+                + "/explanation",
+                actor="other_tenant",
+            ),
+            404,
+        )
+&gt;       assert_read_recovery(
+            live,
+            "calculated-results",
+            earlier["object_id"],
+            "/comparison/" + later["object_id"],
+            expected=compared,
+        )
+
+qualification/test_calculation_reconciliation_live.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x10c56e150&gt;
+route = 'calculated-results', object_id = '2961ccea-5423-4b5e-a928-f3467a9cdbf9'
+suffix = '/comparison/ef1c55eb-5173-4174-8c33-69d2a5d80833'
+expected = {'earlier_result_revision': '21144b80-b4a6-4234-b2c2-14c48b61fefe', 'later_result_revision': 'eeb272d7-4f3a-4868-b2b6-...: '12.5', 'reference_state': 'PERMITTED'}, {'category': 'FILTER', 'effect': '0', 'reference_state': 'PERMITTED'}], ...}
+
+    def assert_read_recovery(live, route, object_id, suffix="", expected=None):
+        path = live.path(route, object_id) + suffix
+        original = expect(live.request(path), 200)
+        if expected is not None:
+            assert original == expected
+        before = _durable_counts(live)
+        malformed = live.path(route, "malformed-selector") + suffix
+        refused = expect(live.request(malformed), 404)
+        assert refused["code"] == "RESOURCE_UNAVAILABLE"
+        assert _durable_counts(live) == before
+        assert expect(live.request(path), 200) == original
+&gt;       assert _durable_counts(live) == before
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+qualification/story_read_recovery.py:18: AssertionError</failure></testcase><testcase classname="qualification.test_statistical_interpretation_live" name="test_independently_approved_raw_values_produce_a_labelled_sample_median" time="1.098"><failure message="AssertionError">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x10c56e150&gt;
+
+    def test_independently_approved_raw_values_produce_a_labelled_sample_median(live):
+        _, indicator, period, keys = measure(
+            live,
+            keys=5,
+            measurement_type="DECIMAL",
+            combination_rule="MEDIAN",
+            unit="score",
+            display_decimals=0,
+            statistical_interpretation={
+                "sample_basis": "RAW_VALUES",
+                "weighting": "NONE",
+                "uncertainty_method": "NONE",
+                "uncertainty_level": None,
+                "population_interpretation": "SAMPLE",
+                "expansion_method": None,
+            },
+        )
+        observations = []
+        for key, value in zip(keys, ["1", "2", "100", "3", "4"], strict=True):
+            draft = create(live, "observations", observation_data(indicator, key, value, {}))
+            approve(live, submit(live, "observations", draft))
+            observations.append(get(live, "observations", draft["object_id"]))
+    
+        result = calculate(live, indicator, period)
+        assert result["data"]["value"] == "3"
+        assert result["data"]["displayed_value"] == "3"
+        assert result["data"]["formula"]["statistic_label"] == "POOLED_MEDIAN"
+        assert result["data"]["formula"]["sample_basis"] == "RAW_VALUES"
+        assert result["data"]["formula"]["population_interpretation"] == "SAMPLE"
+        assert {item["code"] for item in result["data"]["limitations"]} == {
+            "POOLED_MEDIAN",
+            "SAMPLE_NOT_POPULATION",
+            "UNCERTAINTY_NOT_ESTIMATED",
+            "PERIOD_CLOSE_REQUIRED",
+        }
+    
+        reproduced = expect(
+            live.request(live.path("calculated-results", result["object_id"]) + "/reproduction"),
+            200,
+        )
+        validate("CalculationReproduction", reproduced)
+        assert reproduced["exact_match"] is True
+        assert reproduced["formula"]["statistic_label"] == "POOLED_MEDIAN"
+        assert {source["revision_id"] for source in reproduced["sources"]} == {
+            row["revision_id"] for row in observations
+        }
+        expect(
+            live.request(
+                live.path("calculated-results", result["object_id"], tenant=live.fixture["tenant_b"])
+                + "/reproduction",
+                actor="other_tenant",
+            ),
+            404,
+        )
+&gt;       assert_read_recovery(
+            live, "calculated-results", result["object_id"], "/reproduction", expected=reproduced
+        )
+
+qualification/test_statistical_interpretation_live.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x10c56e150&gt;
+route = 'calculated-results', object_id = '4d95907e-6f02-44dc-8332-873f296df56e'
+suffix = '/reproduction'
+expected = {'result_id': '4d95907e-6f02-44dc-8332-873f296df56e', 'result_revision': 'a6a084ee-346f-49a0-84df-ed4a4eed7ac6', 'lineage_manifest_id': 'f07a4b3e-6268-4046-a7c3-e2d542094d15', 'execution_id': '749ebf3d-245b-492c-afd1-c96a21fd9d6e', ...}
+
+    def assert_read_recovery(live, route, object_id, suffix="", expected=None):
+        path = live.path(route, object_id) + suffix
+        original = expect(live.request(path), 200)
+        if expected is not None:
+            assert original == expected
+        before = _durable_counts(live)
+        malformed = live.path(route, "malformed-selector") + suffix
+        refused = expect(live.request(malformed), 404)
+        assert refused["code"] == "RESOURCE_UNAVAILABLE"
+        assert _durable_counts(live) == before
+        assert expect(live.request(path), 200) == original
+&gt;       assert _durable_counts(live) == before
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+qualification/story_read_recovery.py:18: AssertionError</failure></testcase><testcase classname="qualification.test_invalid_numeric_inputs_live" name="test_approved_negative_adjustment_calculates_while_invalid_counts_are_refused" time="0.709" /><testcase classname="qualification.test_invalid_numeric_inputs_live" name="test_zero_denominator_is_durable_undefined_result_not_successful_zero" time="0.473" /><testcase classname="qualification.test_invalid_numeric_inputs_live" name="test_ratio_quantity_and_percentage_bound_refusals_remain_specific" time="0.312"><failure message="AssertionError: {&quot;detail&quot;:&quot;Method Not Allowed&quot;}&#10;assert 405 == 200&#10; +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x10c56e150&gt;
+
+    def test_ratio_quantity_and_percentage_bound_refusals_remain_specific(live):
+        _, indicator, _, keys = build(
+            live,
+            scheme=None,
+            measurement_type="PERCENTAGE",
+            combination_rule="POOLED_RATIO",
+            numerator_meaning="Eligible reached",
+            denominator_meaning="Eligible population",
+        )
+        template = get(live, "workflow-templates")["items"][0]
+        negative = expect(
+            live.request(
+                live.path("observations"),
+                method="POST",
+                body=cmd(
+                    observation_data(
+                        indicator,
+                        keys[0],
+                        "0",
+                        {},
+                        numerator="-1",
+                        denominator="10",
+                    )
+                ),
+            ),
+            422,
+        )
+        assert negative["reason_code"] == "NEGATIVE_RATIO_QUANTITY"
+    
+        overflow = create(
+            live,
+            "observations",
+            observation_data(indicator, keys[1], "0", {}, numerator="11", denominator="10"),
+        )
+        refused = expect(
+            live.request(
+                live.path("observations", overflow["object_id"]) + "/actions/submit",
+                method="POST",
+                body=cmd({"workflow_version": template["revision_id"]}, overflow["revision_id"]),
+            ),
+            422,
+        )
+        assert refused["reason_code"] == "PERCENTAGE_OUT_OF_RANGE"
+        assert get(live, "observations", overflow["object_id"])["lifecycle_state"] == "Draft"
+        current = get(live, "observations", overflow["object_id"])
+        assert current["revision_id"] == overflow["revision_id"]
+&gt;       correction = expect(
+            live.request(
+                live.path("observations", overflow["object_id"]), method="PUT",
+                body=cmd({**current["data"], "numerator": "9"}, current["revision_id"]),
+            ), 200,
+        )
+
+qualification/test_invalid_numeric_inputs_live.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [405 Method Not Allowed]&gt;, status = 200
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"detail":"Method Not Allowed"}
+E       assert 405 == 200
+E        +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</failure></testcase></testsuite></testsuites>

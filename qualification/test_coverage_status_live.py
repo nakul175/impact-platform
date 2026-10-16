@@ -1,5 +1,7 @@
 """Positive user journey for FR-CAL-008 / APL-408 calculation coverage status."""
 
+from story_read_recovery import assert_read_recovery
+
 from test_calculation_methods import observation_data
 from test_dashboards import calculate, measure, ratio_source
 from test_live_application import expect
@@ -45,3 +47,4 @@ def test_calculation_keeps_approved_pending_and_missing_coverage_explicit(live):
         ),
         404,
     )
+    assert_read_recovery(live, "calculated-results", result["object_id"], expected=current)

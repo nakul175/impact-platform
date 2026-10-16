@@ -245,6 +245,8 @@
       "upload.create",
       "upload.write",
       "uploads.read",
+      "work-items.draft.create",
+      "work-items.draft.edit",
       "work-items.read",
       "workflow-templates.read",
       "workflows.read"
@@ -381,6 +383,7 @@
       "targets.read",
       "uploads.read",
       "work-items.draft.create",
+      "work-items.draft.edit",
       "work-items.read",
       "workflow-templates.read",
       "workflows.read"

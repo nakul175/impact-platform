@@ -80,7 +80,10 @@ def test_exact_official_revisions_create_bounded_and_versioned_planning_scenario
         "assumptions": assumptions,
         "input_result_revisions": [item["revision_id"] for item in results],
     }
+    # Closed operation validation must not consume the uncertain-operation identity.
+    expect(live.request(path, actor="admin", method="POST", body={**request, "method": "EXECUTE_SQL"}), 422)
     first = expect(live.request(path, actor="admin", method="POST", body=request), 200)
+    assert expect(live.request(path, actor="admin", method="POST", body=request), 200) == first
     validate("AIForecast", first)
     assert first["scenario_id"] == scenario_id and first["version"] == 1
     assert first["status"] == "PROJECTION" and first["label"].startswith("Scenario: ")

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="3" time="2.767" timestamp="2026-10-16T18:29:06.398353+05:30" hostname="Athenas-MacBook-Pro.local"><testcase classname="qualification.test_dashboard_comparison_journeys_live" name="test_apl435_lower_is_better_retains_overachievement_and_exact_target_context" time="0.926"><failure message="AssertionError: assert '-25' == '-25.000000000000'&#10;  &#10;  - -25.000000000000&#10;  + -25">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x10c18e300&gt;
+
+    def test_apl435_lower_is_better_retains_overachievement_and_exact_target_context(live):
+        programme, indicator, period, keys = measure(live, keys=1)
+        ratio_source(live, indicator, keys[0], "25", "100")
+        calculate(live, indicator, period)
+        target = create(
+            live,
+            "targets",
+            {
+                "indicator_id": indicator["object_id"],
+                "period_id": period["object_id"],
+                "target_kind": "VALUE",
+                "value_state": "PRESENT",
+                "value": "50",
+                "direction": "LOWER",
+                "target_basis": "ORIGINAL",
+            },
+        )
+        approve(live, submit(live, "targets", target))
+        _, row = card(live, programme, indicator, period)
+        status = row["status"]
+        assert status["attainment_percent"] == "200.00"
+&gt;       assert status["deviation"] == "-25.000000000000"
+E       AssertionError: assert '-25' == '-25.000000000000'
+E         
+E         - -25.000000000000
+E         + -25
+
+qualification/test_dashboard_comparison_journeys_live.py:37: AssertionError</failure></testcase><testcase classname="qualification.test_dashboard_comparison_journeys_live" name="test_apl437_source_change_remains_stale_across_fetch_then_recalculation_recovers" time="1.058" /><testcase classname="qualification.test_dashboard_comparison_journeys_live" name="test_apl612_portfolio_ranks_qualified_exact_version_and_recovers_from_invalid_selector" time="0.681"><failure message="AssertionError: assert '10' == '10.000000000000'&#10;  &#10;  - 10.000000000000&#10;  + 10">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x10c18e300&gt;
+
+    def test_apl612_portfolio_ranks_qualified_exact_version_and_recovers_from_invalid_selector(live):
+        programme, indicator, period, keys = measure(live, keys=1)
+        ratio_source(live, indicator, keys[0], "8", "10")
+        calculate(live, indicator, period)
+        close(live, programme, period)
+        definition = definition_of(live, indicator)
+        body = portfolio_of(live, definition, period, coverage_threshold=100)
+        comparison = body["comparison"]
+        assert comparison["coverage_threshold"] == "100"
+        assert comparison["hidden_members_disclosed"] is False
+        assert comparison["raw_cross_group_ranking"] == "REFUSED"
+        (group,) = comparison["groups"]
+        assert group["compatibility_key"]["definition_revision"] == indicator["data"]["definition_version"]
+        assert group["ranking"]["status"] == "QUALIFIED"
+        assert group["ranking"]["unqualified_league_table"] is False
+        (ranked,) = group["ranking"]["items"]
+        assert ranked["programme_id"] == programme["object_id"]
+&gt;       assert ranked["denominator"] == "10.000000000000"
+E       AssertionError: assert '10' == '10.000000000000'
+E         
+E         - 10.000000000000
+E         + 10
+
+qualification/test_dashboard_comparison_journeys_live.py:99: AssertionError</failure></testcase></testsuite></testsuites>

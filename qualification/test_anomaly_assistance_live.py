@@ -90,21 +90,23 @@ def test_analyst_runs_anomaly_assistance_and_confirms_a_reviewable_finding(live)
     )
     assert denied["code"] == "RESOURCE_UNAVAILABLE"
 
+    review_path = live.path("anomaly-findings", finding["finding_id"]) + "/actions/review"
+    review_body = {"operation_id": str(uuid4()), "data": {"decision": "CONFIRMED", "reason_code": None}}
+    expect(live.request(review_path, method="POST", body={**review_body, "replace_source": True}), 422)
+    assert expect(live.request(live.path("anomaly-findings", finding["finding_id"])), 200) == current
     reviewed = expect(
         live.request(
             live.path("anomaly-findings", finding["finding_id"]) + "/actions/review",
             actor="author",
             method="POST",
-            body={
-                "operation_id": str(uuid4()),
-                "data": {"decision": "CONFIRMED", "reason_code": None},
-            },
+            body=review_body,
         ),
         200,
     )
     validate("AnomalyReviewOutcome", reviewed)
     assert reviewed["confirmed_quality_defect"] is True
     assert reviewed["source_mutation"] is False
+    assert expect(live.request(review_path, method="POST", body=review_body), 200) == reviewed
     source = get(live, "observations", revisions[-1]["object_id"])
     assert source["revision_id"] == revisions[-1]["revision_id"]
     assert source["data"]["value"] == "1.0"

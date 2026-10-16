@@ -4,6 +4,8 @@ import hashlib
 from datetime import datetime, timezone
 from uuid import uuid4
 
+from advisory_tenant_fixture import isolated_advisory_tenant
+
 import pytest
 
 from impact_api import ai_enablement as enablement_module
@@ -24,7 +26,7 @@ def passed_advisory_evaluation(monkeypatch):
 
 def test_successful_ai_task_preserves_a_closed_reproducible_trace_without_hidden_reasoning(live):
     settings = Settings(**live.config)
-    db, tenant = Database(settings), live.fixture["tenant_a"]
+    db, tenant = Database(settings), isolated_advisory_tenant(live)
     admin = _identity(live, db, "admin")
 
     class Provider:
@@ -148,3 +150,9 @@ def test_successful_ai_task_preserves_a_closed_reproducible_trace_without_hidden
     assert stored["failure_reason"] is None and stored["sealed_output"]
     assert b"hidden_reasoning" not in bytes(stored["sealed_output"])
     assert completed == 1
+    # A conflicting uncertain retry must neither replace the trace nor call the provider.
+    with pytest.raises(DomainError) as conflict:
+        api.advisory(admin, tenant, {**request, "profile": {**profile(), "team_size": 42}}, str(uuid4()))
+    assert conflict.value.status == 409
+    assert api.advisory(admin, tenant, request, str(uuid4())) == result
+    assert provider.calls == 1

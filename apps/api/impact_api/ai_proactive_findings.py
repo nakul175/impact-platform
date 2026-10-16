@@ -88,7 +88,7 @@ class AIProactiveFindings:
                     raise DomainError("CONFLICT_OPERATION", 409)
                 return self._suggestion_view(replay)
             task = c.execute(
-                "SELECT * FROM impact.ai_detection_task WHERE tenant_id=%s AND task_id=%s FOR UPDATE",
+                "SELECT * FROM impact.ai_detection_task WHERE tenant_id=%s AND task_id=%s",
                 (tenant, body["task_id"]),
             ).fetchone()
             if not task or not task["enabled"]:
@@ -185,7 +185,7 @@ class AIProactiveFindings:
                     raise DomainError("CONFLICT_OPERATION", 409)
                 return self._feedback_view(replay)
             if not c.execute(
-                "SELECT 1 FROM impact.ai_suggested_finding WHERE tenant_id=%s AND suggestion_id=%s FOR UPDATE",
+                "SELECT 1 FROM impact.ai_suggested_finding WHERE tenant_id=%s AND suggestion_id=%s",
                 (tenant, suggestion_id),
             ).fetchone():
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
@@ -222,7 +222,8 @@ class AIProactiveFindings:
             row = revision(c, ctx, selector["revision_id"], kind, capability)
             if str(row["object_id"]) != selector["object_id"]:
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
-            rows.append(row)
+            head = load(c, ctx, row["object_id"], kind, capability)
+            rows.append({**row, "classification": head["classification"]})
         return rows
 
     @staticmethod

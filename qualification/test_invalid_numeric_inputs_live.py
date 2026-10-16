@@ -141,3 +141,15 @@ def test_ratio_quantity_and_percentage_bound_refusals_remain_specific(live):
     )
     assert refused["reason_code"] == "PERCENTAGE_OUT_OF_RANGE"
     assert get(live, "observations", overflow["object_id"])["lifecycle_state"] == "Draft"
+    current = get(live, "observations", overflow["object_id"])
+    assert current["revision_id"] == overflow["revision_id"]
+    correction = expect(
+        live.request(
+            live.path("observations", overflow["object_id"]),
+            method="PATCH",
+            body=cmd({"numerator": "9"}, current["revision_id"]),
+        ),
+        200,
+    )
+    submitted = submit(live, "observations", correction)
+    assert submitted["object_id"]

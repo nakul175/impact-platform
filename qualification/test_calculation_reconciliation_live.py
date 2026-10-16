@@ -1,5 +1,7 @@
 """Positive user journey for FR-CAL-015 / APL-424 calculation reconciliation."""
 
+from story_read_recovery import assert_read_recovery
+
 from impact_api.contracts import validate
 from test_dashboards import calculate, measure, ratio_source
 from test_live_application import expect
@@ -46,4 +48,11 @@ def test_analyst_explains_and_reconciles_a_newly_included_approved_source(live):
             actor="other_tenant",
         ),
         404,
+    )
+    assert_read_recovery(
+        live,
+        "calculated-results",
+        earlier["object_id"],
+        "/comparison/" + later["object_id"],
+        expected=compared,
     )

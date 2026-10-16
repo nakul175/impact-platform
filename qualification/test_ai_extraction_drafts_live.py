@@ -116,31 +116,35 @@ def test_manager_reviews_exact_source_proposals_without_creating_domain_objects(
     }
 
     start = next(item for item in created["proposals"] if item["field_key"] == "start_date")
+    review_body = {
+        "operation_id": str(uuid4()),
+        "selected_proposal_ids": [titles[0]["proposal_id"], start["proposal_id"]],
+        "human_additions": [
+            {
+                "field_key": "end_date",
+                "value": "2027-09-30",
+                "rationale": "Confirmed in the signed programme schedule.",
+            },
+            {
+                "field_key": "target",
+                "value": "600 households",
+                "rationale": "Confirmed by the accountable programme manager.",
+            },
+            {
+                "field_key": "population",
+                "value": "Households in Ward 4",
+                "rationale": "Confirmed against the approved participant scope.",
+            },
+        ],
+    }
+    review_path = live.path("ai-enablement/extractions", created["draft_id"]) + "/actions/apply"
+    expect(live.request(review_path, method="POST", body={**review_body, "activate": True}), 422)
+    assert _domain_count(live) == before
     reviewed = expect(
         live.request(
             live.path("ai-enablement/extractions", created["draft_id"]) + "/actions/apply",
             method="POST",
-            body={
-                "operation_id": str(uuid4()),
-                "selected_proposal_ids": [titles[0]["proposal_id"], start["proposal_id"]],
-                "human_additions": [
-                    {
-                        "field_key": "end_date",
-                        "value": "2027-09-30",
-                        "rationale": "Confirmed in the signed programme schedule.",
-                    },
-                    {
-                        "field_key": "target",
-                        "value": "600 households",
-                        "rationale": "Confirmed by the accountable programme manager.",
-                    },
-                    {
-                        "field_key": "population",
-                        "value": "Households in Ward 4",
-                        "rationale": "Confirmed against the approved participant scope.",
-                    },
-                ],
-            },
+            body=review_body,
         ),
         200,
     )
@@ -166,3 +170,4 @@ def test_manager_reviews_exact_source_proposals_without_creating_domain_objects(
     assert stored["reviewed_by"] == reviewer
     assert stored["unresolved_fields"] == []
     assert stored["accepted_fields"]["population"]["classification"] == "HUMAN_ADDED"
+    assert expect(live.request(review_path, method="POST", body=review_body), 200) == reviewed

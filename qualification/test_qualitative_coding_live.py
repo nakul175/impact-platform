@@ -7,6 +7,7 @@ import pytest
 from test_evidence import CSV, evidence, unique, uploaded
 from test_forms import temporary_grants
 from test_live_application import expect
+from test_story_error_recovery_analytics_live import _durable_counts
 
 
 @pytest.fixture(autouse=True)
@@ -28,15 +29,14 @@ def qualitative_journey_grants(live):
 
 
 def _post(live, route, data, actor="author"):
-    return expect(
-        live.request(
-            live.path(route),
-            actor=actor,
-            method="POST",
-            body={"operation_id": str(uuid4()), "data": data},
-        ),
-        201,
-    )
+    body = {"operation_id": str(uuid4()), "data": data}
+    path = live.path(route)
+    before = _durable_counts(live, body["operation_id"])
+    expect(live.request(path, actor=actor, method="POST", body={**body, "unapproved_action": True}), 422)
+    assert _durable_counts(live, body["operation_id"]) == before
+    result = expect(live.request(path, actor=actor, method="POST", body=body), 201)
+    assert expect(live.request(path, actor=actor, method="POST", body=body), 201) == result
+    return result
 
 
 def _stored(live, object_id):

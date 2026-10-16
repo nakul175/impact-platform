@@ -170,7 +170,7 @@ class AIQualitativeAssistance:
             suggestion = c.execute(
                 "SELECT s.*,r.codebook_revision_id,r.policy_version FROM impact.ai_qualitative_suggestion s "
                 "JOIN impact.ai_qualitative_run r ON r.tenant_id=s.tenant_id AND r.run_id=s.run_id "
-                "WHERE s.tenant_id=%s AND s.suggestion_id=%s FOR UPDATE OF s",
+                "WHERE s.tenant_id=%s AND s.suggestion_id=%s",
                 (tenant, suggestion_id),
             ).fetchone()
             if not suggestion:

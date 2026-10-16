@@ -104,6 +104,12 @@ def test_online_presentation_lease_is_bound_to_the_current_policy_epoch(live):
         expect(live.request(path), 404)
         source_path = live.path("derivatives", derivative_id) + "/revisions/" + revision_id
         expect(live.request(source_path), 200)
+        renewed = _issue(live, derivative_id, revision_id)
+        assert renewed["lease_id"] != lease["lease_id"]
+        expect(live.request(path), 404)
+        assert (
+            expect(live.request(live.path("presentation-leases", renewed["lease_id"])), 200)["valid"] is True
+        )
     finally:
         revoke_write()
 

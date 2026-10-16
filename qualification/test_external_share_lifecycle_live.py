@@ -85,6 +85,11 @@ def test_named_audience_revocation_expiry_and_source_revalidation(live):
     expect(live.request(live.path("external-shares", expired["share_id"]), actor="partner"), 404)
 
     revalidated = _share(live, derivative_id, revision_id)
+    recovered = expect(
+        live.request(live.path("external-shares", revalidated["share_id"]), actor="partner"), 200
+    )
+    assert recovered["derivative"]["revision_id"] == revision_id
+    expect(live.request(live.path("external-shares", expired["share_id"]), actor="partner"), 404)
     tenant = live.fixture["tenant_a"]
     principal = live.fixture["actors"]["partner"]["principal_id"]
     with live.db() as c:

@@ -56,6 +56,16 @@ def _enrol_author_in_funder_workspace(live):
                 track_author=False,
             )
 
+    def revoke_membership():
+        from impact_api.store import load
+
+        with live.db() as c:
+            c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+            current = load(c, ctx, membership_id, "Membership")
+            write(c, ctx, "Membership", current["payload"], "Revoked", previous=current, track_author=False)
+
+    return revoke_membership
+
 
 def _dashboard(live):
     _, indicator, period, keys = build(live, scheme=None)
@@ -114,12 +124,16 @@ def test_reviewed_disclosure_public_content_owner_transfer_and_durable_recovery(
         "reviewer",
         ["dashboards.draft.edit", "dashboards.read", "calculated-results.read"],
     )
+
+    def funder_revoke():
+        pass
+
     try:
         dashboard, result, widget_id = _dashboard(live)
         base = live.path("dashboards", dashboard["object_id"])
         expiry = (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
 
-        _enrol_author_in_funder_workspace(live)
+        funder_revoke = _enrol_author_in_funder_workspace(live)
         with live.db() as c:
             c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_b"],))
             grants_before = c.execute(
@@ -294,5 +308,6 @@ def test_reviewed_disclosure_public_content_owner_transfer_and_durable_recovery(
         ]
         assert all(row["polpermissive"] is False for row in policies)
     finally:
+        funder_revoke()
         reviewer_revoke()
         author_revoke()

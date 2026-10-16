@@ -181,3 +181,9 @@ def test_saved_answer_pins_exact_sources_and_rechecks_current_access_on_replay(l
         }
     assert states[owned_grant_id] == "Revoked"
     assert states[live.records["grant:author:evidence.read"]["object_id"]] == "Active"
+    restore_source = temporary_grants(live, "author", ["evidence.manage"])
+    try:
+        assert api.advisory(author, tenant, request, str(uuid4())) == first
+        assert provider.calls == 1
+    finally:
+        restore_source()

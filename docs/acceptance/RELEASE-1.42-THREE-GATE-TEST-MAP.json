@@ -1,0 +1,506 @@
+{
+  "scope": "Bounded local positive, refusal and error/recovery journeys; not all frozen assertions, hosted CI, native concurrency, browser or human acceptance",
+  "blocked_reserved_use_cases": [
+    "APL-533",
+    "APL-535",
+    "APL-537",
+    "APL-538",
+    "APL-597",
+    "APL-601",
+    "APL-541"
+  ],
+  "stories": {
+    "APL-351": {
+      "test_file": "qualification/test_natural_person_independence_live.py",
+      "nodes": [
+        "test_alias_cannot_approve_but_distinct_natural_person_can"
+      ]
+    },
+    "APL-352": {
+      "test_file": "qualification/test_permission_safe_derivatives_live.py",
+      "nodes": [
+        "test_b_exact_source_manifest_rechecks_current_authority",
+        "test_a_mixed_source_derivative_cannot_claim_public_disclosure",
+        "test_c_external_member_cannot_create_derivative_manifest"
+      ]
+    },
+    "APL-353": {
+      "test_file": "qualification/test_external_share_lifecycle_live.py",
+      "nodes": [
+        "test_named_audience_revocation_expiry_and_source_revalidation"
+      ]
+    },
+    "APL-354": {
+      "test_file": "qualification/test_access_change_propagation_live.py",
+      "nodes": [
+        "test_online_presentation_lease_is_bound_to_the_current_policy_epoch",
+        "test_source_permission_loss_removes_the_derivative_and_its_live_presentation"
+      ]
+    },
+    "APL-338": {
+      "test_file": "qualification/test_ai_enablement_live.py",
+      "nodes": [
+        "test_readiness_api_and_separate_advisory_authority",
+        "test_durable_sealed_replay_and_daily_budget_on_real_database"
+      ]
+    },
+    "APL-340": {
+      "test_file": "qualification/test_ai_input_tool_isolation_live.py",
+      "nodes": [
+        "test_policy_tool_ceiling_and_untrusted_instructions_cannot_execute_actions"
+      ]
+    },
+    "APL-341": {
+      "test_file": "qualification/test_ai_data_handling_live.py",
+      "nodes": [
+        "test_advisory_records_exact_handling_and_sends_only_minimized_data"
+      ]
+    },
+    "APL-342": {
+      "test_file": "qualification/test_ai_answer_provenance_live.py",
+      "nodes": [
+        "test_saved_answer_pins_exact_sources_and_rechecks_current_access_on_replay"
+      ]
+    },
+    "APL-343": {
+      "test_file": "qualification/test_ai_task_trace_live.py",
+      "nodes": [
+        "test_successful_ai_task_preserves_a_closed_reproducible_trace_without_hidden_reasoning"
+      ]
+    },
+    "APL-344": {
+      "test_file": "qualification/test_ai_evaluation_gate_live.py",
+      "nodes": [
+        "test_exact_ready_manifest_passes_and_drift_fails_closed",
+        "test_incomplete_critical_or_unjustified_manifest_fails_closed",
+        "test_repository_manifest_truthfully_remains_not_ready"
+      ]
+    },
+    "APL-345": {
+      "test_file": "qualification/test_ai_budget_jobs_live.py",
+      "nodes": [
+        "test_accepted_job_reserves_budget_and_queued_cancel_releases_it"
+      ]
+    },
+    "APL-346": {
+      "test_file": "qualification/test_ai_job_execution_live.py",
+      "nodes": [
+        "test_restricted_worker_completes_fenced_job_and_settles_exact_budget"
+      ]
+    },
+    "APL-718": {
+      "test_file": "qualification/test_ai_forecast_scenarios_live.py",
+      "nodes": [
+        "test_exact_official_revisions_create_bounded_and_versioned_planning_scenarios"
+      ]
+    },
+    "APL-347": {
+      "test_file": "qualification/test_ai_safety_shutdown_live.py",
+      "nodes": [
+        "test_minimal_feedback_and_scoped_shutdown_contain_ai_without_stopping_manual_work"
+      ]
+    },
+    "APL-531": {
+      "test_file": "qualification/test_ai_extraction_drafts_live.py",
+      "nodes": [
+        "test_manager_reviews_exact_source_proposals_without_creating_domain_objects"
+      ]
+    },
+    "APL-339": {
+      "test_file": "qualification/test_ai_report_drafting_live.py",
+      "nodes": [
+        "test_author_reviews_snapshot_bound_draft_without_publishing_or_changing_sources"
+      ]
+    },
+    "APL-402": {
+      "test_file": "qualification/test_pooled_ratios_live.py",
+      "nodes": [
+        "test_analyst_calculates_denominator_weighted_ratio_from_approved_components"
+      ]
+    },
+    "APL-405": {
+      "test_file": "qualification/test_cumulative_difference_live.py",
+      "nodes": [
+        "test_analyst_calculates_and_reproduces_cumulative_increment"
+      ]
+    },
+    "APL-408": {
+      "test_file": "qualification/test_coverage_status_live.py",
+      "nodes": [
+        "test_calculation_keeps_approved_pending_and_missing_coverage_explicit"
+      ]
+    },
+    "APL-411": {
+      "test_file": "qualification/test_precision_rounding_live.py",
+      "nodes": [
+        "test_three_exact_inputs_round_only_after_the_unrounded_sum_is_stored"
+      ]
+    },
+    "APL-415": {
+      "test_file": "qualification/test_invalid_numeric_inputs_live.py",
+      "nodes": [
+        "test_approved_negative_adjustment_calculates_while_invalid_counts_are_refused",
+        "test_zero_denominator_is_durable_undefined_result_not_successful_zero",
+        "test_ratio_quantity_and_percentage_bound_refusals_remain_specific"
+      ]
+    },
+    "APL-421": {
+      "test_file": "qualification/test_recalculation_dependencies_live.py",
+      "nodes": [
+        "test_approved_correction_records_dependencies_and_recalculates_exactly_once"
+      ]
+    },
+    "APL-607": {
+      "test_file": "qualification/test_weighted_composites_live.py",
+      "nodes": [
+        "test_manager_previews_transparent_weighted_composite"
+      ]
+    },
+    "APL-424": {
+      "test_file": "qualification/test_calculation_reconciliation_live.py",
+      "nodes": [
+        "test_analyst_explains_and_reconciles_a_newly_included_approved_source"
+      ]
+    },
+    "APL-611": {
+      "test_file": "qualification/test_statistical_interpretation_live.py",
+      "nodes": [
+        "test_independently_approved_raw_values_produce_a_labelled_sample_median"
+      ]
+    },
+    "APL-610": {
+      "test_file": "qualification/test_dashboard_authoring_live.py",
+      "nodes": [
+        "test_analyst_previews_ten_widgets_and_copies_private_dashboard"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-610",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-610",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-434": {
+      "test_file": "qualification/test_filtered_drilldown_live.py",
+      "nodes": [
+        "test_approved_slice_applies_only_to_compatible_widget_and_drill_level"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-434",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-434",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-613": {
+      "test_file": "qualification/test_dashboard_pivots_live.py",
+      "nodes": [
+        "test_analyst_previews_and_runs_a_source_based_dashboard_pivot_through_the_http_api"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-613",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-613",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-616": {
+      "test_file": "qualification/test_dashboard_geography_live.py",
+      "nodes": [
+        "test_analyst_previews_one_coordinate_free_map_and_equivalent_table"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-616",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-616",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-614": {
+      "test_file": "qualification/test_dashboard_governance_live.py",
+      "nodes": [
+        "test_reviewed_disclosure_public_content_owner_transfer_and_durable_recovery"
+      ]
+    },
+    "APL-618": {
+      "test_file": "qualification/test_dashboard_alerts_live.py",
+      "nodes": [
+        "test_author_creates_due_rule_and_receives_a_durable_missingness_incident"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-618",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-618",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-620": {
+      "test_file": "qualification/test_external_analytics_live.py",
+      "nodes": [
+        "test_author_exports_an_exact_result_then_revokes_the_connection"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-620",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-620",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-623": {
+      "test_file": "qualification/test_anomaly_assistance_live.py",
+      "nodes": [
+        "test_analyst_runs_anomaly_assistance_and_confirms_a_reviewable_finding"
+      ]
+    },
+    "APL-625": {
+      "test_file": "qualification/test_evaluation_registry_live.py",
+      "nodes": [
+        "test_evaluation_moves_through_independently_decided_stage_gates"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-625",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-625",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-630": {
+      "test_file": "qualification/test_evaluation_methodology_live.py",
+      "nodes": [
+        "test_methodology_is_independently_reviewed_and_exports_reproducible_sample_counts"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-630",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-630",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-632": {
+      "test_file": "qualification/test_analysis_packages_live.py",
+      "nodes": [
+        "test_analyst_freezes_an_approved_source_and_registers_a_pinned_result"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-632",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-632",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-634": {
+      "test_file": "qualification/test_learning_agenda_live.py",
+      "nodes": [
+        "test_team_closes_reopens_and_context_checks_a_versioned_learning_question"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-634",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-634",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-639": {
+      "test_file": "qualification/test_management_responses_live.py",
+      "nodes": [
+        "test_partial_response_creates_owned_action_completed_by_exact_evidence"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-639",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-639",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-641": {
+      "test_file": "qualification/test_qualitative_coding_live.py",
+      "nodes": [
+        "test_two_coders_preserve_assignments_and_adjudicate_one_disagreement"
+      ],
+      "recovery_helper": "qualification/test_qualitative_coding_live.py::_post: rejected unknown field creates no registry/audit/outbox/receipt write; corrected identical operation id succeeds and replays exactly"
+    },
+    "APL-644": {
+      "test_file": "qualification/test_transcription_translation_live.py",
+      "nodes": [
+        "test_analyst_corrects_translation_and_quotes_the_reviewed_meaning"
+      ],
+      "recovery_helper": "qualification/test_transcription_translation_live.py::_post: closed request refusal, same-operation recovery and exact replay"
+    },
+    "APL-646": {
+      "test_file": "qualification/test_triangulated_findings_live.py",
+      "nodes": [
+        "test_finding_preserves_evidence_history_and_publishes_the_reviewed_revision"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-646",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-646",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-648": {
+      "test_file": "qualification/test_budget_versions_live.py",
+      "nodes": [
+        "test_independent_reviewer_approves_exact_decimal_budget_revision"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-648",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-648",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-650": {
+      "test_file": "qualification/test_expenditure_ingestion_live.py",
+      "nodes": [
+        "test_repeated_and_amended_expenditure_preserves_exact_correction_semantics",
+        "test_unbalanced_expenditure_is_refused_without_an_explicit_exception"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-650",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-650",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-652": {
+      "test_file": "qualification/test_finance_variance_live.py",
+      "nodes": [
+        "test_variance_separates_current_unspent_budget_from_forecast_overrun",
+        "test_missing_actual_data_never_becomes_apparent_underspend"
+      ],
+      "supplemental_gate_suites": [
+        {
+          "test_file": "qualification/test_story_authorization_analytics_live.py",
+          "parameter_id_contains": "APL-652",
+          "gate": "authorization_refusal"
+        },
+        {
+          "test_file": "qualification/test_story_error_recovery_analytics_live.py",
+          "parameter_id_contains": "APL-652",
+          "gate": "error_recovery"
+        }
+      ]
+    },
+    "APL-364": {
+      "test_file": "qualification/test_ai_problem_baselines_live.py",
+      "nodes": [
+        "test_problem_baseline_kind_and_worker_fences_are_installed",
+        "test_problem_baseline_draft_preserves_partial_exact_metrics",
+        "test_problem_baseline_refuses_incomplete_lock_without_writing",
+        "test_problem_baseline_lock_is_server_dated_immutable_and_exactly_replayable",
+        "test_problem_baseline_is_hidden_from_another_tenant_and_unqualified_actor"
+      ]
+    },
+    "APL-350": {
+      "test_file": "qualification/test_effective_access_live.py",
+      "nodes": [
+        "test_current_grants_explain_permitted_and_sanitized_denied_access",
+        "test_simulation_refuses_non_administrator_and_cross_tenant_subject"
+      ]
+    },
+    "APL-435": {
+      "test_file": "qualification/test_dashboard_comparison_journeys_live.py",
+      "nodes": [
+        "test_apl435_lower_is_better_retains_overachievement_and_exact_target_context"
+      ]
+    },
+    "APL-437": {
+      "test_file": "qualification/test_dashboard_comparison_journeys_live.py",
+      "nodes": [
+        "test_apl437_source_change_remains_stale_across_fetch_then_recalculation_recovers"
+      ]
+    },
+    "APL-612": {
+      "test_file": "qualification/test_dashboard_comparison_journeys_live.py",
+      "nodes": [
+        "test_apl612_portfolio_ranks_qualified_exact_version_and_recovers_from_invalid_selector"
+      ]
+    }
+  },
+  "status": "SOURCE_REVIEWED_CANDIDATE_MAPPING_EXECUTION_RECEIPT_REQUIRED"
+}

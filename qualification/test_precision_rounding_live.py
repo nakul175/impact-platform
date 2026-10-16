@@ -1,5 +1,7 @@
 """Positive user journey for FR-CAL-009 / APL-411 precision and output-only rounding."""
 
+from story_read_recovery import assert_read_recovery
+
 from test_calculation_methods import build, observation_data
 from test_live_application import expect
 from test_measurement import action, approve, create, get, submit
@@ -45,3 +47,4 @@ def test_three_exact_inputs_round_only_after_the_unrounded_sum_is_stored(live):
         ),
         404,
     )
+    assert_read_recovery(live, "calculated-results", result["object_id"], expected=result)

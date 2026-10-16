@@ -2,6 +2,8 @@
 
 from uuid import uuid4
 
+from advisory_tenant_fixture import isolated_advisory_tenant
+
 import pytest
 from starlette.requests import Request
 
@@ -55,7 +57,7 @@ def test_advisory_records_exact_handling_and_sends_only_minimized_data(live, mon
             }
         )
     )
-    tenant = live.fixture["tenant_a"]
+    tenant = isolated_advisory_tenant(live)
 
     class Provider:
         configured = True
@@ -175,3 +177,9 @@ def test_advisory_records_exact_handling_and_sends_only_minimized_data(live, mon
             "SELECT 1 FROM impact.ai_advisory_request WHERE tenant_id=%s AND request_id=%s",
             (tenant, blocked["operation_id"]),
         ).fetchone()
+    # A refusal before reservation leaves the same operation identifier recoverable.
+    corrected = {**blocked, "profile": _profile()}
+    recovered = api.advisory(identity, tenant, corrected, str(uuid4()))
+    assert recovered["status"] == "DRAFT" and len(provider.calls) == 2
+    assert api.advisory(identity, tenant, corrected, str(uuid4())) == recovered
+    assert len(provider.calls) == 2

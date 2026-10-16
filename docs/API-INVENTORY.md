@@ -498,7 +498,9 @@
 | POST | `/v1/tenants/{tenant_id}/uploads/{object_id}/actions/complete` | `upload.write` |
 | PUT | `/v1/tenants/{tenant_id}/uploads/{object_id}/content` | `upload.write` |
 | GET | `/v1/tenants/{tenant_id}/work-items` | `work-items.read` |
+| POST | `/v1/tenants/{tenant_id}/work-items` | `work-items.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/work-items/{object_id}` | `work-items.read` |
+| PATCH | `/v1/tenants/{tenant_id}/work-items/{object_id}` | `work-items.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/work-items/{object_id}/actions/recalculate` | `indicator.calculate` |
 | GET | `/v1/tenants/{tenant_id}/workflow-templates` | `workflow-templates.read` |
 | POST | `/v1/tenants/{tenant_id}/workflow-templates` | `reference-data.manage` |

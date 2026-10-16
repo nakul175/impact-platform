@@ -111,6 +111,11 @@ def test_b_exact_source_manifest_rechecks_current_authority(live):
         200,
     )
     expect(live.request(path), 404)
+    restore_source = temporary_grants(live, "author", ["evidence.manage"])
+    try:
+        assert expect(live.request(path), 200) == current
+    finally:
+        restore_source()
     # The reports grant remains test-owned and is cleaned up normally. The source grant was
     # deliberately revoked through policy above.
     revoke_write()

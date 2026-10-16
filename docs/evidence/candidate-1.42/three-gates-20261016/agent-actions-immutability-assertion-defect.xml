@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="1.158" timestamp="2026-10-16T18:39:12.618029+05:30" hostname="Athenas-MacBook-Pro.local"><testcase classname="qualification.test_ai_governed_actions_live" name="test_apl_597_source_bound_suggestions_refuse_fabrication_and_recover" time="0.600"><failure message="TypeError: Database.transaction() got an unexpected keyword argument 'write'">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x10cd9d070&gt;
+governed_ai_grants = None
+component_services = namespace(database=&lt;impact_api.store.Database object at 0x10cd85610&gt;, policy_calls=[('QUALITATIVE_ASSISTANCE', 1, 'INT...ctiveFindings object at 0x10cfc8590&gt;, actions=&lt;impact_api.ai_action_proposals.AIActionProposals object at 0x10cfc8710&gt;)
+
+    def test_apl_597_source_bound_suggestions_refuse_fabrication_and_recover(
+        live, governed_ai_grants, component_services
+    ):
+        """APL-597 component: traceable views, individual review and atomic output refusal."""
+    
+        positive, positive_text = _text_evidence(live, "The service was easy to reach.\n")
+        opposing, opposing_text = _text_evidence(live, "El servicio fue difícil de alcanzar.\n")
+        codebook = _seed(
+            live,
+            "Codebook",
+            {"codes": [{"code": "ACCESS_POSITIVE"}, {"code": "ACCESS_BARRIER"}]},
+            "Approved",
+        )
+    
+        def candidate(source, text, viewpoint, code, translation=None):
+            excerpt = text.splitlines()[0]
+            return {
+                "source_revision_id": source["revision_id"],
+                "viewpoint": viewpoint,
+                "start_character": 0,
+                "end_character": len(excerpt),
+                "excerpt": excerpt,
+                "excerpt_sha256": hashlib.sha256(excerpt.encode()).hexdigest(),
+                "speaker_reference": None,
+                "suggested_codes": [code],
+                "theme": "Service access",
+                "translation_language": "en" if translation else None,
+                "translation_text": translation,
+            }
+    
+        sources = [
+            {"object_id": positive["object_id"], "revision_id": positive["revision_id"], "language": "en"},
+            {"object_id": opposing["object_id"], "revision_id": opposing["revision_id"], "language": "es"},
+        ]
+        candidates = [
+            candidate(positive, positive_text, "Service was accessible", "ACCESS_POSITIVE"),
+            candidate(
+                opposing,
+                opposing_text,
+                "Service was difficult to access",
+                "ACCESS_BARRIER",
+                "The service was difficult to reach.",
+            ),
+        ]
+        operation_id = str(uuid4())
+        request = {
+            "operation_id": operation_id,
+            "codebook_id": codebook["object_id"],
+            "codebook_revision_id": codebook["revision_id"],
+            "sources": sources,
+            "candidates": candidates,
+            "policy_version": 1,
+            "language": "en",
+        }
+    
+        before = _count(live, "ai_qualitative_run")
+        fabricated = {**request, "candidates": [{**candidates[0], "excerpt": "Invented quotation"}]}
+        actor = _identity(live, component_services.database)
+        tenant = live.fixture["tenant_a"]
+        with pytest.raises(DomainError) as refused:
+            component_services.qualitative.create(actor, tenant, fabricated, str(uuid4()))
+        assert (refused.value.status, refused.value.reason) == (
+            422,
+            "QUALITATIVE_QUOTATION_FABRICATED",
+        )
+        assert _count(live, "ai_qualitative_run") == before
+    
+        partner = _identity(live, component_services.database, "partner")
+        with pytest.raises(DomainError) as denied:
+            component_services.qualitative.create(partner, tenant, request, str(uuid4()))
+        assert (denied.value.status, denied.value.code) in {
+            (403, "POLICY_DENIED"),
+            (404, "RESOURCE_UNAVAILABLE"),
+        }
+        assert _count(live, "ai_qualitative_run") == before
+    
+        run = component_services.qualitative.create(actor, tenant, request, str(uuid4()))
+&gt;       _assert_app_cannot_update(component_services.database, tenant, "ai_qualitative_suggestion")
+
+qualification/test_ai_governed_actions_live.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_governed_actions_live.py:110: in _assert_app_cannot_update
+    with database.transaction(tenant, write=True) as connection:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/athena/.local/share/uv/python/cpython-3.12.15-macos-aarch64-none/lib/python3.12/contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;contextlib._GeneratorContextManager object at 0x10d0b6780&gt;
+func = &lt;function Database.transaction at 0x10ad9ab60&gt;
+args = (&lt;impact_api.store.Database object at 0x10cd85610&gt;, 'ce56220a-32a5-5ca5-a45f-860dc3d9c958')
+kwds = {'write': True}
+
+    def __init__(self, func, args, kwds):
+&gt;       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: Database.transaction() got an unexpected keyword argument 'write'
+
+/Users/athena/.local/share/uv/python/cpython-3.12.15-macos-aarch64-none/lib/python3.12/contextlib.py:105: TypeError</failure></testcase><testcase classname="qualification.test_ai_governed_actions_live" name="test_apl_601_suggestions_remain_unconfirmed_and_disabled_tasks_recover" time="0.135"><failure message="TypeError: Database.transaction() got an unexpected keyword argument 'write'">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x10cd9d070&gt;
+governed_ai_grants = None
+component_services = namespace(database=&lt;impact_api.store.Database object at 0x10d0b7980&gt;, policy_calls=[('PROACTIVE_FINDINGS', 1, 'INTERNA...ctiveFindings object at 0x10d0b7bf0&gt;, actions=&lt;impact_api.ai_action_proposals.AIActionProposals object at 0x10d0b7950&gt;)
+
+    def test_apl_601_suggestions_remain_unconfirmed_and_disabled_tasks_recover(
+        live, governed_ai_grants, component_services
+    ):
+        """APL-601 component: a suggestion can be dismissed without mutating its sources."""
+    
+        programme = _programme(live)
+        source, _ = _text_evidence(live, "A seasonal performance spike was observed.\n")
+        result = _seed(live, "CalculatedResult", {"value_state": "PRESENT", "value": "25"}, "Approved")
+        owner = live.fixture["actors"]["author"]["principal_id"]
+        actor = _identity(live, component_services.database)
+        partner = _identity(live, component_services.database, "partner")
+        tenant = live.fixture["tenant_a"]
+    
+        def configure(enabled, code):
+            return component_services.findings.configure(
+                actor,
+                tenant,
+                {
+                    "operation_id": str(uuid4()),
+                    "task_code": code,
+                    "scope_object_id": programme["object_id"],
+                    "scope_revision_id": programme["revision_id"],
+                    "owner_principal_id": owner,
+                    "cooldown_seconds": 60,
+                    "noise_limit": 2,
+                    "enabled": enabled,
+                    "policy_version": 1,
+                    "language": "en",
+                },
+            )
+    
+        disabled = configure(False, "SEASONAL_DISABLED")
+&gt;       _assert_app_cannot_update(component_services.database, tenant, "ai_detection_task")
+
+qualification/test_ai_governed_actions_live.py:317: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_governed_actions_live.py:110: in _assert_app_cannot_update
+    with database.transaction(tenant, write=True) as connection:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/athena/.local/share/uv/python/cpython-3.12.15-macos-aarch64-none/lib/python3.12/contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;contextlib._GeneratorContextManager object at 0x10d075a90&gt;
+func = &lt;function Database.transaction at 0x10ad9ab60&gt;
+args = (&lt;impact_api.store.Database object at 0x10d0b7980&gt;, 'ce56220a-32a5-5ca5-a45f-860dc3d9c958')
+kwds = {'write': True}
+
+    def __init__(self, func, args, kwds):
+&gt;       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: Database.transaction() got an unexpected keyword argument 'write'
+
+/Users/athena/.local/share/uv/python/cpython-3.12.15-macos-aarch64-none/lib/python3.12/contextlib.py:105: TypeError</failure></testcase><testcase classname="qualification.test_ai_governed_actions_live" name="test_apl_541_confirmation_uses_ordinary_command_and_refusal_is_recoverable" time="0.166"><failure message="TypeError: Database.transaction() got an unexpected keyword argument 'write'">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x10cd9d070&gt;
+governed_ai_grants = None
+component_services = namespace(database=&lt;impact_api.store.Database object at 0x10d084f50&gt;, policy_calls=[('ACTION_PROPOSAL', 1, 'INTERNAL')...ctiveFindings object at 0x10d084710&gt;, actions=&lt;impact_api.ai_action_proposals.AIActionProposals object at 0x10d084fb0&gt;)
+
+    def test_apl_541_confirmation_uses_ordinary_command_and_refusal_is_recoverable(
+        live, governed_ai_grants, component_services
+    ):
+        """APL-541 component: inspectable proposal, protected refusal and authority recheck."""
+    
+        programme = _programme(live)
+        source, _ = _text_evidence(live, "A reviewed follow-up action is required.\n")
+        request = {
+            "operation_id": str(uuid4()),
+            "command_type": "CREATE_WORK_ITEM_DRAFT",
+            "scope_object_id": programme["object_id"],
+            "scope_revision_id": programme["revision_id"],
+            "after_values": {
+                "programme_id": programme["object_id"],
+                "work_type": "ACTION",
+                "title": "Review the synthetic programme follow-up",
+                "dependency_ids": [],
+            },
+            "affected_versions": [
+                {
+                    "object_type": "Evidence",
+                    "object_id": source["object_id"],
+                    "revision_id": source["revision_id"],
+                }
+            ],
+            "policy_version": 1,
+            "consequences": ["Creates one ordinary draft work item after explicit confirmation."],
+            "language": "en",
+        }
+    
+        before_proposals = _count(live, "ai_action_proposal")
+        actor = _identity(live, component_services.database)
+        partner = _identity(live, component_services.database, "partner")
+        tenant = live.fixture["tenant_a"]
+        with pytest.raises(DomainError) as protected:
+            component_services.actions.create(
+                actor,
+                tenant,
+                {**request, "command_type": "PRIVACY_DELETE", "operation_id": str(uuid4())},
+            )
+        assert (protected.value.status, protected.value.reason) == (422, "AI_PROTECTED_COMMAND_REFUSED")
+        assert _count(live, "ai_action_proposal") == before_proposals
+    
+        with pytest.raises(DomainError) as denied:
+            component_services.actions.create(partner, tenant, request)
+        assert (denied.value.status, denied.value.code) in {
+            (403, "POLICY_DENIED"),
+            (404, "RESOURCE_UNAVAILABLE"),
+        }
+        assert _count(live, "ai_action_proposal") == before_proposals
+    
+        work_before = _count(live, "object_registry")
+        proposal = component_services.actions.create(actor, tenant, request)
+&gt;       _assert_app_cannot_update(component_services.database, tenant, "ai_action_proposal")
+
+qualification/test_ai_governed_actions_live.py:440: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_governed_actions_live.py:110: in _assert_app_cannot_update
+    with database.transaction(tenant, write=True) as connection:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/athena/.local/share/uv/python/cpython-3.12.15-macos-aarch64-none/lib/python3.12/contextlib.py:301: in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;contextlib._GeneratorContextManager object at 0x10d0f8fe0&gt;
+func = &lt;function Database.transaction at 0x10ad9ab60&gt;
+args = (&lt;impact_api.store.Database object at 0x10d084f50&gt;, 'ce56220a-32a5-5ca5-a45f-860dc3d9c958')
+kwds = {'write': True}
+
+    def __init__(self, func, args, kwds):
+&gt;       self.gen = func(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^
+E       TypeError: Database.transaction() got an unexpected keyword argument 'write'
+
+/Users/athena/.local/share/uv/python/cpython-3.12.15-macos-aarch64-none/lib/python3.12/contextlib.py:105: TypeError</failure></testcase></testsuite></testsuites>

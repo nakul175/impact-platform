@@ -781,6 +781,33 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-22",
+      "change_id": "APL-597-601-541-IMMUTABLE-READ-REPAIR",
+      "change": "Read immutable AI candidates under the existing tenant write lock",
+      "paths": [
+        "apps/api/impact_api/ai_qualitative_assistance.py",
+        "apps/api/impact_api/ai_proactive_findings.py",
+        "apps/api/impact_api/ai_action_proposals.py",
+        "apps/api/impact_api/service.py",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "areas": [
+        "ai-module",
+        "contracts"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH23",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Removes row-update locks from insert-only qualitative suggestions, detection tasks, findings and action proposals while retaining tenant advisory serialization and uniqueness. Source classification is resolved from the currently authorized registry row rather than an immutable revision row without that field. Reserved use-case activation remains disabled; patched component tests do not establish whole-story positive runtime qualification. Registers the already contracted ordinary WorkItem draft command so explicit confirmation can execute through existing scoped authority and atomic receipt/audit handling.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [

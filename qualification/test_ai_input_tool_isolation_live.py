@@ -2,6 +2,8 @@
 
 from uuid import uuid4
 
+from advisory_tenant_fixture import isolated_advisory_tenant
+
 import pytest
 from starlette.requests import Request
 
@@ -51,7 +53,7 @@ def test_policy_tool_ceiling_and_untrusted_instructions_cannot_execute_actions(l
             }
         )
     )
-    tenant = live.fixture["tenant_a"]
+    tenant = isolated_advisory_tenant(live)
 
     class Provider:
         configured = True

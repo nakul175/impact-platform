@@ -82,3 +82,8 @@ def test_simulation_refuses_non_administrator_and_cross_tenant_subject(live):
         404,
     )
     assert hidden["code"] == "RESOURCE_UNAVAILABLE"
+    body["subject_principal_id"] = live.fixture["actors"]["author"]["principal_id"]
+    recovered = expect(
+        live.request(live.path("access/effective/simulations"), actor="admin", method="POST", body=body), 200
+    )
+    assert recovered["decision"] == "PERMITTED"

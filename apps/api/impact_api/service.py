@@ -118,6 +118,7 @@ def request_schema(path, method):
 
 
 WRITE_ROUTES = {
+    "work-items",
     "programmes",
     "indicator-definitions",
     "indicator-instances",

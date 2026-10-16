@@ -1,5 +1,7 @@
 """Positive user journey for FR-CAL-016 / APL-611 governed statistical interpretation."""
 
+from story_read_recovery import assert_read_recovery
+
 from impact_api.contracts import validate
 from test_calculation_methods import observation_data
 from test_dashboards import calculate, measure
@@ -60,4 +62,7 @@ def test_independently_approved_raw_values_produce_a_labelled_sample_median(live
             actor="other_tenant",
         ),
         404,
+    )
+    assert_read_recovery(
+        live, "calculated-results", result["object_id"], "/reproduction", expected=reproduced
     )

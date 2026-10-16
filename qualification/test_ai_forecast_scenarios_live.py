@@ -129,8 +129,6 @@ def test_exact_official_revisions_create_bounded_and_versioned_planning_scenario
     )
     assert second["scenario_id"] == scenario_id and second["version"] == 2
     assert second["assumptions"][-1] == "Revised"
-    historical = expect(
-        live.request(path + f"/{scenario_id}", actor="admin", params={"version": 1}), 200
-    )
+    historical = expect(live.request(path + f"/{scenario_id}", actor="admin", params={"version": 1}), 200)
     assert historical["assumptions"] == assumptions
     revoke()

@@ -91,9 +91,7 @@ def test_manager_reviews_exact_source_proposals_without_creating_domain_objects(
     titles = [item for item in created["proposals"] if item["field_key"] == "title"]
     assert len(titles) == 2 and all(item["conflict"] for item in titles)
     assert all(item["classification"] == "EXTRACTED" for item in created["proposals"])
-    assert {item["location"]["section"] for item in created["proposals"]} == {
-        "Outcome commitments"
-    }
+    assert {item["location"]["section"] for item in created["proposals"]} == {"Outcome commitments"}
     assert {item["location"]["line"] for item in created["proposals"]} == {2, 3, 4}
     assert {item["evidence_span"] for item in titles} == {
         "Title: Safer water access",
@@ -103,8 +101,7 @@ def test_manager_reviews_exact_source_proposals_without_creating_domain_objects(
     start = next(item for item in created["proposals"] if item["field_key"] == "start_date")
     reviewed = expect(
         live.request(
-            live.path("ai-enablement/extractions", created["draft_id"])
-            + "/actions/apply",
+            live.path("ai-enablement/extractions", created["draft_id"]) + "/actions/apply",
             method="POST",
             body={
                 "operation_id": str(uuid4()),

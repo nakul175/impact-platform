@@ -39,10 +39,7 @@ def _derivative(live, actor="author", source_capability="evidence.read"):
 def _issue(live, derivative_id, revision_id, actor="author"):
     return expect(
         live.request(
-            live.path("derivatives", derivative_id)
-            + "/revisions/"
-            + revision_id
-            + "/presentation-leases",
+            live.path("derivatives", derivative_id) + "/revisions/" + revision_id + "/presentation-leases",
             actor=actor,
             method="POST",
         ),

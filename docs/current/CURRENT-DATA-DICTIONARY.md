@@ -7340,3 +7340,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0115_ai_untrusted_instruction_observations.sql | 1ce0b26a2b56101d02821d28dfe5f8f27cc2cbe52d2dc14e22c90839eddb23ed |
+
+## Migration0116 — current generated access profile
+
+`0116_current_access_profile.sql` SHA256 `8dbf62b9c870defb4d7e3f120cbd789c7ff0f3f88dc0b718b2e997b70c3d616f`. Schema116 registers generated profile hash `def08ef682589136b0ec06b5d94c1fb7e386829acf4ffd3543c74f685cc99192` after the Release1.42 capability additions. Registration does not activate the profile for existing tenants; governed preview, independent approval and execution remain required. All0001–0115 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0116_current_access_profile.sql | 8dbf62b9c870defb4d7e3f120cbd789c7ff0f3f88dc0b718b2e997b70c3d616f |

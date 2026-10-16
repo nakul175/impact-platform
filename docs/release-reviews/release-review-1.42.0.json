@@ -703,6 +703,53 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-19",
+      "change_id": "REL142-CURRENT-ACCESS-PROFILE",
+      "change": "Register exact generated access profile after capability additions",
+      "paths": [
+        "infrastructure/migrations/0116_current_access_profile.sql",
+        "apps/api/impact_api/bootstrap_profile.json"
+      ],
+      "areas": [
+        "migration",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers the exact generated role and purpose-bound capability manifest without activating or widening any existing tenant. Existing tenants still require governed preview, independent natural-person approval and execution under current authority.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-20",
+      "change_id": "APL-339-REPORT-DRAFT-REVIEW",
+      "change": "Snapshot-bound report draft review without source mutation",
+      "paths": [
+        "apps/api/impact_api/ai_report_drafting.py",
+        "qualification/test_ai_report_drafting_live.py"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH21",
+        "TH23",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Reads the immutable AI report draft without requesting a row lock that its deliberately narrow application grant cannot acquire. Positive qualification proves the human-reviewed draft retains AI origin and exact snapshot, template and evidence bindings while creating no Report or Snapshot mutation or publication.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [

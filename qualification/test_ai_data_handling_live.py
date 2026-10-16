@@ -21,8 +21,7 @@ def _profile(**changes):
         "sector": "GENERAL",
         "team_size": 8,
         "goal": (
-            "Draft a public update for person@example.org or +1 (202) 555-0198; "
-            "password=synthetic-secret"
+            "Draft a public update for person@example.org or +1 (202) 555-0198; password=synthetic-secret"
         ),
         "data_readiness": "BASIC",
         "ai_experience": "EXPERIMENTING",

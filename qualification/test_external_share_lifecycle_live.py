@@ -53,9 +53,7 @@ def _share(live, derivative_id, revision_id):
 
 
 def test_named_audience_revocation_expiry_and_source_revalidation(live):
-    revoke = temporary_grants(
-        live, "author", ["reports.write", "reports.share", "evidence.manage"]
-    )
+    revoke = temporary_grants(live, "author", ["reports.write", "reports.share", "evidence.manage"])
     temporary_grants(live, "partner", ["evidence.manage"])
     derivative_id, revision_id = _derivative(live)
     share = _share(live, derivative_id, revision_id)

@@ -37795,7 +37795,7 @@
         "operationId": "create_qualitative_codebook",
         "summary": "Create Qualitative Codebook",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -37906,7 +37906,7 @@
         "operationId": "assign_qualitative_codes",
         "summary": "Assign Qualitative Codes",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -38017,7 +38017,7 @@
         "operationId": "adjudicate_qualitative_coding",
         "summary": "Adjudicate Qualitative Coding",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -38128,7 +38128,7 @@
         "operationId": "calculate_qualitative_agreement",
         "summary": "Calculate Qualitative Agreement",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -38239,7 +38239,7 @@
         "operationId": "request_transcription",
         "summary": "Request Transcription",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -38350,7 +38350,7 @@
         "operationId": "correct_transcript_segment",
         "summary": "Correct Transcript Segment",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -38461,7 +38461,7 @@
         "operationId": "create_reviewed_quotation",
         "summary": "Create Reviewed Quotation",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",

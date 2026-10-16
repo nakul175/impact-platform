@@ -7276,3 +7276,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0107_evaluation_methodology_access_profile.sql | 96d9b3dc8e78d395fa303a3b8c9d6388f92c63701a85841fce45065f7c3ab108 |
+
+## Migration0108 — governed qualitative and transcription registry kinds
+
+`0108_qualitative_transcription_kinds.sql` SHA256 `be549d5fda33fbb7c291515a16b7b8e119d42680f650f34077d5370d327093c3`. Schema108 registers `QualitativeCodebook`, `QualitativeCodingAssignment`, `QualitativeAdjudication`, `QualitativeAgreement`, `ProcessingDestination`, `TranscriptArtifact` and `QuotationReference` and places all seven kinds behind restrictive delivery-worker fences. The authenticated application retains responsibility for current authority, independence, exact revision pins and destination approval. All0001–0107 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0108_qualitative_transcription_kinds.sql | be549d5fda33fbb7c291515a16b7b8e119d42680f650f34077d5370d327093c3 |

@@ -2932,7 +2932,7 @@ def augment(spec, policy):
         entry.update(
             operationId=operation,
             summary=operation.replace("_", " ").title(),
-            **{"x-contract-version": VERSION},
+            **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
         )
         entry["requestBody"]["content"]["application/json"]["schema"] = {
             "$ref": f"#/components/schemas/{schema_name}"
@@ -2947,7 +2947,7 @@ def augment(spec, policy):
         entry.update(
             operationId=operation,
             summary=operation.replace("_", " ").title(),
-            **{"x-contract-version": VERSION},
+            **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
         )
         entry["requestBody"]["content"]["application/json"]["schema"] = {
             "$ref": f"#/components/schemas/{schema_name}"
@@ -3274,6 +3274,55 @@ def augment(spec, policy):
             "evaluations.read",
             False,
         ),
+        (
+            "create_qualitative_codebook",
+            "POST",
+            prefix + "qualitative-codebooks",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "assign_qualitative_codes",
+            "POST",
+            prefix + "qualitative-assignments",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "adjudicate_qualitative_coding",
+            "POST",
+            prefix + "qualitative-adjudications",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "calculate_qualitative_agreement",
+            "POST",
+            prefix + "qualitative-agreements",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "request_transcription",
+            "POST",
+            prefix + "transcription-requests",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "correct_transcript_segment",
+            "POST",
+            prefix + "transcript-corrections",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "create_reviewed_quotation",
+            "POST",
+            prefix + "quotation-references",
+            "evaluations.draft.edit",
+            True,
+        ),
     ]:
         policy["operations"] = [row for row in policy["operations"] if row["operation_id"] != op]
         policy["operations"].append(
@@ -3283,7 +3332,18 @@ def augment(spec, policy):
                 "path": path,
                 "capability": cap,
                 "role_templates": (
-                    ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "ANALYST"]
+                    ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST"]
+                    if op
+                    in {
+                        "create_qualitative_codebook",
+                        "assign_qualitative_codes",
+                        "adjudicate_qualitative_coding",
+                        "calculate_qualitative_agreement",
+                        "request_transcription",
+                        "correct_transcript_segment",
+                        "create_reviewed_quotation",
+                    }
+                    else ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "ANALYST"]
                     if op
                     in {
                         "create_evaluation_registration",
@@ -3300,7 +3360,12 @@ def augment(spec, policy):
                 "audit": audit_event,
                 **(
                     {"independence_required": True}
-                    if op in {"evaluate_evaluation_stage_gate", "review_evaluation_methodology"}
+                    if op
+                    in {
+                        "evaluate_evaluation_stage_gate",
+                        "review_evaluation_methodology",
+                        "adjudicate_qualitative_coding",
+                    }
                     else {}
                 ),
             }

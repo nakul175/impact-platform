@@ -7212,6 +7212,119 @@
       "audit": false
     },
     {
+      "operation_id": "create_qualitative_codebook",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/qualitative-codebooks",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "assign_qualitative_codes",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/qualitative-assignments",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "adjudicate_qualitative_coding",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/qualitative-adjudications",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "independence_required": true
+    },
+    {
+      "operation_id": "calculate_qualitative_agreement",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/qualitative-agreements",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "request_transcription",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/transcription-requests",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "correct_transcript_segment",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/transcript-corrections",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "create_reviewed_quotation",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/quotation-references",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
       "operation_id": "create_audit_export",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/audit-exports",

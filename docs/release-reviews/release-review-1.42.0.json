@@ -473,13 +473,42 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-10",
+      "change_id": "APL-641-APL-644-POSITIVE-JOURNEY-REPAIR",
+      "change": "Governed qualitative coding and transcription persistence and policy repair",
+      "paths": [
+        "infrastructure/migrations/0108_qualitative_transcription_kinds.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/qualitative_evidence.py",
+        "apps/api/impact_api/transcription.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers qualitative, destination, transcript and quotation kinds behind restrictive worker fences; adds explicit policy operations; rechecks current read authority; preserves exact source, codebook and destination revisions; requires independent coders and a third-person adjudicator; retains original automated text; and refuses invalid offsets or unapproved processing destinations.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [
     "docs/current/threat-register.json",
     "qualification/test_effective_access_unit.py",
     "qualification/test_evaluation_registry_unit.py",
-    "qualification/test_evaluation_methodology_unit.py"
+    "qualification/test_evaluation_methodology_unit.py",
+    "qualification/test_qualitative_coding_live.py",
+    "qualification/test_transcription_translation_live.py"
   ],
   "notes": [
     "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."

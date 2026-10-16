@@ -12,10 +12,17 @@ Migration 0103 registers `AnomalyRun` and `AnomalyFinding` with restrictive deli
 
 ## Verification and limits
 
-Focused pure checks cover the deterministic outlier boundary, dedicated policy operations and worker fences. This remains a local coding candidate: unmerged, not independently accepted, and undeployed. No model is retrained automatically, person-linked observations are refused, raw values are not persisted in run context, and no review decision changes underlying observations.
+Focused pure checks cover the deterministic outlier boundary, dedicated policy operations and worker
+fences. The synthetic positive journey
+`qualification/test_anomaly_assistance_live.py::test_analyst_runs_anomaly_assistance_and_confirms_a_reviewable_finding`
+passed on 16 October 2026: six independently approved aggregate observations produce one reviewable
+spike, a human confirms it through the HTTP API, and the exact source revision and value remain
+unchanged. This remains a local candidate: unmerged, not independently accepted, and undeployed. No
+model is retrained automatically, person-linked observations are refused, raw values are not persisted
+in run context, and no review decision changes underlying observations.
 
 ## Integration notes
 
 - Story: APL-623 / FR-DQ-007.
-- Proposed movement: coding-complete only.
+- Positive user journey: locally passed; no acceptance, CI or deployment movement.
 - Security-sensitive paths are recorded in `release-review-1.42.0.json`.

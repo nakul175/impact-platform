@@ -75,7 +75,14 @@ def definition_ready(data):
     validate_scheme(data)
 
 
-def valid_value(definition, payload):
+SPECIFIC_NUMERIC_REASONS = {
+    "NEGATIVE_COUNT",
+    "NEGATIVE_RATIO_QUANTITY",
+    "PERCENTAGE_OUT_OF_RANGE",
+}
+
+
+def valid_value(definition, payload, *, preserve_numeric_reason=False):
     if payload.get("value_state") != "PRESENT":
         return False
     try:
@@ -86,11 +93,19 @@ def valid_value(definition, payload):
             return False
         if definition["measurement_type"] == "COUNT":
             value = decimal_value(payload.get("value"))
-            if value < 0 or value != value.to_integral_value():
+            if value < 0:
+                if preserve_numeric_reason:
+                    raise DomainError("INCOMPATIBLE_MEASURE", reason="NEGATIVE_COUNT")
+                return False
+            if value != value.to_integral_value():
                 return False
         calculate(definition, [{**payload, "approval_state": "APPROVED"}])
         return True
-    except (DomainError, KeyError):
+    except DomainError as exc:
+        if preserve_numeric_reason and exc.reason in SPECIFIC_NUMERIC_REASONS:
+            raise
+        return False
+    except KeyError:
         return False
 
 

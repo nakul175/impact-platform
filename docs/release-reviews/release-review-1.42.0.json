@@ -682,6 +682,27 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-18",
+      "change_id": "APL-345-AI-BUDGET-JOB-CANCELLATION",
+      "change": "Atomic queued AI job cancellation and budget release",
+      "paths": [
+        "apps/api/impact_api/ai_jobs.py",
+        "qualification/test_ai_budget_jobs_live.py"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH21",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Checks the exact queued-job update result before releasing its reservation, so cancellation atomically records a terminal outcome and releases the reserved unit with zero actual usage. Live qualification proves durable acceptance, exact replay, requester-only status, exact policy-version reservation and cancellation settlement against a disposable database.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [
@@ -700,7 +721,8 @@
     "qualification/test_expenditure_ingestion_live.py",
     "qualification/test_finance_variance_live.py",
     "qualification/test_ai_extraction_drafts_live.py",
-    "qualification/test_ai_input_tool_isolation_live.py"
+    "qualification/test_ai_input_tool_isolation_live.py",
+    "qualification/test_ai_budget_jobs_live.py"
   ],
   "notes": [
     "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."

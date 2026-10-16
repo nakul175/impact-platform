@@ -7236,3 +7236,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0102_external_analytics_kinds.sql | af66e09a87ac23f839cbab5b8e9399c0d76357f6e2fa370ce298659ec343e67a |
+
+## Migration0103 — suggestion-only anomaly assistance registry kinds
+
+`0103_anomaly_assistance_kinds.sql` SHA256 `4a99a3e8c443b84ef7bd267f7a1b9ee739442d901ecca0bb2042e3890bcceaeb`. Schema103 registers the `AnomalyRun` and `AnomalyFinding` kinds required by APL-623 and adds restrictive delivery-worker fences. Runs and review feedback remain authenticated application records; the delivery worker receives no access to selected observations, method output, review decisions, or retained feedback. All0001–0102 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0103_anomaly_assistance_kinds.sql | 4a99a3e8c443b84ef7bd267f7a1b9ee739442d901ecca0bb2042e3890bcceaeb |

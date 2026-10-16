@@ -393,6 +393,32 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-15",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-07",
+      "change_id": "APL-623-ANOMALY-ASSISTANCE-COMPLETION",
+      "change": "Suggestion-only anomaly runs and minimised review feedback",
+      "paths": [
+        "infrastructure/migrations/0103_anomaly_assistance_kinds.sql",
+        "apps/api/impact_api/anomaly_assistance.py",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Pins eligible observation revisions and hashes, rechecks current source and field authority, refuses person-linked inputs, keeps findings separate from source data and person labels, restricts review transitions, and retains only named reason-code feedback fields.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [

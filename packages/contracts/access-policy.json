@@ -6924,6 +6924,114 @@
       "audit": true
     },
     {
+      "operation_id": "create_anomaly_run",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/anomaly-runs",
+      "capability": "dashboards.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "list_anomaly_runs",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/anomaly-runs",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "read_anomaly_run",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/anomaly-runs/{object_id}",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_anomaly_findings",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/anomaly-findings",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "read_anomaly_finding",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/anomaly-findings/{object_id}",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "review_anomaly_finding",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/anomaly-findings/{object_id}/actions/review",
+      "capability": "dashboards.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
       "operation_id": "create_audit_export",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/audit-exports",

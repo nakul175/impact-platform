@@ -161,8 +161,12 @@
 | POST | `/v1/tenants/{tenant_id}/analysis-packages` | `dashboards.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/analysis-packages/{object_id}/export` | `report.export` |
 | POST | `/v1/tenants/{tenant_id}/analysis-packages/{object_id}/results` | `dashboards.draft.edit` |
+| GET | `/v1/tenants/{tenant_id}/anomaly-findings` | `dashboards.read` |
+| GET | `/v1/tenants/{tenant_id}/anomaly-findings/{object_id}` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/anomaly-findings/{object_id}/actions/review` | `dashboards.draft.edit` |
+| GET | `/v1/tenants/{tenant_id}/anomaly-runs` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/anomaly-runs` | `dashboards.draft.create` |
+| GET | `/v1/tenants/{tenant_id}/anomaly-runs/{object_id}` | `dashboards.read` |
 | GET | `/v1/tenants/{tenant_id}/assignments` | `assignments.read` |
 | POST | `/v1/tenants/{tenant_id}/assignments` | `assignments.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/assignments/{object_id}` | `assignments.read` |

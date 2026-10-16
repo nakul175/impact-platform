@@ -1919,6 +1919,22 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.get("/v1/tenants/{tenant}/anomaly-runs")
+    def anomaly_run_list(request: Request, tenant: str, limit: int = 50):
+        return anomaly_assistance.list_runs(auth.resolve(request), uuid(tenant), limit)
+
+    @app.get("/v1/tenants/{tenant}/anomaly-runs/{obj}")
+    def anomaly_run_read(request: Request, tenant: str, obj: str):
+        return anomaly_assistance.read_run(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/anomaly-findings")
+    def anomaly_finding_list(request: Request, tenant: str, limit: int = 50):
+        return anomaly_assistance.list_findings(auth.resolve(request), uuid(tenant), limit)
+
+    @app.get("/v1/tenants/{tenant}/anomaly-findings/{obj}")
+    def anomaly_finding_read(request: Request, tenant: str, obj: str):
+        return anomaly_assistance.read_finding(auth.resolve(request), uuid(tenant), uuid(obj))
+
     @app.post("/v1/tenants/{tenant}/anomaly-findings/{obj}/actions/review")
     async def anomaly_finding_review(request: Request, tenant: str, obj: str):
         body = await strict_body(request)

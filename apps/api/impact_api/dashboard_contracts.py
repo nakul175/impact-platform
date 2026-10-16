@@ -55,6 +55,10 @@ IMPLEMENTED = {
     ("post", "external-analytics-connections/{object_id}/actions/refresh"),
     ("post", "external-analytics-connections/{object_id}/actions/revoke"),
     ("post", "anomaly-runs"),
+    ("get", "anomaly-runs"),
+    ("get", "anomaly-runs/{object_id}"),
+    ("get", "anomaly-findings"),
+    ("get", "anomaly-findings/{object_id}"),
     ("post", "anomaly-findings/{object_id}/actions/review"),
     ("post", "evaluations"),
     ("post", "evaluations/{object_id}/actions/stage-gate"),
@@ -583,7 +587,17 @@ def augment(spec, policy):
             "data": closed(
                 {
                     "decision": {"enum": ["CONFIRMED", "DISMISSED", "DEFERRED"]},
-                    "reason": {"type": ["string", "null"], "maxLength": 500},
+                    "reason_code": {
+                        "type": ["string", "null"],
+                        "enum": [
+                            "EXPECTED_SEASONALITY",
+                            "KNOWN_EVENT",
+                            "DATA_CORRECT",
+                            "INSUFFICIENT_CONTEXT",
+                            "OTHER",
+                            None,
+                        ],
+                    },
                 },
                 ["decision"],
             ),
@@ -595,6 +609,8 @@ def augment(spec, policy):
             "finding_id": UUID,
             "observation_id": UUID,
             "observation_revision": UUID,
+            "source_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "method_version": {"const": "ROBUST_MAD_1"},
             "state": {"const": "SUGGESTED"},
             "severity": {"const": "REVIEW"},
             "owner_id": UUID,
@@ -613,6 +629,8 @@ def augment(spec, policy):
             "finding_id",
             "observation_id",
             "observation_revision",
+            "source_hash",
+            "method_version",
             "state",
             "severity",
             "owner_id",
@@ -649,6 +667,22 @@ def augment(spec, policy):
             "source_mutation": {"const": False},
         },
         list(schemas["Receipt"]["required"]) + ["decision", "confirmed_quality_defect", "source_mutation"],
+    )
+    schemas["AnomalyResource"] = closed(
+        {**resource_base, "owner_id": UUID, "data": {"type": "object", "additionalProperties": True}},
+        resource_required + ["data"],
+    )
+    schemas["AnomalyResourceList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/AnomalyResource"},
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
     )
     document_kind = {"enum": ["METHODOLOGY", "ETHICS", "SAFEGUARDING", "ANALYSIS_PLAN", "DISCLOSURE_REVIEW"]}
     schemas["EvaluationRegistrationCreate"] = closed(
@@ -2422,7 +2456,30 @@ def augment(spec, policy):
     anomaly_run["responses"]["201"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/AnomalyRunOutcome"
     }
-    paths[prefix + "anomaly-runs"] = {"post": anomaly_run}
+    anomaly_list = deepcopy(external_list)
+    anomaly_list.update(operationId="list_anomaly_runs", summary="List readable anomaly runs")
+    anomaly_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/AnomalyResourceList"
+    }
+    paths[prefix + "anomaly-runs"] = {"post": anomaly_run, "get": anomaly_list}
+    anomaly_read = deepcopy(external_read)
+    anomaly_read.update(operationId="read_anomaly_run", summary="Read a versioned anomaly run")
+    anomaly_read["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/AnomalyResource"
+    }
+    paths[prefix + "anomaly-runs/{object_id}"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": anomaly_read,
+    }
+    finding_list = deepcopy(anomaly_list)
+    finding_list.update(operationId="list_anomaly_findings", summary="List reviewable anomaly findings")
+    paths[prefix + "anomaly-findings"] = {"get": finding_list}
+    finding_read = deepcopy(anomaly_read)
+    finding_read.update(operationId="read_anomaly_finding", summary="Read the current anomaly finding review")
+    paths[prefix + "anomaly-findings/{object_id}"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": finding_read,
+    }
     anomaly_review = deepcopy(alert_evaluate)
     anomaly_review.update(
         operationId="review_anomaly_finding",
@@ -2903,6 +2960,18 @@ def augment(spec, policy):
             "revoke_external_analytics_connection",
             "POST",
             prefix + "external-analytics-connections/{object_id}/actions/revoke",
+            "dashboards.draft.edit",
+            True,
+        ),
+        ("create_anomaly_run", "POST", prefix + "anomaly-runs", "dashboards.draft.create", True),
+        ("list_anomaly_runs", "GET", prefix + "anomaly-runs", "dashboards.read", False),
+        ("read_anomaly_run", "GET", prefix + "anomaly-runs/{object_id}", "dashboards.read", False),
+        ("list_anomaly_findings", "GET", prefix + "anomaly-findings", "dashboards.read", False),
+        ("read_anomaly_finding", "GET", prefix + "anomaly-findings/{object_id}", "dashboards.read", False),
+        (
+            "review_anomaly_finding",
+            "POST",
+            prefix + "anomaly-findings/{object_id}/actions/review",
             "dashboards.draft.edit",
             True,
         ),

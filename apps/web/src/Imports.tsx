@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { usePendingOperations } from "./operations";
+import { AnomalyAssistance } from "./AnomalyAssistance";
 
 type Row = {
   object_id: string;
@@ -685,6 +686,12 @@ export function ImportsPanel({ base, capabilities, request, explain }: Props) {
             </details>
           )}
       </section>
+      <AnomalyAssistance
+        base={base}
+        capabilities={capabilities}
+        request={request}
+        explain={explain}
+      />
     </>
   );
 }

@@ -16,8 +16,8 @@ This is a local coding candidate. CI, merge, staging deployment and owner accept
 
 ## Reproduction
 
-Run `make lint`, `make unit`, TypeScript checking and the release security review.
+Run `IMPACT_PORT=8348 .venv/bin/python scripts/run.py test --pytest-path qualification/test_evaluation_methodology_live.py` for the disposable synthetic positive journey. Run `make lint`, `make unit`, TypeScript checking and the release security review for the broader candidate checks.
 
 ## Integration notes
 
-FR-EVA-002 may move to coding-complete after exact-commit review. No acceptance claim is made.
+The synthetic positive journey `test_methodology_is_independently_reviewed_and_exports_reproducible_sample_counts` proves exact evaluation binding, independent approval, immutable history and an explicit weighted export that keeps sample count separate from population estimate. No CI, merge, staging or acceptance claim is made.

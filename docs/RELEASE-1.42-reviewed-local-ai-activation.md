@@ -22,7 +22,7 @@ Activation-sensitive policy validation runs after current authorization and matc
 
 ## Limits
 
-Final clean-source combined qualification is required before updating the earlier49/56 result. The map now declares seven additional external HTTP nodes, but declaration is not a passing receipt. This does not qualify staging/production activation, a paid/live model, hosted CI, all frozen assertions, independent human review or owner acceptance. IR-1.42-24 remains unconfirmed.
+Final clean-source combined qualification on `fba5d44279f10add768a6f53905bcc316bb601dd` passes: **2,671 passed, zero failures, 229 skipped and one deselected**. Source digests match before/after. The mapped bounded local positive, authorization/refusal and error/recovery gates each pass **56/56**, including the seven actual external HTTP nodes. Earlier49/56 receipts remain historical. See [run receipt](evidence/candidate-1.42/reviewed-activation-20261016/FINAL-RUN-RECEIPT.json) and [story gate evidence](evidence/candidate-1.42/reviewed-activation-20261016/STORY-GATE-RESULTS.json). This does not qualify staging/production activation, a paid/live model, hosted CI, all frozen assertions, independent human review or owner acceptance. IR-1.42-24 remains unconfirmed.
 
 ## Integration notes
 

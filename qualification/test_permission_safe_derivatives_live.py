@@ -1,14 +1,41 @@
 """Positive live journey for FR-ACC-005 / APL-352 permission-safe derivatives."""
 
+from types import SimpleNamespace
 from uuid import uuid4
 
+from impact_api.store import Context, write
 from test_administration import action, expect
 from test_forms import temporary_grants
 
 
+def fresh_evidence(live, owner="reviewer"):
+    """Create a test-owned source so revoking its grant cannot damage the shared fixture."""
+    tenant = live.fixture["tenant_a"]
+    actor = live.fixture["actors"][owner]
+    with live.db() as c:
+        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+        source = c.execute(
+            "SELECT r.lifecycle_state,v.payload FROM impact.object_registry r "
+            "JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision "
+            "WHERE r.tenant_id=%s AND r.object_id=%s",
+            (tenant, live.records["evidence_a"]["object_id"]),
+        ).fetchone()
+        ctx = Context(
+            tenant,
+            actor["principal_id"],
+            actor["membership_id"],
+            SimpleNamespace(natural_identity_id=actor["natural_identity_id"]),
+            0,
+            0,
+            [],
+        )
+        return write(c, ctx, "Evidence", source["payload"], source["lifecycle_state"])
+
+
 def test_b_exact_source_manifest_rechecks_current_authority(live):
     revoke_write = temporary_grants(live, "author", ["reports.write"])
-    evidence = expect(live.request(live.path("evidence", live.records["evidence_a"]["object_id"])), 200)
+    temporary_grants(live, "author", ["evidence.manage"])
+    evidence = fresh_evidence(live)
     derivative_id, derivative_revision = str(uuid4()), str(uuid4())
     body = {
         "revision_id": derivative_revision,
@@ -19,21 +46,18 @@ def test_b_exact_source_manifest_rechecks_current_authority(live):
                 "object_id": evidence["object_id"],
                 "revision_id": evidence["revision_id"],
                 "object_type": "Evidence",
-                "capability": "evidence.read",
+                "capability": "evidence.manage",
             }
         ],
     }
-    try:
-        created = expect(
-            live.request(
-                live.path("derivatives", derivative_id) + "/revisions",
-                method="POST",
-                body=body,
-            ),
-            200,
-        )
-    finally:
-        revoke_write()
+    created = expect(
+        live.request(
+            live.path("derivatives", derivative_id) + "/revisions",
+            method="POST",
+            body=body,
+        ),
+        200,
+    )
     assert created == {
         "derivative_id": derivative_id,
         "revision_id": derivative_revision,
@@ -52,31 +76,38 @@ def test_b_exact_source_manifest_rechecks_current_authority(live):
         }
     ]
 
-    grant = live.records["grant:author:evidence.read"]
+    tenant = live.fixture["tenant_a"]
+    principal = live.fixture["actors"]["author"]["principal_id"]
     with live.db() as c:
-        current_grant_revision = str(
-            c.execute(
-                "SELECT head_revision FROM impact.object_registry WHERE tenant_id=%s AND object_id=%s",
-                (live.fixture["tenant_a"], grant["object_id"]),
-            ).fetchone()["head_revision"]
-        )
+        c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))
+        grant = c.execute(
+            "SELECT r.object_id,r.head_revision FROM impact.object_registry r "
+            "JOIN impact.object_revision v ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision "
+            "WHERE r.tenant_id=%s AND r.object_type='Grant' AND r.lifecycle_state='Active' "
+            "AND v.payload->>'subject_id'=%s AND v.payload->>'capability'='evidence.manage' "
+            "ORDER BY r.created_at DESC LIMIT 1",
+            (tenant, principal),
+        ).fetchone()
     expect(
         action(
             live,
             "grants",
-            grant["object_id"],
+            str(grant["object_id"]),
             "revoke",
-            current_grant_revision,
+            str(grant["head_revision"]),
             actor="admin",
         ),
         200,
     )
     expect(live.request(path), 404)
+    # The reports grant remains test-owned and is cleaned up normally. The source grant was
+    # deliberately revoked through policy above.
+    revoke_write()
 
 
 def test_a_mixed_source_derivative_cannot_claim_public_disclosure(live):
-    revoke_write = temporary_grants(live, "author", ["reports.write"])
-    evidence = live.records["evidence_a"]
+    revoke_write = temporary_grants(live, "author", ["reports.write", "evidence.manage"])
+    evidence = fresh_evidence(live)
     try:
         expect(
             live.request(
@@ -91,7 +122,7 @@ def test_a_mixed_source_derivative_cannot_claim_public_disclosure(live):
                             "object_id": evidence["object_id"],
                             "revision_id": evidence["revision_id"],
                             "object_type": "Evidence",
-                            "capability": "evidence.read",
+                            "capability": "evidence.manage",
                         }
                     ],
                 },

@@ -5,13 +5,11 @@ from uuid import uuid4
 from test_administration import action
 from test_forms import temporary_grants
 from test_live_application import expect
+from test_permission_safe_derivatives_live import fresh_evidence
 
 
 def _derivative(live, actor="author", source_capability="evidence.read"):
-    evidence = expect(
-        live.request(live.path("evidence", live.records["evidence_a"]["object_id"]), actor=actor),
-        200,
-    )
+    evidence = fresh_evidence(live)
     derivative_id, revision_id = str(uuid4()), str(uuid4())
     created = expect(
         live.request(
@@ -80,7 +78,7 @@ def _revoke_temporary_grant_through_policy(live, capability):
 
 
 def test_online_presentation_lease_is_bound_to_the_current_policy_epoch(live):
-    revoke_write = temporary_grants(live, "author", ["reports.write"])
+    revoke_write = temporary_grants(live, "author", ["reports.write", "evidence.read"])
     try:
         derivative_id, revision_id = _derivative(live)
         lease = _issue(live, derivative_id, revision_id)

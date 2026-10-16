@@ -134,7 +134,7 @@ class AIReportDrafting:
                     raise DomainError("CONFLICT_OPERATION", 409)
                 return self._review_view(replay)
             draft = c.execute(
-                "SELECT * FROM impact.ai_report_draft WHERE tenant_id=%s AND draft_id=%s FOR UPDATE",
+                "SELECT * FROM impact.ai_report_draft WHERE tenant_id=%s AND draft_id=%s",
                 (tenant, draft_id),
             ).fetchone()
             if not draft:

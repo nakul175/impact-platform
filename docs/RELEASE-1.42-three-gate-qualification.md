@@ -35,7 +35,10 @@ command dispatcher; its implemented API export and generated onboarding access
 profile are synchronized. Live tests exercise creation, authority refusals and
 exact retries without duplicate writes.
 
-No migration, DTO, policy activation, provider request, production identity or
+Additive migration 0118 registers the generated access profile; it applies no
+existing-tenant authority. Migrations 0001–0117 remain byte-exact.
+
+No DTO, policy activation, provider request, production identity or
 spending change is introduced. IR-1.42-22 records the product repair; its human
 confirmation remains empty.
 
@@ -53,9 +56,16 @@ failures were the newly introduced component tests before their immutable-read
 repair. Subsequent focused runs and the final combined result are recorded in the
 receipt, rather than treating those failed full runs as passes.
 
+The frozen-source run at `6317cc4` retained 27 failures (2,621 passed,
+229 skipped): 25 profile-registration failures, one active-grant fixture selector
+and one snapshot lookup that did not follow pagination. The additive registration
+and fixture repairs subsequently passed a focused run: 64 passed, 4 skipped.
+Raw JUnit files preserve both outcomes. Raw failure XML whitespace is retained
+byte-for-byte rather than normalized for diff formatting.
+
 ## Integration notes
 
 - Cohort: the exact 56 IDs in the frozen acceptance manifest.
-- Sources, acceptance criteria, old migrations and historical receipts are unchanged.
+- Sources, acceptance criteria, applied migrations and historical receipts are unchanged.
 - Reserved activation requires an explicit decision and qualification of the actual runtime.
 - Local test evidence does not supply independent human or owner acceptance.

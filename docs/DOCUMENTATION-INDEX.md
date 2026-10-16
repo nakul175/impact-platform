@@ -204,6 +204,7 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 - [Release 1.42 — sampling methodology completion](RELEASE-1.42-evaluation-methodology-completion.md)
 - [Release 1.42 — controlled evaluation registry completion](RELEASE-1.42-evaluation-registry-completion.md)
 - [Release 1.42 — governed external analytics completion candidate](RELEASE-1.42-external-analytics-completion.md)
+- [Release 1.42 — local journey, refusal and recovery qualification](RELEASE-1.42-three-gate-qualification.md)
 - [Operations hardening (October 2026) — backups, restore drill, alerts, metrics, owner console](RELEASE-OPS-2026-10.md)
 - [Tola + AI timed development handover](SPRINT-HANDOVER-2026-10-05.md)
 - [Training video — how the platform works, end to end](TRAINING-VIDEO.md)

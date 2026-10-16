@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from test_live_application import cmd, expect
 from test_measurement import setup, get, action, submit, approve, observation, result  # noqa: F401
 from test_changes import propose
-from test_period_governance import request_close
+from test_period_governance import request_close, all_items
 
 
 def test_personal_saved_view_listing_uses_the_published_work_capability(live):
@@ -48,7 +48,7 @@ def test_reviewed_exclusion_preserves_denominator_history_and_allows_close(live,
     approve(live, workflow)
     snapshot = next(
         item
-        for item in get(live, "snapshots")["items"]
+        for item in all_items(live, "snapshots")
         if item["data"].get("programme_id") == programme["object_id"]
         and item["data"]["period_id"] == period["object_id"]
     )

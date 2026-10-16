@@ -14,6 +14,11 @@
       "test_file": "qualification/test_natural_person_independence_live.py",
       "nodes": [
         "test_alias_cannot_approve_but_distinct_natural_person_can"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-352": {
@@ -22,12 +27,22 @@
         "test_b_exact_source_manifest_rechecks_current_authority",
         "test_a_mixed_source_derivative_cannot_claim_public_disclosure",
         "test_c_external_member_cannot_create_derivative_manifest"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-353": {
       "test_file": "qualification/test_external_share_lifecycle_live.py",
       "nodes": [
         "test_named_audience_revocation_expiry_and_source_revalidation"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-354": {
@@ -35,6 +50,11 @@
       "nodes": [
         "test_online_presentation_lease_is_bound_to_the_current_policy_epoch",
         "test_source_permission_loss_removes_the_derivative_and_its_live_presentation"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-338": {
@@ -42,30 +62,55 @@
       "nodes": [
         "test_readiness_api_and_separate_advisory_authority",
         "test_durable_sealed_replay_and_daily_budget_on_real_database"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-340": {
       "test_file": "qualification/test_ai_input_tool_isolation_live.py",
       "nodes": [
         "test_policy_tool_ceiling_and_untrusted_instructions_cannot_execute_actions"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-341": {
       "test_file": "qualification/test_ai_data_handling_live.py",
       "nodes": [
         "test_advisory_records_exact_handling_and_sends_only_minimized_data"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-342": {
       "test_file": "qualification/test_ai_answer_provenance_live.py",
       "nodes": [
         "test_saved_answer_pins_exact_sources_and_rechecks_current_access_on_replay"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-343": {
       "test_file": "qualification/test_ai_task_trace_live.py",
       "nodes": [
         "test_successful_ai_task_preserves_a_closed_reproducible_trace_without_hidden_reasoning"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-344": {
@@ -74,66 +119,121 @@
         "test_exact_ready_manifest_passes_and_drift_fails_closed",
         "test_incomplete_critical_or_unjustified_manifest_fails_closed",
         "test_repository_manifest_truthfully_remains_not_ready"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-345": {
       "test_file": "qualification/test_ai_budget_jobs_live.py",
       "nodes": [
         "test_accepted_job_reserves_budget_and_queued_cancel_releases_it"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-346": {
       "test_file": "qualification/test_ai_job_execution_live.py",
       "nodes": [
         "test_restricted_worker_completes_fenced_job_and_settles_exact_budget"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-718": {
       "test_file": "qualification/test_ai_forecast_scenarios_live.py",
       "nodes": [
         "test_exact_official_revisions_create_bounded_and_versioned_planning_scenarios"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-347": {
       "test_file": "qualification/test_ai_safety_shutdown_live.py",
       "nodes": [
         "test_minimal_feedback_and_scoped_shutdown_contain_ai_without_stopping_manual_work"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-531": {
       "test_file": "qualification/test_ai_extraction_drafts_live.py",
       "nodes": [
         "test_manager_reviews_exact_source_proposals_without_creating_domain_objects"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-339": {
       "test_file": "qualification/test_ai_report_drafting_live.py",
       "nodes": [
         "test_author_reviews_snapshot_bound_draft_without_publishing_or_changing_sources"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-402": {
       "test_file": "qualification/test_pooled_ratios_live.py",
       "nodes": [
         "test_analyst_calculates_denominator_weighted_ratio_from_approved_components"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-405": {
       "test_file": "qualification/test_cumulative_difference_live.py",
       "nodes": [
         "test_analyst_calculates_and_reproduces_cumulative_increment"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-408": {
       "test_file": "qualification/test_coverage_status_live.py",
       "nodes": [
         "test_calculation_keeps_approved_pending_and_missing_coverage_explicit"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-411": {
       "test_file": "qualification/test_precision_rounding_live.py",
       "nodes": [
         "test_three_exact_inputs_round_only_after_the_unrounded_sum_is_stored"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-415": {
@@ -142,30 +242,55 @@
         "test_approved_negative_adjustment_calculates_while_invalid_counts_are_refused",
         "test_zero_denominator_is_durable_undefined_result_not_successful_zero",
         "test_ratio_quantity_and_percentage_bound_refusals_remain_specific"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-421": {
       "test_file": "qualification/test_recalculation_dependencies_live.py",
       "nodes": [
         "test_approved_correction_records_dependencies_and_recalculates_exactly_once"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-607": {
       "test_file": "qualification/test_weighted_composites_live.py",
       "nodes": [
         "test_manager_previews_transparent_weighted_composite"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-424": {
       "test_file": "qualification/test_calculation_reconciliation_live.py",
       "nodes": [
         "test_analyst_explains_and_reconciles_a_newly_included_approved_source"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-611": {
       "test_file": "qualification/test_statistical_interpretation_live.py",
       "nodes": [
         "test_independently_approved_raw_values_produce_a_labelled_sample_median"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-610": {
@@ -184,6 +309,9 @@
           "parameter_id_contains": "APL-610",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-434": {
@@ -202,6 +330,9 @@
           "parameter_id_contains": "APL-434",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-613": {
@@ -220,6 +351,9 @@
           "parameter_id_contains": "APL-613",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-616": {
@@ -238,12 +372,20 @@
           "parameter_id_contains": "APL-616",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-614": {
       "test_file": "qualification/test_dashboard_governance_live.py",
       "nodes": [
         "test_reviewed_disclosure_public_content_owner_transfer_and_durable_recovery"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-618": {
@@ -262,6 +404,9 @@
           "parameter_id_contains": "APL-618",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-620": {
@@ -280,12 +425,20 @@
           "parameter_id_contains": "APL-620",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-623": {
       "test_file": "qualification/test_anomaly_assistance_live.py",
       "nodes": [
         "test_analyst_runs_anomaly_assistance_and_confirms_a_reviewable_finding"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-625": {
@@ -304,6 +457,9 @@
           "parameter_id_contains": "APL-625",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-630": {
@@ -322,6 +478,9 @@
           "parameter_id_contains": "APL-630",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-632": {
@@ -340,6 +499,9 @@
           "parameter_id_contains": "APL-632",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-634": {
@@ -358,6 +520,9 @@
           "parameter_id_contains": "APL-634",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-639": {
@@ -376,6 +541,9 @@
           "parameter_id_contains": "APL-639",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-641": {
@@ -383,14 +551,24 @@
       "nodes": [
         "test_two_coders_preserve_assignments_and_adjudicate_one_disagreement"
       ],
-      "recovery_helper": "qualification/test_qualitative_coding_live.py::_post: rejected unknown field creates no registry/audit/outbox/receipt write; corrected identical operation id succeeds and replays exactly"
+      "recovery_helper": "qualification/test_qualitative_coding_live.py::_post: rejected unknown field creates no registry/audit/outbox/receipt write; corrected identical operation id succeeds and replays exactly",
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
+      ]
     },
     "APL-644": {
       "test_file": "qualification/test_transcription_translation_live.py",
       "nodes": [
         "test_analyst_corrects_translation_and_quotes_the_reviewed_meaning"
       ],
-      "recovery_helper": "qualification/test_transcription_translation_live.py::_post: closed request refusal, same-operation recovery and exact replay"
+      "recovery_helper": "qualification/test_transcription_translation_live.py::_post: closed request refusal, same-operation recovery and exact replay",
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
+      ]
     },
     "APL-646": {
       "test_file": "qualification/test_triangulated_findings_live.py",
@@ -408,6 +586,9 @@
           "parameter_id_contains": "APL-646",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-648": {
@@ -426,6 +607,9 @@
           "parameter_id_contains": "APL-648",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-650": {
@@ -445,6 +629,9 @@
           "parameter_id_contains": "APL-650",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-652": {
@@ -464,6 +651,9 @@
           "parameter_id_contains": "APL-652",
           "gate": "error_recovery"
         }
+      ],
+      "primary_gates": [
+        "positive_journey"
       ]
     },
     "APL-364": {
@@ -474,6 +664,11 @@
         "test_problem_baseline_refuses_incomplete_lock_without_writing",
         "test_problem_baseline_lock_is_server_dated_immutable_and_exactly_replayable",
         "test_problem_baseline_is_hidden_from_another_tenant_and_unqualified_actor"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-350": {
@@ -481,24 +676,44 @@
       "nodes": [
         "test_current_grants_explain_permitted_and_sanitized_denied_access",
         "test_simulation_refuses_non_administrator_and_cross_tenant_subject"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-435": {
       "test_file": "qualification/test_dashboard_comparison_journeys_live.py",
       "nodes": [
         "test_apl435_lower_is_better_retains_overachievement_and_exact_target_context"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-437": {
       "test_file": "qualification/test_dashboard_comparison_journeys_live.py",
       "nodes": [
         "test_apl437_source_change_remains_stale_across_fetch_then_recalculation_recovers"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     },
     "APL-612": {
       "test_file": "qualification/test_dashboard_comparison_journeys_live.py",
       "nodes": [
         "test_apl612_portfolio_ranks_qualified_exact_version_and_recovers_from_invalid_selector"
+      ],
+      "primary_gates": [
+        "positive_journey",
+        "authorization_refusal",
+        "error_recovery"
       ]
     }
   },

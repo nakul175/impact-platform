@@ -7356,3 +7356,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0117_dashboard_disclosure_artifact_kind.sql | 06c1a1bd201afdc0eac3f14e0486dabbe6a4aaad1c682963f6b1e1b53304946e |
+
+## Migration0118 — registered WorkItem draft access profile
+
+`0118_work_item_access_profile.sql` registers the exact generated profile for the ordinary closed WorkItem draft command. It adds no table grants, changes no prior profile, and applies no authority to existing tenants. Onboarding and ceiling changes still require their existing independent reviewed flows.
+
+| Migration | SHA256 |
+|---|---|
+| 0118_work_item_access_profile.sql | bc99a416592cc5b421be9b174db40b00160d1d886c226f99801cf4934b299681 |

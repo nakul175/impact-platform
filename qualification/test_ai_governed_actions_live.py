@@ -1,9 +1,9 @@
-"""Whole-story qualification for the three reserved governed-action AI candidates.
+"""Component-only qualification for the three reserved governed-action AI candidates.
 
 The production policy deliberately keeps these use cases reserved-disabled.  These tests replace
 only the policy and safety gates with an in-process synthetic qualification gate; they do not
 change the stored tenant policy, runtime configuration, or production activation rules.  The
-tests exercise the real HTTP contracts, authorization, storage, ordinary command dispatcher and
+tests exercise service authorization, storage, the ordinary command dispatcher and
 transaction boundaries behind those gates.
 """
 

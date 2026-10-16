@@ -808,6 +808,28 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-23",
+      "change_id": "WORK-ITEM-PROFILE-REGISTRATION",
+      "change": "Register the exact generated WorkItem draft access profile without applying it",
+      "paths": [
+        "infrastructure/migrations/0118_work_item_access_profile.sql",
+        "apps/api/impact_api/bootstrap_profile.json"
+      ],
+      "areas": [
+        "migration",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH32"
+      ],
+      "summary": "Additive registration of the generated profile after ordinary WorkItem draft routing becomes implemented. Existing tenant ceilings and memberships remain unchanged. No table grant, prior migration edit or automatic upgrade; existing independent onboarding/access-upgrade flows remain mandatory.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [

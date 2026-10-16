@@ -633,6 +633,30 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-16",
+      "change_id": "APL-531-EXTRACTION-REVIEW-LOCK",
+      "change": "Immutable extraction draft lock for one human review",
+      "paths": [
+        "infrastructure/migrations/0114_ai_extraction_review_lock.sql",
+        "qualification/test_ai_extraction_drafts_live.py"
+      ],
+      "areas": [
+        "migration",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH23",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Grants the authenticated application only the column privilege PostgreSQL requires for SELECT FOR UPDATE during one human extraction review, while a database trigger refuses every draft mutation. Live qualification pins the exact source revision, preserves conflicts and missing material fields, records explicit human additions with rationale and proves no governed domain object is created.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [
@@ -649,7 +673,8 @@
     "qualification/test_budget_versions_live.py",
     "qualification/test_management_responses_live.py",
     "qualification/test_expenditure_ingestion_live.py",
-    "qualification/test_finance_variance_live.py"
+    "qualification/test_finance_variance_live.py",
+    "qualification/test_ai_extraction_drafts_live.py"
   ],
   "notes": [
     "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."

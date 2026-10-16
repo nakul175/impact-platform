@@ -7324,3 +7324,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0113_finance_transaction_variance_kinds.sql | f7ff5a0258e0fb6ad9cdb18fe1b29f56d5eafa3efa5d5e786bfe17fb18f93cd4 |
+
+## Migration0114 — immutable AI extraction review locking
+
+`0114_ai_extraction_review_lock.sql` permits `impact_app` to take the `SELECT FOR UPDATE` lock required to record one human review of an extraction draft. The privilege is limited to the draft key column, and the new database trigger refuses every attempted draft update so stored source pins and proposal identity remain immutable. No worker access, cross-tenant path or domain-object write is added. All0001–0113 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0114_ai_extraction_review_lock.sql | 69a86e11a54d3beda203a33dda357acf0452fce8dc04b3900bc703a62b2faeb2 |

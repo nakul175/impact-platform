@@ -7208,3 +7208,159 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0098_ai_problem_baseline_kind.sql | a0c78f5fdb2e0fdbd2c45d43d8e26742a9f4dc5fc383b17cd2d75070a6b44a96 |
+| 0099_dashboard_publication_kind.sql | 7b4b5909c45ae99cfdcec7f2fb23b1163e2aec8035937313e4c2188cd378a540 |
+
+## Migration0099 — dashboard publication registry kind
+
+`0099_dashboard_publication_kind.sql` SHA256 `7b4b5909c45ae99cfdcec7f2fb23b1163e2aec8035937313e4c2188cd378a540`. Schema99 registers the immutable `DashboardPublication` registry kind omitted by the original APL-614 candidate and adds restrictive worker fences for its registry and revision rows. All0001–0098 remain byte-exact. This is a partial coding checkpoint: cross-workspace copy, independently approved public disclosure artifacts, owner transfer and durable revalidation remain open, so APL-614 is not coding-complete.
+
+## Migration0100 — effective-access generated profile
+
+`0100_effective_access_profile.sql` SHA256 `466aedb33686db5df5a3fc24a9128e91fab9ba857a0e1b9e5224655b165a7622`. Schema100 registers generated access profile hash `18a6cb0dc264d8ef0d3f8cb9f8800fac4a69cb7bf3a650196f00e06f73f03d06` after completing the FR-ACC-003 policy operation metadata. Registration does not activate the profile for an existing tenant; governed preview, independent approval and exact execution remain required. All0001–0099 remain byte-exact.
+
+| 0100_effective_access_profile.sql | 466aedb33686db5df5a3fc24a9128e91fab9ba857a0e1b9e5224655b165a7622 |
+
+
+## Migration0101 — governed dashboard alert registry kinds
+
+`0101_dashboard_alert_kinds.sql` SHA256 `56b6b2d27c18c68469ffebe887e539b5717ea5ee4c956d399fe04afa592b8572`. Schema101 registers the `DashboardAlertRule` and `DashboardAlertIncident` kinds required by APL-618 and adds restrictive delivery-worker fences. Alert evaluation remains an authenticated application duty and no worker access to rule recipients, evaluated periods or incident history is introduced. All0001–0100 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0101_dashboard_alert_kinds.sql | 56b6b2d27c18c68469ffebe887e539b5717ea5ee4c956d399fe04afa592b8572 |
+
+## Migration0102 — governed external analytics registry kinds
+
+`0102_external_analytics_kinds.sql` SHA256 `af66e09a87ac23f839cbab5b8e9399c0d76357f6e2fa370ce298659ec343e67a`. Schema102 registers the `ExternalAnalyticsConnection` and `ExternalAnalyticsExtract` kinds required by APL-620 and adds restrictive delivery-worker fences. BI package creation remains an authenticated application duty; the delivery worker receives no access to credentials, selected datasets, destinations, reuse terms, or extract history. All0001–0101 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0102_external_analytics_kinds.sql | af66e09a87ac23f839cbab5b8e9399c0d76357f6e2fa370ce298659ec343e67a |
+
+## Migration0103 — suggestion-only anomaly assistance registry kinds
+
+`0103_anomaly_assistance_kinds.sql` SHA256 `4a99a3e8c443b84ef7bd267f7a1b9ee739442d901ecca0bb2042e3890bcceaeb`. Schema103 registers the `AnomalyRun` and `AnomalyFinding` kinds required by APL-623 and adds restrictive delivery-worker fences. Runs and review feedback remain authenticated application records; the delivery worker receives no access to selected observations, method output, review decisions, or retained feedback. All0001–0102 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0103_anomaly_assistance_kinds.sql | 4a99a3e8c443b84ef7bd267f7a1b9ee739442d901ecca0bb2042e3890bcceaeb |
+
+## Migration0104 — controlled evaluation registration
+
+`0104_evaluation_registration_kind.sql` SHA256 `f3724d74fe0dae569d1965d4ca6b2fc116ae45b8dd041fe0a17c825f72cdaccc`. Schema104 registers `EvaluationRegistration` for APL-625 and adds restrictive delivery-worker fences. Evaluation stage decisions remain authenticated application revisions; the worker receives no access to study questions, independence evidence, budgets, sensitive-processing approvals or gate history. All0001–0103 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0104_evaluation_registration_kind.sql | f3724d74fe0dae569d1965d4ca6b2fc116ae45b8dd041fe0a17c825f72cdaccc |
+
+## Migration0105 — evaluation access profile
+
+`0105_evaluation_access_profile.sql` SHA256 `a69e5986cf443a781415fd5eb9ca1464cfbf127ec86492216ff637c129c23915`. Schema105 registers generated access profile hash `acb46eebbd16a01b2fe394db39a2f3b55c378d8ed5c1497eeccce611590497a7` after APL-625 moves evaluation access to dedicated capabilities. Registration does not activate the profile for an existing tenant; governed preview, independent approval and execution remain required. All0001–0104 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0105_evaluation_access_profile.sql | a69e5986cf443a781415fd5eb9ca1464cfbf127ec86492216ff637c129c23915 |
+
+## Migration0106 — evaluation methodology registry
+
+`0106_evaluation_methodology_kind.sql` SHA256 `8184185bd2e9cb2a398a8f4b705664740247867cd4ad2f06b799218697fd7fc7`. Schema106 registers `EvaluationMethodology` and restrictive delivery-worker fences. All0001–0105 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0106_evaluation_methodology_kind.sql | 8184185bd2e9cb2a398a8f4b705664740247867cd4ad2f06b799218697fd7fc7 |
+
+## Migration0107 — evaluation methodology access profile
+
+`0107_evaluation_methodology_access_profile.sql` SHA256 `96d9b3dc8e78d395fa303a3b8c9d6388f92c63701a85841fce45065f7c3ab108`. Schema107 registers generated profile hash `1f2160829251bbe5201d9285080a21a9620d1420ee083b058177e4b37e7c1248` without activating it for existing tenants. All0001–0106 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0107_evaluation_methodology_access_profile.sql | 96d9b3dc8e78d395fa303a3b8c9d6388f92c63701a85841fce45065f7c3ab108 |
+
+## Migration0108 — governed qualitative and transcription registry kinds
+
+`0108_qualitative_transcription_kinds.sql` SHA256 `be549d5fda33fbb7c291515a16b7b8e119d42680f650f34077d5370d327093c3`. Schema108 registers `QualitativeCodebook`, `QualitativeCodingAssignment`, `QualitativeAdjudication`, `QualitativeAgreement`, `ProcessingDestination`, `TranscriptArtifact` and `QuotationReference` and places all seven kinds behind restrictive delivery-worker fences. The authenticated application retains responsibility for current authority, independence, exact revision pins and destination approval. All0001–0107 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0108_qualitative_transcription_kinds.sql | be549d5fda33fbb7c291515a16b7b8e119d42680f650f34077d5370d327093c3 |
+
+## Migration0109 — analysis package and learning agenda registry kinds
+
+`0109_analysis_learning_kinds.sql` SHA256 `3c8c72c80364111956bf62aca1b3df521528e536852bb1b61a46f66266c530ae`. Schema109 registers `AnalysisPackage`, `AnalysisResultReference`, `LearningQuestion` and `LearningApplicabilityReview` and places all four kinds behind restrictive delivery-worker fences. The authenticated application retains responsibility for exact revision pins, current authority, natural-person independent closure, immutable reasoning history and package integrity. All0001–0108 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0109_analysis_learning_kinds.sql | 3c8c72c80364111956bf62aca1b3df521528e536852bb1b61a46f66266c530ae |
+
+## Migration0110 — governed cumulative-difference projections
+
+`0110_cumulative_difference_projection.sql` SHA256 `0241f3bb697065fdf12225720c16824537e849831fc78e533d56144c51ee5694`. Schema110 adds the optional non-negative baseline and bounded written basis projections to `indicator_definition_current`, plus the optional JSON-array increment trace projection to `calculated_result_current`. Exact approved source revisions remain pinned in immutable lineage revisions; the projection adds no access grant, policy, mutable history or cross-tenant path. All0001–0109 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0110_cumulative_difference_projection.sql | 0241f3bb697065fdf12225720c16824537e849831fc78e533d56144c51ee5694 |
+
+## Migration0111 — triangulated finding and budget registry kinds
+
+`0111_findings_budget_kinds.sql` SHA256 `5605f320319b9aafd10b0efabcf375a35061805c91b89bf243bc336d96b1c28b`. Schema111 registers `TriangulatedFinding`, `FindingPublication` and `BudgetVersion` and places all three kinds behind restrictive delivery-worker fences. The authenticated application retains responsibility for exact revisions, active-human reviewer identity, natural-person independence, evidential history and exact-decimal budget arithmetic. All0001–0110 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0111_findings_budget_kinds.sql | 5605f320319b9aafd10b0efabcf375a35061805c91b89bf243bc336d96b1c28b |
+
+## Migration0112 — management response registry kinds
+
+`0112_management_response_kinds.sql` SHA256 `dad432b599971e0e0611647354f05125c8399bb90702496a9420705c9c9ae96d`. Schema112 registers `EvaluationRecommendation`, `ManagementResponse` and `ManagementAction` and places all three kinds behind restrictive delivery-worker fences. The authenticated application retains responsibility for exact Evidence revision pins, dated natural-person ownership, immutable response and action history, exact uncertain-operation retries, and follow-up measurement of outcomes. All0001–0111 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0112_management_response_kinds.sql | dad432b599971e0e0611647354f05125c8399bb90702496a9420705c9c9ae96d |
+
+## Migration0113 — expenditure and finance variance registry kinds
+
+`0113_finance_transaction_variance_kinds.sql` SHA256 `f7ff5a0258e0fb6ad9cdb18fe1b29f56d5eafa3efa5d5e786bfe17fb18f93cd4`. Schema113 registers `ExpenditureTransaction`, `ExpenditureImport` and `FinanceVarianceView` and places all three kinds behind restrictive delivery-worker fences. The authenticated application retains responsibility for stable source keys, exact decimal amounts, explicit correction semantics, exact budget and transaction revision pins, missingness, and separation of actuals from forecast assumptions. All0001–0112 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0113_finance_transaction_variance_kinds.sql | f7ff5a0258e0fb6ad9cdb18fe1b29f56d5eafa3efa5d5e786bfe17fb18f93cd4 |
+
+## Migration0114 — immutable AI extraction review locking
+
+`0114_ai_extraction_review_lock.sql` permits `impact_app` to take the `SELECT FOR UPDATE` lock required to record one human review of an extraction draft. The privilege is limited to the draft key column, and the new database trigger refuses every attempted draft update so stored source pins and proposal identity remain immutable. No worker access, cross-tenant path or domain-object write is added. All0001–0113 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0114_ai_extraction_review_lock.sql | 69a86e11a54d3beda203a33dda357acf0452fce8dc04b3900bc703a62b2faeb2 |
+
+## Migration0115 — minimized untrusted-instruction observations
+
+`0115_ai_untrusted_instruction_observations.sql` adds an insert-only, tenant-fenced register for coarse unsafe-instruction categories observed in an AI advisory request. Each row pins the exact immutable request revision and observing principal and constrains `executed_actions` to zero. The register has no source text, prompt, credential or provider-response field and grants no worker access. All0001–0114 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0115_ai_untrusted_instruction_observations.sql | 1ce0b26a2b56101d02821d28dfe5f8f27cc2cbe52d2dc14e22c90839eddb23ed |
+
+## Migration0116 — current generated access profile
+
+`0116_current_access_profile.sql` SHA256 `8dbf62b9c870defb4d7e3f120cbd789c7ff0f3f88dc0b718b2e997b70c3d616f`. Schema116 registers generated profile hash `def08ef682589136b0ec06b5d94c1fb7e386829acf4ffd3543c74f685cc99192` after the Release1.42 capability additions. Registration does not activate the profile for existing tenants; governed preview, independent approval and execution remain required. All0001–0115 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0116_current_access_profile.sql | 8dbf62b9c870defb4d7e3f120cbd789c7ff0f3f88dc0b718b2e997b70c3d616f |
+
+## Migration0117 — independently reviewed dashboard disclosure artifacts
+
+`0117_dashboard_disclosure_artifact_kind.sql` registers `DashboardDisclosureArtifact` as an immutable revisioned registry kind. The authenticated application prepares a frozen content snapshot and a different natural person must approve it before an exact artifact revision can back a public dashboard publication. Restrictive worker policies keep both registry and revision rows outside worker duties. No source grant, live private query, or cross-workspace authority is inherited.
+
+| Migration | SHA256 |
+|---|---|
+| 0117_dashboard_disclosure_artifact_kind.sql | 06c1a1bd201afdc0eac3f14e0486dabbe6a4aaad1c682963f6b1e1b53304946e |
+
+## Migration0118 — registered WorkItem draft access profile
+
+`0118_work_item_access_profile.sql` registers the exact generated profile for the ordinary closed WorkItem draft command. It adds no table grants, changes no prior profile, and applies no authority to existing tenants. Onboarding and ceiling changes still require their existing independent reviewed flows.
+
+| Migration | SHA256 |
+|---|---|
+| 0118_work_item_access_profile.sql | bc99a416592cc5b421be9b174db40b00160d1d886c226f99801cf4934b299681 |

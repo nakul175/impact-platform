@@ -185,20 +185,34 @@ The target requirements, implemented subsets and pending acceptance gates are ex
 - [Release 1.28 coding candidate — reviewable anomaly assistance](RELEASE-1.28-anomaly-assistance.md)
 - [Release 1.29 coding candidate — controlled evaluation registry](RELEASE-1.29-evaluation-registry.md)
 - [Release 1.30 coding candidate — reproducible sampling methodology](RELEASE-1.30-evaluation-methodology.md)
-- [Release 1.31 coding candidate — frozen analysis packages](RELEASE-1.31-analysis-packages.md)
-- [Release 1.32 coding candidate — learning agenda](RELEASE-1.32-learning-agenda.md)
+- [Release 1.31 qualification candidate — frozen analysis packages](RELEASE-1.31-analysis-packages.md)
+- [Release 1.32 qualification candidate — learning agenda](RELEASE-1.32-learning-agenda.md)
 - [Release 1.33 coding candidate — management responses](RELEASE-1.33-management-responses.md)
 - [Release 1.34 coding candidate — qualitative coding](RELEASE-1.34-qualitative-coding.md)
 - [Release 1.35 coding candidate — transcription and translation](RELEASE-1.35-transcription-translation.md)
-- [Release 1.36 coding candidate — triangulated findings](RELEASE-1.36-triangulated-findings.md)
-- [Release 1.37 coding candidate — versioned budgets](RELEASE-1.37-budget-versions.md)
+- [Release 1.36 qualification candidate — triangulated findings](RELEASE-1.36-triangulated-findings.md)
+- [Release 1.37 qualification candidate — versioned budgets](RELEASE-1.37-budget-versions.md)
 - [Release 1.38 coding candidate — expenditure ingestion](RELEASE-1.38-expenditure-ingestion.md)
 - [Release 1.39 coding candidate — variance and forecast](RELEASE-1.39-finance-variance.md)
 - [Release 1.40 — Qualification repair candidate](RELEASE-1.40-qualification-repair.md)
 - [Release 1.41 — Problem baseline qualification repair](RELEASE-1.41-problem-baseline-kind-fix.md)
+- [Release 1.42 — reviewable anomaly assistance completion candidate](RELEASE-1.42-anomaly-assistance-completion.md)
+- [Release 1.42 candidate — complete governed dashboard publication](RELEASE-1.42-apl-614-dashboard-governance.md)
+- [Release 1.42 — governed dashboard alert completion candidate](RELEASE-1.42-dashboard-alerts-completion.md)
+- [Release 1.42 — Dashboard publication safety checkpoint](RELEASE-1.42-dashboard-publication-safety.md)
+- [Release 1.42 — Effective access coding completion](RELEASE-1.42-effective-access-completion.md)
+- [Release 1.42 — sampling methodology completion](RELEASE-1.42-evaluation-methodology-completion.md)
+- [Release 1.42 — controlled evaluation registry completion](RELEASE-1.42-evaluation-registry-completion.md)
+- [Release 1.42 — governed external analytics completion candidate](RELEASE-1.42-external-analytics-completion.md)
+- [Release 1.42 — reviewed local assistance activation](RELEASE-1.42-reviewed-local-ai-activation.md)
+- [Release 1.42 — local journey, refusal and recovery qualification](RELEASE-1.42-three-gate-qualification.md)
 - [Operations hardening (October 2026) — backups, restore drill, alerts, metrics, owner console](RELEASE-OPS-2026-10.md)
 - [Tola + AI timed development handover](SPRINT-HANDOVER-2026-10-05.md)
 - [Training video — how the platform works, end to end](TRAINING-VIDEO.md)
+
+### acceptance
+
+- [Release 1.42 — 56-story acceptance manifest](acceptance/RELEASE-1.42-56-STORY-ACCEPTANCE.md)
 
 ### agile
 

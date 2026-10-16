@@ -16,14 +16,16 @@ class FinanceGovernance:
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant, write=True)
             c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
-            authorize(c, ctx, "create_dashboards")
+            authorize(c, ctx, op)
             old = c.execute(
-                "SELECT payload_hash,outcome FROM impact.operation_receipt WHERE tenant_id=%s AND actor_id=%s AND command_type=%s AND operation_id=%s",
+                "SELECT payload_hash,outcome,expires_at FROM impact.operation_receipt WHERE tenant_id=%s AND actor_id=%s AND command_type=%s AND operation_id=%s",
                 (tenant, ctx.principal_id, op, body["operation_id"]),
             ).fetchone()
             if old:
                 if bytes(old["payload_hash"]) != fingerprint:
                     raise DomainError("CONFLICT_OPERATION", 409)
+                if old["expires_at"] <= datetime.now(timezone.utc):
+                    raise DomainError("IDEMPOTENCY_EXPIRED", 409)
                 return old["outcome"]
             receipt = fn(c, ctx)
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
@@ -61,6 +63,8 @@ class FinanceGovernance:
         def apply(c, ctx):
             d = body["data"]
             base = load(c, ctx, d["budget_id"], "BudgetVersion", lock=True)
+            if str(base["head_revision"]) != d["expected_revision"]:
+                raise DomainError("CONFLICT_VERSION", 409)
             total = sum((Decimal(x["amount"]) for x in d["lines"]), Decimal(0))
             original = base["payload"].get("original_baseline_revision") or str(base["head_revision"])
             payload = {
@@ -86,6 +90,13 @@ class FinanceGovernance:
             row = load(c, ctx, d["budget_id"], "BudgetVersion", lock=True)
             if str(row["head_revision"]) != d["expected_revision"]:
                 raise DomainError("CONFLICT_VERSION", 409)
+            if ctx.principal_id not in row["payload"]["approval_route"]:
+                raise DomainError("POLICY_DENIED", 403)
+            if c.execute(
+                "SELECT 1 FROM impact.object_natural_author WHERE tenant_id=%s AND object_id=%s AND natural_identity_id=%s",
+                (tenant, d["budget_id"], ctx.identity.natural_identity_id),
+            ).fetchone():
+                raise DomainError("INDEPENDENCE_REQUIRED", 409)
             payload = {
                 **row["payload"],
                 "approved_budget_revision": str(row["head_revision"]),

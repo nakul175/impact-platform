@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { PortfolioPanel } from "./Portfolio";
+import { EvaluationRegistry } from "./EvaluationRegistry";
+import { EvaluationMethodologies } from "./EvaluationMethodologies";
 import { tabListKeys } from "./a11y";
 
 type Props = {
@@ -335,8 +337,38 @@ export function DashboardsPanel({
     [geographicPreview, setGeographicPreview] = useState<any>(null),
     [recipientId, setRecipientId] = useState(""),
     [sharingPreview, setSharingPreview] = useState<any>(null),
+    [publicationId, setPublicationId] = useState(""),
+    [publicationStatus, setPublicationStatus] = useState<any>(null),
+    [publicationAudience, setPublicationAudience] = useState<
+      "INTERNAL" | "PUBLIC"
+    >("INTERNAL"),
+    [publicationExpiry, setPublicationExpiry] = useState(() => {
+      const value = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+      return value.toISOString().slice(0, 16);
+    }),
+    [publicationMessage, setPublicationMessage] = useState(""),
     [alertRule, setAlertRule] = useState(""),
+    [alertRules, setAlertRules] = useState<any[]>([]),
+    [alertIncidents, setAlertIncidents] = useState<any[]>([]),
+    [alertResult, setAlertResult] = useState(""),
+    [alertOperator, setAlertOperator] = useState<"LT" | "GT">("LT"),
+    [alertThreshold, setAlertThreshold] = useState("0"),
+    [alertCoverage, setAlertCoverage] = useState(75),
+    [alertFreshness, setAlertFreshness] = useState(2678400),
+    [alertCadence, setAlertCadence] = useState<"DAILY" | "WEEKLY" | "MONTHLY">(
+      "MONTHLY",
+    ),
+    [alertCooldown, setAlertCooldown] = useState(86400),
     [alertOutcome, setAlertOutcome] = useState<any>(null),
+    [externalConnections, setExternalConnections] = useState<any[]>([]),
+    [externalConnection, setExternalConnection] = useState(""),
+    [externalExtracts, setExternalExtracts] = useState<any[]>([]),
+    [externalCredential, setExternalCredential] = useState(""),
+    [externalDestination, setExternalDestination] = useState(""),
+    [externalTerms, setExternalTerms] = useState(""),
+    [externalBackupOwner, setExternalBackupOwner] = useState(""),
+    [externalDataset, setExternalDataset] = useState(""),
+    [externalPackage, setExternalPackage] = useState<any>(null),
     [sourcesFor, setSourcesFor] = useState(""),
     [sources, setSources] = useState<any>(null),
     [error, setError] = useState(""),
@@ -350,6 +382,10 @@ export function DashboardsPanel({
     allowed("dashboards.read") &&
     allowed("dashboards.draft.create") &&
     allowed("calculated-results.read");
+  const canCopy =
+    allowed("dashboards.read") && allowed("dashboards.draft.create");
+  const canPublish =
+    allowed("dashboards.read") && allowed("dashboards.draft.edit");
   useEffect(() => {
     if (!permitted) return;
     Promise.all([
@@ -432,16 +468,52 @@ export function DashboardsPanel({
     Promise.all([
       all(request, base + "dashboards"),
       all(request, base + "calculated-results"),
+      all(request, base + "dashboard-alert-rules"),
+      all(request, base + "external-analytics-connections"),
     ])
-      .then(([dashboards, results]) => {
+      .then(([dashboards, results, rules, connections]) => {
         setSavedDashboards(dashboards);
         setCalculatedResults(results);
+        setAlertRules(rules);
+        setExternalConnections(connections);
+        setExternalConnection((current) =>
+          connections.some((row: any) => row.object_id === current)
+            ? current
+            : connections[0]?.object_id || "",
+        );
+        setExternalDataset((current) => current || results[0]?.object_id || "");
+        setAlertRule((current) =>
+          rules.some((row: any) => row.object_id === current)
+            ? current
+            : rules[0]?.object_id || "",
+        );
         setSavedDashboard(
           (current) => current || dashboards[0]?.object_id || "",
         );
       })
       .catch((e) => setError(explain(e)));
   }, [mode, canAuthor, base, tick]);
+  useEffect(() => {
+    if (mode !== "authored" || !alertRule) {
+      setAlertIncidents([]);
+      return;
+    }
+    all(request, `${base}dashboard-alert-rules/${alertRule}/incidents`)
+      .then(setAlertIncidents)
+      .catch((e) => setError(explain(e)));
+  }, [mode, alertRule, base, tick]);
+  useEffect(() => {
+    if (mode !== "authored" || !externalConnection) {
+      setExternalExtracts([]);
+      return;
+    }
+    all(
+      request,
+      `${base}external-analytics-connections/${externalConnection}/extracts`,
+    )
+      .then(setExternalExtracts)
+      .catch((e) => setError(explain(e)));
+  }, [mode, externalConnection, base, tick]);
   useEffect(() => {
     if (mode !== "authored" || !savedDashboard) {
       setAuthoredPreview(null);
@@ -592,6 +664,8 @@ export function DashboardsPanel({
   async function copyDashboard() {
     if (!savedDashboard) return;
     try {
+      setError("");
+      setPublicationMessage("");
       const receipt = await request(
         `${base}dashboards/${savedDashboard}/actions/copy`,
         {
@@ -600,6 +674,10 @@ export function DashboardsPanel({
         },
       );
       setSavedDashboard(receipt.object_id);
+      setSharingPreview(null);
+      setPublicationId("");
+      setPublicationStatus(null);
+      setPublicationMessage("Private draft created. No access was granted.");
       setTick((value) => value + 1);
     } catch (e) {
       setError(explain(e));
@@ -608,6 +686,8 @@ export function DashboardsPanel({
   async function previewSharing() {
     if (!savedDashboard || !recipientId) return;
     try {
+      setError("");
+      setSharingPreview(null);
       setSharingPreview(
         await request(
           base +
@@ -623,19 +703,51 @@ export function DashboardsPanel({
   }
   async function publishDashboard() {
     if (!savedDashboard) return;
-    const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    const dashboard = savedDashboards.find(
+      (row) => row.object_id === savedDashboard,
+    );
+    if (!dashboard) return setError("Select a current dashboard draft.");
+    const expires = new Date(publicationExpiry);
+    if (!Number.isFinite(expires.getTime()) || expires <= new Date()) {
+      return setError("Choose a publication expiry in the future.");
+    }
     try {
-      await request(
+      setError("");
+      setPublicationMessage("");
+      const receipt = await request(
         base + "dashboards/" + savedDashboard + "/actions/publish",
         {
           method: "POST",
           body: JSON.stringify({
             operation_id: crypto.randomUUID(),
-            data: { audience: "INTERNAL", expires_at: expires.toISOString() },
+            expected_revision: dashboard.revision_id,
+            data: {
+              audience: publicationAudience,
+              expires_at: expires.toISOString(),
+            },
           }),
         },
       );
+      setPublicationId(receipt.object_id);
+      setPublicationMessage("Pinned publication created.");
+      setPublicationStatus(
+        await request(
+          `${base}dashboards/${savedDashboard}/publications/${receipt.object_id}`,
+        ),
+      );
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function refreshPublicationStatus() {
+    if (!savedDashboard || !publicationId) return;
+    try {
       setError("");
+      setPublicationStatus(
+        await request(
+          `${base}dashboards/${savedDashboard}/publications/${publicationId}`,
+        ),
+      );
     } catch (e) {
       setError(explain(e));
     }
@@ -649,23 +761,24 @@ export function DashboardsPanel({
           operation_id: crypto.randomUUID(),
           data: {
             measure_id: indicator,
-            operator: "LT",
-            threshold: "0",
-            minimum_coverage: 75,
-            max_freshness_seconds: 2678400,
-            evaluation_cadence: "MONTHLY",
+            operator: alertOperator,
+            threshold: alertThreshold,
+            minimum_coverage: alertCoverage,
+            max_freshness_seconds: alertFreshness,
+            evaluation_cadence: alertCadence,
             recipient_ids: [recipientId],
-            cooldown_seconds: 86400,
+            cooldown_seconds: alertCooldown,
           },
         }),
       });
       setAlertRule(receipt.object_id);
+      setTick((value) => value + 1);
     } catch (e) {
       setError(explain(e));
     }
   }
-  async function evaluateMissingAlert() {
-    if (!alertRule) return;
+  async function evaluateAlert() {
+    if (!alertRule || !period) return;
     try {
       setAlertOutcome(
         await request(
@@ -674,11 +787,93 @@ export function DashboardsPanel({
             method: "POST",
             body: JSON.stringify({
               operation_id: crypto.randomUUID(),
-              data: {},
+              data: {
+                period_id: period,
+                ...(alertResult ? { result_id: alertResult } : {}),
+              },
             }),
           },
         ),
       );
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function createExternalConnection() {
+    const dataset = calculatedResults.find(
+      (row) => row.object_id === externalDataset,
+    );
+    if (
+      !dataset ||
+      !externalDestination ||
+      !externalTerms ||
+      !externalBackupOwner
+    )
+      return;
+    try {
+      const expiry = new Date(
+        Date.now() + 90 * 24 * 60 * 60 * 1000,
+      ).toISOString();
+      const receipt = await request(base + "external-analytics-connections", {
+        method: "POST",
+        body: JSON.stringify({
+          operation_id: crypto.randomUUID(),
+          data: {
+            datasets: [
+              {
+                kind: "CalculatedResult",
+                object_id: dataset.object_id,
+                revision_id: dataset.revision_id,
+                fields: ["value_state", "value", "mode", "freshness"],
+              },
+            ],
+            destination: externalDestination,
+            reuse_terms: externalTerms,
+            backup_owner_id: externalBackupOwner,
+            expires_at: expiry,
+          },
+        }),
+      });
+      setExternalConnection(receipt.object_id);
+      setExternalCredential(receipt.credential);
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function refreshExternalConnection() {
+    if (!externalConnection || !externalCredential) return;
+    try {
+      setExternalPackage(
+        await request(
+          `${base}external-analytics-connections/${externalConnection}/actions/refresh`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              operation_id: crypto.randomUUID(),
+              credential: externalCredential,
+            }),
+          },
+        ),
+      );
+      setTick((value) => value + 1);
+    } catch (e) {
+      setError(explain(e));
+    }
+  }
+  async function revokeExternalConnection() {
+    if (!externalConnection) return;
+    try {
+      await request(
+        `${base}external-analytics-connections/${externalConnection}/actions/revoke`,
+        {
+          method: "POST",
+          body: JSON.stringify({ operation_id: crypto.randomUUID() }),
+        },
+      );
+      setExternalCredential("");
+      setTick((value) => value + 1);
     } catch (e) {
       setError(explain(e));
     }
@@ -788,6 +983,18 @@ export function DashboardsPanel({
   const portfolioAllowed = allowed("indicator-definitions.read");
   return (
     <section className="dashboards" aria-label="Dashboards">
+      <EvaluationRegistry
+        base={base}
+        capabilities={capabilities}
+        request={request}
+        explain={explain}
+      />
+      <EvaluationMethodologies
+        base={base}
+        capabilities={capabilities}
+        request={request}
+        explain={explain}
+      />
       {portfolioAllowed ? (
         <div
           className="setup-tabs"
@@ -883,59 +1090,457 @@ export function DashboardsPanel({
             <button type="button" className="secondary" onClick={previewMap}>
               Preview safe map
             </button>
-            <button type="button" className="secondary" onClick={copyDashboard}>
-              Copy privately
-            </button>
-            <label>
-              Recipient principal ID
-              <input
-                value={recipientId}
-                onChange={(event) => setRecipientId(event.target.value)}
-                placeholder="UUID"
-              />
-            </label>
-            <button
-              type="button"
-              className="secondary"
-              onClick={previewSharing}
-            >
-              Preview recipient view
-            </button>
-            <button type="button" onClick={publishDashboard}>
-              Publish internally for 30 days
-            </button>
-            <button
-              type="button"
-              className="secondary"
-              onClick={createAlertRule}
-            >
-              Create monthly alert
-            </button>
-            <button
-              type="button"
-              className="secondary"
-              disabled={!alertRule}
-              onClick={evaluateMissingAlert}
-            >
-              Evaluate missed result
-            </button>
           </div>
-          {sharingPreview ? (
-            <p role="status" className="muted">
-              Recipient preview:{" "}
-              {sharingPreview.unavailable_binding_count === 0
-                ? "all bindings available"
-                : sharingPreview.unavailable_binding_count +
-                  " bindings unavailable"}
-              . No grants were created.
+          <fieldset aria-label="Dashboard alerts">
+            <legend>Dashboard alerts</legend>
+            <div className="planning-toolbar">
+              <label>
+                Existing rule
+                <select
+                  value={alertRule}
+                  onChange={(event) => setAlertRule(event.target.value)}
+                >
+                  <option value="">Select rule</option>
+                  {alertRules.map((row) => (
+                    <option key={row.object_id} value={row.object_id}>
+                      {words(row.data.evaluation_cadence)} · {row.data.operator}{" "}
+                      {row.data.threshold}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Condition
+                <select
+                  value={alertOperator}
+                  onChange={(event) =>
+                    setAlertOperator(event.target.value as "LT" | "GT")
+                  }
+                >
+                  <option value="LT">Below</option>
+                  <option value="GT">Above</option>
+                </select>
+              </label>
+              <label>
+                Threshold
+                <input
+                  value={alertThreshold}
+                  onChange={(event) => setAlertThreshold(event.target.value)}
+                />
+              </label>
+              <label>
+                Minimum coverage %
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={alertCoverage}
+                  onChange={(event) =>
+                    setAlertCoverage(Number(event.target.value))
+                  }
+                />
+              </label>
+              <label>
+                Maximum freshness seconds
+                <input
+                  type="number"
+                  min="60"
+                  value={alertFreshness}
+                  onChange={(event) =>
+                    setAlertFreshness(Number(event.target.value))
+                  }
+                />
+              </label>
+              <label>
+                Cadence
+                <select
+                  value={alertCadence}
+                  onChange={(event) =>
+                    setAlertCadence(event.target.value as typeof alertCadence)
+                  }
+                >
+                  <option>DAILY</option>
+                  <option>WEEKLY</option>
+                  <option>MONTHLY</option>
+                </select>
+              </label>
+              <label>
+                Cooldown seconds
+                <input
+                  type="number"
+                  min="60"
+                  value={alertCooldown}
+                  onChange={(event) =>
+                    setAlertCooldown(Number(event.target.value))
+                  }
+                />
+              </label>
+              <button
+                type="button"
+                className="secondary"
+                disabled={!indicator || !recipientId}
+                onClick={createAlertRule}
+              >
+                Create alert rule
+              </button>
+              <label>
+                Evaluation result
+                <select
+                  value={alertResult}
+                  onChange={(event) => setAlertResult(event.target.value)}
+                >
+                  <option value="">Missed or absent result</option>
+                  {calculatedResults.map((row) => (
+                    <option key={row.object_id} value={row.object_id}>
+                      {row.object_id}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                type="button"
+                className="secondary"
+                disabled={!alertRule || !period}
+                onClick={evaluateAlert}
+              >
+                Evaluate due period
+              </button>
+            </div>
+            {alertRules.find((row) => row.object_id === alertRule) ? (
+              <p className="muted">
+                Next due{" "}
+                {when(
+                  alertRules.find((row) => row.object_id === alertRule).data
+                    .next_evaluation_at,
+                )}
+                . The selected period and exact result revision are retained
+                with every incident.
+              </p>
+            ) : null}
+          </fieldset>
+          <fieldset aria-label="External analytics access">
+            <legend>External analytics access</legend>
+            <div className="planning-toolbar">
+              <label>
+                Connection
+                <select
+                  value={externalConnection}
+                  onChange={(event) =>
+                    setExternalConnection(event.target.value)
+                  }
+                >
+                  <option value="">Select connection</option>
+                  {externalConnections.map((row) => (
+                    <option key={row.object_id} value={row.object_id}>
+                      {row.data.destination} · {words(row.data.status)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Calculated dataset
+                <select
+                  value={externalDataset}
+                  onChange={(event) => setExternalDataset(event.target.value)}
+                >
+                  <option value="">Select exact result</option>
+                  {calculatedResults.map((row) => (
+                    <option key={row.object_id} value={row.object_id}>
+                      {row.object_id} · {row.revision_id}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Approved destination
+                <input
+                  value={externalDestination}
+                  onChange={(event) =>
+                    setExternalDestination(event.target.value)
+                  }
+                  placeholder="Named BI workspace"
+                />
+              </label>
+              <label>
+                Reuse terms
+                <input
+                  value={externalTerms}
+                  onChange={(event) => setExternalTerms(event.target.value)}
+                  placeholder="Purpose, retention and onward-sharing terms"
+                />
+              </label>
+              <label>
+                Backup owner principal ID
+                <input
+                  value={externalBackupOwner}
+                  onChange={(event) =>
+                    setExternalBackupOwner(event.target.value)
+                  }
+                  placeholder="Different active person UUID"
+                />
+              </label>
+              <button
+                type="button"
+                disabled={
+                  !externalDataset ||
+                  !externalDestination ||
+                  !externalTerms ||
+                  !externalBackupOwner
+                }
+                onClick={createExternalConnection}
+              >
+                Create governed connection
+              </button>
+              <label>
+                Credential shown at issue/retry only
+                <input
+                  type="password"
+                  value={externalCredential}
+                  onChange={(event) =>
+                    setExternalCredential(event.target.value)
+                  }
+                  autoComplete="off"
+                />
+              </label>
+              <button
+                type="button"
+                className="secondary"
+                disabled={!externalConnection || !externalCredential}
+                onClick={refreshExternalConnection}
+              >
+                Refresh exact package
+              </button>
+              <button
+                type="button"
+                className="secondary"
+                disabled={!externalConnection}
+                onClick={revokeExternalConnection}
+              >
+                Revoke service identity
+              </button>
+            </div>
+            <p className="muted">
+              Revocation stops future refreshes. Prior external copies remain
+              tracked and are never represented as remotely erased. This does
+              not provide unrestricted database access.
             </p>
+            {externalPackage ? (
+              <p role="status">
+                Extract {externalPackage.extract_id} created with{" "}
+                {externalPackage.package.length} exact dataset revision(s).
+              </p>
+            ) : null}
+            {externalExtracts.length ? (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Extract</th>
+                    <th>Destination</th>
+                    <th>Revisions</th>
+                    <th>Remote copy</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {externalExtracts.map((row) => (
+                    <tr key={row.object_id}>
+                      <td>{row.object_id}</td>
+                      <td>{row.data.destination}</td>
+                      <td>{row.data.dataset_revisions.join(", ")}</td>
+                      <td>{words(row.data.remote_copy_status)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : null}
+          </fieldset>
+          <fieldset aria-label="Sharing and publication">
+            <legend>Sharing and publication</legend>
+            <div className="planning-toolbar">
+              {canCopy ? (
+                <button
+                  type="button"
+                  className="secondary"
+                  disabled={!savedDashboard}
+                  onClick={copyDashboard}
+                >
+                  Copy privately
+                </button>
+              ) : null}
+              <label>
+                Recipient principal ID
+                <input
+                  value={recipientId}
+                  onChange={(event) => setRecipientId(event.target.value)}
+                  placeholder="UUID"
+                />
+              </label>
+              <button
+                type="button"
+                className="secondary"
+                disabled={!savedDashboard || !recipientId}
+                onClick={previewSharing}
+              >
+                Preview recipient view
+              </button>
+              {canPublish ? (
+                <>
+                  <label>
+                    Audience
+                    <select
+                      value={publicationAudience}
+                      onChange={(event) =>
+                        setPublicationAudience(
+                          event.target.value as typeof publicationAudience,
+                        )
+                      }
+                    >
+                      <option>INTERNAL</option>
+                      <option>PUBLIC</option>
+                    </select>
+                  </label>
+                  <label>
+                    Expires
+                    <input
+                      type="datetime-local"
+                      value={publicationExpiry}
+                      onChange={(event) =>
+                        setPublicationExpiry(event.target.value)
+                      }
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    disabled={!savedDashboard || !publicationExpiry}
+                    onClick={publishDashboard}
+                  >
+                    Publish pinned dashboard
+                  </button>
+                </>
+              ) : null}
+              {publicationId ? (
+                <button
+                  type="button"
+                  className="secondary"
+                  onClick={refreshPublicationStatus}
+                >
+                  Refresh publication status
+                </button>
+              ) : null}
+            </div>
+            {publicationAudience === "PUBLIC" && canPublish ? (
+              <p className="muted">
+                Public publication is permitted only when every pinned binding
+                is an approved public disclosure artifact.
+              </p>
+            ) : null}
+            {publicationMessage ? (
+              <p role="status" className="muted">
+                {publicationMessage}
+              </p>
+            ) : null}
+          </fieldset>
+          {sharingPreview ? (
+            <section aria-label="Recipient sharing preview">
+              <p role="status" className="muted">
+                Recipient preview:{" "}
+                {sharingPreview.unavailable_binding_count === 0
+                  ? "all bindings available"
+                  : sharingPreview.unavailable_binding_count +
+                    " bindings unavailable"}
+                . No grants were created.
+              </p>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Widget</th>
+                    <th>Source</th>
+                    <th>Pinned revision</th>
+                    <th>Classification</th>
+                    <th>Availability</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sharingPreview.widgets.map((widget: any) => (
+                    <tr key={widget.widget_id}>
+                      <td>{widget.widget_id}</td>
+                      <td>
+                        {words(widget.binding.resource_type)} ·{" "}
+                        {widget.binding.object_id}
+                      </td>
+                      <td>{widget.binding.revision_id}</td>
+                      <td>{words(widget.classification || "Unavailable")}</td>
+                      <td>{words(widget.availability)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+          ) : null}
+          {publicationStatus ? (
+            <section aria-label="Publication status" className="callout">
+              <h3>Publication status</h3>
+              <p>
+                <strong>{words(publicationStatus.status)}</strong> ·{" "}
+                {words(publicationStatus.audience)} · expires{" "}
+                {when(publicationStatus.expires_at)}
+              </p>
+              <p className="muted">
+                Publication {publicationStatus.publication_id} pins dashboard
+                revision {publicationStatus.dashboard_revision}.
+              </p>
+              {publicationStatus.status === "SUSPENDED" ? (
+                <p role="alert">
+                  This publication is unavailable:{" "}
+                  {words(publicationStatus.reason_code)}. Rebind or review the
+                  sources, then publish a successor.
+                </p>
+              ) : null}
+            </section>
           ) : null}
           {alertOutcome ? (
             <p role="status" className="muted">
               Alert outcome: {words(alertOutcome.outcome)} ·{" "}
               {words(alertOutcome.reason_code)}
               {alertOutcome.coalesced ? " · cooldown incident updated" : ""}
+              {alertOutcome.incident_id
+                ? ` · incident ${alertOutcome.incident_id}`
+                : ""}
+              {alertOutcome.result_revision
+                ? ` · result revision ${alertOutcome.result_revision}`
+                : ""}
+              {alertOutcome.occurrence_count
+                ? ` · occurrence ${alertOutcome.occurrence_count}`
+                : ""}
             </p>
+          ) : null}
+          {alertIncidents.length ? (
+            <section aria-label="Alert incident history">
+              <h3>Alert incident history</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Reason</th>
+                    <th>Period</th>
+                    <th>Result revision</th>
+                    <th>Occurrences</th>
+                    <th>Last evaluated</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {alertIncidents.map((row) => (
+                    <tr key={row.object_id}>
+                      <td>{words(row.data.alert_type)}</td>
+                      <td>{words(row.data.reason_code)}</td>
+                      <td>{row.data.evaluation_period_id}</td>
+                      <td>{row.data.result_revision || "No result"}</td>
+                      <td>{row.data.occurrence_count}</td>
+                      <td>{when(row.data.last_evaluated_at)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
           ) : null}
           <div className="planning-toolbar" aria-label="Pivot analysis">
             <label>

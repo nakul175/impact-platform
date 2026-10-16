@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="1" skipped="0" tests="7" time="7.751" timestamp="2026-10-16T23:08:19.744321+05:30" hostname="Athenas-MacBook-Pro.local"><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_533_indicator_proposal_refusal_is_atomic_then_valid_draft_recovers" time="1.536" /><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_535_import_diff_applies_only_selected_change_and_recovers_atomically" time="1.141" /><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_537_supported_question_cites_exact_results_and_hidden_selector_abstains" time="1.110" /><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_538_typed_pooling_refuses_mismatched_claim_then_recovers_without_writes" time="1.260" /><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_597_source_bound_suggestions_refuse_fabrication_and_recover" time="0.883"><failure message="AssertionError: assert (422, 'AI_POLICY_BLOCKED') == (422, 'QUALIT...IEW_REQUIRED')&#10;  &#10;  At index 1 diff: 'AI_POLICY_BLOCKED' != 'QUALITATIVE_TRANSLATION_REVIEW_REQUIRED'&#10;  Use -v to get more diff">live = &lt;reviewed_ai_runtime_fixture.runtime.&lt;locals&gt;.Proxy object at 0x10bad64e0&gt;
+governed_ai_grants = None
+component_services = namespace(database=&lt;impact_api.store.Database object at 0x1096e82c0&gt;, qualitative=&lt;test_ai_reviewed_activation_live.HT..._live.HTTPService object at 0x10baf6810&gt;, actions=&lt;test_ai_reviewed_activation_live.HTTPService object at 0x10baf4fb0&gt;)
+
+    def test_apl_597_source_bound_suggestions_refuse_fabrication_and_recover(
+        live, governed_ai_grants, component_services
+    ):
+        """APL-597 external HTTP: traceable views, individual review and atomic output refusal."""
+    
+        positive, positive_text = _text_evidence(live, "The service was easy to reach.\n")
+        opposing, opposing_text = _text_evidence(live, "El servicio fue difícil de alcanzar.\n")
+        codebook = _seed(
+            live,
+            "Codebook",
+            {"codes": [{"code": "ACCESS_POSITIVE"}, {"code": "ACCESS_BARRIER"}]},
+            "Approved",
+        )
+    
+        def candidate(source, text, viewpoint, code, translation=None):
+            excerpt = text.splitlines()[0]
+            return {
+                "source_revision_id": source["revision_id"],
+                "viewpoint": viewpoint,
+                "start_character": 0,
+                "end_character": len(excerpt),
+                "excerpt": excerpt,
+                "excerpt_sha256": hashlib.sha256(excerpt.encode()).hexdigest(),
+                "speaker_reference": None,
+                "suggested_codes": [code],
+                "theme": "Service access",
+                "translation_language": "en" if translation else None,
+                "translation_text": translation,
+            }
+    
+        sources = [
+            {"object_id": positive["object_id"], "revision_id": positive["revision_id"], "language": "en"},
+            {"object_id": opposing["object_id"], "revision_id": opposing["revision_id"], "language": "es"},
+        ]
+        candidates = [
+            candidate(positive, positive_text, "Service was accessible", "ACCESS_POSITIVE"),
+            candidate(
+                opposing,
+                opposing_text,
+                "Service was difficult to access",
+                "ACCESS_BARRIER",
+                "The service was difficult to reach.",
+            ),
+        ]
+        operation_id = str(uuid4())
+        request = {
+            "operation_id": operation_id,
+            "codebook_id": codebook["object_id"],
+            "codebook_revision_id": codebook["revision_id"],
+            "sources": sources,
+            "candidates": candidates,
+            "policy_version": live.policy_version,
+            "language": "en",
+        }
+    
+        before = _count(live, "ai_qualitative_run")
+        fabricated = {**request, "candidates": [{**candidates[0], "excerpt": "Invented quotation"}]}
+        actor = _identity(live, component_services.database)
+        tenant = live.fixture["tenant_a"]
+        with pytest.raises(DomainError) as refused:
+            component_services.qualitative.create(actor, tenant, fabricated, str(uuid4()))
+        assert (refused.value.status, refused.value.reason) == (
+            422,
+            "QUALITATIVE_QUOTATION_FABRICATED",
+        )
+        assert _count(live, "ai_qualitative_run") == before
+    
+        partner = _identity(live, component_services.database, "partner")
+        with pytest.raises(DomainError) as denied:
+            component_services.qualitative.create(partner, tenant, request, str(uuid4()))
+        assert (denied.value.status, denied.value.code) in {
+            (403, "POLICY_DENIED"),
+            (404, "RESOURCE_UNAVAILABLE"),
+        }
+        assert _count(live, "ai_qualitative_run") == before
+    
+        run = component_services.qualitative.create(actor, tenant, request, str(uuid4()))
+        _assert_app_cannot_update(component_services.database, tenant, "ai_qualitative_suggestion")
+        assert run["individual_review_required"] is True and run["consensus_inferred"] is False
+        assert {item["viewpoint"] for item in run["suggestions"]} == {
+            "Service was accessible",
+            "Service was difficult to access",
+        }
+        translated = next(item for item in run["suggestions"] if item["translation_text"])
+        assert translated["translation_status"] == "MACHINE_UNREVIEWED"
+    
+        review_operation = str(uuid4())
+        unreviewed = {
+            "operation_id": review_operation,
+            "disposition": "ACCEPTED",
+            "final_codes": ["ACCESS_BARRIER"],
+            "final_theme": "Service access barrier",
+            "final_translation": "Human changed translation.",
+            "translation_reviewed": False,
+        }
+        before_reviews = _count(live, "ai_qualitative_review")
+        before_extracts = _count(live, "object_registry")
+        with pytest.raises(DomainError) as refused:
+            component_services.qualitative.review(
+                actor, tenant, UUID(translated["suggestion_id"]), unreviewed, str(uuid4())
+            )
+&gt;       assert (refused.value.status, refused.value.reason) == (
+            422,
+            "QUALITATIVE_TRANSLATION_REVIEW_REQUIRED",
+        )
+E       AssertionError: assert (422, 'AI_POLICY_BLOCKED') == (422, 'QUALIT...IEW_REQUIRED')
+E         
+E         At index 1 diff: 'AI_POLICY_BLOCKED' != 'QUALITATIVE_TRANSLATION_REVIEW_REQUIRED'
+E         Use -v to get more diff
+
+qualification/test_ai_reviewed_activation_live.py:482: AssertionError</failure></testcase><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_601_suggestions_remain_unconfirmed_and_disabled_tasks_recover" time="0.870" /><testcase classname="qualification.test_ai_reviewed_activation_live" name="test_apl_541_confirmation_uses_ordinary_command_and_refusal_is_recoverable" time="0.739"><error message="failed on teardown with &quot;AssertionError: {&quot;code&quot;:&quot;RESOURCE_UNAVAILABLE&quot;,&quot;message&quot;:&quot;The resource is unavailable.&quot;,&quot;retryable&quot;:false,&quot;correlation_id&quot;:&quot;2b84a4fe-bc98-4e89-9864-d319024ee114&quot;,&quot;permitted_actions&quot;:[],&quot;field_errors&quot;:[]}&#10;assert 404 == 503&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code&quot;">live = &lt;conftest.live.&lt;locals&gt;.Client object at 0x10b825dc0&gt;
+tmp_path = PosixPath('/private/var/folders/wm/vfx1992n25g3q8n5myd2gy0c0000gn/T/pytest-of-athena/pytest-160/test_apl_541_confirmation_uses0')
+
+    @pytest.fixture
+    def live(live, tmp_path):
+        with runtime(live, tmp_path / "reviewed") as activated:
+            previous = expect(activated.request(activated.path("ai-enablement/policy"), actor="admin"), 200)
+            activated.policy_version = save_policy(activated, rules())
+            try:
+                yield activated
+&gt;               _assert_real_gates(activated, live)
+
+qualification/test_ai_reviewed_activation_live.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_ai_reviewed_activation_live.py:87: in _assert_real_gates
+    refused(default_runtime, "AI_USE_CASE_DISABLED")
+qualification/test_ai_reviewed_activation_live.py:82: in refused
+    denied = expect(client.request(route, actor=actor, method="POST", body=request), 503)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = &lt;Response [404 Not Found]&gt;, status = 503
+
+    def expect(response, status):
+&gt;       assert response.status_code == status, response.text
+E       AssertionError: {"code":"RESOURCE_UNAVAILABLE","message":"The resource is unavailable.","retryable":false,"correlation_id":"2b84a4fe-bc98-4e89-9864-d319024ee114","permitted_actions":[],"field_errors":[]}
+E       assert 404 == 503
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+qualification/test_live_application.py:40: AssertionError</error></testcase></testsuite></testsuites>

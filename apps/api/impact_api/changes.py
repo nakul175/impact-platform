@@ -57,7 +57,9 @@ class Changes:
                 "indicator-definitions.read",
             )["payload"]
             validate_dimensions(definition, merged)
-            if merged["value_state"] == "PRESENT" and not valid_value(definition, merged):
+            if merged["value_state"] == "PRESENT" and not valid_value(
+                definition, merged, preserve_numeric_reason=True
+            ):
                 raise DomainError("VALIDATION_FAILED", reason="INVALID_MEASUREMENT_VALUE")
             if definition["measurement_type"] == "PERCENTAGE" and merged["value_state"] == "PRESENT":
                 if decimal_value(merged["numerator"]) > decimal_value(merged["denominator"]):

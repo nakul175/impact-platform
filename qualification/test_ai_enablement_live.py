@@ -2,6 +2,8 @@
 
 from uuid import uuid4
 
+from advisory_tenant_fixture import isolated_advisory_tenant
+
 import pytest
 from starlette.requests import Request
 
@@ -68,7 +70,7 @@ def test_readiness_api_and_separate_advisory_authority(live):
     with live.db() as c:
         c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
         grant = c.execute(
-            "SELECT g.object_id FROM impact.grant_current g JOIN impact.tenant_principal p ON p.tenant_id=g.tenant_id AND p.principal_id=g.subject_id WHERE g.tenant_id=%s AND p.identity_id=%s AND g.capability='ai.advisory.request' AND g.purpose IS NULL",
+            "SELECT g.object_id FROM impact.grant_current g JOIN impact.tenant_principal p ON p.tenant_id=g.tenant_id AND p.principal_id=g.subject_id WHERE g.tenant_id=%s AND p.identity_id=%s AND g.capability='ai.advisory.request' AND g.purpose IS NULL AND EXISTS (SELECT 1 FROM impact.object_registry r WHERE r.tenant_id=g.tenant_id AND r.object_id=g.object_id AND r.lifecycle_state='Active')",
             (live.fixture["tenant_a"], live.fixture["actors"]["author"]["identity_id"]),
         ).fetchone()["object_id"]
         c.execute(
@@ -106,7 +108,7 @@ def test_durable_sealed_replay_and_daily_budget_on_real_database(live):
             }
         )
     )
-    tenant = live.fixture["tenant_a"]
+    tenant = isolated_advisory_tenant(live)
 
     class Provider:
         configured = True

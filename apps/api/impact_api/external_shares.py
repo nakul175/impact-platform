@@ -69,7 +69,7 @@ class ExternalShares:
                     revision,
                     audience,
                     actions,
-                    ctx.principal,
+                    ctx.principal_id,
                     body["reason"],
                     expires,
                 ),
@@ -86,13 +86,14 @@ class ExternalShares:
     def read(self, identity, tenant, share_id):
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
+            authorize(c, ctx, "read_external_share", hidden=True)
             row = c.execute(
                 "SELECT derivative_id,derivative_revision_id,audience_principal_id,actions,expires_at,revoked_at FROM impact.external_share WHERE tenant_id=%s AND share_id=%s",
                 (tenant, share_id),
             ).fetchone()
             if (
                 not row
-                or str(row["audience_principal_id"]) != str(ctx.principal)
+                or str(row["audience_principal_id"]) != str(ctx.principal_id)
                 or row["revoked_at"] is not None
                 or row["expires_at"] <= datetime.now(timezone.utc)
             ):
@@ -117,11 +118,11 @@ class ExternalShares:
             ).fetchone()
             if not row:
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
-            if str(row["owner_principal_id"]) != str(ctx.principal):
+            if str(row["owner_principal_id"]) != str(ctx.principal_id):
                 raise DomainError("RESOURCE_UNAVAILABLE", 404)
             if row["revoked_at"] is None:
                 c.execute(
                     "UPDATE impact.external_share SET revoked_at=now(),revoked_by=%s WHERE tenant_id=%s AND share_id=%s",
-                    (ctx.principal, tenant, share_id),
+                    (ctx.principal_id, tenant, share_id),
                 )
         return {"share_id": share_id, "status": "REVOKED"}

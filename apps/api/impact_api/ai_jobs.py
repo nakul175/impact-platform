@@ -159,12 +159,12 @@ class AIJobs:
             if row["state"] in TERMINAL:
                 raise DomainError("CONFLICT_OPERATION", 409, reason="AI_JOB_ALREADY_FINISHED")
             at = c.execute("SELECT statement_timestamp() AS at").fetchone()["at"]
-            c.execute(
+            updated = c.execute(
                 "UPDATE impact.job SET state='Cancelled',cancellation_requested_at=%s,output_manifest=%s "
                 "WHERE tenant_id=%s AND job_id=%s AND state IN('Requested','Validating','Queued')",
                 (at, Jsonb({"outcome": "CANCELLED", "complete": False}), tenant, job),
             )
-            if c.rowcount:
+            if updated.rowcount:
                 c.execute(
                     "UPDATE impact.ai_budget_reservation SET state='RELEASED',actual_units=0,settled_at=%s "
                     "WHERE tenant_id=%s AND job_id=%s AND state='RESERVED'",

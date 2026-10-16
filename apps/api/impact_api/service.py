@@ -118,6 +118,7 @@ def request_schema(path, method):
 
 
 WRITE_ROUTES = {
+    "work-items",
     "programmes",
     "indicator-definitions",
     "indicator-instances",
@@ -480,7 +481,14 @@ class Service:
                 if contribution["disposition"] == "INCLUDED":
                     included.append(source["payload"])
             recomputed_full = calculate(definition["payload"], included)
-            fields = ("value_state", "value", "numerator", "denominator", "displayed_value")
+            fields = (
+                "value_state",
+                "value",
+                "numerator",
+                "denominator",
+                "displayed_value",
+                "cumulative_increments",
+            )
             stored = {key: result["payload"].get(key) for key in fields}
             recomputed = {key: recomputed_full.get(key) for key in fields}
             response = {
@@ -748,7 +756,7 @@ class Service:
             ):
                 raise DomainError("VALIDATION_FAILED", reason="INVALID_COMPONENTS")
             if n is not None and (decimal_value(n) < 0 or decimal_value(d) < 0):
-                raise DomainError("VALIDATION_FAILED", reason="INVALID_COMPONENTS")
+                raise DomainError("VALIDATION_FAILED", reason="NEGATIVE_RATIO_QUANTITY")
         if kind == "Report":
             self.reporting.reconcile(c, ctx, data)
 
@@ -1189,7 +1197,9 @@ class Service:
             if definition["source_mode"] != "MANUAL":
                 raise DomainError("INCOMPATIBLE_MEASURE")
             validate_dimensions(definition, payload)
-            if payload["value_state"] == "PRESENT" and not valid_value(definition, payload):
+            if payload["value_state"] == "PRESENT" and not valid_value(
+                definition, payload, preserve_numeric_reason=True
+            ):
                 raise DomainError("VALIDATION_FAILED", reason="INVALID_MEASUREMENT_VALUE")
             if definition["measurement_type"] in RATIO_TYPES and payload["value_state"] == "PRESENT":
                 if payload.get("numerator") is None or payload.get("denominator") is None:

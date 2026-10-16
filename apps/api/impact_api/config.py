@@ -94,6 +94,18 @@ class Settings:
     provider_admin_realm: str = ""
     provider_admin_client_id: str = ""
     provider_admin_client_secret: str = field(default="", repr=False)
+    # Explicit reviewed activation of deterministic assistance, local development/test only.
+    ai_reviewed_use_cases: str = ""
+
+    def __post_init__(self):
+        self.reviewed_ai_use_cases
+
+    @property
+    def reviewed_ai_use_cases(self):
+        from .ai_runtime_activation import reviewed_use_cases
+
+        return reviewed_use_cases(self.ai_reviewed_use_cases, self.environment)
+
     ai_enabled: bool = False
     ai_api_key: str = field(default="", repr=False)
     ai_model: str = "gpt-5-mini"

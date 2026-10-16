@@ -1,0 +1,52 @@
+{
+  "started_at_utc": "2026-10-16T17:50:12.719181+00:00",
+  "source_head": "fba5d44279f10add768a6f53905bcc316bb601dd",
+  "source_paths": [
+    "apps",
+    "qualification",
+    "packages",
+    "infrastructure",
+    "scripts",
+    "tools",
+    ".github",
+    "docs/acceptance/RELEASE-1.42-THREE-GATE-TEST-MAP.json"
+  ],
+  "source_tree_sha256_before": "75b7d47e6641d81034f5810299c53d409b94ce2c9e54aa809b5f2203784bc653",
+  "source_status_before": "",
+  "command": "IMPACT_PORT=8465 make test",
+  "runtime": "fresh disposable local PGlite; seven external HTTP processes use explicit reviewed local flags and real policy/safety; no provider calls",
+  "exit_code": 0,
+  "finished_at_utc": "2026-10-16T17:55:09.031190+00:00",
+  "head_after": "fba5d44279f10add768a6f53905bcc316bb601dd",
+  "source_tree_sha256_after": "75b7d47e6641d81034f5810299c53d409b94ce2c9e54aa809b5f2203784bc653",
+  "source_status_after": "",
+  "junit_path": "docs/evidence/candidate-1.42/reviewed-activation-20261016/final-full.xml",
+  "junit_sha256": "da1a48ce824d4058568c37c05a65ffdef34a151daed1d0057a488f3043b2ce52",
+  "log_path": "docs/evidence/candidate-1.42/reviewed-activation-20261016/final-full.log",
+  "log_sha256": "870bbc51a4433f6bd362a7a09c68a8c9e641c82301c49706d4153b1339d4658f",
+  "source_unchanged": true,
+  "summary": {
+    "passed": 2671,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 229,
+    "deselected": 1,
+    "warnings": 1
+  },
+  "supporting_checks": {
+    "lint": "PASS",
+    "documentation_index": "PASS",
+    "release_review_consistency": "PASS;14critical threats and human confirmations still open",
+    "existing_migrations_0001_0118": "byte-identical to e95fa7c",
+    "focused_policy_and_http_regression": {
+      "passed": 119,
+      "failed": 0
+    }
+  },
+  "scope_limits": [
+    "All56 bounded local gates, not all frozen assertions",
+    "Seven use cases require reviewed development/test server config plus real tenant policy",
+    "Staging/production activation refused; no live model/provider/network spending",
+    "No new hosted CI, merge, deployment or owner acceptance"
+  ]
+}

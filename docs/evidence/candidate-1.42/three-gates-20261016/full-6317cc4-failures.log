@@ -1,0 +1,999 @@
+.venv/bin/python scripts/run.py test
+Applied 0001_roles.sql
+Applied 0002_domain.sql
+Applied 0003_security.sql
+Applied 0004_application.sql
+Applied 0005_access_administration.sql
+Applied 0006_measurement_configuration.sql
+Applied 0007_measurement_changes.sql
+Applied 0008_period_governance.sql
+Applied 0009_reporting_packages.sql
+Applied 0010_work_and_recalculation.sql
+Applied 0011_controlled_publication.sql
+Applied 0012_workspace_administration.sql
+Applied 0013_tenant_lifecycle.sql
+Applied 0014_initial_access.sql
+Applied 0015_recovery_contacts.sql
+Applied 0016_authority_renewal.sql
+Applied 0017_provider_logout.sql
+Applied 0018_worker_delivery.sql
+Applied 0019_results_framework.sql
+Applied 0020_calculation_methods.sql
+Applied 0021_web_forms.sql
+Applied 0022_import_quality.sql
+Applied 0023_evidence_objects.sql
+Applied 0024_report_exports.sql
+Applied 0025_worker_grants.sql
+Applied 0026_worker_job_grants.sql
+Applied 0027_privacy_execution.sql
+Applied 0028_usable_staging.sql
+Applied 0029_operator_lifecycle.sql
+Applied 0030_security_privacy.sql
+Applied 0031_theory_of_change.sql
+Applied 0032_forms_languages_rounds.sql
+Applied 0033_application_executor.sql
+Applied 0034_ai_advisory.sql
+Applied 0035_ai_adoption_plans.sql
+Applied 0036_reviewed_ceiling_widening.sql
+Applied 0037_ai_content_snapshots.sql
+Applied 0038_human_advice_cases.sql
+Applied 0039_human_advice_anchor_availability.sql
+Applied 0040_ai_plan_portability.sql
+Applied 0041_ai_policy.sql
+Applied 0042_ai_ranking_weights.sql
+Applied 0043_ai_guidance_v2.sql
+Applied 0044_ai_diagnoses.sql
+Applied 0045_diagnosis_worker_fence.sql
+Applied 0046_diagnosis_problem_order.sql
+Applied 0047_diagnosis_evidence_privacy.sql
+Applied 0048_ai_problem_baselines.sql
+Applied 0049_ai_diagnosis_contributions.sql
+Applied 0050_ai_diagnosis_reviews.sql
+Applied 0051_ai_solution_fit_scores.sql
+Applied 0052_calculation_provenance.sql
+Applied 0053_calculation_failures.sql
+Applied 0054_ai_training_completion_kind.sql
+Applied 0055_ai_champion_appointment_kind.sql
+Applied 0056_ai_current_outcome_observations.sql
+Applied 0057_ai_sponsor_value_report_kind.sql
+Applied 0058_ai_quarterly_value_reviews.sql
+Applied 0059_ai_improve_diagnosis_cycles.sql
+Applied 0060_ai_anonymised_outcome_evidence.sql
+Applied 0061_saved_view_kind.sql
+Applied 0062_population_overlap.sql
+Applied 0063_hierarchical_aggregation.sql
+Applied 0064_dimension_crosswalk.sql
+Applied 0065_formula_definitions.sql
+Applied 0066_portfolio_allocation_views.sql
+Applied 0067_sponsored_cohorts.sql
+Applied 0068_service_package_invoices.sql
+Applied 0069_partner_revenue_statements.sql
+Applied 0070_local_currency_tax_invoices.sql
+Applied 0071_organisation_agreement_coverage.sql
+Applied 0072_ai_option_trials.sql
+Applied 0073_ai_trial_results.sql
+Applied 0074_fine_grained_grant_facets.sql
+Applied 0075_permission_safe_derivatives.sql
+Applied 0076_versioned_external_shares.sql
+Applied 0077_access_change_propagation.sql
+Applied 0078_named_ai_use_cases_and_tools.sql
+Applied 0079_ai_advisory_sources.sql
+Applied 0080_ai_advisory_jobs.sql
+Applied 0081_ai_advisory_job_execution.sql
+Applied 0082_ai_forecast_scenarios.sql
+Applied 0083_ai_safety_shutdown.sql
+Applied 0084_ai_extraction_drafts.sql
+Applied 0085_ai_indicator_design_policy.sql
+Applied 0086_ai_import_cleaning_policy.sql
+Applied 0087_ai_evidence_question_policy.sql
+Applied 0088_ai_numeric_analysis_policy.sql
+Applied 0089_ai_report_drafts.sql
+Applied 0090_ai_qualitative_assistance.sql
+Applied 0091_ai_proactive_findings.sql
+Applied 0092_ai_action_proposals.sql
+Applied 0093_recalculation_dependencies.sql
+Applied 0094_dashboard_pivot_jobs.sql
+Applied 0095_current_access_profile.sql
+Applied 0096_programme_setup_defaults.sql
+Applied 0097_indicator_statistical_interpretation.sql
+Applied 0098_ai_problem_baseline_kind.sql
+Applied 0099_dashboard_publication_kind.sql
+Applied 0100_effective_access_profile.sql
+Applied 0101_dashboard_alert_kinds.sql
+Applied 0102_external_analytics_kinds.sql
+Applied 0103_anomaly_assistance_kinds.sql
+Applied 0104_evaluation_registration_kind.sql
+Applied 0105_evaluation_access_profile.sql
+Applied 0106_evaluation_methodology_kind.sql
+Applied 0107_evaluation_methodology_access_profile.sql
+Applied 0108_qualitative_transcription_kinds.sql
+Applied 0109_analysis_learning_kinds.sql
+Applied 0110_cumulative_difference_projection.sql
+Applied 0111_findings_budget_kinds.sql
+Applied 0112_management_response_kinds.sql
+Applied 0113_finance_transaction_variance_kinds.sql
+Applied 0114_ai_extraction_review_lock.sql
+Applied 0115_ai_untrusted_instruction_observations.sql
+Applied 0116_current_access_profile.sql
+Applied 0117_dashboard_disclosure_artifact_kind.sql
+Loaded disposable acceptance fixture
+Development configuration ready. Credentials: /Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.local/test-11eb3595/passwords.json
+Ready at http://127.0.0.1:8452
+...........................FFFFFFFFsFsFsFFFFFFFFFFF.........FFFs........ [  2%]
+...........F............................................................ [  5%]
+........................................................................ [  7%]
+...s.................................................................... [ 10%]
+................................ss............................ss........ [ 12%]
+ssssssssssss...sssssssssssssssssssss...................sssssssssssssssss [ 15%]
+ssss..........................................ssssssssssssssssssssssssss [ 17%]
+sssssssssssssssssssssssssssssss....sssssssssssss......sssss............s [ 20%]
+..............................................................F......... [ 22%]
+........................................................................ [ 25%]
+.......s................................................................ [ 27%]
+........................................................................ [ 30%]
+............................s........................................... [ 32%]
+......................................................s................. [ 35%]
+........................................................................ [ 37%]
+..............sssss..................................................... [ 40%]
+........................................................................ [ 42%]
+........................................................................ [ 45%]
+.............s.......................................................... [ 47%]
+........................................................................ [ 50%]
+........................................................................ [ 52%]
+........................................................................ [ 55%]
+.....................s.................................................. [ 57%]
+........................................................................ [ 60%]
+........................................................................ [ 62%]
+............................................s........................... [ 65%]
+.s...................................................................... [ 67%]
+........................................................................ [ 70%]
+..........s.........sssss............................................... [ 72%]
+..........................................................s............. [ 75%]
+................................................sssssssssssssssss....... [ 77%]
+..............................................................ssssssssss [ 80%]
+s..s...ssssssssssssssssssssssssssssssssssssss........................... [ 82%]
+........................................................................ [ 85%]
+................s.......................................s............... [ 87%]
+........................................................................ [ 90%]
+.......................s....................s........................... [ 92%]
+........................................................................ [ 95%]
+..........................................................F............. [ 97%]
+.....................................................................    [100%]
+=================================== FAILURES ===================================
+_ test_owner_second_admin_operator_review_adds_only_new_authority_and_keeps_expiry _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_owner_second_admin_operator_review_adds_only_new_authority_and_keeps_expiry(live):
+>       row, tenant, request = propose(live)
+                               ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"07d7ebb4-4f9c-4f06-892e-8e32f0fef60d","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_private_global_inbox_makes_named_second_review_reachable_and_hides_others _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_private_global_inbox_makes_named_second_review_reachable_and_hides_others(live):
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"8515bbb4-42ce-45e3-8815-3d452982a986","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_a_historical_second_nomination_stops_exposing_rows_after_membership_ends _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_a_historical_second_nomination_stops_exposing_rows_after_membership_ends(live):
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"eac9d24e-3ad5-484c-a84d-b2ac6b97a107","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_managed_role_omissions_and_revoked_access_before_proposal_are_preserved _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_managed_role_omissions_and_revoked_access_before_proposal_are_preserved(live):
+        _, tenant = bootstrapped(live)
+        tenant_id = tenant["tenant_id"]
+        with live.db() as c:
+            ctx = maintenance_context(live, c, tenant_id)
+            role_id = c.execute(
+                "SELECT r.object_id FROM impact.object_registry r JOIN impact.object_revision v "
+                "ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision WHERE r.tenant_id=%s "
+                "AND r.object_type='RoleTemplate' AND v.payload->>'name'='TENANT_ADMIN'",
+                (tenant_id,),
+            ).fetchone()["object_id"]
+            previous = load(c, ctx, str(role_id), "RoleTemplate")
+            omitted = "ai.enablement.read"
+            payload = {
+                **previous["payload"],
+                "capabilities": [cap for cap in previous["payload"]["capabilities"] if cap != omitted],
+            }
+            write(c, ctx, "RoleTemplate", payload, "Active", previous, track_author=False)
+            c.execute(
+                "UPDATE impact.object_registry r SET lifecycle_state='Revoked' FROM impact.grant_current g "
+                "WHERE g.tenant_id=r.tenant_id AND g.object_id=r.object_id AND g.tenant_id=%s AND g.capability=%s",
+                (tenant_id, omitted),
+            )
+        expect(live.request(live.path("ai-enablement/catalog", tenant=tenant_id), actor="reviewer"), 404)
+>       row, _, _ = propose(live, tenant)
+                    ^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:199: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"e0168c86-dd57-4e2b-b6c0-6e76545eafde","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_explicit_synthetic_pre_ai_profile_fixture_receives_new_ai_access_after_three_party_review _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_explicit_synthetic_pre_ai_profile_fixture_receives_new_ai_access_after_three_party_review(live):
+        """The fixture models a historical profile, without changing old migrations or real tenants."""
+        access, tenant = bootstrapped(live)
+        tenant_id = tenant["tenant_id"]
+        old = deepcopy(access["manifest"])
+        old["version"] = "synthetic-pre-ai-profile"
+        for name, caps in old["roles"].items():
+            old["roles"][name] = [cap for cap in caps if not cap.startswith("ai.")]
+        with live.db() as c:
+            ctx = maintenance_context(live, c, tenant_id)
+            c.execute(
+                "UPDATE impact.tenant_access_bootstrap SET manifest=%s WHERE tenant_id=%s AND request_id=%s",
+                (Jsonb(old), tenant_id, access["request_id"]),
+            )
+            c.execute(
+                "DELETE FROM impact.grant_authority WHERE tenant_id=%s AND capability LIKE 'ai.%%'", (tenant_id,)
+            )
+            c.execute(
+                "UPDATE impact.object_registry r SET lifecycle_state='Revoked' FROM impact.grant_current g "
+                "WHERE g.tenant_id=r.tenant_id AND g.object_id=r.object_id AND g.tenant_id=%s AND g.capability LIKE 'ai.%%'",
+                (tenant_id,),
+            )
+            roles = c.execute(
+                "SELECT r.object_id FROM impact.object_registry r JOIN impact.object_revision v "
+                "ON v.tenant_id=r.tenant_id AND v.revision_id=r.head_revision WHERE r.tenant_id=%s "
+                "AND r.object_type='RoleTemplate' AND v.payload->>'managed_by'='impact-access-v1'",
+                (tenant_id,),
+            ).fetchall()
+            for item in roles:
+                previous = load(c, ctx, str(item["object_id"]), "RoleTemplate")
+                payload = {
+                    **previous["payload"],
+                    "capabilities": [
+                        cap for cap in previous["payload"]["capabilities"] if not cap.startswith("ai.")
+                    ],
+                }
+                write(c, ctx, "RoleTemplate", payload, "Active", previous, track_author=False)
+        expect(live.request(live.path("ai-enablement/catalog", tenant=tenant_id), actor="reviewer"), 404)
+>       row, _, _ = propose(live, tenant)
+                    ^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:245: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"803e5b38-0ccc-4d5a-9bf0-e45573c83d63","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+___ test_registered_profile_is_exact_and_platform_role_cannot_write_registry ___
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_registered_profile_is_exact_and_platform_role_cannot_write_registry(live):
+        seeds = migration_profile_seeds()
+        with live.db() as c:
+            rows = c.execute(
+                "SELECT profile_hash,manifest,source_migration FROM impact.platform_access_profile "
+                "WHERE profile_hash=ANY(%s::varchar[]) ORDER BY source_migration",
+                ([seed["profile_hash"] for seed in seeds],),
+            ).fetchall()
+            assert len(rows) == len(seeds)
+            actual = {row["profile_hash"]: row for row in rows}
+            assert all(actual[seed["profile_hash"]] == seed for seed in seeds)
+>           row = actual[PROFILE_HASH]
+                  ^^^^^^^^^^^^^^^^^^^^
+E           KeyError: '5200d0db9fe55dcb48ac9375e11594f2879e3893a13c29ef56def8950a4c4af3'
+
+qualification/test_access_upgrade.py:267: KeyError
+_ test_custom_role_name_collision_is_reported_without_rewriting_custom_access __
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_custom_role_name_collision_is_reported_without_rewriting_custom_access(live):
+        _, tenant = bootstrapped(live)
+        role = expect(
+            live.request(
+                live.path("role-templates", tenant=tenant["tenant_id"]),
+                method="POST",
+                body=command(
+                    {
+                        "name": "analyst",
+                        "capabilities": ["roles.manage"],
+                        "reason": "Synthetic custom role collision",
+                    }
+                ),
+            ),
+            200,
+        )
+        described = preview(live, tenant)
+>       assert not described["upgradable"] and described["reason_unavailable"] == "ACCESS_PROFILE_ROLE_CONFLICT"
+E       AssertionError: assert (not False and 'ACCESS_PROFI...OT_REGISTERED' == 'ACCESS_PROFILE_ROLE_CONFLICT'
+E         
+E         - ACCESS_PROFILE_ROLE_CONFLICT
+E         + ACCESS_PROFILE_NOT_REGISTERED)
+
+qualification/test_access_upgrade.py:298: AssertionError
+_ test_direct_platform_cannot_reset_baseline_to_a_registered_but_narrower_profile[role_bundle-False] _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>, native = False
+restriction = 'role_bundle'
+
+    @pytest.mark.parametrize("native", [False, True])
+    @pytest.mark.parametrize("restriction", ["role_bundle", "purpose_bound"])
+    def test_direct_platform_cannot_reset_baseline_to_a_registered_but_narrower_profile(
+        live, native, restriction
+    ):
+        dsn = os.environ.get("IMPACT_LOGIN_DSN_PLATFORM") if native else None
+        if native and not dsn:
+            pytest.skip("Native provisioned platform login required; SET ROLE has separate bounded evidence")
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:313: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"4d56a7d6-f88b-48c1-8562-9f7dea80963e","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_direct_platform_cannot_reset_baseline_to_a_registered_but_narrower_profile[purpose_bound-False] _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>, native = False
+restriction = 'purpose_bound'
+
+    @pytest.mark.parametrize("native", [False, True])
+    @pytest.mark.parametrize("restriction", ["role_bundle", "purpose_bound"])
+    def test_direct_platform_cannot_reset_baseline_to_a_registered_but_narrower_profile(
+        live, native, restriction
+    ):
+        dsn = os.environ.get("IMPACT_LOGIN_DSN_PLATFORM") if native else None
+        if native and not dsn:
+            pytest.skip("Native provisioned platform login required; SET ROLE has separate bounded evidence")
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:313: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"377903ba-0730-4ca7-bcca-87a39d1dbb50","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_direct_platform_proposal_cannot_apply_a_forged_unregistered_target[False] _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>, native = False
+
+    @pytest.mark.parametrize("native", [False, True])
+    def test_direct_platform_proposal_cannot_apply_a_forged_unregistered_target(live, native):
+        dsn = os.environ.get("IMPACT_LOGIN_DSN_PLATFORM") if native else None
+        if native and not dsn:
+            pytest.skip("Native provisioned platform login is required; PGlite SET ROLE is separate evidence")
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:355: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"067b9099-b653-454d-8d30-afadcc6bcda9","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+___ test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed[top] ___
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>, kind = 'top'
+
+    @pytest.mark.parametrize("kind", ["top", "nested", "duplicate"])
+    def test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed(live, kind):
+>       _, tenant, body = propose(live)
+                          ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:382: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"c8316f74-3068-4ad7-85e5-48f301addb5c","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed[nested] __
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>, kind = 'nested'
+
+    @pytest.mark.parametrize("kind", ["top", "nested", "duplicate"])
+    def test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed(live, kind):
+>       _, tenant, body = propose(live)
+                          ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:382: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"9d6cbae7-d5ed-4cc2-89d8-95f81fc5ee90","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed[duplicate] _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>, kind = 'duplicate'
+
+    @pytest.mark.parametrize("kind", ["top", "nested", "duplicate"])
+    def test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed(live, kind):
+>       _, tenant, body = propose(live)
+                          ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:382: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"4367ef09-6d01-4864-a27d-364d20609670","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_exact_retry_reuse_stale_and_current_authority_are_checked_before_receipts _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_exact_retry_reuse_stale_and_current_authority_are_checked_before_receipts(live):
+>       row, tenant, body = propose(live)
+                            ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:402: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"5d00f5b2-0104-4f23-be8f-245891fdfd3d","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_________ test_operator_aliases_of_either_administrator_cannot_approve _________
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_operator_aliases_of_either_administrator_cannot_approve(live):
+>       row, _, _ = propose(live)
+                    ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:440: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"25d4081f-d024-4bf1-8962-9050a6df1439","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_any_pinned_authority_change_invalidates_second_consent_and_approval[ceiling] _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>, drift = 'ceiling'
+
+    @pytest.mark.parametrize("drift", ["ceiling", "grant", "membership", "role"])
+    def test_any_pinned_authority_change_invalidates_second_consent_and_approval(live, drift):
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:465: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"08c1e360-8a9a-4369-811f-b30ba9de9cf6","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_any_pinned_authority_change_invalidates_second_consent_and_approval[grant] _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>, drift = 'grant'
+
+    @pytest.mark.parametrize("drift", ["ceiling", "grant", "membership", "role"])
+    def test_any_pinned_authority_change_invalidates_second_consent_and_approval(live, drift):
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:465: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"a7892f31-f226-42d1-af07-96e83146be68","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_any_pinned_authority_change_invalidates_second_consent_and_approval[membership] _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+drift = 'membership'
+
+    @pytest.mark.parametrize("drift", ["ceiling", "grant", "membership", "role"])
+    def test_any_pinned_authority_change_invalidates_second_consent_and_approval(live, drift):
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:465: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"fdaae28a-bdfc-4f6f-8cb3-bf6c748b5228","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_any_pinned_authority_change_invalidates_second_consent_and_approval[role] _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>, drift = 'role'
+
+    @pytest.mark.parametrize("drift", ["ceiling", "grant", "membership", "role"])
+    def test_any_pinned_authority_change_invalidates_second_consent_and_approval(live, drift):
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:465: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"03aeb993-ccf4-4458-a303-f14d87507c5c","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+________ test_removed_old_ceiling_and_revoked_grant_are_never_restored _________
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_removed_old_ceiling_and_revoked_grant_are_never_restored(live):
+        _, tenant = bootstrapped(live)
+        current = preview(live, tenant)
+        principal = current["current_manifest"]["principals"][1]
+        with live.db() as c:
+            old = c.execute(
+                "SELECT capability FROM impact.grant_authority WHERE tenant_id=%s AND principal_id=%s ORDER BY capability LIMIT 1",
+                (tenant["tenant_id"], principal["principal_id"]),
+            ).fetchone()["capability"]
+            c.execute(
+                "DELETE FROM impact.grant_authority WHERE tenant_id=%s AND principal_id=%s AND capability=%s",
+                (tenant["tenant_id"], principal["principal_id"], old),
+            )
+            grant = c.execute(
+                "SELECT object_id FROM impact.grant_current WHERE tenant_id=%s AND subject_id=%s AND capability=%s",
+                (tenant["tenant_id"], principal["principal_id"], old),
+            ).fetchone()
+            if grant:
+                c.execute(
+                    "UPDATE impact.object_registry SET lifecycle_state='Revoked' WHERE tenant_id=%s AND object_id=%s",
+                    (tenant["tenant_id"], grant["object_id"]),
+                )
+>       row, _, _ = propose(live, tenant)
+                    ^^^^^^^^^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:519: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"250c59ae-31eb-4122-bca9-034dc5ab0d20","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+___ test_mutual_renewal_upgrade_exclusion_and_expired_request_can_be_closed ____
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_mutual_renewal_upgrade_exclusion_and_expired_request_can_be_closed(live):
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:538: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"fb8f7ccc-8583-4c17-bdc4-fdab7e3be303","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_forced_tenant_fence_hides_other_tenants_and_applied_record_is_immutable _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_forced_tenant_fence_hides_other_tenants_and_applied_record_is_immutable(live):
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:581: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"36b9d229-084a-4797-8d89-70617ce7b90c","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_ test_failure_after_ceiling_insert_rolls_back_everything_then_exact_retry_commits_once _
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_failure_after_ceiling_insert_rolls_back_everything_then_exact_retry_commits_once(live):
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:605: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"b9a705d7-64d8-410a-850e-1ddfa494a77b","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+_____ test_signed_cursors_bind_identity_route_tenant_visibility_and_expiry _____
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_signed_cursors_bind_identity_route_tenant_visibility_and_expiry(live):
+>       row, tenant, _ = propose(live)
+                         ^^^^^^^^^^^^^
+
+qualification/test_access_upgrade.py:637: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+qualification/test_access_upgrade.py:57: in propose
+    row = expect(live.request(path, method="POST", body=request), status)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [403 Forbidden]>, status = 200
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"POLICY_DENIED","message":"The action is not permitted.","retryable":false,"correlation_id":"7a134c03-3d56-48fd-9dac-3db889b51d40","permitted_actions":[],"field_errors":[],"reason_code":"ACCESS_PROFILE_NOT_REGISTERED"}
+E       assert 403 == 200
+E        +  where 403 = <Response [403 Forbidden]>.status_code
+
+qualification/test_administration.py:26: AssertionError
+____ test_additive_migration_registers_the_exact_current_generated_profile _____
+
+    def test_additive_migration_registers_the_exact_current_generated_profile():
+        current = [seed for seed in migration_profile_seeds() if seed["profile_hash"] == PROFILE_HASH]
+>       assert len(current) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+qualification/test_access_upgrade_unit.py:155: AssertionError
+______________ test_readiness_api_and_separate_advisory_authority ______________
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+
+    def test_readiness_api_and_separate_advisory_authority(live):
+        path = live.path("ai-enablement")
+        data = expect(live.request(path + "/catalog"), 200)
+        assert data["marketplace_status"]["vendors"] == []
+        assert data["advisory_available"] is False
+        solutions = expect(live.request(path + "/solutions"), 200)
+        assert len(solutions["solutions"]) == 8
+        assert all(tool["source_urls"] for tool in solutions["solutions"])
+        expect(live.request(path + "/solutions", actor="other_tenant"), 404)
+        expect(live.request(path + "/solutions", actor="revoked"), 404)
+        result = expect(live.request(path + "/assessment", method="POST", body={"profile": profile()}), 200)
+        assert result["assessment"]["recommendations"]
+        expect(live.request(path + "/catalog", actor="other_tenant"), 404)
+        expect(live.request(path + "/catalog", actor="revoked"), 404)
+        expect(
+            live.request(
+                path + "/assessment", method="POST", body={"profile": {**profile(), "official_value": "10"}}
+            ),
+            422,
+        )
+        # FR-AI-001: every request names the policy version it was made against (the server switch is
+        # off in this run, so the refusals below happen before the policy is consulted).
+        request = {
+            "operation_id": str(uuid4()),
+            "profile": profile(),
+            "consent": True,
+            "policy_version": 0,
+            "purpose": "AI_ADOPTION_ADVISORY",
+        }
+        # This fixture author is also a programme manager. Narrow the synthetic advisory grant
+        # temporarily to prove that ordinary read access does not authorize provider requests.
+        grant = None
+        with live.db() as c:
+            c.execute("SELECT set_config('impact.tenant_id',%s,true)", (live.fixture["tenant_a"],))
+            grant = c.execute(
+                "SELECT g.object_id FROM impact.grant_current g JOIN impact.tenant_principal p ON p.tenant_id=g.tenant_id AND p.principal_id=g.subject_id WHERE g.tenant_id=%s AND p.identity_id=%s AND g.capability='ai.advisory.request' AND g.purpose IS NULL",
+                (live.fixture["tenant_a"], live.fixture["actors"]["author"]["identity_id"]),
+            ).fetchone()["object_id"]
+            c.execute(
+                "UPDATE impact.grant_current SET purpose='QUALIFICATION' WHERE tenant_id=%s AND object_id=%s",
+                (live.fixture["tenant_a"], grant),
+            )
+        try:
+            expect(live.request(path + "/catalog"), 200)
+>           expect(live.request(path + "/advisory", method="POST", body=request), 404)
+
+qualification/test_ai_enablement_live.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+response = <Response [503 Service Unavailable]>, status = 404
+
+    def expect(response, status):
+>       assert response.status_code == status, response.text
+E       AssertionError: {"code":"SERVICE_UNAVAILABLE","message":"The request could not be completed.","retryable":true,"correlation_id":"ec28668a-fded-4e57-964c-1acf7f846215","permitted_actions":[],"field_errors":[],"reason_code":"AI_NOT_CONFIGURED"}
+E       assert 503 == 404
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+qualification/test_live_application.py:40: AssertionError
+____ test_reviewed_exclusion_preserves_denominator_history_and_allows_close ____
+
+live = <conftest.live.<locals>.Client object at 0x10d1a1640>
+setup = <function measurement_builder.<locals>.build at 0x10e8987c0>
+
+    def test_reviewed_exclusion_preserves_denominator_history_and_allows_close(live, setup):
+        programme, indicator, plan, period = setup()
+        obligations = [dict(item) for item in plan["data"]["obligations"]]
+        obligations[-1].update(
+            eligibility="EXCEPTED",
+            exclusion_reason="Partner ceased eligible operations before the reporting deadline.",
+            exclusion_effective_at=datetime.now(timezone.utc).isoformat(),
+        )
+        change = propose(live, plan, "CollectionPlan", {"obligations": obligations})
+        approve(live, submit(live, "measurement-changes", change))
+        amended = get(live, "collection-plans", plan["object_id"])
+        assert amended["data"]["obligations"][-1]["eligibility"] == "EXCEPTED"
+    
+        for obligation in amended["data"]["obligations"][:-1]:
+            row = observation(live, indicator, obligation["source_key"])
+            approve(live, submit(live, "observations", row))
+        calculated = result(live, indicator, period)
+        coverage = calculated["data"]["coverage"]
+        assert coverage["expected_count"] == 5
+        assert coverage["required_count"] == 4
+        assert coverage["excepted_count"] == 1
+        assert coverage["approved_count"] == 4
+        assert coverage["approval_percent"] == "100.00"
+        assert coverage["complete"]
+        assert coverage["obligations"][-1]["status"] == "EXCEPTED"
+        assert coverage["obligations"][-1]["exclusion_reason"].startswith("Partner ceased")
+    
+        workflow = request_close(live, programme, period)
+        candidate = get(live, "workflows", workflow["object_id"] + "/candidate", actor="reviewer")
+        assert candidate["record"]["data"]["blockers"] == []
+        approve(live, workflow)
+>       snapshot = next(
+            item
+            for item in get(live, "snapshots")["items"]
+            if item["data"].get("programme_id") == programme["object_id"]
+            and item["data"]["period_id"] == period["object_id"]
+        )
+E       StopIteration
+
+qualification/test_work_center.py:49: StopIteration
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /Users/athena/.codex/.chatgpt-projects/g-p-6ab89116b65c81919bb561fed2d716c0/work/imprana-diagnosis-20261011/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED qualification/test_access_upgrade.py::test_owner_second_admin_operator_review_adds_only_new_authority_and_keeps_expiry
+FAILED qualification/test_access_upgrade.py::test_private_global_inbox_makes_named_second_review_reachable_and_hides_others
+FAILED qualification/test_access_upgrade.py::test_a_historical_second_nomination_stops_exposing_rows_after_membership_ends
+FAILED qualification/test_access_upgrade.py::test_managed_role_omissions_and_revoked_access_before_proposal_are_preserved
+FAILED qualification/test_access_upgrade.py::test_explicit_synthetic_pre_ai_profile_fixture_receives_new_ai_access_after_three_party_review
+FAILED qualification/test_access_upgrade.py::test_registered_profile_is_exact_and_platform_role_cannot_write_registry
+FAILED qualification/test_access_upgrade.py::test_custom_role_name_collision_is_reported_without_rewriting_custom_access
+FAILED qualification/test_access_upgrade.py::test_direct_platform_cannot_reset_baseline_to_a_registered_but_narrower_profile[role_bundle-False]
+FAILED qualification/test_access_upgrade.py::test_direct_platform_cannot_reset_baseline_to_a_registered_but_narrower_profile[purpose_bound-False]
+FAILED qualification/test_access_upgrade.py::test_direct_platform_proposal_cannot_apply_a_forged_unregistered_target[False]
+FAILED qualification/test_access_upgrade.py::test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed[top]
+FAILED qualification/test_access_upgrade.py::test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed[nested]
+FAILED qualification/test_access_upgrade.py::test_closed_dtos_duplicate_json_and_server_owned_fields_fail_closed[duplicate]
+FAILED qualification/test_access_upgrade.py::test_exact_retry_reuse_stale_and_current_authority_are_checked_before_receipts
+FAILED qualification/test_access_upgrade.py::test_operator_aliases_of_either_administrator_cannot_approve
+FAILED qualification/test_access_upgrade.py::test_any_pinned_authority_change_invalidates_second_consent_and_approval[ceiling]
+FAILED qualification/test_access_upgrade.py::test_any_pinned_authority_change_invalidates_second_consent_and_approval[grant]
+FAILED qualification/test_access_upgrade.py::test_any_pinned_authority_change_invalidates_second_consent_and_approval[membership]
+FAILED qualification/test_access_upgrade.py::test_any_pinned_authority_change_invalidates_second_consent_and_approval[role]
+FAILED qualification/test_access_upgrade.py::test_removed_old_ceiling_and_revoked_grant_are_never_restored
+FAILED qualification/test_access_upgrade.py::test_mutual_renewal_upgrade_exclusion_and_expired_request_can_be_closed
+FAILED qualification/test_access_upgrade.py::test_forced_tenant_fence_hides_other_tenants_and_applied_record_is_immutable
+FAILED qualification/test_access_upgrade.py::test_failure_after_ceiling_insert_rolls_back_everything_then_exact_retry_commits_once
+FAILED qualification/test_access_upgrade.py::test_signed_cursors_bind_identity_route_tenant_visibility_and_expiry
+FAILED qualification/test_access_upgrade_unit.py::test_additive_migration_registers_the_exact_current_generated_profile
+FAILED qualification/test_ai_enablement_live.py::test_readiness_api_and_separate_advisory_authority
+FAILED qualification/test_work_center.py::test_reviewed_exclusion_preserves_denominator_history_and_allows_close
+27 failed, 2621 passed, 229 skipped, 1 deselected, 1 warning in 337.76s (0:05:37)
+make: *** [test] Error 1

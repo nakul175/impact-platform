@@ -1,6 +1,8 @@
 """Governed saved-dashboard drafts, safe copies and current-authority previews (FR-ANA-001)."""
 
+from copy import deepcopy
 from datetime import datetime, timedelta, timezone
+from uuid import uuid4
 from psycopg.types.json import Jsonb
 
 from .domain import DomainError, unavailable
@@ -179,6 +181,88 @@ class DashboardAuthoring:
                 (
                     tenant,
                     ctx.principal_id,
+                    op,
+                    body["operation_id"],
+                    fingerprint,
+                    Jsonb(receipt),
+                    datetime.now(timezone.utc) + timedelta(days=7),
+                ),
+            )
+            return receipt
+
+    def copy_to_workspace(self, identity, tenant, source_id, body, correlation):
+        """Copy configuration only into another workspace; authority and grants never travel."""
+        target_tenant = body["data"]["target_tenant_id"]
+        op = "action_dashboards_copy_to_workspace"
+        fingerprint = hash_data({"source_tenant_id": str(tenant), "source_id": str(source_id), "body": body})
+        # Resolve an uncertain committed outcome before consulting a source that may have
+        # legitimately changed since the original copy.
+        with self.service.db.transaction(target_tenant) as c:
+            target_ctx = context(c, identity, target_tenant)
+            authorize(c, target_ctx, op, hidden=True)
+            old = c.execute(
+                "SELECT payload_hash,outcome,expires_at FROM impact.operation_receipt "
+                "WHERE tenant_id=%s AND actor_id=%s AND command_type=%s AND operation_id=%s",
+                (target_tenant, target_ctx.principal_id, op, body["operation_id"]),
+            ).fetchone()
+            if old:
+                if bytes(old["payload_hash"]) != fingerprint:
+                    raise DomainError("CONFLICT_OPERATION", 409)
+                if old["expires_at"] <= datetime.now(timezone.utc):
+                    raise DomainError("IDEMPOTENCY_EXPIRED", 409)
+                return old["outcome"]
+        with self.service.db.transaction(tenant) as c:
+            source_ctx = context(c, identity, tenant, write=True)
+            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
+            authorize(c, source_ctx, "action_dashboards_copy_to_workspace", source_id, hidden=True)
+            source = load(c, source_ctx, source_id, "Dashboard", "dashboards.read", lock=True)
+            if str(source["head_revision"]) != body["expected_revision"]:
+                raise DomainError("CONFLICT_VERSION", 409, reason="DASHBOARD_REVISION_CHANGED")
+            payload = deepcopy(source["payload"])
+            payload.update(
+                title=body["data"].get("title", source["payload"]["title"] + " copy"),
+                mode="PRIVATE_DRAFT",
+            )
+            # A destination draft preserves layout and binding kinds, but never stores
+            # source-workspace object or revision identifiers. Fresh opaque selectors make
+            # every copied widget unavailable until it is explicitly rebound in destination.
+            for widget in payload["widgets"]:
+                bindings = [widget["binding"]] + [
+                    item["binding"] for item in widget.get("approved_slices", [])
+                ]
+                for binding in bindings:
+                    binding["object_id"] = str(uuid4())
+                    binding["revision_id"] = str(uuid4())
+        with self.service.db.transaction(target_tenant) as c:
+            target_ctx = context(c, identity, target_tenant, write=True)
+            c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (target_tenant,))
+            authorize(c, target_ctx, op, hidden=True)
+            old = c.execute(
+                "SELECT payload_hash,outcome,expires_at FROM impact.operation_receipt "
+                "WHERE tenant_id=%s AND actor_id=%s AND command_type=%s AND operation_id=%s",
+                (target_tenant, target_ctx.principal_id, op, body["operation_id"]),
+            ).fetchone()
+            if old:
+                if bytes(old["payload_hash"]) != fingerprint:
+                    raise DomainError("CONFLICT_OPERATION", 409)
+                if old["expires_at"] <= datetime.now(timezone.utc):
+                    raise DomainError("IDEMPOTENCY_EXPIRED", 409)
+                return old["outcome"]
+            # Do not validate source bindings in the destination: they deliberately remain
+            # unavailable selectors until separately rebound to destination-owned artifacts.
+            receipt = write(c, target_ctx, "Dashboard", payload)
+            receipt.update(
+                operation_id=body["operation_id"],
+                correlation_id=correlation,
+                grants_created=False,
+                unavailable_binding_count=len(payload["widgets"]),
+            )
+            audit(c, target_ctx, op, receipt, correlation)
+            c.execute(
+                "INSERT INTO impact.operation_receipt VALUES(%s,%s,%s,%s,%s,'SUCCEEDED',%s,%s)",
+                (
+                    target_tenant,
+                    target_ctx.principal_id,
                     op,
                     body["operation_id"],
                     fingerprint,

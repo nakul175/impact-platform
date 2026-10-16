@@ -6,6 +6,7 @@ from uuid import UUID
 from psycopg.types.json import Jsonb
 
 from . import ai_policy
+from .ai_runtime_activation import activated
 from .ai_safety import require_available
 from .contracts import validate
 from .domain import DomainError
@@ -98,6 +99,7 @@ class AIIndicatorDesign:
             body["language"],
             (),
             PURPOSE,
+            activated_use_cases=activated(self.service),
         )
         require_available(c, tenant, USE_CASE, self.destination, self.configuration)
 

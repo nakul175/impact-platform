@@ -21,7 +21,16 @@ class AccessChangePropagation:
             ctx = context(c, identity, tenant)
             c.execute(
                 "INSERT INTO impact.presentation_lease(tenant_id,lease_id,principal_id,derivative_id,derivative_revision_id,policy_epoch,issued_at,expires_at) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)",
-                (tenant, lease, ctx.principal, derivative_id, revision_id, ctx.policy_epoch, now, expires),
+                (
+                    tenant,
+                    lease,
+                    ctx.principal_id,
+                    derivative_id,
+                    revision_id,
+                    ctx.policy_epoch,
+                    now,
+                    expires,
+                ),
             )
         return {
             "lease_id": lease,
@@ -39,7 +48,7 @@ class AccessChangePropagation:
             ).fetchone()
             if (
                 not row
-                or str(row["principal_id"]) != str(ctx.principal)
+                or str(row["principal_id"]) != str(ctx.principal_id)
                 or row["expires_at"] <= datetime.now(timezone.utc)
                 or row["policy_epoch"] != ctx.policy_epoch
             ):

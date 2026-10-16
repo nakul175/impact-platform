@@ -179,6 +179,7 @@ class DashboardPivots:
                 "object_id": str(dashboard["object_id"]),
                 "revision_id": str(dashboard["head_revision"]),
                 "business_state": response["execution"],
+                "saved_at": datetime.now(timezone.utc).isoformat(),
                 "operation_id": body["operation_id"],
                 "correlation_id": correlation,
             }
@@ -253,6 +254,7 @@ class DashboardPivots:
                 "object_id": str(dashboard_id),
                 "revision_id": str(dashboard["head_revision"]),
                 "business_state": "CancellationRequested",
+                "saved_at": datetime.now(timezone.utc).isoformat(),
                 "operation_id": body["operation_id"],
                 "correlation_id": correlation,
             }

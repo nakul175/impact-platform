@@ -15,14 +15,16 @@ class Transcription:
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant, write=True)
             c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
-            authorize(c, ctx, "create_dashboards")
+            authorize(c, ctx, op)
             old = c.execute(
-                "SELECT payload_hash,outcome FROM impact.operation_receipt WHERE tenant_id=%s AND actor_id=%s AND command_type=%s AND operation_id=%s",
+                "SELECT payload_hash,outcome,expires_at FROM impact.operation_receipt WHERE tenant_id=%s AND actor_id=%s AND command_type=%s AND operation_id=%s",
                 (tenant, ctx.principal_id, op, body["operation_id"]),
             ).fetchone()
             if old:
                 if bytes(old["payload_hash"]) != fingerprint:
                     raise DomainError("CONFLICT_OPERATION", 409)
+                if old["expires_at"] <= datetime.now(timezone.utc):
+                    raise DomainError("IDEMPOTENCY_EXPIRED", 409)
                 return old["outcome"]
             receipt = fn(c, ctx)
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
@@ -46,12 +48,19 @@ class Transcription:
 
         def apply(c, ctx):
             recording = load(c, ctx, data["recording_id"], "Evidence", "evidence.read")
-            destination = load(c, ctx, data["destination_id"], "ProcessingDestination")
+            destination = load(c, ctx, data["destination_id"], "ProcessingDestination", "evaluations.read")
             if (
                 destination["lifecycle_state"] != "Approved"
                 or data["task"] not in destination["payload"]["permitted_tasks"]
             ):
                 raise DomainError("DESTINATION_NOT_APPROVED", 409)
+            for segment in data["segments"]:
+                if (
+                    segment.get("start_ms") is not None
+                    and segment.get("end_ms") is not None
+                    and segment["end_ms"] < segment["start_ms"]
+                ):
+                    raise DomainError("VALIDATION_FAILED", reason="SEGMENT_OFFSETS_INVALID")
             payload = {
                 **data,
                 "recording_revision": str(recording["head_revision"]),
@@ -77,12 +86,19 @@ class Transcription:
         data = body["data"]
 
         def apply(c, ctx):
-            artifact = load(c, ctx, data["artifact_id"], "TranscriptArtifact", lock=True)
+            artifact = load(
+                c,
+                ctx,
+                data["artifact_id"],
+                "TranscriptArtifact",
+                "evaluations.read",
+                lock=True,
+            )
             segments = list(artifact["payload"]["segments"])
             found = False
             for segment in segments:
                 if segment["segment_id"] == data["segment_id"]:
-                    segment["original_automated_text"] = segment["text"]
+                    segment.setdefault("original_automated_text", segment["text"])
                     segment["text"] = data["corrected_text"]
                     found = True
             if not found:
@@ -102,7 +118,7 @@ class Transcription:
         data = body["data"]
 
         def apply(c, ctx):
-            artifact = load(c, ctx, data["artifact_id"], "TranscriptArtifact")
+            artifact = load(c, ctx, data["artifact_id"], "TranscriptArtifact", "evaluations.read")
             if not data["original_meaning_reviewed"]:
                 raise DomainError("ORIGINAL_MEANING_REVIEW_REQUIRED", 409)
             if not any(x["segment_id"] == data["segment_id"] for x in artifact["payload"]["segments"]):

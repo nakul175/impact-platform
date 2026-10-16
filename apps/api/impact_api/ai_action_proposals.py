@@ -5,6 +5,7 @@ from uuid import UUID, uuid4
 from psycopg.types.json import Jsonb
 
 from . import ai_policy
+from .ai_runtime_activation import activated
 from .ai_safety import require_available
 from .domain import DomainError
 from .service import revision
@@ -60,6 +61,7 @@ class AIActionProposals:
                 body["language"],
                 (),
                 PURPOSE,
+                activated_use_cases=activated(self.service),
             )
             require_available(c, tenant, USE_CASE, self.destination, self.configuration)
             self.service.validate_data(c, ctx, "WorkItem", body["after_values"], ctx.principal_id)
@@ -114,7 +116,7 @@ class AIActionProposals:
         def precondition(c, ctx):
             authorize(c, ctx, "confirm_ai_action_proposal", hidden=True)
             proposal = c.execute(
-                "SELECT * FROM impact.ai_action_proposal WHERE tenant_id=%s AND proposal_id=%s FOR UPDATE",
+                "SELECT * FROM impact.ai_action_proposal WHERE tenant_id=%s AND proposal_id=%s",
                 (tenant, proposal_id),
             ).fetchone()
             if not proposal:
@@ -146,6 +148,7 @@ class AIActionProposals:
                 body["language"],
                 (),
                 PURPOSE,
+                activated_use_cases=activated(self.service),
             )
             require_available(c, tenant, USE_CASE, self.destination, self.configuration)
 
@@ -214,7 +217,7 @@ class AIActionProposals:
             head = load(c, ctx, row["object_id"], selector["object_type"], mapping[selector["object_type"]])
             if str(head["head_revision"]) != revision_id:
                 raise DomainError("CONFLICT_VERSION", 409, reason="ACTION_PROPOSAL_SOURCE_CHANGED")
-            rows.append(row)
+            rows.append({**row, "classification": head["classification"]})
         return rows
 
     @staticmethod

@@ -40,19 +40,42 @@ ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DAT
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
     ("post", "dashboards/{object_id}/actions/copy"),
+    ("post", "dashboards/{object_id}/actions/copy-to-workspace"),
     ("get", "dashboards/{object_id}/sharing-preview"),
     ("post", "dashboards/{object_id}/actions/publish"),
+    ("post", "dashboards/{object_id}/disclosure-artifacts"),
+    ("post", "dashboards/{object_id}/disclosure-artifacts/{artifact_id}/actions/review"),
     ("get", "dashboards/{object_id}/publications/{publication_id}"),
+    ("get", "dashboards/{object_id}/publications/{publication_id}/content"),
+    ("post", "dashboards/{object_id}/publications/{publication_id}/actions/transfer-owner"),
+    ("post", "dashboards/{object_id}/publications/{publication_id}/actions/revalidate"),
+    ("post", "dashboards/{object_id}/publications/{publication_id}/actions/resume"),
     ("post", "dashboard-alert-rules"),
+    ("get", "dashboard-alert-rules"),
+    ("get", "dashboard-alert-rules/{object_id}"),
+    ("get", "dashboard-alert-rules/{object_id}/incidents"),
     ("post", "dashboard-alert-rules/{object_id}/actions/evaluate"),
     ("post", "external-analytics-connections"),
+    ("get", "external-analytics-connections"),
+    ("get", "external-analytics-connections/{object_id}"),
+    ("get", "external-analytics-connections/{object_id}/extracts"),
     ("post", "external-analytics-connections/{object_id}/actions/refresh"),
     ("post", "external-analytics-connections/{object_id}/actions/revoke"),
     ("post", "anomaly-runs"),
+    ("get", "anomaly-runs"),
+    ("get", "anomaly-runs/{object_id}"),
+    ("get", "anomaly-findings"),
+    ("get", "anomaly-findings/{object_id}"),
     ("post", "anomaly-findings/{object_id}/actions/review"),
     ("post", "evaluations"),
+    ("get", "evaluations"),
+    ("get", "evaluations/{object_id}"),
+    ("get", "evaluations/{object_id}/stage-gates"),
     ("post", "evaluations/{object_id}/actions/stage-gate"),
     ("post", "evaluation-methodologies"),
+    ("get", "evaluation-methodologies"),
+    ("get", "evaluation-methodologies/{object_id}"),
+    ("get", "evaluation-methodologies/{object_id}/history"),
     ("post", "evaluation-methodologies/{object_id}/actions/amend"),
     ("post", "evaluation-methodologies/{object_id}/actions/review"),
     ("post", "evaluation-methodologies/{object_id}/sample-export"),
@@ -64,7 +87,11 @@ IMPLEMENTED = {
     ("post", "learning-questions/{object_id}/actions/reopen"),
     ("get", "learning-questions/{object_id}/summary"),
     ("post", "learning-questions/{object_id}/actions/consider-context"),
+    ("post", "evaluation-recommendations"),
+    ("get", "evaluation-recommendations/{object_id}"),
     ("post", "evaluation-recommendations/{object_id}/response"),
+    ("get", "management-actions/{object_id}"),
+    ("get", "management-actions/{object_id}/history"),
     ("post", "management-actions/{object_id}/actions/complete"),
     ("post", "management-actions/{object_id}/actions/escalate-overdue"),
     ("post", "qualitative-codebooks"),
@@ -207,16 +234,72 @@ def augment(spec, policy):
         {"operation_id": UUID, "data": {"$ref": "#/components/schemas/DashboardCopyData"}},
         ["operation_id", "data"],
     )
+    schemas["DashboardWorkspaceCopy"] = closed(
+        {
+            "operation_id": UUID,
+            "expected_revision": UUID,
+            "data": closed(
+                {"target_tenant_id": UUID, "title": {"type": "string", "minLength": 1, "maxLength": 200}},
+                ["target_tenant_id"],
+            ),
+        },
+        ["operation_id", "expected_revision", "data"],
+    )
+    disclosure_widget = closed(
+        {
+            "widget_id": UUID,
+            "title": {"type": "string", "minLength": 1, "maxLength": 200},
+            "content": {"type": "string", "maxLength": 10000},
+            "quality_context": {"type": "string", "minLength": 1, "maxLength": 2000},
+        },
+        ["widget_id", "title", "content", "quality_context"],
+    )
+    schemas["DashboardDisclosurePrepare"] = closed(
+        {
+            "operation_id": UUID,
+            "expected_revision": UUID,
+            "data": closed(
+                {"widgets": {"type": "array", "minItems": 1, "maxItems": 10, "items": disclosure_widget}},
+                ["widgets"],
+            ),
+        },
+        ["operation_id", "expected_revision", "data"],
+    )
+    schemas["DashboardDisclosureReview"] = closed(
+        {
+            "operation_id": UUID,
+            "expected_revision": UUID,
+            "data": closed({"decision": {"const": "APPROVE"}}, ["decision"]),
+        },
+        ["operation_id", "expected_revision", "data"],
+    )
+    schemas["DashboardPublicationChange"] = closed(
+        {"operation_id": UUID, "expected_revision": UUID, "data": closed({}, [])},
+        ["operation_id", "expected_revision", "data"],
+    )
+    schemas["DashboardPublicationOwnerTransfer"] = closed(
+        {
+            "operation_id": UUID,
+            "expected_revision": UUID,
+            "data": closed({"owner_id": UUID}, ["owner_id"]),
+        },
+        ["operation_id", "expected_revision", "data"],
+    )
     schemas["DashboardPublishData"] = closed(
         {
             "audience": {"enum": ["INTERNAL", "PUBLIC"]},
             "expires_at": {"type": "string", "format": "date-time"},
+            "disclosure_artifact_id": NULLABLE_UUID,
         },
         ["audience", "expires_at"],
     )
     schemas["DashboardPublish"] = closed(
-        {"operation_id": UUID, "data": {"$ref": "#/components/schemas/DashboardPublishData"}},
-        ["operation_id", "data"],
+        {
+            "operation_id": UUID,
+            "expected_revision": UUID,
+            "data": {"$ref": "#/components/schemas/DashboardPublishData"},
+        },
+        ["operation_id", "expected_revision", "data"],
     )
     publication_binding = closed(
         {
@@ -265,6 +348,24 @@ def augment(spec, policy):
             "reason_code",
         ],
     )
+    schemas["DashboardPublicationContent"] = closed(
+        {
+            "publication_id": UUID,
+            "dashboard_id": UUID,
+            "dashboard_revision": UUID,
+            "disclosure_artifact_id": UUID,
+            "disclosure_artifact_revision": UUID,
+            "widgets": {"type": "array", "maxItems": 10, "items": disclosure_widget},
+        },
+        [
+            "publication_id",
+            "dashboard_id",
+            "dashboard_revision",
+            "disclosure_artifact_id",
+            "disclosure_artifact_revision",
+            "widgets",
+        ],
+    )
     alert_rule_data = closed(
         {
             "measure_id": UUID,
@@ -299,7 +400,7 @@ def augment(spec, policy):
     schemas["DashboardAlertEvaluate"] = closed(
         {
             "operation_id": UUID,
-            "data": closed({"result_id": NULLABLE_UUID}, []),
+            "data": closed({"period_id": UUID, "result_id": NULLABLE_UUID}, ["period_id"]),
         },
         ["operation_id", "data"],
     )
@@ -310,9 +411,97 @@ def augment(spec, policy):
             "reason_code": {"type": "string", "maxLength": 64},
             "incident_id": NULLABLE_UUID,
             "result_revision": NULLABLE_UUID,
+            "evaluation_period_id": UUID,
+            "occurrence_count": {"type": "integer", "minimum": 0},
             "coalesced": {"type": "boolean"},
         },
-        ["rule_id", "outcome", "reason_code", "incident_id", "result_revision", "coalesced"],
+        [
+            "rule_id",
+            "outcome",
+            "reason_code",
+            "incident_id",
+            "result_revision",
+            "evaluation_period_id",
+            "occurrence_count",
+            "coalesced",
+        ],
+    )
+    alert_rule_view_data = deepcopy(alert_rule_data)
+    alert_rule_view_data["properties"].update(
+        {
+            "next_evaluation_at": {"type": "string", "format": "date-time"},
+            "last_evaluated_at": {"type": "string", "format": "date-time"},
+            "last_period_id": UUID,
+        }
+    )
+    alert_rule_view_data["required"].append("next_evaluation_at")
+    resource_base = {
+        "object_id": UUID,
+        "tenant_id": UUID,
+        "revision_id": UUID,
+        "schema_version": {"type": "string"},
+        "lifecycle_state": {"type": "string"},
+        "classification": {"type": "string"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "created_by": UUID,
+        "updated_at": {"type": "string", "format": "date-time"},
+        "updated_by": UUID,
+    }
+    resource_required = list(resource_base)
+    schemas["DashboardAlertRule"] = closed(
+        {**resource_base, "owner_id": UUID, "data": alert_rule_view_data},
+        resource_required + ["data"],
+    )
+    schemas["DashboardAlertRuleList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/DashboardAlertRule"},
+            },
+            "next_cursor": {"type": ["string", "null"], "maxLength": 4096},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
+    )
+    alert_incident_data = closed(
+        {
+            "rule_id": UUID,
+            "alert_type": {"enum": ["MISSINGNESS", "STALE_INPUT", "THRESHOLD"]},
+            "reason_code": {"type": "string", "maxLength": 64},
+            "result_id": NULLABLE_UUID,
+            "result_revision": NULLABLE_UUID,
+            "evaluation_period_id": UUID,
+            "recipient_ids": {"type": "array", "maxItems": 50, "items": UUID},
+            "occurrence_count": {"type": "integer", "minimum": 1},
+            "last_evaluated_at": {"type": "string", "format": "date-time"},
+        },
+        [
+            "rule_id",
+            "alert_type",
+            "reason_code",
+            "result_id",
+            "result_revision",
+            "evaluation_period_id",
+            "recipient_ids",
+            "occurrence_count",
+            "last_evaluated_at",
+        ],
+    )
+    schemas["DashboardAlertIncident"] = closed(
+        {**resource_base, "owner_id": UUID, "data": alert_incident_data}, resource_required + ["data"]
+    )
+    schemas["DashboardAlertIncidentList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/DashboardAlertIncident"},
+            },
+            "next_cursor": {"type": ["string", "null"], "maxLength": 4096},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
     )
     external_dataset = closed(
         {
@@ -337,8 +526,10 @@ def augment(spec, policy):
                     "datasets": {"type": "array", "minItems": 1, "maxItems": 50, "items": external_dataset},
                     "destination": {"type": "string", "minLength": 1, "maxLength": 500},
                     "reuse_terms": {"type": "string", "minLength": 1, "maxLength": 2000},
+                    "backup_owner_id": UUID,
+                    "expires_at": {"type": "string", "format": "date-time"},
                 },
-                ["datasets", "destination", "reuse_terms"],
+                ["datasets", "destination", "reuse_terms", "backup_owner_id", "expires_at"],
             ),
         },
         ["operation_id", "data"],
@@ -413,6 +604,38 @@ def augment(spec, policy):
         },
         list(schemas["Receipt"]["required"]) + ["last_successful_extract", "remote_copy_status"],
     )
+    schemas["ExternalAnalyticsConnection"] = closed(
+        {**resource_base, "owner_id": UUID, "data": {"type": "object", "additionalProperties": True}},
+        resource_required + ["data"],
+    )
+    schemas["ExternalAnalyticsConnectionList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/ExternalAnalyticsConnection"},
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
+    )
+    schemas["ExternalAnalyticsExtractRecord"] = closed(
+        {**resource_base, "owner_id": UUID, "data": {"type": "object", "additionalProperties": True}},
+        resource_required + ["data"],
+    )
+    schemas["ExternalAnalyticsExtractList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/ExternalAnalyticsExtractRecord"},
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
+    )
     eligible_observation = closed({"object_id": UUID, "revision_id": UUID}, ["object_id", "revision_id"])
     schemas["AnomalyRunCreate"] = closed(
         {
@@ -451,7 +674,17 @@ def augment(spec, policy):
             "data": closed(
                 {
                     "decision": {"enum": ["CONFIRMED", "DISMISSED", "DEFERRED"]},
-                    "reason": {"type": ["string", "null"], "maxLength": 500},
+                    "reason_code": {
+                        "type": ["string", "null"],
+                        "enum": [
+                            "EXPECTED_SEASONALITY",
+                            "KNOWN_EVENT",
+                            "DATA_CORRECT",
+                            "INSUFFICIENT_CONTEXT",
+                            "OTHER",
+                            None,
+                        ],
+                    },
                 },
                 ["decision"],
             ),
@@ -463,6 +696,8 @@ def augment(spec, policy):
             "finding_id": UUID,
             "observation_id": UUID,
             "observation_revision": UUID,
+            "source_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "method_version": {"const": "ROBUST_MAD_1"},
             "state": {"const": "SUGGESTED"},
             "severity": {"const": "REVIEW"},
             "owner_id": UUID,
@@ -481,6 +716,8 @@ def augment(spec, policy):
             "finding_id",
             "observation_id",
             "observation_revision",
+            "source_hash",
+            "method_version",
             "state",
             "severity",
             "owner_id",
@@ -518,7 +755,31 @@ def augment(spec, policy):
         },
         list(schemas["Receipt"]["required"]) + ["decision", "confirmed_quality_defect", "source_mutation"],
     )
-    document_kind = {"enum": ["METHODOLOGY", "ETHICS", "SAFEGUARDING", "ANALYSIS_PLAN", "DISCLOSURE_REVIEW"]}
+    schemas["AnomalyResource"] = closed(
+        {**resource_base, "owner_id": UUID, "data": {"type": "object", "additionalProperties": True}},
+        resource_required + ["data"],
+    )
+    schemas["AnomalyResourceList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/AnomalyResource"},
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
+    )
+    document_kind = {
+        "enum": [
+            "METHODOLOGY",
+            "ETHICS",
+            "SAFEGUARDING",
+            "ANALYSIS_PLAN",
+            "DISCLOSURE_REVIEW",
+        ]
+    }
     schemas["EvaluationRegistrationCreate"] = closed(
         {
             "operation_id": UUID,
@@ -540,7 +801,16 @@ def augment(spec, policy):
                     "independence": closed(
                         {
                             "claimed": {"type": "boolean"},
-                            "basis": {"type": ["string", "null"], "maxLength": 1000},
+                            "basis": {
+                                "enum": [
+                                    None,
+                                    "EXTERNAL_EVALUATOR",
+                                    "INDEPENDENT_COMMITTEE",
+                                    "CONTRACTUAL_SEPARATION",
+                                ]
+                            },
+                            "evidence_object_id": NULLABLE_UUID,
+                            "evidence_revision_id": NULLABLE_UUID,
                         },
                         ["claimed"],
                     ),
@@ -551,7 +821,10 @@ def augment(spec, policy):
                     },
                     "budget": closed(
                         {
-                            "amount": {"type": "string", "pattern": DECIMAL},
+                            "amount": {
+                                "type": "string",
+                                "pattern": r"^(0*[1-9][0-9]{0,25})(\.[0-9]{1,12})?$",
+                            },
                             "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
                         },
                         ["amount", "currency"],
@@ -601,6 +874,7 @@ def augment(spec, policy):
     schemas["EvaluationStageGate"] = closed(
         {
             "operation_id": UUID,
+            "expected_revision": UUID,
             "data": closed(
                 {
                     "stage": {"enum": ["FIELD_COLLECTION", "PUBLICATION"]},
@@ -616,7 +890,7 @@ def augment(spec, policy):
                 ["stage", "documents"],
             ),
         },
-        ["operation_id", "data"],
+        ["operation_id", "expected_revision", "data"],
     )
     schemas["EvaluationStageGateOutcome"] = closed(
         {
@@ -636,7 +910,7 @@ def augment(spec, policy):
                     ["kind", "object_id", "revision_id"],
                 ),
             },
-            "sensitive_processing_approved": {"const": False},
+            "sensitive_processing_approved": {"type": "boolean"},
         },
         [
             "evaluation_id",
@@ -647,12 +921,81 @@ def augment(spec, policy):
             "sensitive_processing_approved",
         ],
     )
+    schemas["EvaluationRegistrationResource"] = closed(
+        {
+            **resource_base,
+            "owner_id": UUID,
+            "data": closed(
+                {
+                    **deepcopy(schemas["EvaluationRegistrationCreate"]["properties"]["data"]["properties"]),
+                    "independence": closed(
+                        {
+                            "claimed": {"type": "boolean"},
+                            "basis": {
+                                "enum": [
+                                    None,
+                                    "EXTERNAL_EVALUATOR",
+                                    "INDEPENDENT_COMMITTEE",
+                                    "CONTRACTUAL_SEPARATION",
+                                ]
+                            },
+                            "evidence_object_id": NULLABLE_UUID,
+                            "evidence_revision_id": NULLABLE_UUID,
+                            "verification": {"enum": ["NOT_CLAIMED", "EVIDENCE_ATTACHED_UNVERIFIED"]},
+                        },
+                        ["claimed", "verification"],
+                    ),
+                    "programme_revision_id": UUID,
+                    "period_revision_id": UUID,
+                    "sensitive_processing_approved": {"const": False},
+                    "stage": {"enum": ["REGISTERED", "FIELD_COLLECTION", "PUBLICATION"]},
+                    "last_gate": {"type": ["object", "null"]},
+                },
+                list(schemas["EvaluationRegistrationCreate"]["properties"]["data"]["required"])
+                + ["programme_revision_id", "period_revision_id", "sensitive_processing_approved", "stage"],
+            ),
+        },
+        resource_required + ["data"],
+    )
+    schemas["EvaluationRegistrationList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/EvaluationRegistrationResource"},
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
+    )
+    schemas["EvaluationStageGateHistory"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": closed(
+                    {
+                        "revision_id": UUID,
+                        "revision_number": {"type": "integer", "minimum": 1},
+                        "recorded_at": {"type": "string", "format": "date-time"},
+                        "recorded_by": UUID,
+                        "gate": {"$ref": "#/components/schemas/EvaluationStageGateOutcome"},
+                    },
+                    ["revision_id", "revision_number", "recorded_at", "recorded_by", "gate"],
+                ),
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
+    )
     stratum = closed(
         {
             "code": {"type": "string", "minLength": 1, "maxLength": 100},
             "eligible_count": {"type": "integer", "minimum": 0},
             "sampled_count": {"type": "integer", "minimum": 0},
-            "weight": NULLABLE_DECIMAL,
+            "weight": {"type": ["string", "null"], "pattern": r"^(0*[1-9][0-9]{0,25})(\.[0-9]{1,12})?$"},
             "nonresponse_count": {"type": "integer", "minimum": 0},
         },
         ["code", "eligible_count", "sampled_count", "weight", "nonresponse_count"],
@@ -688,6 +1031,7 @@ def augment(spec, policy):
     schemas["EvaluationMethodologyAmend"] = closed(
         {
             "operation_id": UUID,
+            "expected_revision": UUID,
             "data": closed(
                 {
                     "reason": {"type": "string", "minLength": 1, "maxLength": 1000},
@@ -697,11 +1041,12 @@ def augment(spec, policy):
                 ["reason", "relative_to_data_inspection", "changes"],
             ),
         },
-        ["operation_id", "data"],
+        ["operation_id", "expected_revision", "data"],
     )
     schemas["EvaluationMethodologyReview"] = closed(
         {
             "operation_id": UUID,
+            "expected_revision": UUID,
             "data": closed(
                 {
                     "decision": {"enum": ["APPROVE", "REJECT"]},
@@ -710,7 +1055,7 @@ def augment(spec, policy):
                 ["decision", "reason"],
             ),
         },
-        ["operation_id", "data"],
+        ["operation_id", "expected_revision", "data"],
     )
     schemas["EvaluationSampleExportRequest"] = closed(
         {
@@ -747,6 +1092,60 @@ def augment(spec, policy):
             "strata",
             "nonresponse_rules",
         ],
+    )
+    methodology_data = closed(
+        {
+            "evaluation_id": UUID,
+            **methodology_fields,
+            "evaluation_revision": UUID,
+            "methodology_revision": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+            "amendment": {"type": ["object", "null"]},
+            "review_state": {"enum": ["PENDING", "REVIEWED", "REJECTED"]},
+            "review": {"type": ["object", "null"]},
+        },
+        [
+            "evaluation_id",
+            *methodology_fields.keys(),
+            "evaluation_revision",
+            "methodology_revision",
+            "review_state",
+        ],
+    )
+    schemas["EvaluationMethodologyResource"] = closed(
+        {**resource_base, "owner_id": UUID, "data": methodology_data}, resource_required + ["data"]
+    )
+    schemas["EvaluationMethodologyList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/EvaluationMethodologyResource"},
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
+    )
+    schemas["EvaluationMethodologyHistory"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": closed(
+                    {
+                        "revision_id": UUID,
+                        "revision_number": {"type": "integer", "minimum": 1},
+                        "recorded_at": {"type": "string", "format": "date-time"},
+                        "recorded_by": UUID,
+                        "data": methodology_data,
+                    },
+                    ["revision_id", "revision_number", "recorded_at", "recorded_by", "data"],
+                ),
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
     )
     analysis_variable = {
         "enum": [
@@ -915,6 +1314,7 @@ def augment(spec, policy):
     schemas["LearningQuestionClose"] = closed(
         {
             "operation_id": UUID,
+            "expected_revision": UUID,
             "data": closed(
                 {
                     "conclusion": {"type": "string", "minLength": 1, "maxLength": 4000},
@@ -923,25 +1323,108 @@ def augment(spec, policy):
                 ["conclusion", "remaining_uncertainty"],
             ),
         },
-        ["operation_id", "data"],
+        ["operation_id", "expected_revision", "data"],
     )
     schemas["LearningQuestionReopen"] = closed(
         {
             "operation_id": UUID,
+            "expected_revision": UUID,
             "data": closed({"reason": {"type": "string", "minLength": 1, "maxLength": 2000}}, ["reason"]),
         },
-        ["operation_id", "data"],
+        ["operation_id", "expected_revision", "data"],
     )
     schemas["LearningContextConsider"] = closed(
         {
             "operation_id": UUID,
+            "expected_revision": UUID,
             "data": closed(
                 {"target_context": {"type": "string", "minLength": 1, "maxLength": 1000}}, ["target_context"]
             ),
         },
-        ["operation_id", "data"],
+        ["operation_id", "expected_revision", "data"],
     )
     schemas["LearningQuestionSummary"] = {"type": "object"}
+    schemas["EvaluationRecommendationCreate"] = closed(
+        {
+            "operation_id": UUID,
+            "data": closed(
+                {
+                    "title": {"type": "string", "minLength": 1, "maxLength": 200},
+                    "recommendation": {"type": "string", "minLength": 1, "maxLength": 4000},
+                    "source_object_id": UUID,
+                    "source_revision": UUID,
+                    "rationale": {"type": "string", "minLength": 1, "maxLength": 2000},
+                },
+                ["title", "recommendation", "source_object_id", "source_revision", "rationale"],
+            ),
+        },
+        ["operation_id", "data"],
+    )
+    recommendation_data = deepcopy(schemas["EvaluationRecommendationCreate"]["properties"]["data"])
+    schemas["EvaluationRecommendationResource"] = closed(
+        {**resource_base, "data": recommendation_data}, resource_required + ["data"]
+    )
+    management_action_data = closed(
+        {
+            "management_response_id": UUID,
+            "accepted_scope": {"type": "string", "minLength": 1, "maxLength": 4000},
+            "owner_id": UUID,
+            "due_date": {"type": "string", "format": "date"},
+            "required_completion_evidence": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "items": {"type": "string", "minLength": 1, "maxLength": 500},
+            },
+            "completion_evidence": {
+                "type": "array",
+                "maxItems": 20,
+                "items": evidence_pin,
+            },
+            "action_completion": {"enum": ["PENDING", "COMPLETE"]},
+            "outcome_improvement": {"const": "PENDING_FOLLOW_UP_MEASUREMENT"},
+            "escalation": {"type": "object"},
+        },
+        [
+            "management_response_id",
+            "accepted_scope",
+            "owner_id",
+            "due_date",
+            "required_completion_evidence",
+            "completion_evidence",
+            "action_completion",
+            "outcome_improvement",
+        ],
+    )
+    schemas["ManagementActionResource"] = closed(
+        {**resource_base, "data": management_action_data}, resource_required + ["data"]
+    )
+    schemas["ManagementActionHistory"] = closed(
+        {
+            "object_id": UUID,
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": closed(
+                    {
+                        "revision_id": UUID,
+                        "predecessor_revision": NULLABLE_UUID,
+                        "revision_number": {"type": "integer", "minimum": 1},
+                        "payload": management_action_data,
+                        "created_at": {"type": "string", "format": "date-time"},
+                    },
+                    [
+                        "revision_id",
+                        "predecessor_revision",
+                        "revision_number",
+                        "payload",
+                        "created_at",
+                    ],
+                ),
+            },
+        },
+        ["object_id", "items"],
+    )
     schemas["ManagementResponseCreate"] = closed(
         {
             "operation_id": UUID,
@@ -1180,11 +1663,18 @@ def augment(spec, policy):
             "data": closed(
                 {
                     "finding_id": UUID,
+                    "expected_revision": UUID,
                     "interpretation": {"type": "string", "minLength": 1},
                     "supporting_evidence": {"type": "array", "minItems": 1, "items": finding_pin},
                     "contradictory_evidence": {"type": "array", "items": finding_pin},
                 },
-                ["finding_id", "interpretation", "supporting_evidence", "contradictory_evidence"],
+                [
+                    "finding_id",
+                    "expected_revision",
+                    "interpretation",
+                    "supporting_evidence",
+                    "contradictory_evidence",
+                ],
             ),
         },
         ["operation_id", "data"],
@@ -1195,10 +1685,16 @@ def augment(spec, policy):
             "data": closed(
                 {
                     "finding_id": UUID,
+                    "expected_revision": UUID,
                     "preserve_contradictory_evidence": {"type": "boolean"},
                     "disclosed_limitation": NULLABLE_TEXT,
                 },
-                ["finding_id", "preserve_contradictory_evidence", "disclosed_limitation"],
+                [
+                    "finding_id",
+                    "expected_revision",
+                    "preserve_contradictory_evidence",
+                    "disclosed_limitation",
+                ],
             ),
         },
         ["operation_id", "data"],
@@ -1235,10 +1731,11 @@ def augment(spec, policy):
             "data": closed(
                 {
                     "budget_id": UUID,
+                    "expected_revision": UUID,
                     "rate_assumptions": {"type": "array", "items": {"type": "object"}},
                     "lines": {"type": "array", "minItems": 1, "items": budget_line},
                 },
-                ["budget_id", "rate_assumptions", "lines"],
+                ["budget_id", "expected_revision", "rate_assumptions", "lines"],
             ),
         },
         ["operation_id", "data"],
@@ -2071,7 +2568,7 @@ def augment(spec, policy):
     copy_entry.update(
         operationId="action_dashboards_copy",
         summary="Copy a dashboard into a private draft",
-        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     copy_entry["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/DashboardCopy"
@@ -2079,6 +2576,19 @@ def augment(spec, policy):
     paths[prefix + "dashboards/{object_id}/actions/copy"] = {
         "parameters": deepcopy(dashboard_item["parameters"]),
         "post": copy_entry,
+    }
+    workspace_copy = deepcopy(copy_entry)
+    workspace_copy.update(
+        operationId="action_dashboards_copy_to_workspace",
+        summary="Copy a dashboard configuration to another workspace without grants",
+        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+    )
+    workspace_copy["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardWorkspaceCopy"
+    }
+    paths[prefix + "dashboards/{object_id}/actions/copy-to-workspace"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": workspace_copy,
     }
     sharing_preview = deepcopy(preview)
     sharing_preview.update(
@@ -2118,6 +2628,33 @@ def augment(spec, policy):
         "parameters": deepcopy(dashboard_item["parameters"]),
         "post": publish_entry,
     }
+    disclosure_prepare = deepcopy(publish_entry)
+    disclosure_prepare.update(
+        operationId="action_dashboard_disclosures_prepare",
+        summary="Prepare a frozen dashboard disclosure artifact for independent review",
+    )
+    disclosure_prepare["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardDisclosurePrepare"
+    }
+    paths[prefix + "dashboards/{object_id}/disclosure-artifacts"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": disclosure_prepare,
+    }
+    artifact_parameters = deepcopy(dashboard_item["parameters"]) + [
+        {"name": "artifact_id", "in": "path", "required": True, "schema": deepcopy(UUID)}
+    ]
+    disclosure_review = deepcopy(publish_entry)
+    disclosure_review.update(
+        operationId="action_dashboard_disclosures_review",
+        summary="Independently approve a frozen dashboard disclosure artifact",
+    )
+    disclosure_review["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardDisclosureReview"
+    }
+    paths[prefix + "dashboards/{object_id}/disclosure-artifacts/{artifact_id}/actions/review"] = {
+        "parameters": artifact_parameters,
+        "post": disclosure_review,
+    }
     publication_parameters = deepcopy(dashboard_item["parameters"]) + [
         {"name": "publication_id", "in": "path", "required": True, "schema": deepcopy(UUID)}
     ]
@@ -2135,11 +2672,52 @@ def augment(spec, policy):
         "parameters": publication_parameters,
         "get": publication_status,
     }
+    publication_content = deepcopy(publication_status)
+    publication_content.update(
+        operationId="read_dashboard_publication_content",
+        summary="Read only the frozen independently approved public dashboard content",
+    )
+    publication_content["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardPublicationContent"
+    }
+    paths[prefix + "dashboards/{object_id}/publications/{publication_id}/content"] = {
+        "parameters": publication_parameters,
+        "get": publication_content,
+    }
+    for action, operation, schema, summary in [
+        (
+            "transfer-owner",
+            "action_dashboard_publications_transfer_owner",
+            "DashboardPublicationOwnerTransfer",
+            "Transfer publication ownership under current authority",
+        ),
+        (
+            "revalidate",
+            "action_dashboard_publications_revalidate",
+            "DashboardPublicationChange",
+            "Revalidate a suspended publication against current authority",
+        ),
+        (
+            "resume",
+            "action_dashboard_publications_resume",
+            "DashboardPublicationChange",
+            "Resume a revalidated publication",
+        ),
+    ]:
+        command = deepcopy(publish_entry)
+        command.update(operationId=operation, summary=summary)
+        command["requestBody"]["content"]["application/json"]["schema"] = {
+            "$ref": "#/components/schemas/" + schema
+        }
+        paths[prefix + "dashboards/{object_id}/publications/{publication_id}/actions/" + action] = {
+            "parameters": publication_parameters,
+            "post": command,
+        }
     alert_create = deepcopy(paths[prefix + "dashboards"]["post"])
     alert_create.update(
         operationId="create_dashboard_alert_rule",
         summary="Create a governed dashboard alert rule",
-        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     alert_create["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/DashboardAlertRuleCreate"
@@ -2148,7 +2726,41 @@ def augment(spec, policy):
     alert_create["responses"]["201"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/Receipt"
     }
-    paths[prefix + "dashboard-alert-rules"] = {"post": alert_create}
+    alert_list = deepcopy(paths[prefix + "dashboards"]["get"])
+    alert_list.update(
+        operationId="list_dashboard_alert_rules",
+        summary="List governed dashboard alert rules",
+        **{"x-capability": "dashboards.read", "x-contract-version": VERSION},
+    )
+    alert_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardAlertRuleList"
+    }
+    paths[prefix + "dashboard-alert-rules"] = {"get": alert_list, "post": alert_create}
+    alert_read = deepcopy(paths[prefix + "dashboards/{object_id}"]["get"])
+    alert_read.update(
+        operationId="read_dashboard_alert_rule",
+        summary="Read a governed dashboard alert rule and its current cadence",
+        **{"x-capability": "dashboards.read", "x-contract-version": VERSION},
+    )
+    alert_read["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardAlertRule"
+    }
+    paths[prefix + "dashboard-alert-rules/{object_id}"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": alert_read,
+    }
+    incident_list = deepcopy(alert_list)
+    incident_list.update(
+        operationId="list_dashboard_alert_incidents",
+        summary="List durable cooldown-coalesced incidents for an alert rule",
+    )
+    incident_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardAlertIncidentList"
+    }
+    paths[prefix + "dashboard-alert-rules/{object_id}/incidents"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": incident_list,
+    }
     alert_evaluate = deepcopy(copy_entry)
     alert_evaluate.update(
         operationId="evaluate_dashboard_alert_rule",
@@ -2169,7 +2781,7 @@ def augment(spec, policy):
     external_create.update(
         operationId="create_external_analytics_connection",
         summary="Create a dataset-scoped external analytics identity",
-        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     external_create["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/ExternalAnalyticsConnectionCreate"
@@ -2177,7 +2789,42 @@ def augment(spec, policy):
     external_create["responses"]["201"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/ExternalAnalyticsConnectionReceipt"
     }
-    paths[prefix + "external-analytics-connections"] = {"post": external_create}
+    external_list = deepcopy(alert_list)
+    external_list.update(
+        operationId="list_external_analytics_connections",
+        summary="List governed external analytics connections",
+    )
+    external_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExternalAnalyticsConnectionList"
+    }
+    paths[prefix + "external-analytics-connections"] = {
+        "get": external_list,
+        "post": external_create,
+    }
+    external_read = deepcopy(alert_read)
+    external_read.update(
+        operationId="read_external_analytics_connection",
+        summary="Read a governed external analytics connection without its credential",
+    )
+    external_read["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExternalAnalyticsConnection"
+    }
+    paths[prefix + "external-analytics-connections/{object_id}"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": external_read,
+    }
+    extract_list = deepcopy(external_list)
+    extract_list.update(
+        operationId="list_external_analytics_extracts",
+        summary="List retained external extract disclosures",
+    )
+    extract_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/ExternalAnalyticsExtractList"
+    }
+    paths[prefix + "external-analytics-connections/{object_id}/extracts"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": extract_list,
+    }
     external_refresh = deepcopy(alert_evaluate)
     external_refresh.update(
         operationId="refresh_external_analytics_connection",
@@ -2221,7 +2868,30 @@ def augment(spec, policy):
     anomaly_run["responses"]["201"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/AnomalyRunOutcome"
     }
-    paths[prefix + "anomaly-runs"] = {"post": anomaly_run}
+    anomaly_list = deepcopy(external_list)
+    anomaly_list.update(operationId="list_anomaly_runs", summary="List readable anomaly runs")
+    anomaly_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/AnomalyResourceList"
+    }
+    paths[prefix + "anomaly-runs"] = {"post": anomaly_run, "get": anomaly_list}
+    anomaly_read = deepcopy(external_read)
+    anomaly_read.update(operationId="read_anomaly_run", summary="Read a versioned anomaly run")
+    anomaly_read["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/AnomalyResource"
+    }
+    paths[prefix + "anomaly-runs/{object_id}"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": anomaly_read,
+    }
+    finding_list = deepcopy(anomaly_list)
+    finding_list.update(operationId="list_anomaly_findings", summary="List reviewable anomaly findings")
+    paths[prefix + "anomaly-findings"] = {"get": finding_list}
+    finding_read = deepcopy(anomaly_read)
+    finding_read.update(operationId="read_anomaly_finding", summary="Read the current anomaly finding review")
+    paths[prefix + "anomaly-findings/{object_id}"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": finding_read,
+    }
     anomaly_review = deepcopy(alert_evaluate)
     anomaly_review.update(
         operationId="review_anomaly_finding",
@@ -2250,12 +2920,55 @@ def augment(spec, policy):
     evaluation_create["responses"]["201"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/Receipt"
     }
-    paths[prefix + "evaluations"] = {"post": evaluation_create}
+    existing_evaluation_item = deepcopy(paths.get(prefix + "evaluations/{object_id}", {}))
+    evaluation_list = deepcopy(anomaly_list)
+    evaluation_list.update(
+        operationId="list_evaluation_registrations",
+        summary="List controlled evaluation registrations",
+        **{"x-capability": "evaluations.read"},
+    )
+    evaluation_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationRegistrationList"
+    }
+    evaluation_list.setdefault("parameters", []).append(
+        {"name": "programme_id", "in": "query", "required": False, "schema": deepcopy(UUID)}
+    )
+    paths[prefix + "evaluations"] = {"post": evaluation_create, "get": evaluation_list}
+    evaluation_read = deepcopy(anomaly_read)
+    evaluation_read.update(
+        operationId="get_evaluations",
+        summary="Read a controlled evaluation registration",
+        **{"x-capability": "evaluations.read"},
+    )
+    evaluation_read["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationRegistrationResource"
+    }
+    paths[prefix + "evaluations/{object_id}"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": evaluation_read,
+        **({"patch": existing_evaluation_item["patch"]} if "patch" in existing_evaluation_item else {}),
+    }
+    evaluation_history = deepcopy(evaluation_read)
+    evaluation_history.update(
+        operationId="list_evaluation_stage_gates",
+        summary="List immutable evaluation gate decisions",
+        **{"x-capability": "evaluations.read"},
+    )
+    evaluation_history["parameters"] = [
+        p for p in deepcopy(evaluation_list.get("parameters", [])) if p["name"] != "programme_id"
+    ]
+    evaluation_history["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationStageGateHistory"
+    }
+    paths[prefix + "evaluations/{object_id}/stage-gates"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": evaluation_history,
+    }
     evaluation_gate = deepcopy(anomaly_review)
     evaluation_gate.update(
         operationId="evaluate_evaluation_stage_gate",
         summary="Check pinned method and policy documents before an evaluation stage",
-        **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     evaluation_gate["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/EvaluationStageGate"
@@ -2276,7 +2989,45 @@ def augment(spec, policy):
     methodology_create["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/EvaluationMethodologyCreate"
     }
-    paths[prefix + "evaluation-methodologies"] = {"post": methodology_create}
+    methodology_list = deepcopy(evaluation_list)
+    methodology_list.update(
+        operationId="list_evaluation_methodologies", summary="List methodologies for an evaluation"
+    )
+    methodology_list["parameters"] = [
+        p for p in methodology_list.get("parameters", []) if p["name"] != "programme_id"
+    ]
+    methodology_list["parameters"].append(
+        {"name": "evaluation_id", "in": "query", "required": True, "schema": deepcopy(UUID)}
+    )
+    methodology_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationMethodologyList"
+    }
+    paths[prefix + "evaluation-methodologies"] = {"post": methodology_create, "get": methodology_list}
+    methodology_read = deepcopy(evaluation_read)
+    methodology_read.update(
+        operationId="read_evaluation_methodology", summary="Read a current evaluation methodology"
+    )
+    methodology_read["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationMethodologyResource"
+    }
+    paths[prefix + "evaluation-methodologies/{object_id}"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": methodology_read,
+    }
+    methodology_history = deepcopy(methodology_read)
+    methodology_history.update(
+        operationId="list_evaluation_methodology_history", summary="List immutable methodology revisions"
+    )
+    methodology_history["parameters"] = [
+        p for p in deepcopy(evaluation_list.get("parameters", [])) if p["name"] != "programme_id"
+    ]
+    methodology_history["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationMethodologyHistory"
+    }
+    paths[prefix + "evaluation-methodologies/{object_id}/history"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": methodology_history,
+    }
     for action, schema, operation, summary in [
         (
             "amend",
@@ -2295,7 +3046,7 @@ def augment(spec, policy):
         entry.update(
             operationId=operation,
             summary=summary,
-            **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+            **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
         )
         entry["requestBody"]["content"]["application/json"]["schema"] = {
             "$ref": "#/components/schemas/" + schema
@@ -2311,7 +3062,7 @@ def augment(spec, policy):
     sample_export_entry.update(
         operationId="export_evaluation_sample",
         summary="Export a reviewed sample without silently inventing weights",
-        **{"x-capability": "dashboards.read", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.read", "x-contract-version": VERSION},
     )
     sample_export_entry["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/EvaluationSampleExportRequest"
@@ -2327,7 +3078,7 @@ def augment(spec, policy):
     analysis_create.update(
         operationId="create_analysis_package",
         summary="Freeze exact approved analysis sources and integrity metadata",
-        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     analysis_create["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/AnalysisPackageCreate"
@@ -2351,7 +3102,7 @@ def augment(spec, policy):
     analysis_result.update(
         operationId="register_analysis_result",
         summary="Register a result against an exact package and methodology revision",
-        **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     analysis_result["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/AnalysisResultRegister"
@@ -2364,7 +3115,7 @@ def augment(spec, policy):
     learning_create.update(
         operationId="create_learning_question",
         summary="Create a contextual versioned learning question",
-        **{"x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     learning_create["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/LearningQuestionCreate"
@@ -2379,7 +3130,7 @@ def augment(spec, policy):
         entry.update(
             operationId=operation,
             summary=operation.replace("_", " ").title(),
-            **{"x-contract-version": VERSION},
+            **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
         )
         entry["requestBody"]["content"]["application/json"]["schema"] = {
             "$ref": f"#/components/schemas/{schema_name}"
@@ -2392,7 +3143,7 @@ def augment(spec, policy):
     learning_summary.update(
         operationId="get_learning_question_summary",
         summary="Read a disclosure-reviewed learning summary",
-        **{"x-contract-version": VERSION},
+        **{"x-capability": "evaluations.read", "x-contract-version": VERSION},
     )
     learning_summary["parameters"] = [
         {"name": "disclosure_id", "in": "query", "required": False, "schema": UUID}
@@ -2404,6 +3155,49 @@ def augment(spec, policy):
         "parameters": deepcopy(dashboard_item["parameters"]),
         "get": learning_summary,
     }
+    recommendation_create = deepcopy(analysis_create)
+    recommendation_create.update(
+        operationId="create_evaluation_recommendation",
+        summary="Create an issued recommendation pinned to exact evidence",
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
+    )
+    recommendation_create["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationRecommendationCreate"
+    }
+    paths[prefix + "evaluation-recommendations"] = {"post": recommendation_create}
+    for route, operation, summary, response_schema in [
+        (
+            "evaluation-recommendations/{object_id}",
+            "read_evaluation_recommendation",
+            "Read one issued evaluation recommendation",
+            "EvaluationRecommendationResource",
+        ),
+        (
+            "management-actions/{object_id}",
+            "read_management_action",
+            "Read one management action",
+            "ManagementActionResource",
+        ),
+        (
+            "management-actions/{object_id}/history",
+            "read_management_action_history",
+            "Read immutable management action history",
+            "ManagementActionHistory",
+        ),
+    ]:
+        entry = deepcopy(preview)
+        entry.update(
+            operationId=operation,
+            summary=summary,
+            **{"x-capability": "evaluations.read", "x-contract-version": VERSION},
+        )
+        entry["responses"]["200"]["content"]["application/json"]["schema"] = {
+            "$ref": f"#/components/schemas/{response_schema}"
+        }
+        paths[prefix + route] = {
+            "parameters": deepcopy(dashboard_item["parameters"]),
+            "get": entry,
+        }
     for route, schema_name, operation in [
         (
             "evaluation-recommendations/{object_id}/response",
@@ -2425,7 +3219,7 @@ def augment(spec, policy):
         entry.update(
             operationId=operation,
             summary=operation.replace("_", " ").title(),
-            **{"x-contract-version": VERSION},
+            **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
         )
         entry["requestBody"]["content"]["application/json"]["schema"] = {
             "$ref": f"#/components/schemas/{schema_name}"
@@ -2441,7 +3235,7 @@ def augment(spec, policy):
         entry.update(
             operationId=operation,
             summary=operation.replace("_", " ").title(),
-            **{"x-contract-version": VERSION},
+            **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
         )
         entry["requestBody"]["content"]["application/json"]["schema"] = {
             "$ref": f"#/components/schemas/{schema_name}"
@@ -2456,7 +3250,7 @@ def augment(spec, policy):
         entry.update(
             operationId=operation,
             summary=operation.replace("_", " ").title(),
-            **{"x-contract-version": VERSION},
+            **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
         )
         entry["requestBody"]["content"]["application/json"]["schema"] = {
             "$ref": f"#/components/schemas/{schema_name}"
@@ -2471,7 +3265,7 @@ def augment(spec, policy):
         entry.update(
             operationId=operation,
             summary=operation.replace("_", " ").title(),
-            **{"x-contract-version": VERSION},
+            **{"x-capability": "budget-lines.draft.edit", "x-contract-version": VERSION},
         )
         entry["requestBody"]["content"]["application/json"]["schema"] = {
             "$ref": f"#/components/schemas/{schema_name}"
@@ -2496,7 +3290,7 @@ def augment(spec, policy):
     expenditure_entry.update(
         operationId="import_expenditure",
         summary="Import and reconcile expenditure",
-        **{"x-contract-version": VERSION},
+        **{"x-capability": "finance-transactions.draft.create", "x-contract-version": VERSION},
     )
     expenditure_entry["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/ExpenditureImport"
@@ -2506,7 +3300,7 @@ def augment(spec, policy):
     variance_entry.update(
         operationId="save_finance_variance",
         summary="Save separated actual and forecast variance",
-        **{"x-contract-version": VERSION},
+        **{"x-capability": "finance-transactions.read", "x-contract-version": VERSION},
     )
     variance_entry["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/FinanceVarianceSave"
@@ -2580,6 +3374,76 @@ def augment(spec, policy):
             True,
         ),
         (
+            "action_dashboards_copy_to_workspace",
+            "POST",
+            prefix + "dashboards/{object_id}/actions/copy-to-workspace",
+            "dashboards.draft.create",
+            True,
+        ),
+        (
+            "action_dashboard_disclosures_prepare",
+            "POST",
+            prefix + "dashboards/{object_id}/disclosure-artifacts",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "action_dashboard_disclosures_review",
+            "POST",
+            prefix + "dashboards/{object_id}/disclosure-artifacts/{artifact_id}/actions/review",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "preview_dashboard_sharing",
+            "GET",
+            prefix + "dashboards/{object_id}/sharing-preview",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "action_dashboards_publish",
+            "POST",
+            prefix + "dashboards/{object_id}/actions/publish",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "read_dashboard_publication",
+            "GET",
+            prefix + "dashboards/{object_id}/publications/{publication_id}",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "read_dashboard_publication_content",
+            "GET",
+            prefix + "dashboards/{object_id}/publications/{publication_id}/content",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "action_dashboard_publications_transfer_owner",
+            "POST",
+            prefix + "dashboards/{object_id}/publications/{publication_id}/actions/transfer-owner",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "action_dashboard_publications_revalidate",
+            "POST",
+            prefix + "dashboards/{object_id}/publications/{publication_id}/actions/revalidate",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "action_dashboard_publications_resume",
+            "POST",
+            prefix + "dashboards/{object_id}/publications/{publication_id}/actions/resume",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
             "preview_dashboard_pivot",
             "POST",
             prefix + "dashboards/{object_id}/pivot-preview",
@@ -2607,6 +3471,347 @@ def augment(spec, policy):
             "dashboards.read",
             True,
         ),
+        (
+            "create_dashboard_alert_rule",
+            "POST",
+            prefix + "dashboard-alert-rules",
+            "dashboards.draft.create",
+            True,
+        ),
+        (
+            "list_dashboard_alert_rules",
+            "GET",
+            prefix + "dashboard-alert-rules",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "read_dashboard_alert_rule",
+            "GET",
+            prefix + "dashboard-alert-rules/{object_id}",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "list_dashboard_alert_incidents",
+            "GET",
+            prefix + "dashboard-alert-rules/{object_id}/incidents",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "evaluate_dashboard_alert_rule",
+            "POST",
+            prefix + "dashboard-alert-rules/{object_id}/actions/evaluate",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "create_external_analytics_connection",
+            "POST",
+            prefix + "external-analytics-connections",
+            "dashboards.draft.create",
+            True,
+        ),
+        (
+            "list_external_analytics_connections",
+            "GET",
+            prefix + "external-analytics-connections",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "read_external_analytics_connection",
+            "GET",
+            prefix + "external-analytics-connections/{object_id}",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "list_external_analytics_extracts",
+            "GET",
+            prefix + "external-analytics-connections/{object_id}/extracts",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "refresh_external_analytics_connection",
+            "POST",
+            prefix + "external-analytics-connections/{object_id}/actions/refresh",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "revoke_external_analytics_connection",
+            "POST",
+            prefix + "external-analytics-connections/{object_id}/actions/revoke",
+            "dashboards.draft.edit",
+            True,
+        ),
+        ("create_anomaly_run", "POST", prefix + "anomaly-runs", "dashboards.draft.create", True),
+        ("list_anomaly_runs", "GET", prefix + "anomaly-runs", "dashboards.read", False),
+        ("read_anomaly_run", "GET", prefix + "anomaly-runs/{object_id}", "dashboards.read", False),
+        ("list_anomaly_findings", "GET", prefix + "anomaly-findings", "dashboards.read", False),
+        ("read_anomaly_finding", "GET", prefix + "anomaly-findings/{object_id}", "dashboards.read", False),
+        (
+            "review_anomaly_finding",
+            "POST",
+            prefix + "anomaly-findings/{object_id}/actions/review",
+            "dashboards.draft.edit",
+            True,
+        ),
+        ("create_evaluation_registration", "POST", prefix + "evaluations", "evaluations.draft.edit", True),
+        ("list_evaluation_registrations", "GET", prefix + "evaluations", "evaluations.read", False),
+        ("get_evaluations", "GET", prefix + "evaluations/{object_id}", "evaluations.read", False),
+        (
+            "list_evaluation_stage_gates",
+            "GET",
+            prefix + "evaluations/{object_id}/stage-gates",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "evaluate_evaluation_stage_gate",
+            "POST",
+            prefix + "evaluations/{object_id}/actions/stage-gate",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "create_evaluation_methodology",
+            "POST",
+            prefix + "evaluation-methodologies",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "list_evaluation_methodologies",
+            "GET",
+            prefix + "evaluation-methodologies",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "read_evaluation_methodology",
+            "GET",
+            prefix + "evaluation-methodologies/{object_id}",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "list_evaluation_methodology_history",
+            "GET",
+            prefix + "evaluation-methodologies/{object_id}/history",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "amend_evaluation_methodology",
+            "POST",
+            prefix + "evaluation-methodologies/{object_id}/actions/amend",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "review_evaluation_methodology",
+            "POST",
+            prefix + "evaluation-methodologies/{object_id}/actions/review",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "export_evaluation_sample",
+            "POST",
+            prefix + "evaluation-methodologies/{object_id}/sample-export",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "create_analysis_package",
+            "POST",
+            prefix + "analysis-packages",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "export_analysis_package",
+            "GET",
+            prefix + "analysis-packages/{object_id}/export",
+            "report.export",
+            False,
+        ),
+        (
+            "register_analysis_result",
+            "POST",
+            prefix + "analysis-packages/{object_id}/results",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "create_learning_question",
+            "POST",
+            prefix + "learning-questions",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "close_learning_question",
+            "POST",
+            prefix + "learning-questions/{object_id}/actions/close",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "reopen_learning_question",
+            "POST",
+            prefix + "learning-questions/{object_id}/actions/reopen",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "consider_learning_context",
+            "POST",
+            prefix + "learning-questions/{object_id}/actions/consider-context",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "get_learning_question_summary",
+            "GET",
+            prefix + "learning-questions/{object_id}/summary",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "create_evaluation_recommendation",
+            "POST",
+            prefix + "evaluation-recommendations",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "read_evaluation_recommendation",
+            "GET",
+            prefix + "evaluation-recommendations/{object_id}",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "respond_to_evaluation_recommendation",
+            "POST",
+            prefix + "evaluation-recommendations/{object_id}/response",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "read_management_action",
+            "GET",
+            prefix + "management-actions/{object_id}",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "read_management_action_history",
+            "GET",
+            prefix + "management-actions/{object_id}/history",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "complete_management_action",
+            "POST",
+            prefix + "management-actions/{object_id}/actions/complete",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "escalate_overdue_management_action",
+            "POST",
+            prefix + "management-actions/{object_id}/actions/escalate-overdue",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "create_qualitative_codebook",
+            "POST",
+            prefix + "qualitative-codebooks",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "assign_qualitative_codes",
+            "POST",
+            prefix + "qualitative-assignments",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "adjudicate_qualitative_coding",
+            "POST",
+            prefix + "qualitative-adjudications",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "calculate_qualitative_agreement",
+            "POST",
+            prefix + "qualitative-agreements",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "request_transcription",
+            "POST",
+            prefix + "transcription-requests",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "correct_transcript_segment",
+            "POST",
+            prefix + "transcript-corrections",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "create_reviewed_quotation",
+            "POST",
+            prefix + "quotation-references",
+            "evaluations.draft.edit",
+            True,
+        ),
+        ("create_triangulated_finding", "POST", prefix + "findings", "evaluations.draft.edit", True),
+        (
+            "revise_finding_interpretation",
+            "POST",
+            prefix + "finding-revisions",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "publish_triangulated_finding",
+            "POST",
+            prefix + "finding-publications",
+            "evaluations.draft.edit",
+            True,
+        ),
+        ("create_budget_version", "POST", prefix + "budgets", "budget-lines.draft.create", True),
+        ("revise_budget_version", "POST", prefix + "budget-revisions", "budget-lines.draft.edit", True),
+        ("approve_budget_version", "POST", prefix + "budget-approvals", "budget-lines.draft.edit", True),
+        (
+            "import_expenditure",
+            "POST",
+            prefix + "expenditure-imports",
+            "finance-transactions.draft.create",
+            True,
+        ),
+        (
+            "save_finance_variance",
+            "POST",
+            prefix + "finance-variance-views",
+            "finance-transactions.read",
+            True,
+        ),
     ]:
         policy["operations"] = [row for row in policy["operations"] if row["operation_id"] != op]
         policy["operations"].append(
@@ -2615,9 +3820,72 @@ def augment(spec, policy):
                 "method": method,
                 "path": path,
                 "capability": cap,
-                "role_templates": ROLES,
+                "role_templates": (
+                    ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "ANALYST"]
+                    if op
+                    in {
+                        "create_evaluation_recommendation",
+                        "read_evaluation_recommendation",
+                        "respond_to_evaluation_recommendation",
+                        "read_management_action",
+                        "read_management_action_history",
+                        "complete_management_action",
+                        "escalate_overdue_management_action",
+                        "create_analysis_package",
+                        "register_analysis_result",
+                        "create_learning_question",
+                        "reopen_learning_question",
+                        "consider_learning_context",
+                    }
+                    else ["MEL_ADMIN", "PROGRAMME_MANAGER", "REVIEWER"]
+                    if op == "close_learning_question"
+                    else ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST"]
+                    if op == "export_analysis_package"
+                    else ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST"]
+                    if op
+                    in {
+                        "create_qualitative_codebook",
+                        "assign_qualitative_codes",
+                        "adjudicate_qualitative_coding",
+                        "close_learning_question",
+                        "calculate_qualitative_agreement",
+                        "request_transcription",
+                        "correct_transcript_segment",
+                        "create_reviewed_quotation",
+                        "create_triangulated_finding",
+                        "revise_finding_interpretation",
+                        "publish_triangulated_finding",
+                    }
+                    else ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "ANALYST"]
+                    if op
+                    in {
+                        "create_evaluation_registration",
+                        "evaluate_evaluation_stage_gate",
+                        "create_evaluation_methodology",
+                        "amend_evaluation_methodology",
+                        "create_budget_version",
+                        "revise_budget_version",
+                        "import_expenditure",
+                        "save_finance_variance",
+                    }
+                    else ["MEL_ADMIN", "PROGRAMME_MANAGER", "REVIEWER"]
+                    if op in {"review_evaluation_methodology", "approve_budget_version"}
+                    else ROLES
+                ),
                 "purpose_required": False,
                 "fresh_assurance_seconds": None,
                 "audit": audit_event,
+                **(
+                    {"independence_required": True}
+                    if op
+                    in {
+                        "evaluate_evaluation_stage_gate",
+                        "review_evaluation_methodology",
+                        "adjudicate_qualitative_coding",
+                        "publish_triangulated_finding",
+                        "approve_budget_version",
+                    }
+                    else {}
+                ),
             }
         )

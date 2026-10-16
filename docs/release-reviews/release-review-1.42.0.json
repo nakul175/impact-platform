@@ -1,0 +1,891 @@
+{
+  "schema_version": 1,
+  "release": "1.42.0",
+  "register": "docs/current/threat-register.json",
+  "prepared_by": "Codex integration, for Nakul Jain (owner)",
+  "prepared_on": "2026-10-15",
+  "passed": false,
+  "gates": {
+    "G11": {
+      "status": "Not passed",
+      "reason": "Review started; no independent assessment recorded."
+    },
+    "G12": {
+      "status": "Not run",
+      "reason": "No AI evaluation recorded for this build."
+    }
+  },
+  "open_critical": [
+    {
+      "id": "TH04",
+      "title": "Confused identity token",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH05",
+      "title": "Invitation and recovery takeover",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH06",
+      "title": "Stale grant after revocation",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH09",
+      "title": "Lost update or close race",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH11",
+      "title": "Unsafe expressions and imports",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH13",
+      "title": "Outbound request forgery",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH17",
+      "title": "Plaintext on a lost device",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH21",
+      "title": "Prompt injection in retrieved content",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH25",
+      "title": "Privileged support escalation",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH26",
+      "title": "Incomplete privacy deletion",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH27",
+      "title": "Backup resurrects deleted records",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH28",
+      "title": "Audit modification or truncation",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH29",
+      "title": "Compromised dependency or build",
+      "impact": "Critical",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH34",
+      "title": "AI data leaving the boundary contrary to policy",
+      "impact": "Critical",
+      "decision": "BLOCK",
+      "verification": "PARTIAL",
+      "reason": "BLOCKED"
+    }
+  ],
+  "open_other": [
+    {
+      "id": "TH12",
+      "title": "Malicious evidence and previews",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH16",
+      "title": "Small cell and differencing inference",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH18",
+      "title": "Clock rollback extends offline authority",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH19",
+      "title": "Media chunk substitution",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH20",
+      "title": "Stale worker commits after takeover",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH22",
+      "title": "Unsupported official AI claims",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH23",
+      "title": "Stale AI proposal application",
+      "impact": "High",
+      "decision": "BLOCK",
+      "verification": "PENDING",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "TH24",
+      "title": "AI budget or queue abuse",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH30",
+      "title": "Cross site and browser persistence attacks",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH31",
+      "title": "Noisy tenant starvation",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PENDING",
+      "reason": "VERIFICATION_PENDING"
+    },
+    {
+      "id": "TH32",
+      "title": "Migration changes historic meaning",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH33",
+      "title": "Prompt injection through the advisory brief",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    },
+    {
+      "id": "TH36",
+      "title": "Undisclosed commercial influence on tool listings",
+      "impact": "High",
+      "decision": "MITIGATE",
+      "verification": "PARTIAL",
+      "reason": "VERIFICATION_PARTIAL"
+    }
+  ],
+  "open_chains": [
+    {
+      "id": "CH01",
+      "title": "Document injection to export",
+      "decision": "BLOCK",
+      "reason": "BLOCKED"
+    },
+    {
+      "id": "CH02",
+      "title": "Support escalation",
+      "decision": "BLOCK",
+      "reason": "BLOCKED"
+    }
+  ],
+  "impact_reviews": [
+    {
+      "id": "IR-1.42-01",
+      "change_id": "APL-614-PUBLICATION-SAFETY-CHECKPOINT",
+      "change": "Dashboard publication registry and fail-closed public safety repair",
+      "paths": [
+        "infrastructure/migrations/0099_dashboard_publication_kind.sql",
+        "apps/api/impact_api/dashboard_publication.py",
+        "apps/web/src/Dashboards.tsx"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH20",
+        "TH28",
+        "TH30",
+        "TH32"
+      ],
+      "summary": "Registers the missing immutable publication kind, denies worker access, exposes recipient-safe publication status, and refuses anonymous publication until independently approved disclosure artifacts and a retrieval boundary exist.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-15",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-02",
+      "change_id": "APL-614-EXACT-CANDIDATE-POLICY",
+      "change": "Exact dashboard candidate and publication-operation policy repair",
+      "paths": [
+        "apps/api/impact_api/dashboard_contracts.py",
+        "packages/contracts/access-policy.json",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "areas": [
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28"
+      ],
+      "summary": "Requires the caller to pin the exact current dashboard revision before publication and registers sharing preview, publish and publication status as explicit policy operations.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-15",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-03",
+      "change_id": "APL-350-EFFECTIVE-ACCESS-COMPLETION",
+      "change": "Effective-access restriction precedence and safe explanation completion",
+      "paths": [
+        "apps/api/impact_api/effective_access_contracts.py",
+        "apps/api/impact_api/store.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH30"
+      ],
+      "summary": "Aligns request authorization, field checks, list visibility and explanations so attached record and field facets remain effective across conflicting roles; explanations omit protected identifiers and values.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-15",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-04",
+      "change_id": "APL-350-GENERATED-PROFILE-REGISTRATION",
+      "change": "Register current generated access profile after effective-access completion",
+      "paths": [
+        "infrastructure/migrations/0100_effective_access_profile.sql"
+      ],
+      "areas": [
+        "migration"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers the exact generated profile hash additively without activating it for existing tenants; governed preview, independent approval and execution remain required.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-15",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-05",
+      "change_id": "APL-618-DASHBOARD-ALERTS-COMPLETION",
+      "change": "Governed period-bound dashboard alerts and durable incident history",
+      "paths": [
+        "infrastructure/migrations/0101_dashboard_alert_kinds.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers alert objects with restrictive worker fences; binds evaluation to a due period, current measure and exact result revision; and exposes durable rule and incident reads through current scoped authority.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-15",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-06",
+      "change_id": "APL-620-EXTERNAL-ANALYTICS-COMPLETION",
+      "change": "Governed revocable external analytics extracts",
+      "paths": [
+        "infrastructure/migrations/0102_external_analytics_kinds.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/external_analytics.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Creates expiring dual-owned service identities with sealed uncertain-operation credential replay; rechecks current source, field and credential authority on every extract; preserves immutable disclosure manifests and explicit remote-copy limits.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-15",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-07",
+      "change_id": "APL-623-ANOMALY-ASSISTANCE-COMPLETION",
+      "change": "Suggestion-only anomaly runs and minimised review feedback",
+      "paths": [
+        "infrastructure/migrations/0103_anomaly_assistance_kinds.sql",
+        "apps/api/impact_api/anomaly_assistance.py",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Pins eligible observation revisions and hashes, rechecks current source and field authority, refuses person-linked inputs, keeps findings separate from source data and person labels, restricts review transitions, and retains only named reason-code feedback fields.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-08",
+      "change_id": "APL-625-EVALUATION-REGISTRY-COMPLETION",
+      "change": "Controlled evaluation registration and ordered evidence stage gates",
+      "paths": [
+        "infrastructure/migrations/0104_evaluation_registration_kind.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/evaluation_registry.py",
+        "packages/contracts/access-policy.json",
+        "infrastructure/migrations/0105_evaluation_access_profile.sql"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers evaluation objects behind restrictive worker fences; pins exact programme, period, baseline and evidence revisions; requires ordered field-collection/publication gates; retains blocked and passed decisions immutably; never grants sensitive-processing approval and never asserts verified independence. The exact generated profile is registered additively without automatic activation.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-09",
+      "change_id": "APL-630-METHODOLOGY-COMPLETION",
+      "change": "Versioned sampling methodology and independently reviewed expansion",
+      "paths": [
+        "infrastructure/migrations/0106_evaluation_methodology_kind.sql",
+        "infrastructure/migrations/0107_evaluation_methodology_access_profile.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/evaluation_methodology.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers methodologies behind worker fences; rechecks bound evaluation authority; requires expected revisions and natural-person independent review; refuses missing/non-positive weights, invalid nonresponse and unweighted population claims; registers the exact profile without activation.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-10",
+      "change_id": "APL-641-APL-644-POSITIVE-JOURNEY-REPAIR",
+      "change": "Governed qualitative coding and transcription persistence and policy repair",
+      "paths": [
+        "infrastructure/migrations/0108_qualitative_transcription_kinds.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/qualitative_evidence.py",
+        "apps/api/impact_api/transcription.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers qualitative, destination, transcript and quotation kinds behind restrictive worker fences; adds explicit policy operations; rechecks current read authority; preserves exact source, codebook and destination revisions; requires independent coders and a third-person adjudicator; retains original automated text; and refuses invalid offsets or unapproved processing destinations.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-11",
+      "change_id": "APL-632-APL-634-POSITIVE-JOURNEY-REPAIR",
+      "change": "Governed frozen analysis packages and independently closed learning agendas",
+      "paths": [
+        "infrastructure/migrations/0109_analysis_learning_kinds.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/analysis_packages.py",
+        "apps/api/impact_api/learning_agenda.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers analysis and learning kinds behind restrictive worker fences; adds explicit policy operations; rechecks current authority and exact revisions; applies declarative filters; verifies immutable package integrity; requires active human ownership and natural-person independent closure; preserves closed reasoning and prevents automatic conclusion transfer across contexts.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-12",
+      "change_id": "APL-405-CUMULATIVE-DIFFERENCE-COMPLETION",
+      "change": "Governed cumulative-difference public contract, projection and reproducible increment trace",
+      "paths": [
+        "infrastructure/migrations/0110_cumulative_difference_projection.sql",
+        "apps/api/impact_api/calculation_contracts.py",
+        "apps/api/impact_api/domain.py",
+        "apps/api/impact_api/service.py",
+        "packages/contracts/access-policy.json",
+        "packages/contracts/openapi.json",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28"
+      ],
+      "summary": "Adds only bounded nullable projections under existing forced tenant RLS; admits the frozen cumulative-difference method; refuses declines and ambiguous latest values; records deterministic baseline-to-position increments; and includes the increment trace in exact reproduction while immutable lineage continues to pin every source revision.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-13",
+      "change_id": "APL-646-APL-648-POSITIVE-JOURNEY-REPAIR",
+      "change": "Governed triangulated finding and budget-version persistence and policy repair",
+      "paths": [
+        "infrastructure/migrations/0111_findings_budget_kinds.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/findings.py",
+        "apps/api/impact_api/finance_governance.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers finding, publication and budget kinds behind restrictive worker fences; replaces generic dashboard authorization with explicit evidence and finance operations; enforces receipt expiry, exact revisions, active-human reviewer identity, natural-person independent publication and budget approval, named approval routes, prior evidence retention and exact decimal totals.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-14",
+      "change_id": "APL-639-MANAGEMENT-RESPONSE-COMPLETION",
+      "change": "Accountable recommendation response and immutable action follow-through",
+      "paths": [
+        "infrastructure/migrations/0112_management_response_kinds.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/management_responses.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers recommendation, response and action kinds behind restrictive worker fences; exposes only explicit evaluation operations; pins recommendation and completion to exact current Evidence revisions; expires uncertain-operation receipts; creates owned dated actions for accepted scope; and preserves immutable action history while outcome improvement remains pending follow-up measurement.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-15",
+      "change_id": "APL-650-APL-652-FINANCE-PERSISTENCE",
+      "change": "Exact expenditure correction and separated finance variance persistence",
+      "paths": [
+        "infrastructure/migrations/0113_finance_transaction_variance_kinds.sql",
+        "apps/api/impact_api/finance_governance.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers expenditure transaction, import and variance kinds behind restrictive worker fences; uses explicit finance operations; preserves stable source keys, exact decimals, correction lineage, exact revision pins and missingness while keeping forecasts outside actual expenditure.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-16",
+      "change_id": "APL-531-EXTRACTION-REVIEW-LOCK",
+      "change": "Immutable extraction draft lock for one human review",
+      "paths": [
+        "infrastructure/migrations/0114_ai_extraction_review_lock.sql",
+        "qualification/test_ai_extraction_drafts_live.py"
+      ],
+      "areas": [
+        "migration",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH23",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Grants the authenticated application only the column privilege PostgreSQL requires for SELECT FOR UPDATE during one human extraction review, while a database trigger refuses every draft mutation. Live qualification pins the exact source revision, preserves conflicts and missing material fields, records explicit human additions with rationale and proves no governed domain object is created.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-17",
+      "change_id": "APL-340-AI-INPUT-TOOL-ISOLATION",
+      "change": "Minimized durable unsafe-instruction observation",
+      "paths": [
+        "infrastructure/migrations/0115_ai_untrusted_instruction_observations.sql",
+        "apps/api/impact_api/ai_enablement.py",
+        "qualification/test_ai_input_tool_isolation_live.py"
+      ],
+      "areas": [
+        "migration",
+        "ai-module"
+      ],
+      "threats": [
+        "TH21",
+        "TH23",
+        "TH28",
+        "TH32",
+        "TH34"
+      ],
+      "summary": "Persists only closed coarse categories when untrusted advisory content requests credential disclosure, cross-tenant retrieval, bulk export or an unapproved destination. The row pins the exact request revision and human principal, constrains executed actions to zero and contains no source text, prompt, credential or provider response. Qualification also proves a policy-allowed tool remains unavailable when absent from the server-owned runtime catalogue and is refused before reservation or provider execution.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-18",
+      "change_id": "APL-345-AI-BUDGET-JOB-CANCELLATION",
+      "change": "Atomic queued AI job cancellation and budget release",
+      "paths": [
+        "apps/api/impact_api/ai_jobs.py",
+        "qualification/test_ai_budget_jobs_live.py"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH21",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Checks the exact queued-job update result before releasing its reservation, so cancellation atomically records a terminal outcome and releases the reserved unit with zero actual usage. Live qualification proves durable acceptance, exact replay, requester-only status, exact policy-version reservation and cancellation settlement against a disposable database.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-19",
+      "change_id": "REL142-CURRENT-ACCESS-PROFILE",
+      "change": "Register exact generated access profile after capability additions",
+      "paths": [
+        "infrastructure/migrations/0116_current_access_profile.sql",
+        "apps/api/impact_api/bootstrap_profile.json"
+      ],
+      "areas": [
+        "migration",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers the exact generated role and purpose-bound capability manifest without activating or widening any existing tenant. Existing tenants still require governed preview, independent natural-person approval and execution under current authority.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-20",
+      "change_id": "APL-339-REPORT-DRAFT-REVIEW",
+      "change": "Snapshot-bound report draft review without source mutation",
+      "paths": [
+        "apps/api/impact_api/ai_report_drafting.py",
+        "qualification/test_ai_report_drafting_live.py"
+      ],
+      "areas": [
+        "ai-module"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH21",
+        "TH23",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Reads the immutable AI report draft without requesting a row lock that its deliberately narrow application grant cannot acquire. Positive qualification proves the human-reviewed draft retains AI origin and exact snapshot, template and evidence bindings while creating no Report or Snapshot mutation or publication.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-21",
+      "change_id": "APL-614-DASHBOARD-GOVERNANCE-COMPLETION",
+      "change": "Complete governed cross-workspace and public dashboard publication lifecycle",
+      "paths": [
+        "infrastructure/migrations/0117_dashboard_disclosure_artifact_kind.sql",
+        "apps/api/impact_api/dashboard_authoring.py",
+        "apps/api/impact_api/dashboard_publication.py",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "packages/contracts/access-policy.json",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH20",
+        "TH21",
+        "TH28",
+        "TH30",
+        "TH32"
+      ],
+      "summary": "Copies configuration into an independently authorised destination without grants or source selectors; requires independent natural-person approval of an immutable disclosure snapshot; serves only its pinned content; and restricts owner transfer, durable suspension, locked revalidation and explicit resume to current authority as immutable exact-retry revisions.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-22",
+      "change_id": "APL-597-601-541-IMMUTABLE-READ-REPAIR",
+      "change": "Read immutable AI candidates under the existing tenant write lock",
+      "paths": [
+        "apps/api/impact_api/ai_qualitative_assistance.py",
+        "apps/api/impact_api/ai_proactive_findings.py",
+        "apps/api/impact_api/ai_action_proposals.py",
+        "apps/api/impact_api/service.py",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "areas": [
+        "ai-module",
+        "contracts"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH23",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Removes row-update locks from insert-only qualitative suggestions, detection tasks, findings and action proposals while retaining tenant advisory serialization and uniqueness. Source classification is resolved from the currently authorized registry row rather than an immutable revision row without that field. Reserved use-case activation remains disabled; patched component tests do not establish whole-story positive runtime qualification. Registers the already contracted ordinary WorkItem draft command so explicit confirmation can execute through existing scoped authority and atomic receipt/audit handling.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-23",
+      "change_id": "WORK-ITEM-PROFILE-REGISTRATION",
+      "change": "Register the exact generated WorkItem draft access profile without applying it",
+      "paths": [
+        "infrastructure/migrations/0118_work_item_access_profile.sql",
+        "apps/api/impact_api/bootstrap_profile.json"
+      ],
+      "areas": [
+        "migration",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH32"
+      ],
+      "summary": "Additive registration of the generated profile after ordinary WorkItem draft routing becomes implemented. Existing tenant ceilings and memberships remain unchanged. No table grant, prior migration edit or automatic upgrade; existing independent onboarding/access-upgrade flows remain mandatory.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-24",
+      "change_id": "REVIEWED-LOCAL-AI-ACTIVATION",
+      "change": "Default-off explicit reviewed local activation with real tenant policy and shutdown checks",
+      "paths": [
+        "apps/api/impact_api/ai_runtime_activation.py",
+        "apps/api/impact_api/ai_policy.py",
+        "apps/api/impact_api/ai_indicator_design.py",
+        "apps/api/impact_api/ai_import_assistance.py",
+        "apps/api/impact_api/ai_evidence_questions.py",
+        "apps/api/impact_api/ai_numeric_analysis.py",
+        "apps/api/impact_api/ai_qualitative_assistance.py",
+        "apps/api/impact_api/ai_proactive_findings.py",
+        "apps/api/impact_api/ai_action_proposals.py",
+        "apps/api/impact_api/config.py"
+      ],
+      "areas": [
+        "ai-module",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH23",
+        "TH24",
+        "TH28",
+        "TH29"
+      ],
+      "summary": "Owner authorized local activation repair. A strict server-owned closed allowlist permits these seven deterministic assistance handlers only in development/test. Both policy persistence and every runtime require explicit activation, so previously enabled stored policies cannot bypass a narrower process configuration. Tenant policy versions, class/destination/language/tool/purpose checks, current authority and safety shutdown checks remain real. Nonempty allowlists in staging/production fail settings construction. No provider call, production activation, migration or spending change. Seven external HTTP scenarios exercise their ordinary effect/refusal/recovery journeys and actual config rollback, tenant-policy disablement and safety shutdown. Manual activation approval is not human security/release signoff.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
+    }
+  ],
+  "evidence": [
+    "docs/current/threat-register.json",
+    "qualification/test_effective_access_unit.py",
+    "qualification/test_evaluation_registry_unit.py",
+    "qualification/test_evaluation_methodology_unit.py",
+    "qualification/test_qualitative_coding_live.py",
+    "qualification/test_transcription_translation_live.py",
+    "qualification/test_analysis_packages_live.py",
+    "qualification/test_learning_agenda_live.py",
+    "qualification/test_cumulative_difference_live.py",
+    "qualification/test_triangulated_findings_live.py",
+    "qualification/test_budget_versions_live.py",
+    "qualification/test_management_responses_live.py",
+    "qualification/test_expenditure_ingestion_live.py",
+    "qualification/test_finance_variance_live.py",
+    "qualification/test_ai_extraction_drafts_live.py",
+    "qualification/test_ai_input_tool_isolation_live.py",
+    "qualification/test_ai_budget_jobs_live.py",
+    "qualification/test_dashboard_governance_live.py"
+  ],
+  "notes": [
+    "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."
+  ]
+}

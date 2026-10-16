@@ -6,7 +6,17 @@ CODE = {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"}
 CATEGORY = {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,31}$"}
 NUMBER = {"type": ["string", "null"], "pattern": r"^-?(0|[1-9][0-9]{0,25})(\.[0-9]{1,12})?$"}
 UUID = {"type": "string", "format": "uuid"}
-METHODS = ["SUM", "POOLED_RATIO", "COUNT", "LAST_VALID", "MEAN", "MEDIAN", "MIN", "MAX"]
+METHODS = [
+    "SUM",
+    "POOLED_RATIO",
+    "COUNT",
+    "LAST_VALID",
+    "CUMULATIVE_DIFFERENCE",
+    "MEAN",
+    "MEDIAN",
+    "MIN",
+    "MAX",
+]
 VERSION = "1.66.0"
 SPECIAL_READS = {
     "calculated-results/{object_id}/reproduction",
@@ -107,8 +117,20 @@ def augment(spec, policy):
         properties["statistical_interpretation"] = STATISTICAL_INTERPRETATION
     for name in ["ObservationData", "ObservationDraftData"]:
         schemas[name]["properties"]["statistical_weight"] = NUMBER
+    cumulative_increments = {
+        "type": "array",
+        "maxItems": 10000,
+        "items": closed(
+            {
+                "event_at": {"type": "string", "format": "date-time"},
+                "position": {"type": "string", "pattern": NUMBER["pattern"]},
+                "increment": {"type": "string", "pattern": NUMBER["pattern"]},
+            }
+        ),
+    }
     schemas["CalculatedResultData"]["properties"]["disaggregation"] = BREAKDOWN
     schemas["CalculatedResultData"]["properties"].update(
+        cumulative_increments=cumulative_increments,
         calculation_precision_digits={"type": "integer", "const": 100},
         formula=closed(
             {
@@ -232,6 +254,7 @@ def augment(spec, policy):
                     "numerator": NUMBER,
                     "denominator": NUMBER,
                     "displayed_value": {"type": "string", "maxLength": 64},
+                    "cumulative_increments": cumulative_increments,
                 }
             ),
             "recomputed": closed(
@@ -241,6 +264,7 @@ def augment(spec, policy):
                     "numerator": NUMBER,
                     "denominator": NUMBER,
                     "displayed_value": {"type": "string", "maxLength": 64},
+                    "cumulative_increments": cumulative_increments,
                 }
             ),
             "exact_match": {"type": "boolean"},

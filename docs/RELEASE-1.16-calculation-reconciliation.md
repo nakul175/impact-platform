@@ -6,4 +6,6 @@ Run comparison rechecks current authority for both results and every source need
 
 When an amended report changes an existing numeric binding, independent approval now requires the earlier and later result revisions to reconcile completely. A missing, withheld, incompatible or unexplained amount returns `REPORT_DIFFERENCE_UNRECONCILED` before any approval decision is written. First-report approval has no prior numeric difference to reconcile.
 
-The React result inspector presents the explanation aggregates and an accessible run selector and cause table. This release adds no migration or database privilege change. Tests and CI remain deferred by owner request; source checks only are recorded for this unmerged, undeployed coding candidate.
+The React result inspector presents the explanation aggregates and an accessible run selector and cause table. This release adds no migration or database privilege change.
+
+The focused disposable live positive journey passed locally on 16 October 2026: an analyst explained an incomplete approved run, added a second independently approved source, calculated again, and received a fully reconciled deterministic `SOURCE`/`FILTER` bridge with no source identities or values in the explanation aggregates. CI, independent final review, merge, staging deployment and owner acceptance remain separate gates.

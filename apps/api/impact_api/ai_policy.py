@@ -28,6 +28,7 @@ from .ai_enablement_contracts import (
     TOOL_PATTERN,
     USE_CASES,
 )
+from .ai_runtime_activation import REVIEWABLE_USE_CASES, activated
 from .domain import DomainError
 from .store import audit, authorize, context, hash_data, write
 
@@ -38,15 +39,8 @@ OPERATION = "update_ai_policy"
 # Configuration and execution remain separate gates. A tenant may explicitly approve any named use
 # case, but only an implemented runtime can execute it, and every runtime must call require() with the
 # exact use case and requested tools before content leaves the authorised boundary.
-RESERVED_USE_CASES = (
-    "INDICATOR_DESIGN",
-    "IMPORT_CLEANING",
-    "EVIDENCE_QUESTION",
-    "NUMERIC_ANALYSIS",
-    "QUALITATIVE_ASSISTANCE",
-    "PROACTIVE_FINDINGS",
-    "ACTION_PROPOSAL",
-)
+
+RESERVED_USE_CASES = REVIEWABLE_USE_CASES
 ACTIVE_USE_CASES = tuple(case for case in USE_CASES if case not in RESERVED_USE_CASES)
 DESTINATION_DETAILS = {"openai-us": {"provider": "OpenAI", "region": "United States"}}
 # Allowed data classes are a ceiling: a request passes when its class is at or below the highest
@@ -120,7 +114,7 @@ def _languages(value):
     return list(value)
 
 
-def validate_policy(data):
+def validate_policy(data, *, activated_use_cases=()):
     """The closed policy body `{use_cases: [...]}`, normalised; raises VALIDATION_FAILED otherwise."""
     if (
         not isinstance(data, dict)
@@ -139,7 +133,7 @@ def validate_policy(data):
         seen.add(use_case)
         if type(item["enabled"]) is not bool:
             _invalid()
-        if item["enabled"] and use_case in RESERVED_USE_CASES:
+        if item["enabled"] and use_case in RESERVED_USE_CASES and use_case not in activated_use_cases:
             _invalid(
                 "AI_USE_CASE_RESERVED",
                 "This AI use case is reserved for a later reviewed activation.",
@@ -244,7 +238,18 @@ def _covers(languages, language):
     return any(tag.split("-")[0].lower() == primary for tag in languages)
 
 
-def require(policy, use_case, version, data_class, destination, language, tools=(), purpose=None):
+def require(
+    policy,
+    use_case,
+    version,
+    data_class,
+    destination,
+    language,
+    tools=(),
+    purpose=None,
+    *,
+    activated_use_cases=(),
+):
     """Refuse an AI request the policy in force does not allow. Raises; returns the rule otherwise.
 
     Order: a request made against another policy version (409 AI_POLICY_CHANGED), a use case that is
@@ -257,7 +262,7 @@ def require(policy, use_case, version, data_class, destination, language, tools=
             message="Your organisation's AI policy changed. Reload the policy in force before requesting AI.",
             reason="AI_POLICY_CHANGED",
         )
-    if use_case in RESERVED_USE_CASES:
+    if use_case in RESERVED_USE_CASES and use_case not in activated_use_cases:
         raise DomainError(
             "SERVICE_UNAVAILABLE",
             503,
@@ -346,7 +351,9 @@ class AIPolicy:
                     for key in DESTINATIONS
                     if key in DESTINATION_DETAILS
                 ],
-                "reserved_use_cases": list(RESERVED_USE_CASES),
+                "reserved_use_cases": [
+                    case for case in RESERVED_USE_CASES if case not in activated(self.service)
+                ],
             }
 
     def revisions(self, identity, tenant, limit=50, cursor=None):
@@ -403,7 +410,6 @@ class AIPolicy:
 
     def save(self, identity, tenant, body, correlation):
         _request(body)
-        rules = validate_policy(body["data"])
         fingerprint = hash_data([OPERATION, body])
         now = datetime.now(timezone.utc)
         with self.service.db.transaction(tenant) as c:
@@ -426,6 +432,7 @@ class AIPolicy:
                 if old["expires_at"] <= now:
                     raise DomainError("IDEMPOTENCY_EXPIRED", 409)
                 return old["outcome"]
+            rules = validate_policy(body["data"], activated_use_cases=activated(self.service))
             current = in_force(c, tenant)
             if current["version"] != body["expected_version"]:
                 raise DomainError(

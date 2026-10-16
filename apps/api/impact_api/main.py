@@ -1830,6 +1830,20 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.get("/v1/tenants/{tenant}/dashboard-alert-rules")
+    def dashboard_alert_rule_list(request: Request, tenant: str, limit: int = 50, cursor: str | None = None):
+        return dashboard_alerts.listing(auth.resolve(request), uuid(tenant), limit, cursor)
+
+    @app.get("/v1/tenants/{tenant}/dashboard-alert-rules/{obj}")
+    def dashboard_alert_rule_read(request: Request, tenant: str, obj: str):
+        return dashboard_alerts.read(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/dashboard-alert-rules/{obj}/incidents")
+    def dashboard_alert_incident_list(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return dashboard_alerts.incidents(auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor)
+
     @app.post("/v1/tenants/{tenant}/dashboard-alert-rules/{obj}/actions/evaluate")
     async def dashboard_alert_rule_evaluate(request: Request, tenant: str, obj: str):
         body = await strict_body(request)
@@ -1854,6 +1868,18 @@ def create_app():
             body,
             request.state.correlation,
         )
+
+    @app.get("/v1/tenants/{tenant}/external-analytics-connections")
+    def external_analytics_connection_list(request: Request, tenant: str, limit: int = 50):
+        return external_analytics.listing(auth.resolve(request), uuid(tenant), limit)
+
+    @app.get("/v1/tenants/{tenant}/external-analytics-connections/{obj}")
+    def external_analytics_connection_read(request: Request, tenant: str, obj: str):
+        return external_analytics.read(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/external-analytics-connections/{obj}/extracts")
+    def external_analytics_extract_list(request: Request, tenant: str, obj: str, limit: int = 50):
+        return external_analytics.extracts(auth.resolve(request), uuid(tenant), uuid(obj), limit)
 
     @app.post("/v1/tenants/{tenant}/external-analytics-connections/{obj}/actions/refresh")
     async def external_analytics_connection_refresh(request: Request, tenant: str, obj: str):
@@ -1893,6 +1919,22 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.get("/v1/tenants/{tenant}/anomaly-runs")
+    def anomaly_run_list(request: Request, tenant: str, limit: int = 50):
+        return anomaly_assistance.list_runs(auth.resolve(request), uuid(tenant), limit)
+
+    @app.get("/v1/tenants/{tenant}/anomaly-runs/{obj}")
+    def anomaly_run_read(request: Request, tenant: str, obj: str):
+        return anomaly_assistance.read_run(auth.resolve(request), uuid(tenant), uuid(obj))
+
+    @app.get("/v1/tenants/{tenant}/anomaly-findings")
+    def anomaly_finding_list(request: Request, tenant: str, limit: int = 50):
+        return anomaly_assistance.list_findings(auth.resolve(request), uuid(tenant), limit)
+
+    @app.get("/v1/tenants/{tenant}/anomaly-findings/{obj}")
+    def anomaly_finding_read(request: Request, tenant: str, obj: str):
+        return anomaly_assistance.read_finding(auth.resolve(request), uuid(tenant), uuid(obj))
+
     @app.post("/v1/tenants/{tenant}/anomaly-findings/{obj}/actions/review")
     async def anomaly_finding_review(request: Request, tenant: str, obj: str):
         body = await strict_body(request)
@@ -1918,6 +1960,42 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.get("/v1/tenants/{tenant}/evaluations")
+    async def evaluation_list(
+        request: Request,
+        tenant: str,
+        programme_id: str | None = None,
+        limit: int = 50,
+        cursor: str | None = None,
+    ):
+        return await run_in_threadpool(
+            evaluation_registry.listing,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(programme_id) if programme_id else None,
+            limit,
+            cursor,
+        )
+
+    @app.get("/v1/tenants/{tenant}/evaluations/{obj}")
+    async def evaluation_read(request: Request, tenant: str, obj: str):
+        return await run_in_threadpool(
+            evaluation_registry.read, auth.resolve(request), uuid(tenant), uuid(obj)
+        )
+
+    @app.get("/v1/tenants/{tenant}/evaluations/{obj}/stage-gates")
+    async def evaluation_gate_history(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return await run_in_threadpool(
+            evaluation_registry.gates,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            limit,
+            cursor,
+        )
+
     @app.post("/v1/tenants/{tenant}/evaluations/{obj}/actions/stage-gate")
     async def evaluation_stage_gate(request: Request, tenant: str, obj: str):
         body = await strict_body(request)
@@ -1941,6 +2019,33 @@ def create_app():
             uuid(tenant),
             body,
             request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/evaluation-methodologies")
+    async def evaluation_methodology_list(
+        request: Request, tenant: str, evaluation_id: str, limit: int = 50, cursor: str | None = None
+    ):
+        return await run_in_threadpool(
+            evaluation_methodology.listing,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(evaluation_id),
+            limit,
+            cursor,
+        )
+
+    @app.get("/v1/tenants/{tenant}/evaluation-methodologies/{obj}")
+    async def evaluation_methodology_read(request: Request, tenant: str, obj: str):
+        return await run_in_threadpool(
+            evaluation_methodology.read, auth.resolve(request), uuid(tenant), uuid(obj)
+        )
+
+    @app.get("/v1/tenants/{tenant}/evaluation-methodologies/{obj}/history")
+    async def evaluation_methodology_history(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return await run_in_threadpool(
+            evaluation_methodology.history, auth.resolve(request), uuid(tenant), uuid(obj), limit, cursor
         )
 
     @app.post("/v1/tenants/{tenant}/evaluation-methodologies/{obj}/actions/amend")
@@ -2061,6 +2166,44 @@ def create_app():
             uuid(obj),
             body,
             request.state.correlation,
+        )
+
+    @app.post("/v1/tenants/{tenant}/evaluation-recommendations", status_code=201)
+    async def evaluation_recommendation_create(request: Request, tenant: str):
+        body = await strict_body(request)
+        validate("EvaluationRecommendationCreate", body)
+        return await run_in_threadpool(
+            management_responses.create_recommendation,
+            auth.resolve(request),
+            uuid(tenant),
+            body,
+            request.state.correlation,
+        )
+
+    @app.get("/v1/tenants/{tenant}/evaluation-recommendations/{obj}")
+    def evaluation_recommendation_read(request: Request, tenant: str, obj: str):
+        return management_responses.read(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            "EvaluationRecommendation",
+            "read_evaluation_recommendation",
+        )
+
+    @app.get("/v1/tenants/{tenant}/management-actions/{obj}")
+    def management_action_read(request: Request, tenant: str, obj: str):
+        return management_responses.read(
+            auth.resolve(request), uuid(tenant), uuid(obj), "ManagementAction", "read_management_action"
+        )
+
+    @app.get("/v1/tenants/{tenant}/management-actions/{obj}/history")
+    def management_action_history(request: Request, tenant: str, obj: str):
+        return management_responses.history(
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            "ManagementAction",
+            "read_management_action_history",
         )
 
     @app.post("/v1/tenants/{tenant}/evaluation-recommendations/{obj}/response", status_code=201)
@@ -2267,6 +2410,19 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy-to-workspace", status_code=201)
+    async def dashboard_copy_to_workspace(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardWorkspaceCopy", body)
+        return await run_in_threadpool(
+            dashboard_authoring.copy_to_workspace,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
     @app.get("/v1/tenants/{tenant}/dashboards/{obj}/sharing-preview")
     def dashboard_sharing_preview(request: Request, tenant: str, obj: str, recipient_id: str):
         return dashboard_publication.sharing_preview(
@@ -2286,10 +2442,98 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/disclosure-artifacts", status_code=201)
+    async def dashboard_disclosure_prepare(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardDisclosurePrepare", body)
+        return await run_in_threadpool(
+            dashboard_publication.prepare_disclosure,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/dashboards/{obj}/disclosure-artifacts/{artifact_id}/actions/review",
+        status_code=201,
+    )
+    async def dashboard_disclosure_review(request: Request, tenant: str, obj: str, artifact_id: str):
+        body = await strict_body(request)
+        validate("DashboardDisclosureReview", body)
+        return await run_in_threadpool(
+            dashboard_publication.review_disclosure,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(artifact_id),
+            body,
+            request.state.correlation,
+        )
+
     @app.get("/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}")
     def dashboard_publication_status(request: Request, tenant: str, obj: str, publication_id: str):
         return dashboard_publication.status(
+            auth.resolve(request), uuid(tenant), uuid(obj), uuid(publication_id), request.state.correlation
+        )
+
+    @app.get("/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}/content")
+    def dashboard_publication_content(request: Request, tenant: str, obj: str, publication_id: str):
+        return dashboard_publication.content(
             auth.resolve(request), uuid(tenant), uuid(obj), uuid(publication_id)
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}/actions/transfer-owner",
+        status_code=201,
+    )
+    async def dashboard_publication_transfer_owner(
+        request: Request, tenant: str, obj: str, publication_id: str
+    ):
+        body = await strict_body(request)
+        validate("DashboardPublicationOwnerTransfer", body)
+        return await run_in_threadpool(
+            dashboard_publication.transfer_owner,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(publication_id),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}/actions/revalidate",
+        status_code=201,
+    )
+    async def dashboard_publication_revalidate(request: Request, tenant: str, obj: str, publication_id: str):
+        body = await strict_body(request)
+        validate("DashboardPublicationChange", body)
+        return await run_in_threadpool(
+            dashboard_publication.revalidate,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(publication_id),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}/actions/resume", status_code=201
+    )
+    async def dashboard_publication_resume(request: Request, tenant: str, obj: str, publication_id: str):
+        body = await strict_body(request)
+        validate("DashboardPublicationChange", body)
+        return await run_in_threadpool(
+            dashboard_publication.resume,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(publication_id),
+            body,
+            request.state.correlation,
         )
 
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/pivot-preview")

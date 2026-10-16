@@ -203,6 +203,7 @@ def calculate(definition, observations):
         "rounding_rule": "HALF_UP",
         "unit": definition["unit"],
         "reason_code": "NO_APPROVED_VALUES",
+        "cumulative_increments": [],
     }
     if not values:
         return base
@@ -240,6 +241,18 @@ def calculate(definition, observations):
                 latest_value = decimal_value(tied[0]["value"])
                 if any(decimal_value(o["value"]) < baseline for o in ordered):
                     return {**base, "reason_code": "CUMULATIVE_DECLINE"}
+                previous = baseline
+                increments = []
+                for observation in ordered:
+                    position = decimal_value(observation["value"])
+                    increments.append(
+                        {
+                            "event_at": observation["event_at"],
+                            "position": stored(position),
+                            "increment": stored(position - previous),
+                        }
+                    )
+                    previous = position
                 value = latest_value - baseline
                 raw = stored(value)
                 return {
@@ -248,6 +261,7 @@ def calculate(definition, observations):
                     "value": raw,
                     "displayed_value": display(Decimal(raw), places),
                     "reason_code": "CALCULATED",
+                    "cumulative_increments": increments,
                 }
             if ratio_type:
                 n, d = keys.pop()

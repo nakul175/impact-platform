@@ -153,13 +153,13 @@ def context(c, identity, tenant, write=False):
     if not m or (m["expires_at"] and m["expires_at"] <= now):
         unavailable()
     grants = c.execute(
-        "SELECT g.*,s.scope_type,f.record_object_ids,f.readable_field_categories,f.writable_field_categories FROM impact.grant_current g JOIN impact.object_registry r ON r.tenant_id=g.tenant_id AND r.object_id=g.object_id JOIN impact.scope_definition s ON s.tenant_id=g.tenant_id AND s.scope_id=g.scope_id LEFT JOIN impact.grant_access_facet f ON f.tenant_id=g.tenant_id AND f.grant_id=g.object_id WHERE g.tenant_id=%s AND g.subject_id=%s AND r.lifecycle_state='Active' AND g.starts_at<=%s AND (g.expires_at IS NULL OR g.expires_at>%s)",
+        "SELECT 'DIRECT' AS source,g.*,s.scope_type,f.record_object_ids,f.readable_field_categories,f.writable_field_categories FROM impact.grant_current g JOIN impact.object_registry r ON r.tenant_id=g.tenant_id AND r.object_id=g.object_id JOIN impact.scope_definition s ON s.tenant_id=g.tenant_id AND s.scope_id=g.scope_id LEFT JOIN impact.grant_access_facet f ON f.tenant_id=g.tenant_id AND f.grant_id=g.object_id WHERE g.tenant_id=%s AND g.subject_id=%s AND r.lifecycle_state='Active' AND g.starts_at<=%s AND (g.expires_at IS NULL OR g.expires_at>%s)",
         (tenant, p["principal_id"], now, now),
     ).fetchall()
     # Group entitlements are evaluated on every permission check. The immutable group
     # revision is the source record; the relation is only its current access projection.
     grants += c.execute(
-        "SELECT e.group_id AS object_id,e.capability,e.scope_id,e.expires_at,NULL AS purpose,s.scope_type,NULL::uuid[] AS record_object_ids,NULL::text[] AS readable_field_categories,NULL::text[] AS writable_field_categories "
+        "SELECT 'GROUP' AS source,e.group_id AS object_id,e.capability,e.scope_id,e.expires_at,NULL AS purpose,s.scope_type,NULL::uuid[] AS record_object_ids,NULL::text[] AS readable_field_categories,NULL::text[] AS writable_field_categories "
         "FROM impact.group_entitlement e JOIN impact.object_registry r ON r.tenant_id=e.tenant_id AND r.object_id=e.group_id "
         "JOIN impact.scope_definition s ON s.tenant_id=e.tenant_id AND s.scope_id=e.scope_id "
         "WHERE e.tenant_id=%s AND e.membership_id=%s AND e.expires_at>%s AND r.lifecycle_state='Active'",
@@ -176,10 +176,29 @@ def context(c, identity, tenant, write=False):
     )
 
 
+def _matching_grants(grants, cap, purpose=None):
+    return [
+        grant
+        for grant in grants
+        if grant["capability"] == cap and (grant["purpose"] is None or grant["purpose"] == purpose)
+    ]
+
+
+def _record_restriction_allows(grants, object_id):
+    restrictions = [grant.get("record_object_ids") for grant in grants if grant.get("record_object_ids")]
+    return not restrictions or (
+        object_id is not None
+        and all(str(object_id) in {str(value) for value in values} for values in restrictions)
+    )
+
+
 def scopes(c, ctx, cap, object_id=None, purpose=None):
-    for g in ctx.grants:
-        if g["capability"] != cap or (g["purpose"] is not None and g["purpose"] != purpose):
-            continue
+    matching = _matching_grants(ctx.grants, cap, purpose)
+    # An attached facet is an explicit narrowing condition on the subject's effective
+    # capability. A second role cannot erase it.
+    if not _record_restriction_allows(matching, object_id):
+        return False
+    for g in matching:
         record_ids = g.get("record_object_ids")
         if record_ids and (not object_id or str(object_id) not in {str(value) for value in record_ids}):
             continue
@@ -199,9 +218,15 @@ def scopes(c, ctx, cap, object_id=None, purpose=None):
 def field_allowed(c, ctx, cap, object_id, category, write=False):
     """Apply row scope before a server-owned field category; an attached facet only narrows."""
     key = "writable_field_categories" if write else "readable_field_categories"
-    for grant in ctx.grants:
-        if grant["capability"] != cap or grant["purpose"] is not None:
-            continue
+    grants = _matching_grants(ctx.grants, cap)
+    if not _record_restriction_allows(grants, object_id):
+        return False
+    # Field facets are explicit effective restrictions too: a wider role cannot
+    # silently restore a category removed by another current grant.
+    restricted = [grant.get(key) for grant in grants if grant.get(key) is not None]
+    if restricted and any(category not in categories for categories in restricted):
+        return False
+    for grant in grants:
         categories = grant.get(key)
         if categories is not None and category not in categories:
             continue
@@ -278,9 +303,14 @@ def authorize(c, ctx, operation, object_id=None, hidden=False, purpose=None, exa
 
 
 def visible_sql(ctx, cap):
-    grants = [g for g in ctx.grants if g["capability"] == cap and g["purpose"] is None]
+    grants = _matching_grants(ctx.grants, cap)
+    fences = [g.get("record_object_ids") for g in grants if g.get("record_object_ids")]
     if any(g["scope_type"] == "TENANT" and not g.get("record_object_ids") for g in grants):
-        return "TRUE", []
+        base, params = "TRUE", []
+        if fences:
+            base = "(" + base + ") AND " + " AND ".join("r.object_id=ANY(%s::uuid[])" for _ in fences)
+            params.extend([[str(value) for value in values] for values in fences])
+        return base, params
     clauses, params = [], []
     for grant in grants:
         record_ids = grant.get("record_object_ids")
@@ -297,7 +327,11 @@ def visible_sql(ctx, cap):
                 "EXISTS(SELECT 1 FROM impact.scope_member sm WHERE sm.tenant_id=r.tenant_id AND sm.object_id=r.object_id AND sm.scope_id=%s)"
             )
             params.append(grant["scope_id"])
-    return ("(" + " OR ".join(clauses) + ")" if clauses else "FALSE", params)
+    expression = "(" + " OR ".join(clauses) + ")" if clauses else "FALSE"
+    if fences:
+        expression = "(" + expression + ") AND " + " AND ".join("r.object_id=ANY(%s::uuid[])" for _ in fences)
+        params.extend([[str(value) for value in values] for values in fences])
+    return expression, params
 
 
 def canonical(data):

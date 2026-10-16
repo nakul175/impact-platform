@@ -1,7 +1,7 @@
-# Release 1.32 coding candidate — learning agenda
+# Release 1.32 qualification candidate — learning agenda
 
-FR-EVA-006 / APL-634 adds versioned learning questions linked to a strategic decision, exact Evidence revisions, evidence gaps, planned inquiry, owner and review date. Unresolved assumptions explicitly require follow-up studies.
+FR-EVA-006 / APL-634 adds versioned learning questions linked to a strategic decision, at least three exact Evidence revisions, evidence gaps, planned inquiry, an active human owner and review date. Unresolved assumptions explicitly require follow-up studies.
 
-Closing records conclusions and remaining uncertainty. Reopening preserves the closed revision and reasoning. Considering a different context creates a pending applicability review without transferring the conclusion. Broad summaries containing restricted evidence require an approved disclosure review.
+Closing requires an expected revision and a different natural person from every prior question author. Reopening preserves the exact closed revision, conclusion and remaining uncertainty. Considering a different context creates a pending applicability review pinned to the current question revision without transferring the conclusion. Current read authority is rechecked and operation receipts enforce exact payload reuse and expiry.
 
-This release adds no migration or privilege change. Tests and CI remain deferred by owner request.
+Migration 0109 registers `LearningQuestion` and `LearningApplicabilityReview` behind restrictive worker fences. The focused disposable live positive journey passed locally on 16 October 2026. CI, merge, staging deployment and owner acceptance remain separate gates.

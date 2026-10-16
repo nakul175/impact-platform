@@ -1,0 +1,59 @@
+{
+  "started_at_utc": "2026-10-16T13:36:13.039100+00:00",
+  "source_head": "645466ff032cbcd7e9927a646f44c75318fef24a",
+  "source_tree_sha256_before": "f468e72fa737d215fa7e6aaaf31805ce72a2af150aef374f4317746e9d58a72a",
+  "source_paths": [
+    "apps",
+    "qualification",
+    "packages",
+    "infrastructure",
+    "scripts",
+    "docs/acceptance/RELEASE-1.42-THREE-GATE-TEST-MAP.json"
+  ],
+  "source_status_before": "",
+  "command": "IMPACT_PORT=8454 make test",
+  "runtime": "fresh disposable PGlite synthetic fixture; no native concurrency claim",
+  "exit_code": 0,
+  "finished_at_utc": "2026-10-16T13:41:37.294536+00:00",
+  "head_after": "645466ff032cbcd7e9927a646f44c75318fef24a",
+  "source_tree_sha256_after": "f468e72fa737d215fa7e6aaaf31805ce72a2af150aef374f4317746e9d58a72a",
+  "source_status_after": "",
+  "junit_sha256": "529c841e116f4bc6195b1d4a3a6cf091a098dcc4b47ca9083d138fdede2879d4",
+  "log_sha256": "6140b82a5440ed8b485bb1dfe064196d3e16b7bacef21b5e085e9fd5f7c452e2",
+  "source_unchanged": true,
+  "supporting_checks": {
+    "lint": "PASS",
+    "documentation_index": "PASS",
+    "release_review_consistency": "PASS; human confirmations remain empty and critical threat gates remain open",
+    "reporter_validation": "Missing authorization evidence affects only authorization; mismatched HEAD rejected",
+    "focused_profile_and_order_regression": {
+      "passed": 64,
+      "skipped": 4,
+      "failed": 0
+    },
+    "applied_migrations_0001_0117": "byte-identical to 4951445f0de5a8baf17c018310457691140b131f"
+  },
+  "full_run_summary": {
+    "passed": 2648,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 229,
+    "deselected": 1,
+    "warnings": 1
+  },
+  "limits": [
+    "Bounded local mapped journeys only; not all209scenarios/364assertions",
+    "Seven reserved use cases component-tested only; external runtime blocked",
+    "229skips and1deselection retained as unpassed",
+    "No new hosted CI, merge, deployment or human/owner acceptance"
+  ],
+  "junit_path": "docs/evidence/candidate-1.42/three-gates-20261016/final-full-645466f.xml",
+  "log_path": "docs/evidence/candidate-1.42/three-gates-20261016/final-full-645466f.log",
+  "gate_result_path": "docs/evidence/candidate-1.42/three-gates-20261016/STORY-GATE-RESULTS.json",
+  "independent_agent_evidence_review": {
+    "reviewer": "root/refusal_gate_audit",
+    "result": "PASS",
+    "scope": "hashes, unchanged source, actual JUnit totals, separate49gate mappings,7excludedreserved cases, acceptance0",
+    "human_review_or_signoff": false
+  }
+}

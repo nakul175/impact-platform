@@ -1,0 +1,94 @@
+# Release 1.42 — local journey, refusal and recovery qualification
+
+**Preserved checkpoint:** the49/56 results below belong to source645466f. The [reviewed local activation candidate](RELEASE-1.42-reviewed-local-ai-activation.md) extends the test-node map; its final clean-source combined result is recorded separately and is not implied by the historical results below.
+
+## Delivered
+
+The 56-story review cohort now has an explicit candidate test-node map in
+`docs/acceptance/RELEASE-1.42-THREE-GATE-TEST-MAP.json`. It identifies bounded
+positive, refusal and recovery journeys for 49 stories. Seven AI use cases remain
+reserved-disabled: APL-533, APL-535, APL-537, APL-538, APL-597, APL-601 and APL-541.
+Passing components behind a substituted test policy cannot qualify their external
+user journeys.
+
+New dashboard journeys cover lower-is-better overachievement with target labels,
+stale source detection across repeated fetches followed by recalculation and a
+locked snapshot, and exact-version qualified portfolio rankings. Recovery probes
+exercise invalid selectors, corrected numeric submissions, closed request
+refusals, exact retries, restored source authority, renewed presentation leases,
+and manual calculation while an AI configuration remains contained.
+
+Daily advisory-budget tests receive a new disposable workspace instead of
+deleting or backdating request history or changing the limit. The cross-workspace
+dashboard test revokes its temporary membership after the journey, preserving
+later tests' cross-tenant preconditions.
+
+## Contract and persistence
+
+Component qualification exposed invalid row-update locks on immutable AI
+suggestions, detection tasks, findings and action proposals. The code now reads
+them under the existing tenant advisory lock and uniqueness constraints. No
+UPDATE privilege is added. Action proposals and proactive findings obtain
+classification from the currently authorized registry entry; immutable revisions
+do not contain that field.
+
+The existing closed WorkItem draft contract is now registered in the ordinary
+command dispatcher; its implemented API export and generated onboarding access
+profile are synchronized. Live tests exercise creation, authority refusals and
+exact retries without duplicate writes.
+
+Additive migration 0118 registers the generated access profile; it applies no
+existing-tenant authority. Migrations 0001–0117 remain byte-exact.
+
+No DTO, policy activation, provider request, production identity or
+spending change is introduced. IR-1.42-22 records the product repair; its human
+confirmation remains empty.
+
+## Evidence and limits
+
+Raw local results, including failures, are retained under
+`docs/evidence/candidate-1.42/three-gates-20261016/`. Evidence must bind the tested
+source and explicit test nodes. A suite count does not establish every one of the
+cohort's 209 scenarios or 364 assertions, native concurrency, browser behavior,
+hosted CI, independent approval, staging or product-owner acceptance.
+
+The earlier full run reported 2,628 passed, 9 failed and 229 skipped. After fixture
+isolation, the next run reported 2,637 passed, 3 failed and 229 skipped; those three
+failures were the newly introduced component tests before their immutable-read
+repair. Subsequent focused runs and the final combined result are recorded in the
+receipt, rather than treating those failed full runs as passes.
+
+The frozen-source run at `6317cc4` retained 27 failures (2,621 passed,
+229 skipped): 25 profile-registration failures, one active-grant fixture selector
+and one snapshot lookup that did not follow pagination. The additive registration
+and fixture repairs subsequently passed a focused run: 64 passed, 4 skipped.
+Raw JUnit files preserve both outcomes. Raw failure XML whitespace is retained
+byte-for-byte rather than normalized for diff formatting.
+
+## Final verified local result
+
+The clean committed source `645466ff032cbcd7e9927a646f44c75318fef24a`
+passed the combined local runner: **2,648 passed, zero failures, 229 skipped and
+one deselected** (one warning). The before/after source digests match. Lint,
+documentation-index and release-review consistency checks pass. Human security
+confirmations remain empty; consistency does not mean release approval.
+
+| Bounded local gate | Stories passed |
+|---|---|
+| Positive journey | 49/56 |
+| Authorization/refusal | 49/56 |
+| Error/recovery | 49/56 |
+
+The result map records separate per-gate executed, missing and unpassed nodes.
+Seven reserved-disabled use cases remain excluded, even though their substituted
+policy component tests pass. This does not establish all frozen criteria, required
+CI, browser/native qualification, staging deployment or owner acceptance.
+See [run receipt](evidence/candidate-1.42/three-gates-20261016/FINAL-RUN-RECEIPT.json)
+and [story evidence](evidence/candidate-1.42/three-gates-20261016/STORY-GATE-RESULTS.json).
+
+## Integration notes
+
+- Cohort: the exact 56 IDs in the frozen acceptance manifest.
+- Sources, acceptance criteria, applied migrations and historical receipts are unchanged.
+- Reserved activation requires an explicit decision and qualification of the actual runtime.
+- Local test evidence does not supply independent human or owner acceptance.

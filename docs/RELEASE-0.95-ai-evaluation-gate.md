@@ -6,4 +6,4 @@ Controlled exposure requires an exact configuration match and a passed regressio
 
 The initial advisory manifest deliberately remains `PENDING`: no evaluation, appointed human owner or release report is invented by this coding increment, so advisory exposure is held until combined qualification supplies and reviews those records.
 
-This is a coding-only candidate. Source formatting, compilation and contract generation are not qualification. Tests, CI, independent review, merge, staging deployment and owner acceptance remain pending.
+`qualification/test_ai_evaluation_gate_live.py` qualifies the code-owned gate with an exact synthetic passed manifest, configuration drift, pending regression, a critical cross-tenant finding, an unjustified exception and a missing owner. Every incomplete or changed candidate fails closed with `AI_EVALUATION_NOT_PASSED`. It also confirms that the repository's real advisory manifest remains truthfully blocked while its owner, dataset receipt and release report are pending. CI, independent review, staging deployment and owner acceptance remain separate gates.

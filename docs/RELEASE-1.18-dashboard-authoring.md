@@ -6,4 +6,4 @@ Dashboard creation and editing use the existing audited, tenant-fenced revision 
 
 Preview rechecks current object access and the exact revision pin under the tenant transaction. If a binding is revoked, restricted, removed or superseded, the response contains `UNAVAILABLE`, empty chart values, empty table rows and no cached quality payload. The React authoring view creates drafts, adds permitted result widgets up to ten, copies privately and switches among desktop, mobile and table previews.
 
-This release adds no migration or database privilege change; the existing `dashboard_current` projection is used. Tests and CI remain deferred by owner request; source checks only are recorded for this unmerged, undeployed coding candidate.
+This release adds no migration or database privilege change; the existing `dashboard_current` projection is used. The story-specific live journey proves a ten-widget mobile preview with chart/table parity, visible quality context and an idempotent private copy; CI, deployment and acceptance remain separate gates.

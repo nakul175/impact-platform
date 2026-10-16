@@ -1,7 +1,7 @@
-# Release 1.36 coding candidate — triangulated findings
+# Release 1.36 qualification candidate — triangulated findings
 
-FR-EVD-008 / APL-646 records observation and interpretation separately with method, exact supporting and contradictory evidence, confidence rationale, limitations and reviewer. AI confidence cannot replace the required evidential rationale.
+FR-EVD-008 / APL-646 records observation and interpretation separately with method, exact supporting and contradictory Evidence revisions, confidence rationale, limitations and an active independent human reviewer. AI confidence cannot replace the required evidential rationale.
 
-Interpretation edits create new revisions and preserve the prior evidence set. Publication of a contested finding requires contradictory evidence to remain or its limitation to be disclosed.
+Interpretation edits require the exact current finding revision, create an immutable successor and preserve the prior evidence set. Publication requires a different natural person from every finding author, pins the exact current finding revision, and retains contradictory evidence or an explicit disclosed limitation. Retries enforce the exact payload and expiry.
 
-This release adds no migration or privilege change. Tests and CI remain deferred by owner request.
+Migration 0111 registers `TriangulatedFinding` and `FindingPublication` behind restrictive worker fences. The focused disposable HTTP journey passed locally on 16 October 2026. CI, independent final review, merge, staging deployment and owner acceptance remain separate gates.

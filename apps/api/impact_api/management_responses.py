@@ -5,7 +5,7 @@ from datetime import date, datetime, timedelta, timezone
 from psycopg.types.json import Jsonb
 
 from .domain import DomainError
-from .store import audit, authorize, context, hash_data, load, write
+from .store import audit, authorize, context, envelope, hash_data, load, write
 
 
 class ManagementResponses:
@@ -17,14 +17,16 @@ class ManagementResponses:
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant, write=True)
             c.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s,0))", (tenant,))
-            authorize(c, ctx, "patch_dashboards", key)
+            authorize(c, ctx, op, key)
             old = c.execute(
-                "SELECT payload_hash,outcome FROM impact.operation_receipt WHERE tenant_id=%s AND actor_id=%s AND command_type=%s AND operation_id=%s",
+                "SELECT payload_hash,outcome,expires_at FROM impact.operation_receipt WHERE tenant_id=%s AND actor_id=%s AND command_type=%s AND operation_id=%s",
                 (tenant, ctx.principal_id, op, body["operation_id"]),
             ).fetchone()
             if old:
                 if bytes(old["payload_hash"]) != fingerprint:
                     raise DomainError("CONFLICT_OPERATION", 409)
+                if old["expires_at"] <= datetime.now(timezone.utc):
+                    raise DomainError("IDEMPOTENCY_EXPIRED", 409)
                 return old["outcome"]
             receipt = fn(c, ctx)
             receipt.update(operation_id=body["operation_id"], correlation_id=correlation)
@@ -42,6 +44,53 @@ class ManagementResponses:
                 ),
             )
             return receipt
+
+    def create_recommendation(self, identity, tenant, body, correlation):
+        def apply(c, ctx):
+            source = load(c, ctx, body["data"]["source_object_id"], "Evidence", "evidence.read")
+            if str(source["head_revision"]) != body["data"]["source_revision"]:
+                raise DomainError("CONFLICT_VERSION", 409, reason="RECOMMENDATION_SOURCE_CHANGED")
+            return write(c, ctx, "EvaluationRecommendation", body["data"], state="Issued")
+
+        return self._run(
+            identity,
+            tenant,
+            "create_evaluation_recommendation",
+            tenant,
+            body,
+            correlation,
+            apply,
+        )
+
+    def read(self, identity, tenant, object_id, kind, operation):
+        with self.service.db.transaction(tenant) as c:
+            ctx = context(c, identity, tenant)
+            authorize(c, ctx, operation, object_id, hidden=True)
+            return envelope(load(c, ctx, object_id, kind))
+
+    def history(self, identity, tenant, object_id, kind, operation):
+        with self.service.db.transaction(tenant) as c:
+            ctx = context(c, identity, tenant)
+            authorize(c, ctx, operation, object_id, hidden=True)
+            load(c, ctx, object_id, kind)
+            rows = c.execute(
+                "SELECT revision_id,predecessor_revision,revision_number,payload,created_at FROM impact.object_revision WHERE tenant_id=%s AND object_id=%s ORDER BY revision_number",
+                (tenant, object_id),
+            ).fetchall()
+            return {
+                "object_id": str(object_id),
+                "items": [
+                    {
+                        **row,
+                        "revision_id": str(row["revision_id"]),
+                        "predecessor_revision": (
+                            str(row["predecessor_revision"]) if row["predecessor_revision"] else None
+                        ),
+                        "created_at": row["created_at"].isoformat(),
+                    }
+                    for row in rows
+                ],
+            }
 
     def respond(self, identity, tenant, recommendation_id, body, correlation):
         def apply(c, ctx):

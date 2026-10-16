@@ -3328,6 +3328,23 @@ def create_app():
             },
         )
 
+    @app.get("/sandbox.html", include_in_schema=False)
+    def public_synthetic_workspace():
+        # Separate bundled fiction only. No identity resolution or database access.
+        target = ROOT / "apps/web/dist/sandbox.html"
+        if not target.exists():
+            return JSONResponse({"message": "Disposable demo unavailable."}, 503)
+        return FileResponse(
+            target,
+            headers={
+                "Content-Security-Policy": (
+                    "default-src 'none'; script-src 'self'; style-src 'self'; "
+                    "connect-src 'none'; img-src 'none'; object-src 'none'; "
+                    "base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+                )
+            },
+        )
+
     @app.get("/")
     def index():
         target = ROOT / "apps/web/dist/index.html"

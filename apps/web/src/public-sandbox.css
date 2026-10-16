@@ -1,0 +1,249 @@
+.public-sandbox {
+  min-height: 100vh;
+  background: #f5f7f2;
+  color: #23372f;
+}
+.sandbox-top {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 32px;
+  border-bottom: 1px solid #dce4db;
+  background: white;
+  flex-wrap: wrap;
+}
+.sandbox-brand {
+  font-size: 30px;
+  font-weight: 800;
+  color: #173f32;
+  text-decoration: none;
+}
+.sandbox-brand span {
+  color: #71964b;
+}
+.sandbox-top > a:last-child {
+  margin-left: auto;
+  color: #335b40;
+}
+.sandbox-boundary {
+  background: #eaf0df;
+  padding: 18px 32px;
+  border-bottom: 1px solid #cbd7bd;
+}
+.sandbox-boundary p {
+  max-width: 1120px;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 8px 0 0;
+}
+.sandbox-shell {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+}
+.sandbox-nav {
+  padding: 20px 14px;
+  background: #fff;
+  border-right: 1px solid #dce4db;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sandbox-nav button {
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: 12px 16px;
+  border-radius: 7px;
+  color: #395044;
+}
+.sandbox-nav button[aria-current="page"] {
+  background: #e5eddf;
+  color: #193f2d;
+  font-weight: 700;
+}
+.sandbox-main {
+  padding: 32px;
+  max-width: 1280px;
+  width: 100%;
+}
+.sandbox-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.sandbox-heading h1 {
+  margin: 8px 0;
+  font-size: 32px;
+}
+.sandbox-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 24px 0;
+}
+.sandbox-stats article,
+.sandbox-records article,
+.sandbox-editor {
+  background: white;
+  border: 1px solid #dce4db;
+  border-radius: 12px;
+  padding: 24px;
+}
+.sandbox-stats span {
+  color: #536451;
+  font-size: 14px;
+}
+.sandbox-stats strong {
+  display: block;
+  font-size: 30px;
+  margin-top: 8px;
+}
+.sandbox-toolbar {
+  display: flex;
+  align-items: end;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.sandbox-toolbar label {
+  width: min(400px, 60%);
+}
+.sandbox-records {
+  display: grid;
+  gap: 16px;
+}
+.sandbox-record-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.sandbox-record-top h2 {
+  font-size: 21px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.sandbox-badge {
+  background: #eaf0e4;
+  color: #365539;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 13px;
+}
+.sandbox-notes {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+.sandbox-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+.sandbox-records details {
+  font-size: 13px;
+  color: #52624f;
+}
+.sandbox-records summary {
+  cursor: pointer;
+}
+.sandbox-editor {
+  max-width: 760px;
+}
+.sandbox-editor label {
+  display: block;
+  margin-bottom: 18px;
+}
+.sandbox-editor textarea {
+  resize: vertical;
+}
+.sandbox-editor button {
+  margin-right: 12px;
+}
+.sandbox-notice {
+  min-height: 24px;
+  color: #315a35;
+}
+.sandbox-error {
+  padding: 12px;
+  background: #fff0ed;
+  color: #8a332a;
+}
+.sandbox-reset {
+  background: #fff5dc;
+  padding: 18px;
+  margin-top: 18px;
+  border-radius: 8px;
+}
+.sandbox-reset button {
+  margin-right: 12px;
+}
+.sandbox-footer {
+  font-size: 13px;
+  color: #52624f;
+  margin-top: 36px;
+  line-height: 1.7;
+}
+@media (max-width: 760px) {
+  .sandbox-shell {
+    grid-template-columns: 1fr;
+  }
+  .sandbox-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-right: 0;
+    border-bottom: 1px solid #dce4db;
+    gap: 6px;
+  }
+  .sandbox-nav button {
+    padding: 8px;
+  }
+  .sandbox-main {
+    padding: 20px;
+  }
+  .sandbox-top,
+  .sandbox-boundary {
+    padding: 16px 20px;
+  }
+  .sandbox-top > a:last-child {
+    margin-left: 0;
+  }
+  .sandbox-stats {
+    grid-template-columns: 1fr;
+  }
+  .sandbox-heading,
+  .sandbox-toolbar {
+    align-items: start;
+    flex-direction: column;
+  }
+  .sandbox-toolbar label {
+    width: 100%;
+  }
+}
+
+.public-sandbox button {
+  font: inherit;
+  cursor: pointer;
+}
+.public-sandbox button:not(.primary) {
+  border: 1px solid #c9d6c6;
+  border-radius: 7px;
+  padding: 9px 14px;
+  background: white;
+  color: #294b35;
+}
+.public-sandbox .sandbox-nav button {
+  border: 0;
+  padding: 12px 16px;
+  text-align: left;
+}
+.public-sandbox .sandbox-nav button[aria-current="page"] {
+  background: #e5eddf;
+}
+.public-sandbox button:focus-visible {
+  outline: 3px solid #2f6b4a;
+  outline-offset: 3px;
+}

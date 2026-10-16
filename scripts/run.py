@@ -74,6 +74,7 @@ BROWSER_MODES = {
     "ai-planning-browser": "ai-planning-check.mjs",
     "ai-saved-review-browser": "ai-saved-review-check.mjs",
     "ai-walkthrough-browser": "ai-walkthrough-check.mjs",
+    "public-sandbox-browser": "public-sandbox-check.mjs",
     "tola-ai-sprint-browser": "tola-ai-sprint-check.mjs",
     "tola-ai-extension-browser": "tola-ai-extension-check.mjs",
     "ai-plan-export-browser": "ai-plan-export-check.mjs",

@@ -1,5 +1,9 @@
 # Documentation change record
 
+## Disposable public workspace candidate
+
+[Release note](../RELEASE-1.43-public-sandbox.md): static no-login fictional interface with tab-local drafts and simulation only. Existing authentication is unchanged; no migration or story acceptance promotion.
+
 ## 11 October2026 — local0.40 diagnosis coding candidate (US-DX-01a)
 
 Owner-authorised coding starts from preserved documentation checkpoint92341d6 in isolated `feat/imprana-diagnosis-20261011`. Added bounded manual diagnosis API, React panel, registry-kind/profile migration0044 and scoped original-criterion/negative/fault/browser qualification. Original two criteria, prior43migrations, original307requirement statuses and prior planning/QA editions stay intact. The delivery-system archive is checked sealed reference, with no router/profile/CI enforcement installed. Historical ranking tests are rebound to their frozen0042 profile and exact latest allowed-kind list; audit fault adapter counts the diagnosis and audit registry records separately. Initial failures are retained, and actual passing local runs remain distinct from native/hosted/human acceptance. [Release candidate](../RELEASE-0.40-ai-diagnosis.md).

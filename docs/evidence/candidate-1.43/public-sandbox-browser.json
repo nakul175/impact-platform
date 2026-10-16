@@ -1,0 +1,82 @@
+{
+  "checks": [
+    "All 20 sections render without sign-in",
+    "Create, edit, simulated review and invalidation run locally; text is escaped",
+    "Search, reset confirmation and discard behave correctly",
+    "Fresh tabs and reload reset data; no cookies, storage or API requests",
+    "Shared landing page offers an explicit no-login demo entry",
+    "Shared account and platform APIs remain authenticated",
+    "Mobile and desktop views captured; no mobile horizontal overflow"
+  ],
+  "passed": true,
+  "expected_checks": 7,
+  "page_errors": [],
+  "requests": [
+    {
+      "url": "http://127.0.0.1:8000/sandbox.html",
+      "method": "GET",
+      "resource": "document"
+    },
+    {
+      "url": "http://127.0.0.1:8000/assets/sandbox-Bh2XYy4E.js",
+      "method": "GET",
+      "resource": "script"
+    },
+    {
+      "url": "http://127.0.0.1:8000/assets/jsx-runtime-CdeEEO4a.js",
+      "method": "GET",
+      "resource": "script"
+    },
+    {
+      "url": "http://127.0.0.1:8000/assets/jsx-runtime-C7yECmRI.css",
+      "method": "GET",
+      "resource": "stylesheet"
+    },
+    {
+      "url": "http://127.0.0.1:8000/assets/sandbox-Tj1cVbcL.css",
+      "method": "GET",
+      "resource": "stylesheet"
+    },
+    {
+      "url": "http://127.0.0.1:8000/sandbox.html",
+      "method": "GET",
+      "resource": "document"
+    },
+    {
+      "url": "http://127.0.0.1:8000/assets/sandbox-Bh2XYy4E.js",
+      "method": "GET",
+      "resource": "script"
+    },
+    {
+      "url": "http://127.0.0.1:8000/assets/jsx-runtime-CdeEEO4a.js",
+      "method": "GET",
+      "resource": "script"
+    },
+    {
+      "url": "http://127.0.0.1:8000/assets/jsx-runtime-C7yECmRI.css",
+      "method": "GET",
+      "resource": "stylesheet"
+    },
+    {
+      "url": "http://127.0.0.1:8000/assets/sandbox-Tj1cVbcL.css",
+      "method": "GET",
+      "resource": "stylesheet"
+    }
+  ],
+  "source_before": {
+    "apps/web/src/PublicSandbox.tsx": "ab6f7acaa7369f43618bf883dcdb87a6f1b3cfb94bd853a9811990c92abe7144",
+    "apps/web/src/PublicSandboxModel.ts": "31683d093e9cbb39e7263eb4307b48e6010c19bc2d05b4f837a15c5134d18c03",
+    "apps/web/src/public-sandbox.css": "698c3069db2f7b5ccda02bac5cb4cf240888404c3429f11cfcfc8ae8912afca1",
+    "apps/web/sandbox.html": "5a10fb7d347b3d162cf8ef755f1e0c0fe1809ff69cdc1d847212a98161f2260f",
+    "apps/api/impact_api/main.py": "a394f043cb098b6e25ec9de22a4670f85ebf3694dd10bcd925ccb295c84c0b73"
+  },
+  "source_after": {
+    "apps/web/src/PublicSandbox.tsx": "ab6f7acaa7369f43618bf883dcdb87a6f1b3cfb94bd853a9811990c92abe7144",
+    "apps/web/src/PublicSandboxModel.ts": "31683d093e9cbb39e7263eb4307b48e6010c19bc2d05b4f837a15c5134d18c03",
+    "apps/web/src/public-sandbox.css": "698c3069db2f7b5ccda02bac5cb4cf240888404c3429f11cfcfc8ae8912afca1",
+    "apps/web/sandbox.html": "5a10fb7d347b3d162cf8ef755f1e0c0fe1809ff69cdc1d847212a98161f2260f",
+    "apps/api/impact_api/main.py": "a394f043cb098b6e25ec9de22a4670f85ebf3694dd10bcd925ccb295c84c0b73"
+  },
+  "sources_unchanged": true,
+  "scope": "Anonymous browser-only fictional simulation, not domain API acceptance; intentional separate anonymous API refusal checks"
+}

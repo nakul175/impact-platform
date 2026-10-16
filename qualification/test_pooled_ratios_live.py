@@ -1,8 +1,10 @@
-"""Positive user journey for FR-CAL-003 / APL-402 pooled ratios."""
+"""Positive and security journeys for FR-CAL-003 / APL-402 pooled ratios."""
 
-from test_calculation_methods import build, calculate_result, observation_data
+from uuid import uuid4
+
+from test_calculation_methods import build, observation_data
 from test_live_application import cmd, expect
-from test_measurement import approve, create, submit
+from test_measurement import action, approve, create, get, submit
 
 
 def test_analyst_calculates_denominator_weighted_ratio_from_approved_components(live):
@@ -46,7 +48,20 @@ def test_analyst_calculates_denominator_weighted_ratio_from_approved_components(
         after = database.execute("SELECT count(*) AS n FROM impact.calculated_result_current").fetchone()["n"]
     assert after == before
 
-    result = calculate_result(live, indicator, period)
+    operation = str(uuid4())
+    command = cmd({"period_id": period["object_id"]}, indicator["revision_id"], operation=operation)
+    receipt = action(live, "indicator-instances", indicator, "calculate", body=command)
+    assert action(live, "indicator-instances", indicator, "calculate", body=command) == receipt
+    conflict = action(
+        live,
+        "indicator-instances",
+        indicator,
+        "calculate",
+        body=cmd({"period_id": str(uuid4())}, indicator["revision_id"], operation=operation),
+        status=409,
+    )
+    assert conflict["code"] == "CONFLICT_OPERATION"
+    result = get(live, "calculated-results", receipt["object_id"])
     data = result["data"]
     assert data["value_state"] == "PRESENT"
     assert (data["numerator"], data["denominator"]) == ("51", "110")

@@ -21,6 +21,8 @@ def test_alias_cannot_approve_but_distinct_natural_person_can(live):
         403,
     )
     assert alias_denial["reason_code"] == "INDEPENDENCE_REQUIRED"
+    # The refused alias decision must not advance the governed membership revision.
+    assert member(live, receipt["object_id"])["revision_id"] == receipt["revision_id"]
 
     approved = expect(
         action(

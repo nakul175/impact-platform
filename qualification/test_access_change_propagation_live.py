@@ -87,6 +87,16 @@ def test_online_presentation_lease_is_bound_to_the_current_policy_epoch(live):
         }
         assert lease["revalidate_after_seconds"] == 60
 
+        # A lease is principal-bound and tenant-bound even when its identifier leaks.
+        expect(live.request(path, actor="reviewer"), 404)
+        expect(
+            live.request(
+                live.path("presentation-leases", lease["lease_id"], tenant=live.fixture["tenant_b"]),
+                actor="other_tenant",
+            ),
+            404,
+        )
+
         temporary_grants(live, "author", ["forms.draft.create"])
         _revoke_temporary_grant_through_policy(live, "forms.draft.create")
         # An unrelated access-policy change advances the epoch. The still-readable

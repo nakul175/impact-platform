@@ -76,6 +76,17 @@ def test_b_exact_source_manifest_rechecks_current_authority(live):
         }
     ]
 
+    cross_tenant = expect(
+        live.request(
+            live.path("derivatives", derivative_id, tenant=live.fixture["tenant_b"])
+            + "/revisions/"
+            + derivative_revision,
+            actor="other_tenant",
+        ),
+        404,
+    )
+    assert cross_tenant["code"] == "RESOURCE_UNAVAILABLE"
+
     tenant = live.fixture["tenant_a"]
     principal = live.fixture["actors"]["author"]["principal_id"]
     with live.db() as c:
@@ -131,3 +142,29 @@ def test_a_mixed_source_derivative_cannot_claim_public_disclosure(live):
         )
     finally:
         revoke_write()
+
+
+def test_c_external_member_cannot_create_derivative_manifest(live):
+    evidence = fresh_evidence(live)
+    denied = expect(
+        live.request(
+            live.path("derivatives", str(uuid4())) + "/revisions",
+            actor="partner",
+            method="POST",
+            body={
+                "revision_id": str(uuid4()),
+                "kind": "Analysis",
+                "disclosure_mode": "PRIVATE",
+                "sources": [
+                    {
+                        "object_id": evidence["object_id"],
+                        "revision_id": evidence["revision_id"],
+                        "object_type": "Evidence",
+                        "capability": "evidence.manage",
+                    }
+                ],
+            },
+        ),
+        403,
+    )
+    assert denied["code"] == "POLICY_DENIED"

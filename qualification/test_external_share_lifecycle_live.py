@@ -64,6 +64,15 @@ def test_named_audience_revocation_expiry_and_source_revalidation(live):
     assert visible["actions"] == ["read"]
     assert visible["derivative"]["revision_id"] == revision_id
 
+    cross_tenant = expect(
+        live.request(
+            live.path("external-shares", share["share_id"], tenant=live.fixture["tenant_b"]),
+            actor="other_tenant",
+        ),
+        404,
+    )
+    assert cross_tenant["code"] == "RESOURCE_UNAVAILABLE"
+
     expect(live.request(path + "/revocation", method="POST"), 200)
     expect(live.request(path, actor="partner"), 404)
 

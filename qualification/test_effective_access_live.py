@@ -52,3 +52,33 @@ def test_current_grants_explain_permitted_and_sanitized_denied_access(live):
     validate("SimulatedEffectiveAccess", simulated)
     assert simulated["decision"] == "PERMITTED"
     assert live.fixture["actors"]["author"]["principal_id"] not in str(simulated)
+
+
+def test_simulation_refuses_non_administrator_and_cross_tenant_subject(live):
+    body = {
+        "operation_id": "get_programmes",
+        "object_id": live.records["programme_a"]["object_id"],
+        "subject_principal_id": live.fixture["actors"]["author"]["principal_id"],
+    }
+    refused = expect(
+        live.request(
+            live.path("access/effective/simulations"),
+            actor="author",
+            method="POST",
+            body=body,
+        ),
+        403,
+    )
+    assert refused["code"] == "POLICY_DENIED"
+
+    body["subject_principal_id"] = live.fixture["actors"]["other_tenant"]["principal_id"]
+    hidden = expect(
+        live.request(
+            live.path("access/effective/simulations"),
+            actor="admin",
+            method="POST",
+            body=body,
+        ),
+        404,
+    )
+    assert hidden["code"] == "RESOURCE_UNAVAILABLE"

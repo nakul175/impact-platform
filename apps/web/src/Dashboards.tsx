@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { PortfolioPanel } from "./Portfolio";
+import { EvaluationRegistry } from "./EvaluationRegistry";
 import { tabListKeys } from "./a11y";
 
 type Props = {
@@ -981,6 +982,12 @@ export function DashboardsPanel({
   const portfolioAllowed = allowed("indicator-definitions.read");
   return (
     <section className="dashboards" aria-label="Dashboards">
+      <EvaluationRegistry
+        base={base}
+        capabilities={capabilities}
+        request={request}
+        explain={explain}
+      />
       {portfolioAllowed ? (
         <div
           className="setup-tabs"

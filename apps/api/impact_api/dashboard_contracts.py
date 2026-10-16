@@ -61,6 +61,9 @@ IMPLEMENTED = {
     ("get", "anomaly-findings/{object_id}"),
     ("post", "anomaly-findings/{object_id}/actions/review"),
     ("post", "evaluations"),
+    ("get", "evaluations"),
+    ("get", "evaluations/{object_id}"),
+    ("get", "evaluations/{object_id}/stage-gates"),
     ("post", "evaluations/{object_id}/actions/stage-gate"),
     ("post", "evaluation-methodologies"),
     ("post", "evaluation-methodologies/{object_id}/actions/amend"),
@@ -684,7 +687,15 @@ def augment(spec, policy):
         },
         ["items", "next_cursor", "scope_label"],
     )
-    document_kind = {"enum": ["METHODOLOGY", "ETHICS", "SAFEGUARDING", "ANALYSIS_PLAN", "DISCLOSURE_REVIEW"]}
+    document_kind = {
+        "enum": [
+            "METHODOLOGY",
+            "ETHICS",
+            "SAFEGUARDING",
+            "ANALYSIS_PLAN",
+            "DISCLOSURE_REVIEW",
+        ]
+    }
     schemas["EvaluationRegistrationCreate"] = closed(
         {
             "operation_id": UUID,
@@ -706,7 +717,16 @@ def augment(spec, policy):
                     "independence": closed(
                         {
                             "claimed": {"type": "boolean"},
-                            "basis": {"type": ["string", "null"], "maxLength": 1000},
+                            "basis": {
+                                "enum": [
+                                    None,
+                                    "EXTERNAL_EVALUATOR",
+                                    "INDEPENDENT_COMMITTEE",
+                                    "CONTRACTUAL_SEPARATION",
+                                ]
+                            },
+                            "evidence_object_id": NULLABLE_UUID,
+                            "evidence_revision_id": NULLABLE_UUID,
                         },
                         ["claimed"],
                     ),
@@ -717,7 +737,10 @@ def augment(spec, policy):
                     },
                     "budget": closed(
                         {
-                            "amount": {"type": "string", "pattern": DECIMAL},
+                            "amount": {
+                                "type": "string",
+                                "pattern": r"^(0*[1-9][0-9]{0,25})(\.[0-9]{1,12})?$",
+                            },
                             "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
                         },
                         ["amount", "currency"],
@@ -767,6 +790,7 @@ def augment(spec, policy):
     schemas["EvaluationStageGate"] = closed(
         {
             "operation_id": UUID,
+            "expected_revision": UUID,
             "data": closed(
                 {
                     "stage": {"enum": ["FIELD_COLLECTION", "PUBLICATION"]},
@@ -782,7 +806,7 @@ def augment(spec, policy):
                 ["stage", "documents"],
             ),
         },
-        ["operation_id", "data"],
+        ["operation_id", "expected_revision", "data"],
     )
     schemas["EvaluationStageGateOutcome"] = closed(
         {
@@ -802,7 +826,7 @@ def augment(spec, policy):
                     ["kind", "object_id", "revision_id"],
                 ),
             },
-            "sensitive_processing_approved": {"const": False},
+            "sensitive_processing_approved": {"type": "boolean"},
         },
         [
             "evaluation_id",
@@ -812,6 +836,75 @@ def augment(spec, policy):
             "pinned_documents",
             "sensitive_processing_approved",
         ],
+    )
+    schemas["EvaluationRegistrationResource"] = closed(
+        {
+            **resource_base,
+            "owner_id": UUID,
+            "data": closed(
+                {
+                    **deepcopy(schemas["EvaluationRegistrationCreate"]["properties"]["data"]["properties"]),
+                    "independence": closed(
+                        {
+                            "claimed": {"type": "boolean"},
+                            "basis": {
+                                "enum": [
+                                    None,
+                                    "EXTERNAL_EVALUATOR",
+                                    "INDEPENDENT_COMMITTEE",
+                                    "CONTRACTUAL_SEPARATION",
+                                ]
+                            },
+                            "evidence_object_id": NULLABLE_UUID,
+                            "evidence_revision_id": NULLABLE_UUID,
+                            "verification": {"enum": ["NOT_CLAIMED", "EVIDENCE_ATTACHED_UNVERIFIED"]},
+                        },
+                        ["claimed", "verification"],
+                    ),
+                    "programme_revision_id": UUID,
+                    "period_revision_id": UUID,
+                    "sensitive_processing_approved": {"const": False},
+                    "stage": {"enum": ["REGISTERED", "FIELD_COLLECTION", "PUBLICATION"]},
+                    "last_gate": {"type": ["object", "null"]},
+                },
+                list(schemas["EvaluationRegistrationCreate"]["properties"]["data"]["required"])
+                + ["programme_revision_id", "period_revision_id", "sensitive_processing_approved", "stage"],
+            ),
+        },
+        resource_required + ["data"],
+    )
+    schemas["EvaluationRegistrationList"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {"$ref": "#/components/schemas/EvaluationRegistrationResource"},
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
+    )
+    schemas["EvaluationStageGateHistory"] = closed(
+        {
+            "items": {
+                "type": "array",
+                "maxItems": 100,
+                "items": closed(
+                    {
+                        "revision_id": UUID,
+                        "revision_number": {"type": "integer", "minimum": 1},
+                        "recorded_at": {"type": "string", "format": "date-time"},
+                        "recorded_by": UUID,
+                        "gate": {"$ref": "#/components/schemas/EvaluationStageGateOutcome"},
+                    },
+                    ["revision_id", "revision_number", "recorded_at", "recorded_by", "gate"],
+                ),
+            },
+            "next_cursor": {"type": ["string", "null"]},
+            "scope_label": {"type": "string"},
+        },
+        ["items", "next_cursor", "scope_label"],
     )
     stratum = closed(
         {
@@ -2237,7 +2330,7 @@ def augment(spec, policy):
     copy_entry.update(
         operationId="action_dashboards_copy",
         summary="Copy a dashboard into a private draft",
-        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     copy_entry["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/DashboardCopy"
@@ -2305,7 +2398,7 @@ def augment(spec, policy):
     alert_create.update(
         operationId="create_dashboard_alert_rule",
         summary="Create a governed dashboard alert rule",
-        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     alert_create["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/DashboardAlertRuleCreate"
@@ -2508,12 +2601,55 @@ def augment(spec, policy):
     evaluation_create["responses"]["201"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/Receipt"
     }
-    paths[prefix + "evaluations"] = {"post": evaluation_create}
+    existing_evaluation_item = deepcopy(paths.get(prefix + "evaluations/{object_id}", {}))
+    evaluation_list = deepcopy(anomaly_list)
+    evaluation_list.update(
+        operationId="list_evaluation_registrations",
+        summary="List controlled evaluation registrations",
+        **{"x-capability": "evaluations.read"},
+    )
+    evaluation_list["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationRegistrationList"
+    }
+    evaluation_list.setdefault("parameters", []).append(
+        {"name": "programme_id", "in": "query", "required": False, "schema": deepcopy(UUID)}
+    )
+    paths[prefix + "evaluations"] = {"post": evaluation_create, "get": evaluation_list}
+    evaluation_read = deepcopy(anomaly_read)
+    evaluation_read.update(
+        operationId="get_evaluations",
+        summary="Read a controlled evaluation registration",
+        **{"x-capability": "evaluations.read"},
+    )
+    evaluation_read["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationRegistrationResource"
+    }
+    paths[prefix + "evaluations/{object_id}"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": evaluation_read,
+        **({"patch": existing_evaluation_item["patch"]} if "patch" in existing_evaluation_item else {}),
+    }
+    evaluation_history = deepcopy(evaluation_read)
+    evaluation_history.update(
+        operationId="list_evaluation_stage_gates",
+        summary="List immutable evaluation gate decisions",
+        **{"x-capability": "evaluations.read"},
+    )
+    evaluation_history["parameters"] = [
+        p for p in deepcopy(evaluation_list.get("parameters", [])) if p["name"] != "programme_id"
+    ]
+    evaluation_history["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/EvaluationStageGateHistory"
+    }
+    paths[prefix + "evaluations/{object_id}/stage-gates"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "get": evaluation_history,
+    }
     evaluation_gate = deepcopy(anomaly_review)
     evaluation_gate.update(
         operationId="evaluate_evaluation_stage_gate",
         summary="Check pinned method and policy documents before an evaluation stage",
-        **{"x-capability": "dashboards.draft.edit", "x-contract-version": VERSION},
+        **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
     )
     evaluation_gate["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/EvaluationStageGate"
@@ -2975,6 +3111,23 @@ def augment(spec, policy):
             "dashboards.draft.edit",
             True,
         ),
+        ("create_evaluation_registration", "POST", prefix + "evaluations", "evaluations.draft.edit", True),
+        ("list_evaluation_registrations", "GET", prefix + "evaluations", "evaluations.read", False),
+        ("get_evaluations", "GET", prefix + "evaluations/{object_id}", "evaluations.read", False),
+        (
+            "list_evaluation_stage_gates",
+            "GET",
+            prefix + "evaluations/{object_id}/stage-gates",
+            "evaluations.read",
+            False,
+        ),
+        (
+            "evaluate_evaluation_stage_gate",
+            "POST",
+            prefix + "evaluations/{object_id}/actions/stage-gate",
+            "evaluations.draft.edit",
+            True,
+        ),
     ]:
         policy["operations"] = [row for row in policy["operations"] if row["operation_id"] != op]
         policy["operations"].append(
@@ -2983,9 +3136,14 @@ def augment(spec, policy):
                 "method": method,
                 "path": path,
                 "capability": cap,
-                "role_templates": ROLES,
+                "role_templates": (
+                    ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "ANALYST"]
+                    if op in {"create_evaluation_registration", "evaluate_evaluation_stage_gate"}
+                    else ROLES
+                ),
                 "purpose_required": False,
                 "fresh_assurance_seconds": None,
                 "audit": audit_event,
+                **({"independence_required": True} if op == "evaluate_evaluation_stage_gate" else {}),
             }
         )

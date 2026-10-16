@@ -7244,3 +7244,19 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0103_anomaly_assistance_kinds.sql | 4a99a3e8c443b84ef7bd267f7a1b9ee739442d901ecca0bb2042e3890bcceaeb |
+
+## Migration0104 — controlled evaluation registration
+
+`0104_evaluation_registration_kind.sql` SHA256 `f3724d74fe0dae569d1965d4ca6b2fc116ae45b8dd041fe0a17c825f72cdaccc`. Schema104 registers `EvaluationRegistration` for APL-625 and adds restrictive delivery-worker fences. Evaluation stage decisions remain authenticated application revisions; the worker receives no access to study questions, independence evidence, budgets, sensitive-processing approvals or gate history. All0001–0103 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0104_evaluation_registration_kind.sql | f3724d74fe0dae569d1965d4ca6b2fc116ae45b8dd041fe0a17c825f72cdaccc |
+
+## Migration0105 — evaluation access profile
+
+`0105_evaluation_access_profile.sql` SHA256 `a69e5986cf443a781415fd5eb9ca1464cfbf127ec86492216ff637c129c23915`. Schema105 registers generated access profile hash `acb46eebbd16a01b2fe394db39a2f3b55c378d8ed5c1497eeccce611590497a7` after APL-625 moves evaluation access to dedicated capabilities. Registration does not activate the profile for an existing tenant; governed preview, independent approval and execution remain required. All0001–0104 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0105_evaluation_access_profile.sql | a69e5986cf443a781415fd5eb9ca1464cfbf127ec86492216ff637c129c23915 |

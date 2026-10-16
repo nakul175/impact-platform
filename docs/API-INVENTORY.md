@@ -201,7 +201,7 @@
 | GET | `/v1/tenants/{tenant_id}/connections` | `connections.read` |
 | GET | `/v1/tenants/{tenant_id}/connections/{object_id}` | `connections.read` |
 | GET | `/v1/tenants/{tenant_id}/dashboard-alert-rules` | `dashboards.read` |
-| POST | `/v1/tenants/{tenant_id}/dashboard-alert-rules` | `dashboards.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/dashboard-alert-rules` | `evaluations.draft.edit` |
 | GET | `/v1/tenants/{tenant_id}/dashboard-alert-rules/{object_id}` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/dashboard-alert-rules/{object_id}/actions/evaluate` | `dashboards.draft.edit` |
 | GET | `/v1/tenants/{tenant_id}/dashboard-alert-rules/{object_id}/incidents` | `dashboards.read` |
@@ -209,7 +209,7 @@
 | POST | `/v1/tenants/{tenant_id}/dashboards` | `dashboards.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/dashboards/{object_id}` | `dashboards.read` |
 | PATCH | `/v1/tenants/{tenant_id}/dashboards/{object_id}` | `dashboards.draft.edit` |
-| POST | `/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/copy` | `dashboards.draft.create` |
+| POST | `/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/copy` | `evaluations.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/publish` | `dashboards.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/run-pivot` | `dashboards.read` |
 | GET | `/v1/tenants/{tenant_id}/dashboards/{object_id}/geographic-preview` | `dashboards.read` |
@@ -239,8 +239,11 @@
 | POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/actions/review` | `dashboards.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/evaluation-methodologies/{object_id}/sample-export` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/evaluation-recommendations/{object_id}/response` | `dashboards.draft.edit` |
+| GET | `/v1/tenants/{tenant_id}/evaluations` | `evaluations.read` |
 | POST | `/v1/tenants/{tenant_id}/evaluations` | `dashboards.draft.create` |
-| POST | `/v1/tenants/{tenant_id}/evaluations/{object_id}/actions/stage-gate` | `dashboards.draft.edit` |
+| GET | `/v1/tenants/{tenant_id}/evaluations/{object_id}` | `evaluations.read` |
+| POST | `/v1/tenants/{tenant_id}/evaluations/{object_id}/actions/stage-gate` | `evaluations.draft.edit` |
+| GET | `/v1/tenants/{tenant_id}/evaluations/{object_id}/stage-gates` | `evaluations.read` |
 | GET | `/v1/tenants/{tenant_id}/evidence` | `evidence.read` |
 | POST | `/v1/tenants/{tenant_id}/evidence` | `evidence.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/evidence/{object_id}` | `evidence.read` |

@@ -1960,6 +1960,42 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.get("/v1/tenants/{tenant}/evaluations")
+    async def evaluation_list(
+        request: Request,
+        tenant: str,
+        programme_id: str | None = None,
+        limit: int = 50,
+        cursor: str | None = None,
+    ):
+        return await run_in_threadpool(
+            evaluation_registry.listing,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(programme_id) if programme_id else None,
+            limit,
+            cursor,
+        )
+
+    @app.get("/v1/tenants/{tenant}/evaluations/{obj}")
+    async def evaluation_read(request: Request, tenant: str, obj: str):
+        return await run_in_threadpool(
+            evaluation_registry.read, auth.resolve(request), uuid(tenant), uuid(obj)
+        )
+
+    @app.get("/v1/tenants/{tenant}/evaluations/{obj}/stage-gates")
+    async def evaluation_gate_history(
+        request: Request, tenant: str, obj: str, limit: int = 50, cursor: str | None = None
+    ):
+        return await run_in_threadpool(
+            evaluation_registry.gates,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            limit,
+            cursor,
+        )
+
     @app.post("/v1/tenants/{tenant}/evaluations/{obj}/actions/stage-gate")
     async def evaluation_stage_gate(request: Request, tenant: str, obj: str):
         body = await strict_body(request)

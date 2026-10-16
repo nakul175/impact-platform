@@ -419,13 +419,41 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-08",
+      "change_id": "APL-625-EVALUATION-REGISTRY-COMPLETION",
+      "change": "Controlled evaluation registration and ordered evidence stage gates",
+      "paths": [
+        "infrastructure/migrations/0104_evaluation_registration_kind.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/evaluation_registry.py",
+        "packages/contracts/access-policy.json",
+        "infrastructure/migrations/0105_evaluation_access_profile.sql"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers evaluation objects behind restrictive worker fences; pins exact programme, period, baseline and evidence revisions; requires ordered field-collection/publication gates; retains blocked and passed decisions immutably; never grants sensitive-processing approval and never asserts verified independence. The exact generated profile is registered additively without automatic activation.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [
     "docs/current/threat-register.json",
-    "qualification/test_effective_access_unit.py"
+    "qualification/test_effective_access_unit.py",
+    "qualification/test_evaluation_registry_unit.py"
   ],
   "notes": [
-    "Partial APL-614 coding checkpoint only; cross-workspace copy, approved public disclosure, owner transfer, durable revalidation and focused qualification remain open."
+    "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."
   ]
 }

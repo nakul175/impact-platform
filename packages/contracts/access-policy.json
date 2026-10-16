@@ -2123,28 +2123,6 @@
       "audit": false
     },
     {
-      "operation_id": "get_evaluations",
-      "method": "GET",
-      "path": "/v1/tenants/{tenant_id}/evaluations/{object_id}",
-      "capability": "evaluations.read",
-      "role_templates": [
-        "MEL_ADMIN",
-        "PROGRAMME_MANAGER",
-        "AUTHOR",
-        "REVIEWER",
-        "ANALYST",
-        "DATA_STEWARD",
-        "EXTERNAL"
-      ],
-      "scope": "tenant + object/programme/assignment scope; explicit grant required",
-      "fresh_assurance_seconds": null,
-      "independence_required": false,
-      "purpose_required": false,
-      "field_filter_required": true,
-      "state_guard": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-      "audit": false
-    },
-    {
       "operation_id": "patch_evaluations",
       "method": "PATCH",
       "path": "/v1/tenants/{tenant_id}/evaluations/{object_id}",
@@ -7030,6 +7008,91 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": true
+    },
+    {
+      "operation_id": "create_evaluation_registration",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evaluations",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "list_evaluation_registrations",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/evaluations",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "get_evaluations",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/evaluations/{object_id}",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "list_evaluation_stage_gates",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/evaluations/{object_id}/stage-gates",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "evaluate_evaluation_stage_gate",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/evaluations/{object_id}/actions/stage-gate",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "independence_required": true
     },
     {
       "operation_id": "create_audit_export",

@@ -25,6 +25,7 @@ Run:
 
 ```text
 .venv/bin/python -m pytest qualification/test_effective_access_unit.py
+.venv/bin/python scripts/run.py test --pytest-path qualification/test_effective_access_live.py
 make lint
 make unit
 ```
@@ -35,4 +36,5 @@ Full exact-candidate CI, independent review, merge and staging verification rema
 
 - Story: FR-ACC-003 / APL-350.
 - The focused tests cover conflicting-role restriction precedence, sanitized unavailable resources, purpose requirements, closed request validation and list-visibility alignment.
+- The disposable live HTTP journey proves current own-grant permission, sanitized unavailable-object denial, and administrator simulation of the same current member without leaking the selected object or subject principal.
 - APL-614 remains a separate partial candidate in the same integration build and is not promoted by this note.

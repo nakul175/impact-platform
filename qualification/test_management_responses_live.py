@@ -2,8 +2,23 @@
 
 from uuid import uuid4
 
+import pytest
+
 from test_forms import temporary_grants
 from test_live_application import expect
+
+
+@pytest.fixture(autouse=True)
+def management_response_journey_grants(live):
+    revoke = temporary_grants(
+        live,
+        "author",
+        ["evaluations.draft.edit", "evaluations.read", "evidence.read"],
+    )
+    try:
+        yield
+    finally:
+        revoke()
 
 
 def test_partial_response_creates_owned_action_completed_by_exact_evidence(live):

@@ -3,10 +3,29 @@
 from types import SimpleNamespace
 from uuid import uuid4
 
+import pytest
+
 from impact_api.store import Context, write
 from test_evaluation_registry_live import _evidence
 from test_forms import temporary_grants
 from test_live_application import expect
+
+
+@pytest.fixture(autouse=True)
+def learning_journey_grants(live):
+    revokes = [
+        temporary_grants(live, "author", ["evidence.draft.create", "evidence.read"]),
+        temporary_grants(
+            live,
+            "reviewer",
+            ["evaluations.draft.edit", "evaluations.read", "evidence.read"],
+        ),
+    ]
+    try:
+        yield
+    finally:
+        for revoke in reversed(revokes):
+            revoke()
 
 
 def _decision(live):

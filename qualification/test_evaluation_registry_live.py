@@ -2,9 +2,26 @@
 
 from uuid import uuid4
 
+import pytest
+
 from impact_api.contracts import validate
 from test_forms import temporary_grants
 from test_live_application import cmd, expect
+
+
+@pytest.fixture(autouse=True)
+def evaluation_journey_grants(live):
+    """Own the exact evidence and gate grants even after earlier revocation scenarios."""
+    revokes = [
+        temporary_grants(live, "author", ["evidence.draft.create", "evidence.read"]),
+        temporary_grants(live, "reviewer", ["evaluations.draft.edit", "evidence.read"]),
+        temporary_grants(live, "partner", ["evaluations.draft.edit", "evidence.read"]),
+    ]
+    try:
+        yield
+    finally:
+        for revoke in reversed(revokes):
+            revoke()
 
 
 def _evidence(live, kind):

@@ -2,9 +2,29 @@
 
 from uuid import uuid4
 
+import pytest
+
 from test_evidence import CSV, evidence, unique, uploaded
 from test_forms import temporary_grants
 from test_live_application import expect
+
+
+@pytest.fixture(autouse=True)
+def qualitative_journey_grants(live):
+    revokes = [
+        temporary_grants(live, "author", ["evidence.read"]),
+        temporary_grants(
+            live,
+            "reviewer",
+            ["evaluations.draft.edit", "evaluations.read", "evidence.read"],
+        ),
+        temporary_grants(live, "admin", ["evaluations.draft.edit", "evaluations.read"]),
+    ]
+    try:
+        yield
+    finally:
+        for revoke in reversed(revokes):
+            revoke()
 
 
 def _post(live, route, data, actor="author"):
@@ -35,10 +55,6 @@ def _stored(live, object_id):
 def test_two_coders_preserve_assignments_and_adjudicate_one_disagreement(live):
     """The API preserves a versioned codebook, both coders and the final rationale."""
     source = expect(evidence(live, uploaded(live, unique(CSV))["upload_id"]), 201)
-    revoke_reviewer = temporary_grants(
-        live, "reviewer", ["evaluations.draft.edit", "evaluations.read", "evidence.read"]
-    )
-    revoke_adjudicator = temporary_grants(live, "admin", ["evaluations.draft.edit", "evaluations.read"])
     codebook = _post(
         live,
         "qualitative-codebooks",
@@ -119,5 +135,3 @@ def test_two_coders_preserve_assignments_and_adjudicate_one_disagreement(live):
     assert saved_agreement["payload"]["matched_units_only"] is True
     assert saved_agreement["payload"]["matched_count"] == 1
     assert saved_agreement["payload"]["agreement_count"] == 0
-    revoke_adjudicator()
-    revoke_reviewer()

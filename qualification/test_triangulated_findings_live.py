@@ -1,9 +1,33 @@
 """Positive user journey for FR-EVD-008 / APL-646 triangulated findings."""
 
 from uuid import uuid4
+
+import pytest
+
 from test_evaluation_registry_live import _evidence
 from test_forms import temporary_grants
 from test_live_application import expect
+
+
+@pytest.fixture(autouse=True)
+def finding_journey_grants(live):
+    revokes = [
+        temporary_grants(
+            live,
+            "author",
+            ["evaluations.draft.edit", "evidence.draft.create", "evidence.read"],
+        ),
+        temporary_grants(
+            live,
+            "reviewer",
+            ["evaluations.draft.edit", "evidence.read"],
+        ),
+    ]
+    try:
+        yield
+    finally:
+        for revoke in reversed(revokes):
+            revoke()
 
 
 def post(live, route, data, actor="author"):

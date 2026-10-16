@@ -608,6 +608,31 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-15",
+      "change_id": "APL-650-APL-652-FINANCE-PERSISTENCE",
+      "change": "Exact expenditure correction and separated finance variance persistence",
+      "paths": [
+        "infrastructure/migrations/0113_finance_transaction_variance_kinds.sql",
+        "apps/api/impact_api/finance_governance.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers expenditure transaction, import and variance kinds behind restrictive worker fences; uses explicit finance operations; preserves stable source keys, exact decimals, correction lineage, exact revision pins and missingness while keeping forecasts outside actual expenditure.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [
@@ -622,7 +647,8 @@
     "qualification/test_cumulative_difference_live.py",
     "qualification/test_triangulated_findings_live.py",
     "qualification/test_budget_versions_live.py",
-    "qualification/test_management_responses_live.py"
+    "qualification/test_management_responses_live.py",
+    "qualification/test_expenditure_ingestion_live.py"
   ],
   "notes": [
     "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."

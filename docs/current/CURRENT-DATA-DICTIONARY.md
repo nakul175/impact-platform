@@ -7316,3 +7316,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0112_management_response_kinds.sql | dad432b599971e0e0611647354f05125c8399bb90702496a9420705c9c9ae96d |
+
+## Migration0113 — expenditure and finance variance registry kinds
+
+`0113_finance_transaction_variance_kinds.sql` SHA256 `f7ff5a0258e0fb6ad9cdb18fe1b29f56d5eafa3efa5d5e786bfe17fb18f93cd4`. Schema113 registers `ExpenditureTransaction`, `ExpenditureImport` and `FinanceVarianceView` and places all three kinds behind restrictive delivery-worker fences. The authenticated application retains responsibility for stable source keys, exact decimal amounts, explicit correction semantics, exact budget and transaction revision pins, missingness, and separation of actuals from forecast assumptions. All0001–0112 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0113_finance_transaction_variance_kinds.sql | f7ff5a0258e0fb6ad9cdb18fe1b29f56d5eafa3efa5d5e786bfe17fb18f93cd4 |

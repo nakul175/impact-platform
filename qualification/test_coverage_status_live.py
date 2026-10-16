@@ -2,6 +2,7 @@
 
 from test_calculation_methods import observation_data
 from test_dashboards import calculate, measure, ratio_source
+from test_live_application import expect
 from test_measurement import create, get, submit
 
 
@@ -37,3 +38,10 @@ def test_calculation_keeps_approved_pending_and_missing_coverage_explicit(live):
     assert coverage["plan_revision"]
     assert "pending, missing or excluded" in coverage["coverage_reason"]
     assert "PARTIAL_COVERAGE" in {limitation["code"] for limitation in current["data"]["limitations"]}
+    expect(
+        live.request(
+            live.path("calculated-results", result["object_id"], tenant=live.fixture["tenant_b"]),
+            actor="other_tenant",
+        ),
+        404,
+    )

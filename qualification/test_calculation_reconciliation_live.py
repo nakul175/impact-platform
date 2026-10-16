@@ -39,3 +39,11 @@ def test_analyst_explains_and_reconciles_a_newly_included_approved_source(live):
         ("SOURCE", "12.5", "PERMITTED"),
         ("FILTER", "0", "PERMITTED"),
     ]
+    expect(
+        live.request(
+            live.path("calculated-results", earlier["object_id"], tenant=live.fixture["tenant_b"])
+            + "/explanation",
+            actor="other_tenant",
+        ),
+        404,
+    )

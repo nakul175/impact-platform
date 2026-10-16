@@ -53,3 +53,11 @@ def test_analyst_calculates_and_reproduces_cumulative_increment(live):
     assert reproduced["stored"]["cumulative_increments"] == data["cumulative_increments"]
     assert {source["object_id"] for source in reproduced["sources"]} == set(source_ids)
     assert all(source["disposition"] == "INCLUDED" for source in reproduced["sources"])
+    expect(
+        live.request(
+            live.path("calculated-results", result["object_id"], tenant=live.fixture["tenant_b"])
+            + "/reproduction",
+            actor="other_tenant",
+        ),
+        404,
+    )

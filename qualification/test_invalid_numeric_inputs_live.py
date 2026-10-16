@@ -57,6 +57,13 @@ def test_approved_negative_adjustment_calculates_while_invalid_counts_are_refuse
     )
     assert refused["reason_code"] == "NEGATIVE_COUNT"
     assert get(live, "observations", invalid["object_id"])["lifecycle_state"] == "Draft"
+    expect(
+        live.request(
+            live.path("calculated-results", receipt["object_id"], tenant=live.fixture["tenant_b"]),
+            actor="other_tenant",
+        ),
+        404,
+    )
 
 
 def test_zero_denominator_is_durable_undefined_result_not_successful_zero(live):

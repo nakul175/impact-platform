@@ -53,3 +53,11 @@ def test_independently_approved_raw_values_produce_a_labelled_sample_median(live
     assert {source["revision_id"] for source in reproduced["sources"]} == {
         row["revision_id"] for row in observations
     }
+    expect(
+        live.request(
+            live.path("calculated-results", result["object_id"], tenant=live.fixture["tenant_b"])
+            + "/reproduction",
+            actor="other_tenant",
+        ),
+        404,
+    )

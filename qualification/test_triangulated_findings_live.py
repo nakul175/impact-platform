@@ -98,6 +98,23 @@ def test_finding_preserves_evidence_history_and_publishes_the_reviewed_revision(
             "supporting": [pin(support)],
             "contradictory": [pin(contrary)],
         }
+        refused = expect(
+            live.request(
+                live.path("finding-publications"),
+                method="POST",
+                body={
+                    "operation_id": str(uuid4()),
+                    "data": {
+                        "finding_id": created["object_id"],
+                        "expected_revision": revised["revision_id"],
+                        "preserve_contradictory_evidence": True,
+                        "disclosed_limitation": None,
+                    },
+                },
+            ),
+            409,
+        )
+        assert refused["code"] == "INDEPENDENCE_REQUIRED"
         publication = post(
             live,
             "finding-publications",

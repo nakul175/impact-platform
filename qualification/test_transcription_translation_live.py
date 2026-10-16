@@ -124,4 +124,21 @@ def test_analyst_corrects_translation_and_quotes_the_reviewed_meaning(live):
     assert quotation_row["payload"]["artifact_revision"] == corrected["revision_id"]
     assert quotation_row["payload"]["recording_id"] == recording["object_id"]
     assert quotation_row["payload"]["recording_revision"] == recording["revision_id"]
+    denied = expect(
+        live.request(
+            live.path("transcript-corrections"),
+            actor="partner",
+            method="POST",
+            body={
+                "operation_id": str(uuid4()),
+                "data": {
+                    "artifact_id": generated["object_id"],
+                    "segment_id": "segment-03m12s",
+                    "corrected_text": "An unauthorised correction must not be saved.",
+                },
+            },
+        ),
+        403,
+    )
+    assert denied["code"] == "POLICY_DENIED"
     revoke()

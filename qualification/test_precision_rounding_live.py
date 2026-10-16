@@ -1,6 +1,7 @@
 """Positive user journey for FR-CAL-009 / APL-411 precision and output-only rounding."""
 
 from test_calculation_methods import build, observation_data
+from test_live_application import expect
 from test_measurement import action, approve, create, get, submit
 
 
@@ -37,3 +38,10 @@ def test_three_exact_inputs_round_only_after_the_unrounded_sum_is_stored(live):
     assert data["formula"]["rounding_rule"] == "HALF_UP"
     assert data["formula"]["rounding_boundary"] == "OUTPUT_ONLY"
     assert data["lineage_manifest_id"]
+    expect(
+        live.request(
+            live.path("calculated-results", result["object_id"], tenant=live.fixture["tenant_b"]),
+            actor="other_tenant",
+        ),
+        404,
+    )

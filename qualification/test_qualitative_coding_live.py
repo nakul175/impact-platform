@@ -135,3 +135,22 @@ def test_two_coders_preserve_assignments_and_adjudicate_one_disagreement(live):
     assert saved_agreement["payload"]["matched_units_only"] is True
     assert saved_agreement["payload"]["matched_count"] == 1
     assert saved_agreement["payload"]["agreement_count"] == 0
+
+    denied = expect(
+        live.request(
+            live.path("qualitative-adjudications"),
+            actor="partner",
+            method="POST",
+            body={
+                "operation_id": str(uuid4()),
+                "data": {
+                    "left_assignment_id": left["object_id"],
+                    "right_assignment_id": right["object_id"],
+                    "final_code_ids": ["ACCESS_BARRIER"],
+                    "rationale": "An external recipient cannot adjudicate coding.",
+                },
+            },
+        ),
+        403,
+    )
+    assert denied["code"] == "POLICY_DENIED"

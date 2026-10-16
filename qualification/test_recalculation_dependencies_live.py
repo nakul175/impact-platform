@@ -2,7 +2,7 @@
 # ruff: noqa: F811
 
 from test_changes import propose
-from test_live_application import cmd
+from test_live_application import cmd, expect
 from test_measurement import action, approve, get, observation, result, setup, submit  # noqa: F401
 
 
@@ -59,3 +59,10 @@ def test_approved_correction_records_dependencies_and_recalculates_exactly_once(
     assert len(rows) == 1
     assert rows[0]["state"] == "RECALCULATED"
     assert str(rows[0]["replacement_result_id"]) == completed["result_id"]
+    expect(
+        live.request(
+            live.path("calculated-results", completed["result_id"], tenant=live.fixture["tenant_b"]),
+            actor="other_tenant",
+        ),
+        404,
+    )

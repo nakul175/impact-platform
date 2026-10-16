@@ -67,3 +67,14 @@ def test_manager_previews_transparent_weighted_composite(live):
     ] == [("reach", "60", "0.4", "24"), ("quality", "80", "0.6", "48")]
     assert {x["code"] for x in preview["sensitivity"]} == {"reach", "quality"}
     assert set(preview["referenced_definition_revisions"]) == set(approved.values())
+
+    denied = expect(
+        live.request(
+            live.path("formula-definitions") + "/preview",
+            actor="enumerator",
+            method="POST",
+            body={"data": data, "samples": samples},
+        ),
+        404,
+    )
+    assert denied["code"] == "RESOURCE_UNAVAILABLE"

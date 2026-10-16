@@ -47,3 +47,11 @@ def test_analyst_calculates_denominator_weighted_ratio_from_approved_components(
     assert (reproduced["stored"]["numerator"], reproduced["stored"]["denominator"]) == ("51", "110")
     assert {source["object_id"] for source in reproduced["sources"]} == set(sources)
     assert all(source["disposition"] == "INCLUDED" for source in reproduced["sources"])
+    expect(
+        live.request(
+            live.path("calculated-results", result["object_id"], tenant=live.fixture["tenant_b"])
+            + "/reproduction",
+            actor="other_tenant",
+        ),
+        404,
+    )

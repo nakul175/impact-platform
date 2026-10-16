@@ -68,17 +68,34 @@ def test_manager_reviews_exact_source_proposals_without_creating_domain_objects(
     )
     policy_version = _enable_extraction(live)
     before = _domain_count(live)
+    create_body = {
+        "operation_id": str(uuid4()),
+        "source_object_id": source["object_id"],
+        "source_revision_id": source["revision_id"],
+        "policy_version": policy_version,
+        "language": "en",
+    }
+    denied = expect(
+        live.request(
+            live.path("ai-enablement/extractions"),
+            actor="partner",
+            method="POST",
+            body=create_body,
+        ),
+        404,
+    )
+    assert denied["code"] == "RESOURCE_UNAVAILABLE"
+    tenant = live.fixture["tenant_a"]
+    with live.db() as c:
+        assert not c.execute(
+            "SELECT 1 FROM impact.ai_extraction_draft WHERE tenant_id=%s AND operation_id=%s",
+            (tenant, create_body["operation_id"]),
+        ).fetchone()
     created = expect(
         live.request(
             live.path("ai-enablement/extractions"),
             method="POST",
-            body={
-                "operation_id": str(uuid4()),
-                "source_object_id": source["object_id"],
-                "source_revision_id": source["revision_id"],
-                "policy_version": policy_version,
-                "language": "en",
-            },
+            body={**create_body, "operation_id": str(uuid4())},
         ),
         200,
     )
@@ -138,7 +155,6 @@ def test_manager_reviews_exact_source_proposals_without_creating_domain_objects(
     }
     assert _domain_count(live) == before
 
-    tenant = live.fixture["tenant_a"]
     reviewer = live.fixture["actors"]["author"]["principal_id"]
     with live.db() as c:
         c.execute("SELECT set_config('impact.tenant_id',%s,true)", (tenant,))

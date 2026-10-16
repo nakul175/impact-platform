@@ -10,6 +10,7 @@ from impact_api import ai_enablement as enablement_module
 from impact_api.ai_enablement import AIEnablement
 from impact_api.ai_policy import AIPolicy
 from impact_api.config import Settings
+from impact_api.domain import DomainError
 from impact_api.service import Service
 from impact_api.store import Database
 from test_ai_answer_provenance_live import _identity
@@ -77,6 +78,16 @@ def test_successful_ai_task_preserves_a_closed_reproducible_trace_without_hidden
         "purpose": "AI_ADOPTION_ADVISORY",
         "source_dependencies": [],
     }
+    revoked = _identity(live, db, "revoked")
+    with pytest.raises(DomainError) as denied:
+        api.advisory(revoked, tenant, request, str(uuid4()))
+    assert (denied.value.status, denied.value.code) == (404, "RESOURCE_UNAVAILABLE")
+    assert provider.calls == 0
+    with db.transaction(tenant) as c:
+        assert not c.execute(
+            "SELECT 1 FROM impact.ai_advisory_request WHERE tenant_id=%s AND request_id=%s",
+            (tenant, request["operation_id"]),
+        ).fetchone()
     result = api.advisory(admin, tenant, request, str(uuid4()))
     assert set(result) == {"status", "text", "assessment", "model", "disclaimer", "trace"}
     trace = result["trace"]

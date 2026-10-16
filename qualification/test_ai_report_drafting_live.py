@@ -59,21 +59,38 @@ def test_author_reviews_snapshot_bound_draft_without_publishing_or_changing_sour
     section["narrative"] = "Verified access is {{water}} with the pinned evidence."
     policy_version = _enable(live)
     before = _domain_counts(live)
+    create_body = {
+        "operation_id": str(uuid4()),
+        "snapshot_id": snapshot["object_id"],
+        "snapshot_revision_id": snapshot["revision_id"],
+        "template_revision_id": template["revision_id"],
+        "language": "en",
+        "policy_version": policy_version,
+        "section_inputs": [section],
+        "prior_draft_id": None,
+        "regenerated_section_codes": [],
+    }
+    denied = expect(
+        live.request(
+            live.path("ai-enablement/report-drafts"),
+            actor="partner",
+            method="POST",
+            body=create_body,
+        ),
+        404,
+    )
+    assert denied["code"] == "RESOURCE_UNAVAILABLE"
+    tenant = live.fixture["tenant_a"]
+    with live.db() as c:
+        assert not c.execute(
+            "SELECT 1 FROM impact.ai_report_draft WHERE tenant_id=%s AND operation_id=%s",
+            (tenant, create_body["operation_id"]),
+        ).fetchone()
     draft = expect(
         live.request(
             live.path("ai-enablement/report-drafts"),
             method="POST",
-            body={
-                "operation_id": str(uuid4()),
-                "snapshot_id": snapshot["object_id"],
-                "snapshot_revision_id": snapshot["revision_id"],
-                "template_revision_id": template["revision_id"],
-                "language": "en",
-                "policy_version": policy_version,
-                "section_inputs": [section],
-                "prior_draft_id": None,
-                "regenerated_section_codes": [],
-            },
+            body={**create_body, "operation_id": str(uuid4())},
         ),
         200,
     )

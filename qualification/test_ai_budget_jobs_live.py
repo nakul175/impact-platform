@@ -2,6 +2,7 @@
 
 from uuid import uuid4
 
+import pytest
 from starlette.requests import Request
 
 from impact_api import ai_enablement as enablement_module
@@ -11,6 +12,7 @@ from impact_api.ai_jobs import AIJobs
 from impact_api.ai_policy import AIPolicy
 from impact_api.auth import Auth
 from impact_api.config import Settings
+from impact_api.domain import DomainError
 from impact_api.service import Service
 from impact_api.store import Database
 
@@ -90,6 +92,24 @@ def test_accepted_job_reserves_budget_and_queued_cancel_releases_it(live, monkey
     assert accepted["estimated_units"] == 1
     assert accepted["progress"] == 0 and accepted["can_cancel"] is True
     assert jobs.submit(identity, tenant, body) == accepted
+    assert jobs.status(identity, tenant, accepted["job_id"]) == accepted
+
+    revoked = auth.resolve(
+        Request(
+            {
+                "type": "http",
+                "method": "GET",
+                "headers": [(b"authorization", ("Bearer " + live.token("revoked")).encode())],
+            }
+        )
+    )
+    for operation in (
+        lambda: jobs.status(revoked, tenant, accepted["job_id"]),
+        lambda: jobs.cancel(revoked, tenant, accepted["job_id"]),
+    ):
+        with pytest.raises(DomainError) as denied:
+            operation()
+        assert (denied.value.status, denied.value.code) == (404, "RESOURCE_UNAVAILABLE")
     assert jobs.status(identity, tenant, accepted["job_id"]) == accepted
 
     with db.transaction(tenant) as c:

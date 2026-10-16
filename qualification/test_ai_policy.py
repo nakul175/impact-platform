@@ -409,6 +409,17 @@ def test_tools_are_never_implicit_and_need_both_policy_and_runtime_approval(live
     assert counts(live) == before
 
 
+@pytest.mark.parametrize("use_case", ai_policy.RESERVED_USE_CASES)
+def test_every_reserved_use_case_refuses_activation_without_a_policy_write(live, use_case):
+    before = counts(live)
+    response = expect(
+        put(live, command(live, [advisory_rule(use_case=use_case)])),
+        422,
+    )
+    assert response["reason_code"] == "AI_USE_CASE_RESERVED"
+    assert counts(live) == before
+
+
 # Scenario: Reject policy change by a non-administrator or without fresh sign-in
 
 

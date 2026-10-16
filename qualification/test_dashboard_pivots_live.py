@@ -27,7 +27,7 @@ REGION = {
 }
 
 
-def test_analyst_previews_a_source_based_dashboard_pivot_through_the_http_api(live):
+def test_analyst_previews_and_runs_a_source_based_dashboard_pivot_through_the_http_api(live):
     _, indicator, period, keys = build(live, scheme=REGION)
     for key, value, region in zip(keys, ["7", "5", "3"], ["NORTH", "NORTH", "SOUTH"]):
         observation = create(
@@ -105,4 +105,50 @@ def test_analyst_previews_a_source_based_dashboard_pivot_through_the_http_api(li
         ("SOUTH", "3"),
     }
     assert "never from displayed cells" in pivot["explanation"]
+
+    operation_id = str(uuid4())
+    run_body = {"operation_id": operation_id, "data": body}
+    executed = expect(
+        live.request(
+            live.path("dashboards", dashboard["object_id"]) + "/actions/run-pivot",
+            actor="author",
+            method="POST",
+            body=run_body,
+        ),
+        200,
+    )
+    validate("DashboardPivotResult", executed)
+    assert executed == pivot
+
+    # Exact retry returns the durable result and creates neither another audit event nor a
+    # dashboard revision. Pivot execution is a governed read of an exact result revision.
+    retried = expect(
+        live.request(
+            live.path("dashboards", dashboard["object_id"]) + "/actions/run-pivot",
+            actor="author",
+            method="POST",
+            body=run_body,
+        ),
+        200,
+    )
+    assert retried == executed
+    assert get(live, "dashboards", dashboard["object_id"])["revision_id"] == dashboard["revision_id"]
+    with live.db() as c:
+        receipt_count = c.execute(
+            "SELECT count(*) AS n FROM impact.operation_receipt "
+            "WHERE tenant_id=%s AND actor_id=%s AND command_type='action_dashboard_pivot_run' "
+            "AND operation_id=%s",
+            (
+                live.fixture["tenant_a"],
+                live.fixture["actors"]["author"]["principal_id"],
+                operation_id,
+            ),
+        ).fetchone()["n"]
+        audit_count = c.execute(
+            "SELECT count(*) AS n FROM impact.audit_event_current "
+            "WHERE tenant_id=%s AND action_type='action_dashboard_pivot_run' "
+            "AND object_reference=%s",
+            (live.fixture["tenant_a"], dashboard["object_id"]),
+        ).fetchone()["n"]
+    assert receipt_count == 1 and audit_count == 1
     revoke()

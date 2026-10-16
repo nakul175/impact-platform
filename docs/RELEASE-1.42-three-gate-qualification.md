@@ -63,6 +63,27 @@ and fixture repairs subsequently passed a focused run: 64 passed, 4 skipped.
 Raw JUnit files preserve both outcomes. Raw failure XML whitespace is retained
 byte-for-byte rather than normalized for diff formatting.
 
+## Final verified local result
+
+The clean committed source `645466ff032cbcd7e9927a646f44c75318fef24a`
+passed the combined local runner: **2,648 passed, zero failures, 229 skipped and
+one deselected** (one warning). The before/after source digests match. Lint,
+documentation-index and release-review consistency checks pass. Human security
+confirmations remain empty; consistency does not mean release approval.
+
+| Bounded local gate | Stories passed |
+|---|---|
+| Positive journey | 49/56 |
+| Authorization/refusal | 49/56 |
+| Error/recovery | 49/56 |
+
+The result map records separate per-gate executed, missing and unpassed nodes.
+Seven reserved-disabled use cases remain excluded, even though their substituted
+policy component tests pass. This does not establish all frozen criteria, required
+CI, browser/native qualification, staging deployment or owner acceptance.
+See [run receipt](evidence/candidate-1.42/three-gates-20261016/FINAL-RUN-RECEIPT.json)
+and [story evidence](evidence/candidate-1.42/three-gates-20261016/STORY-GATE-RESULTS.json).
+
 ## Integration notes
 
 - Cohort: the exact 56 IDs in the frozen acceptance manifest.

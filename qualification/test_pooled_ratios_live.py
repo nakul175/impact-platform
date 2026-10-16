@@ -1,7 +1,7 @@
 """Positive user journey for FR-CAL-003 / APL-402 pooled ratios."""
 
 from test_calculation_methods import build, calculate_result, observation_data
-from test_live_application import expect
+from test_live_application import cmd, expect
 from test_measurement import approve, create, submit
 
 
@@ -26,6 +26,25 @@ def test_analyst_calculates_denominator_weighted_ratio_from_approved_components(
         )
         approve(live, submit(live, "observations", row))
         sources.append(row["object_id"])
+
+    # A malformed calculation request must fail before any result is written;
+    # the caller can correct the request and calculate normally afterwards.
+    with live.db() as database:
+        before = database.execute("SELECT count(*) AS n FROM impact.calculated_result_current").fetchone()[
+            "n"
+        ]
+    refused = expect(
+        live.request(
+            live.path("indicator-instances", indicator["object_id"]) + "/actions/calculate",
+            method="POST",
+            body=cmd({}),
+        ),
+        422,
+    )
+    assert refused["code"] == "VALIDATION_FAILED"
+    with live.db() as database:
+        after = database.execute("SELECT count(*) AS n FROM impact.calculated_result_current").fetchone()["n"]
+    assert after == before
 
     result = calculate_result(live, indicator, period)
     data = result["data"]

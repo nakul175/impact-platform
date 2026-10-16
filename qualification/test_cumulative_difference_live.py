@@ -1,7 +1,7 @@
 """Positive user journey for FR-CAL-005 / APL-405 cumulative differences."""
 
 from test_calculation_methods import build, calculate_result, observation_data
-from test_live_application import expect
+from test_live_application import cmd, expect
 from test_measurement import approve, create, submit
 
 
@@ -30,6 +30,15 @@ def test_analyst_calculates_and_reproduces_cumulative_increment(live):
         approve(live, submit(live, "observations", row))
         source_ids.append(row["object_id"])
 
+    refused = expect(
+        live.request(
+            live.path("indicator-instances", indicator["object_id"]) + "/actions/calculate",
+            method="POST",
+            body=cmd({"period_id": "not-a-uuid"}),
+        ),
+        422,
+    )
+    assert refused["code"] == "VALIDATION_FAILED"
     result = calculate_result(live, indicator, period)
     data = result["data"]
     assert data["value_state"] == "PRESENT"

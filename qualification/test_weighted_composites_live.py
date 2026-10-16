@@ -52,6 +52,17 @@ def test_manager_previews_transparent_weighted_composite(live):
         }
         for component, value in zip(components, ["60", "80"])
     ]
+    invalid_samples = [samples[0], {**samples[1], "values": [{**samples[1]["values"][0], "value": "101"}]}]
+    refused = expect(
+        live.request(
+            live.path("formula-definitions") + "/preview",
+            method="POST",
+            body={"data": data, "samples": invalid_samples},
+        ),
+        422,
+    )
+    assert refused["reason_code"] == "COMPOSITE_INPUT_OUT_OF_RANGE"
+
     preview = expect(
         live.request(
             live.path("formula-definitions") + "/preview",

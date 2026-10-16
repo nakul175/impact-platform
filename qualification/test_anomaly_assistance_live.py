@@ -64,6 +64,32 @@ def test_analyst_runs_anomaly_assistance_and_confirms_a_reviewable_finding(live)
     validate("AnomalyResource", current)
     assert current["data"]["state"] == "SUGGESTED"
 
+    hidden = expect(
+        live.request(
+            live.path(
+                "anomaly-findings",
+                finding["finding_id"],
+                tenant=live.fixture["tenant_b"],
+            ),
+            actor="other_tenant",
+        ),
+        404,
+    )
+    assert hidden["code"] == "RESOURCE_UNAVAILABLE"
+    denied = expect(
+        live.request(
+            live.path("anomaly-findings", finding["finding_id"]) + "/actions/review",
+            actor="enumerator",
+            method="POST",
+            body={
+                "operation_id": str(uuid4()),
+                "data": {"decision": "CONFIRMED", "reason_code": None},
+            },
+        ),
+        404,
+    )
+    assert denied["code"] == "RESOURCE_UNAVAILABLE"
+
     reviewed = expect(
         live.request(
             live.path("anomaly-findings", finding["finding_id"]) + "/actions/review",

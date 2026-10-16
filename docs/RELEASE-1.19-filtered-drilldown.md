@@ -6,4 +6,6 @@ A filter affects only widgets that declare its field. Other widgets explicitly r
 
 Saved views continue to pin an exact indicator-definition revision. When the current definition changes, reads report `PINNED_REVISION` and the exact revision in use; they never silently rebind. If the definition or pin is no longer currently readable, the view is withheld.
 
-The dashboard UI displays current filter values, visibly names non-applicable filters, exposes only the permitted drill levels and sends filter changes through the ordinary audited revision command. This release adds no migration or database privilege change. Tests and CI remain deferred by owner request; source checks only are recorded for this unmerged, undeployed coding candidate.
+The dashboard UI displays current filter values, visibly names non-applicable filters, exposes only the permitted drill levels and sends filter changes through the ordinary audited revision command. This release adds no migration or database privilege change.
+
+The focused disposable live positive journey passed locally on 16 October 2026: a visible programme filter selected an exact approved result slice only for its compatible widget; an incompatible widget remained available with `NOT_APPLICABLE` and named the ignored field; programme drill was available only on the widget that declared it; and participant drill was refused by the closed hierarchy. CI, independent final review, merge, staging deployment and owner acceptance remain separate gates.

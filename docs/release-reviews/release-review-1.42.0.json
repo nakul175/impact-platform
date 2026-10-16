@@ -527,6 +527,36 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-12",
+      "change_id": "APL-405-CUMULATIVE-DIFFERENCE-COMPLETION",
+      "change": "Governed cumulative-difference public contract, projection and reproducible increment trace",
+      "paths": [
+        "infrastructure/migrations/0110_cumulative_difference_projection.sql",
+        "apps/api/impact_api/calculation_contracts.py",
+        "apps/api/impact_api/domain.py",
+        "apps/api/impact_api/service.py",
+        "packages/contracts/access-policy.json",
+        "packages/contracts/openapi.json",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy",
+        "calculation",
+        "lineage"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28"
+      ],
+      "summary": "Adds only bounded nullable projections under existing forced tenant RLS; admits the frozen cumulative-difference method; refuses declines and ambiguous latest values; records deterministic baseline-to-position increments; and includes the increment trace in exact reproduction while immutable lineage continues to pin every source revision.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [
@@ -537,7 +567,8 @@
     "qualification/test_qualitative_coding_live.py",
     "qualification/test_transcription_translation_live.py",
     "qualification/test_analysis_packages_live.py",
-    "qualification/test_learning_agenda_live.py"
+    "qualification/test_learning_agenda_live.py",
+    "qualification/test_cumulative_difference_live.py"
   ],
   "notes": [
     "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."

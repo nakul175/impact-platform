@@ -7212,6 +7212,129 @@
       "audit": false
     },
     {
+      "operation_id": "create_analysis_package",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/analysis-packages",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "export_analysis_package",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/analysis-packages/{object_id}/export",
+      "capability": "report.export",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "register_analysis_result",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/analysis-packages/{object_id}/results",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "create_learning_question",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/learning-questions",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "close_learning_question",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/learning-questions/{object_id}/actions/close",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "reopen_learning_question",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/learning-questions/{object_id}/actions/reopen",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "consider_learning_context",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/learning-questions/{object_id}/actions/consider-context",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "get_learning_question_summary",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/learning-questions/{object_id}/summary",
+      "capability": "evaluations.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
       "operation_id": "create_qualitative_codebook",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/qualitative-codebooks",

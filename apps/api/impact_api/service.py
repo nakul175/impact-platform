@@ -480,7 +480,14 @@ class Service:
                 if contribution["disposition"] == "INCLUDED":
                     included.append(source["payload"])
             recomputed_full = calculate(definition["payload"], included)
-            fields = ("value_state", "value", "numerator", "denominator", "displayed_value")
+            fields = (
+                "value_state",
+                "value",
+                "numerator",
+                "denominator",
+                "displayed_value",
+                "cumulative_increments",
+            )
             stored = {key: result["payload"].get(key) for key in fields}
             recomputed = {key: recomputed_full.get(key) for key in fields}
             response = {

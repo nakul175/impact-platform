@@ -36422,7 +36422,7 @@
         "operationId": "create_analysis_package",
         "summary": "Freeze exact approved analysis sources and integrity metadata",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -36665,7 +36665,7 @@
         "operationId": "register_analysis_result",
         "summary": "Register a result against an exact package and methodology revision",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.edit",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -36776,7 +36776,7 @@
         "operationId": "create_learning_question",
         "summary": "Create a contextual versioned learning question",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -36907,7 +36907,7 @@
         "operationId": "close_learning_question",
         "summary": "Close Learning Question",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.edit",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -37038,7 +37038,7 @@
         "operationId": "reopen_learning_question",
         "summary": "Reopen Learning Question",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.edit",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -37169,7 +37169,7 @@
         "operationId": "consider_learning_context",
         "summary": "Consider Learning Context",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.edit",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -37300,7 +37300,7 @@
         "operationId": "get_learning_question_summary",
         "summary": "Read a disclosure-reviewed learning summary",
         "description": "Authorise current tenant, scope, field and purpose. Recheck sensitive effects. No identity or lifecycle field may be assigned by generic input.",
-        "x-capability": "dashboards.read",
+        "x-capability": "evaluations.read",
         "responses": {
           "200": {
             "description": "Successful bounded response",
@@ -37422,7 +37422,7 @@
         "operationId": "respond_to_evaluation_recommendation",
         "summary": "Respond To Evaluation Recommendation",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.edit",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -37553,7 +37553,7 @@
         "operationId": "complete_management_action",
         "summary": "Complete Management Action",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.edit",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -37684,7 +37684,7 @@
         "operationId": "escalate_overdue_management_action",
         "summary": "Escalate Overdue Management Action",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.edit",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -38572,7 +38572,7 @@
         "operationId": "create_triangulated_finding",
         "summary": "Create Triangulated Finding",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -38683,7 +38683,7 @@
         "operationId": "revise_finding_interpretation",
         "summary": "Revise Finding Interpretation",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -38794,7 +38794,7 @@
         "operationId": "publish_triangulated_finding",
         "summary": "Publish Triangulated Finding",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -38905,7 +38905,7 @@
         "operationId": "create_budget_version",
         "summary": "Create Budget Version",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -39016,7 +39016,7 @@
         "operationId": "revise_budget_version",
         "summary": "Revise Budget Version",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -39127,7 +39127,7 @@
         "operationId": "approve_budget_version",
         "summary": "Approve Budget Version",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -39238,7 +39238,7 @@
         "operationId": "import_expenditure",
         "summary": "Import and reconcile expenditure",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -39349,7 +39349,7 @@
         "operationId": "save_finance_variance",
         "summary": "Save separated actual and forecast variance",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "dashboards.draft.create",
+        "x-capability": "evaluations.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -57134,6 +57134,7 @@
               "WEIGHTED_INDEX",
               "NONE",
               "COUNT",
+              "CUMULATIVE_DIFFERENCE",
               "MEAN",
               "MIN",
               "MAX"
@@ -57506,6 +57507,7 @@
               "WEIGHTED_INDEX",
               "NONE",
               "COUNT",
+              "CUMULATIVE_DIFFERENCE",
               "MEAN",
               "MIN",
               "MAX"
@@ -59371,6 +59373,33 @@
               ]
             }
           },
+          "cumulative_increments": {
+            "type": "array",
+            "maxItems": 10000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "event_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "position": {
+                  "type": "string",
+                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                },
+                "increment": {
+                  "type": "string",
+                  "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                }
+              },
+              "required": [
+                "event_at",
+                "position",
+                "increment"
+              ]
+            }
+          },
           "calculation_precision_digits": {
             "type": "integer",
             "const": 100
@@ -59385,6 +59414,7 @@
                   "POOLED_RATIO",
                   "COUNT",
                   "LAST_VALID",
+                  "CUMULATIVE_DIFFERENCE",
                   "MEAN",
                   "MEDIAN",
                   "MIN",
@@ -59442,6 +59472,7 @@
                   "POOLED_RATIO",
                   "COUNT",
                   "LAST_VALID",
+                  "CUMULATIVE_DIFFERENCE",
                   "MEAN",
                   "MEDIAN",
                   "MIN",
@@ -84331,6 +84362,33 @@
               "displayed_value": {
                 "type": "string",
                 "maxLength": 64
+              },
+              "cumulative_increments": {
+                "type": "array",
+                "maxItems": 10000,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "event_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "position": {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    "increment": {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    }
+                  },
+                  "required": [
+                    "event_at",
+                    "position",
+                    "increment"
+                  ]
+                }
               }
             },
             "required": [
@@ -84338,7 +84396,8 @@
               "value",
               "numerator",
               "denominator",
-              "displayed_value"
+              "displayed_value",
+              "cumulative_increments"
             ]
           },
           "recomputed": {
@@ -84373,6 +84432,33 @@
               "displayed_value": {
                 "type": "string",
                 "maxLength": 64
+              },
+              "cumulative_increments": {
+                "type": "array",
+                "maxItems": 10000,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "event_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "position": {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    },
+                    "increment": {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]{0,25})(\\.[0-9]{1,12})?$"
+                    }
+                  },
+                  "required": [
+                    "event_at",
+                    "position",
+                    "increment"
+                  ]
+                }
               }
             },
             "required": [
@@ -84380,7 +84466,8 @@
               "value",
               "numerator",
               "denominator",
-              "displayed_value"
+              "displayed_value",
+              "cumulative_increments"
             ]
           },
           "exact_match": {
@@ -89634,6 +89721,10 @@
             "type": "string",
             "format": "uuid"
           },
+          "expected_revision": {
+            "type": "string",
+            "format": "uuid"
+          },
           "data": {
             "type": "object",
             "additionalProperties": false,
@@ -89657,6 +89748,7 @@
         },
         "required": [
           "operation_id",
+          "expected_revision",
           "data"
         ]
       },
@@ -89665,6 +89757,10 @@
         "additionalProperties": false,
         "properties": {
           "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
             "type": "string",
             "format": "uuid"
           },
@@ -89685,6 +89781,7 @@
         },
         "required": [
           "operation_id",
+          "expected_revision",
           "data"
         ]
       },
@@ -89693,6 +89790,10 @@
         "additionalProperties": false,
         "properties": {
           "operation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
             "type": "string",
             "format": "uuid"
           },
@@ -89713,6 +89814,7 @@
         },
         "required": [
           "operation_id",
+          "expected_revision",
           "data"
         ]
       },

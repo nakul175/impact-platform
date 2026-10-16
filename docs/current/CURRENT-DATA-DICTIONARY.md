@@ -7292,3 +7292,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0109_analysis_learning_kinds.sql | 3c8c72c80364111956bf62aca1b3df521528e536852bb1b61a46f66266c530ae |
+
+## Migration0110 — governed cumulative-difference projections
+
+`0110_cumulative_difference_projection.sql` SHA256 `0241f3bb697065fdf12225720c16824537e849831fc78e533d56144c51ee5694`. Schema110 adds the optional non-negative baseline and bounded written basis projections to `indicator_definition_current`, plus the optional JSON-array increment trace projection to `calculated_result_current`. Exact approved source revisions remain pinned in immutable lineage revisions; the projection adds no access grant, policy, mutable history or cross-tenant path. All0001–0109 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0110_cumulative_difference_projection.sql | 0241f3bb697065fdf12225720c16824537e849831fc78e533d56144c51ee5694 |

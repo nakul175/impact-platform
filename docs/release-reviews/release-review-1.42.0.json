@@ -648,7 +648,8 @@
     "qualification/test_triangulated_findings_live.py",
     "qualification/test_budget_versions_live.py",
     "qualification/test_management_responses_live.py",
-    "qualification/test_expenditure_ingestion_live.py"
+    "qualification/test_expenditure_ingestion_live.py",
+    "qualification/test_finance_variance_live.py"
   ],
   "notes": [
     "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."

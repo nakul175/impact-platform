@@ -42,6 +42,9 @@ def test_exact_ready_manifest_passes_and_drift_fails_closed(tmp_path, monkeypatc
             "ADVISORY_DRAFT", {**configuration, "prompt_version": "unreviewed-prompt"}
         )
     assert drift.value.status == 503 and drift.value.reason == "AI_EVALUATION_NOT_PASSED"
+    # The refusal is scoped to the unreviewed configuration. Returning to the exact reviewed
+    # candidate recovers deterministically without changing or weakening the manifest.
+    assert ai_evaluation_gate.require_exposure("ADVISORY_DRAFT", configuration)["owner"]
 
 
 @pytest.mark.parametrize(

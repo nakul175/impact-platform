@@ -412,11 +412,16 @@ def test_tools_are_never_implicit_and_need_both_policy_and_runtime_approval(live
 @pytest.mark.parametrize("use_case", ai_policy.RESERVED_USE_CASES)
 def test_every_reserved_use_case_refuses_activation_without_a_policy_write(live, use_case):
     before = counts(live)
-    response = expect(
-        put(live, command(live, [advisory_rule(use_case=use_case)])),
-        422,
-    )
-    assert response["reason_code"] == "AI_USE_CASE_RESERVED"
+    body = command(live, [advisory_rule(use_case=use_case)])
+    first = expect(put(live, body), 422)
+    retry = expect(put(live, body), 422)
+    assert {key: value for key, value in first.items() if key != "correlation_id"} == {
+        key: value for key, value in retry.items() if key != "correlation_id"
+    }
+    assert first["reason_code"] == "AI_USE_CASE_RESERVED"
+    # Retrying an intentionally unavailable use case is deterministic and cannot create a
+    # policy version. A caller must choose a currently executable use case instead of recovering
+    # by silently enabling reserved product scope.
     assert counts(live) == before
 
 

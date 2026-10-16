@@ -6,4 +6,6 @@ One server-estimated unit is atomically reserved against the exact immutable pol
 
 Requester-only status and cancellation endpoints expose bounded job metadata. Cancelling a queued job atomically marks it cancelled and releases the full reservation; a running job records a cancellation request for the fenced worker. The UI keeps the submitted brief on refusal and shows job progress, reserved units, refresh and Cancel controls.
 
-This coding candidate establishes submission, reservation and cancellation. Worker execution and terminal settlement are the next split story, FR-AI-016b. Source checks are not qualification; tests, CI, independent review, merge, staging deployment and owner acceptance remain pending.
+This coding candidate establishes submission, reservation and cancellation. Worker execution and terminal settlement are the next split story, FR-AI-016b.
+
+`qualification/test_ai_budget_jobs_live.py` uses the real disposable database with a synthetic configured provider and exact synthetic evaluation pass. It proves durable acceptance as a queued cancellable job, exact replay, requester status, one-unit reservation against the exact policy version, queued cancellation, and atomic release with zero actual units. CI, independent review, staging deployment and owner acceptance remain separate gates.

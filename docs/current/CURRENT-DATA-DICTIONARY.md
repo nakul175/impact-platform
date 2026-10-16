@@ -7300,3 +7300,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0110_cumulative_difference_projection.sql | 0241f3bb697065fdf12225720c16824537e849831fc78e533d56144c51ee5694 |
+
+## Migration0111 — triangulated finding and budget registry kinds
+
+`0111_findings_budget_kinds.sql` SHA256 `5605f320319b9aafd10b0efabcf375a35061805c91b89bf243bc336d96b1c28b`. Schema111 registers `TriangulatedFinding`, `FindingPublication` and `BudgetVersion` and places all three kinds behind restrictive delivery-worker fences. The authenticated application retains responsibility for exact revisions, active-human reviewer identity, natural-person independence, evidential history and exact-decimal budget arithmetic. All0001–0110 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0111_findings_budget_kinds.sql | 5605f320319b9aafd10b0efabcf375a35061805c91b89bf243bc336d96b1c28b |

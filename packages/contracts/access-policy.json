@@ -7448,6 +7448,130 @@
       "audit": true
     },
     {
+      "operation_id": "create_triangulated_finding",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/findings",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "revise_finding_interpretation",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/finding-revisions",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "publish_triangulated_finding",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/finding-publications",
+      "capability": "evaluations.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "independence_required": true
+    },
+    {
+      "operation_id": "create_budget_version",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/budgets",
+      "capability": "budget-lines.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "revise_budget_version",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/budget-revisions",
+      "capability": "budget-lines.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "approve_budget_version",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/budget-approvals",
+      "capability": "budget-lines.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "REVIEWER"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true,
+      "independence_required": true
+    },
+    {
+      "operation_id": "import_expenditure",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/expenditure-imports",
+      "capability": "finance-transactions.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "save_finance_variance",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/finance-variance-views",
+      "capability": "finance-transactions.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "ANALYST"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
       "operation_id": "create_audit_export",
       "method": "POST",
       "path": "/v1/tenants/{tenant_id}/audit-exports",

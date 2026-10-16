@@ -51783,7 +51783,7 @@
         "operationId": "create_triangulated_finding",
         "summary": "Create Triangulated Finding",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "evaluations.draft.edit",
+        "x-capability": "budget-lines.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -51894,7 +51894,7 @@
         "operationId": "revise_finding_interpretation",
         "summary": "Revise Finding Interpretation",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "evaluations.draft.edit",
+        "x-capability": "budget-lines.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -52005,7 +52005,7 @@
         "operationId": "publish_triangulated_finding",
         "summary": "Publish Triangulated Finding",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "evaluations.draft.edit",
+        "x-capability": "budget-lines.draft.edit",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -52449,7 +52449,7 @@
         "operationId": "import_expenditure",
         "summary": "Import and reconcile expenditure",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "evaluations.draft.edit",
+        "x-capability": "finance-transactions.draft.create",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -52560,7 +52560,7 @@
         "operationId": "save_finance_variance",
         "summary": "Save separated actual and forecast variance",
         "description": "Create Draft only. Full activation and required-field contracts apply before lifecycle transition; all supplied values validated now.",
-        "x-capability": "evaluations.draft.edit",
+        "x-capability": "finance-transactions.read",
         "responses": {
           "default": {
             "description": "Successful bounded response",
@@ -103707,6 +103707,10 @@
                 "type": "string",
                 "format": "uuid"
               },
+              "expected_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
               "interpretation": {
                 "type": "string",
                 "minLength": 1
@@ -103767,6 +103771,7 @@
             },
             "required": [
               "finding_id",
+              "expected_revision",
               "interpretation",
               "supporting_evidence",
               "contradictory_evidence"
@@ -103794,6 +103799,10 @@
                 "type": "string",
                 "format": "uuid"
               },
+              "expected_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
               "preserve_contradictory_evidence": {
                 "type": "boolean"
               },
@@ -103807,6 +103816,7 @@
             },
             "required": [
               "finding_id",
+              "expected_revision",
               "preserve_contradictory_evidence",
               "disclosed_limitation"
             ]
@@ -103919,6 +103929,10 @@
                 "type": "string",
                 "format": "uuid"
               },
+              "expected_revision": {
+                "type": "string",
+                "format": "uuid"
+              },
               "rate_assumptions": {
                 "type": "array",
                 "items": {
@@ -103970,6 +103984,7 @@
             },
             "required": [
               "budget_id",
+              "expected_revision",
               "rate_assumptions",
               "lines"
             ]

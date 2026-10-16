@@ -555,6 +555,33 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-13",
+      "change_id": "APL-646-APL-648-POSITIVE-JOURNEY-REPAIR",
+      "change": "Governed triangulated finding and budget-version persistence and policy repair",
+      "paths": [
+        "infrastructure/migrations/0111_findings_budget_kinds.sql",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "apps/api/impact_api/findings.py",
+        "apps/api/impact_api/finance_governance.py",
+        "packages/contracts/access-policy.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH28",
+        "TH32"
+      ],
+      "summary": "Registers finding, publication and budget kinds behind restrictive worker fences; replaces generic dashboard authorization with explicit evidence and finance operations; enforces receipt expiry, exact revisions, active-human reviewer identity, natural-person independent publication and budget approval, named approval routes, prior evidence retention and exact decimal totals.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [
@@ -566,7 +593,9 @@
     "qualification/test_transcription_translation_live.py",
     "qualification/test_analysis_packages_live.py",
     "qualification/test_learning_agenda_live.py",
-    "qualification/test_cumulative_difference_live.py"
+    "qualification/test_cumulative_difference_live.py",
+    "qualification/test_triangulated_findings_live.py",
+    "qualification/test_budget_versions_live.py"
   ],
   "notes": [
     "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."

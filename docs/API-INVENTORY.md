@@ -253,7 +253,7 @@
 | PATCH | `/v1/tenants/{tenant_id}/evidence/{object_id}` | `evidence.draft.edit` |
 | POST | `/v1/tenants/{tenant_id}/evidence/{object_id}/actions/attach` | `evidence.attach` |
 | GET | `/v1/tenants/{tenant_id}/evidence/{object_id}/content` | `evidence.download` |
-| POST | `/v1/tenants/{tenant_id}/expenditure-imports` | `evaluations.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/expenditure-imports` | `finance-transactions.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/external-analytics-connections` | `dashboards.read` |
 | POST | `/v1/tenants/{tenant_id}/external-analytics-connections` | `evaluations.draft.edit` |
 | GET | `/v1/tenants/{tenant_id}/external-analytics-connections/{object_id}` | `dashboards.read` |
@@ -263,10 +263,10 @@
 | POST | `/v1/tenants/{tenant_id}/external-shares` | `reports.share` |
 | GET | `/v1/tenants/{tenant_id}/external-shares/{share_id}` | `reports.read` |
 | POST | `/v1/tenants/{tenant_id}/external-shares/{share_id}/revocation` | `reports.share` |
-| POST | `/v1/tenants/{tenant_id}/finance-variance-views` | `evaluations.draft.edit` |
-| POST | `/v1/tenants/{tenant_id}/finding-publications` | `evaluations.draft.edit` |
-| POST | `/v1/tenants/{tenant_id}/finding-revisions` | `evaluations.draft.edit` |
-| POST | `/v1/tenants/{tenant_id}/findings` | `evaluations.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/finance-variance-views` | `finance-transactions.read` |
+| POST | `/v1/tenants/{tenant_id}/finding-publications` | `budget-lines.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/finding-revisions` | `budget-lines.draft.edit` |
+| POST | `/v1/tenants/{tenant_id}/findings` | `budget-lines.draft.edit` |
 | GET | `/v1/tenants/{tenant_id}/forms` | `forms.read` |
 | POST | `/v1/tenants/{tenant_id}/forms` | `forms.draft.create` |
 | GET | `/v1/tenants/{tenant_id}/forms/{object_id}` | `forms.read` |

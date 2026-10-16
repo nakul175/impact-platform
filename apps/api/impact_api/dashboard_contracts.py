@@ -1501,11 +1501,18 @@ def augment(spec, policy):
             "data": closed(
                 {
                     "finding_id": UUID,
+                    "expected_revision": UUID,
                     "interpretation": {"type": "string", "minLength": 1},
                     "supporting_evidence": {"type": "array", "minItems": 1, "items": finding_pin},
                     "contradictory_evidence": {"type": "array", "items": finding_pin},
                 },
-                ["finding_id", "interpretation", "supporting_evidence", "contradictory_evidence"],
+                [
+                    "finding_id",
+                    "expected_revision",
+                    "interpretation",
+                    "supporting_evidence",
+                    "contradictory_evidence",
+                ],
             ),
         },
         ["operation_id", "data"],
@@ -1516,10 +1523,16 @@ def augment(spec, policy):
             "data": closed(
                 {
                     "finding_id": UUID,
+                    "expected_revision": UUID,
                     "preserve_contradictory_evidence": {"type": "boolean"},
                     "disclosed_limitation": NULLABLE_TEXT,
                 },
-                ["finding_id", "preserve_contradictory_evidence", "disclosed_limitation"],
+                [
+                    "finding_id",
+                    "expected_revision",
+                    "preserve_contradictory_evidence",
+                    "disclosed_limitation",
+                ],
             ),
         },
         ["operation_id", "data"],
@@ -1556,10 +1569,11 @@ def augment(spec, policy):
             "data": closed(
                 {
                     "budget_id": UUID,
+                    "expected_revision": UUID,
                     "rate_assumptions": {"type": "array", "items": {"type": "object"}},
                     "lines": {"type": "array", "minItems": 1, "items": budget_line},
                 },
-                ["budget_id", "rate_assumptions", "lines"],
+                ["budget_id", "expected_revision", "rate_assumptions", "lines"],
             ),
         },
         ["operation_id", "data"],
@@ -2919,7 +2933,7 @@ def augment(spec, policy):
         entry.update(
             operationId=operation,
             summary=operation.replace("_", " ").title(),
-            **{"x-contract-version": VERSION},
+            **{"x-capability": "evaluations.draft.edit", "x-contract-version": VERSION},
         )
         entry["requestBody"]["content"]["application/json"]["schema"] = {
             "$ref": f"#/components/schemas/{schema_name}"
@@ -2965,7 +2979,7 @@ def augment(spec, policy):
         entry.update(
             operationId=operation,
             summary=operation.replace("_", " ").title(),
-            **{"x-contract-version": VERSION},
+            **{"x-capability": "budget-lines.draft.edit", "x-contract-version": VERSION},
         )
         entry["requestBody"]["content"]["application/json"]["schema"] = {
             "$ref": f"#/components/schemas/{schema_name}"
@@ -2990,7 +3004,7 @@ def augment(spec, policy):
     expenditure_entry.update(
         operationId="import_expenditure",
         summary="Import and reconcile expenditure",
-        **{"x-contract-version": VERSION},
+        **{"x-capability": "finance-transactions.draft.create", "x-contract-version": VERSION},
     )
     expenditure_entry["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/ExpenditureImport"
@@ -3000,7 +3014,7 @@ def augment(spec, policy):
     variance_entry.update(
         operationId="save_finance_variance",
         summary="Save separated actual and forecast variance",
-        **{"x-contract-version": VERSION},
+        **{"x-capability": "finance-transactions.read", "x-contract-version": VERSION},
     )
     variance_entry["requestBody"]["content"]["application/json"]["schema"] = {
         "$ref": "#/components/schemas/FinanceVarianceSave"
@@ -3382,6 +3396,38 @@ def augment(spec, policy):
             "evaluations.draft.edit",
             True,
         ),
+        ("create_triangulated_finding", "POST", prefix + "findings", "evaluations.draft.edit", True),
+        (
+            "revise_finding_interpretation",
+            "POST",
+            prefix + "finding-revisions",
+            "evaluations.draft.edit",
+            True,
+        ),
+        (
+            "publish_triangulated_finding",
+            "POST",
+            prefix + "finding-publications",
+            "evaluations.draft.edit",
+            True,
+        ),
+        ("create_budget_version", "POST", prefix + "budgets", "budget-lines.draft.create", True),
+        ("revise_budget_version", "POST", prefix + "budget-revisions", "budget-lines.draft.edit", True),
+        ("approve_budget_version", "POST", prefix + "budget-approvals", "budget-lines.draft.edit", True),
+        (
+            "import_expenditure",
+            "POST",
+            prefix + "expenditure-imports",
+            "finance-transactions.draft.create",
+            True,
+        ),
+        (
+            "save_finance_variance",
+            "POST",
+            prefix + "finance-variance-views",
+            "finance-transactions.read",
+            True,
+        ),
     ]:
         policy["operations"] = [row for row in policy["operations"] if row["operation_id"] != op]
         policy["operations"].append(
@@ -3415,6 +3461,9 @@ def augment(spec, policy):
                         "request_transcription",
                         "correct_transcript_segment",
                         "create_reviewed_quotation",
+                        "create_triangulated_finding",
+                        "revise_finding_interpretation",
+                        "publish_triangulated_finding",
                     }
                     else ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "ANALYST"]
                     if op
@@ -3423,9 +3472,13 @@ def augment(spec, policy):
                         "evaluate_evaluation_stage_gate",
                         "create_evaluation_methodology",
                         "amend_evaluation_methodology",
+                        "create_budget_version",
+                        "revise_budget_version",
+                        "import_expenditure",
+                        "save_finance_variance",
                     }
                     else ["MEL_ADMIN", "PROGRAMME_MANAGER", "REVIEWER"]
-                    if op == "review_evaluation_methodology"
+                    if op in {"review_evaluation_methodology", "approve_budget_version"}
                     else ROLES
                 ),
                 "purpose_required": False,
@@ -3438,6 +3491,8 @@ def augment(spec, policy):
                         "evaluate_evaluation_stage_gate",
                         "review_evaluation_methodology",
                         "adjudicate_qualitative_coding",
+                        "publish_triangulated_finding",
+                        "approve_budget_version",
                     }
                     else {}
                 ),

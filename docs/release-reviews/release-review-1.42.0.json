@@ -544,9 +544,7 @@
       "areas": [
         "migration",
         "contracts",
-        "access-policy",
-        "calculation",
-        "lineage"
+        "access-policy"
       ],
       "threats": [
         "TH06",

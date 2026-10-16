@@ -657,6 +657,31 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-17",
+      "change_id": "APL-340-AI-INPUT-TOOL-ISOLATION",
+      "change": "Minimized durable unsafe-instruction observation",
+      "paths": [
+        "infrastructure/migrations/0115_ai_untrusted_instruction_observations.sql",
+        "apps/api/impact_api/ai_enablement.py",
+        "qualification/test_ai_input_tool_isolation_live.py"
+      ],
+      "areas": [
+        "migration",
+        "ai-module"
+      ],
+      "threats": [
+        "TH21",
+        "TH23",
+        "TH28",
+        "TH32",
+        "TH34"
+      ],
+      "summary": "Persists only closed coarse categories when untrusted advisory content requests credential disclosure, cross-tenant retrieval, bulk export or an unapproved destination. The row pins the exact request revision and human principal, constrains executed actions to zero and contains no source text, prompt, credential or provider response. Qualification also proves a policy-allowed tool remains unavailable when absent from the server-owned runtime catalogue and is refused before reservation or provider execution.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [
@@ -674,7 +699,8 @@
     "qualification/test_management_responses_live.py",
     "qualification/test_expenditure_ingestion_live.py",
     "qualification/test_finance_variance_live.py",
-    "qualification/test_ai_extraction_drafts_live.py"
+    "qualification/test_ai_extraction_drafts_live.py",
+    "qualification/test_ai_input_tool_isolation_live.py"
   ],
   "notes": [
     "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."

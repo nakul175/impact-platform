@@ -6,7 +6,7 @@ import hmac
 import json
 import logging
 import re
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from cryptography.exceptions import InvalidTag
 import psycopg
@@ -384,13 +384,26 @@ class AIEnablement:
                 )
             audit(c, ctx, "create_ai_advisory", receipt, correlation)
             if embedded_attempts:
+                c.execute(
+                    "INSERT INTO impact.ai_untrusted_instruction_observation "
+                    "(tenant_id,observation_id,request_object_id,request_revision_id,categories,"
+                    "executed_actions,observed_by,observed_at) "
+                    "VALUES(%s,%s,%s,%s,%s,0,%s,statement_timestamp())",
+                    (
+                        tenant,
+                        str(uuid4()),
+                        receipt["object_id"],
+                        receipt["revision_id"],
+                        embedded_attempts,
+                        ctx.principal_id,
+                    ),
+                )
                 audit(
                     c,
                     ctx,
                     "ai_untrusted_instruction_observed",
                     {
-                        "object_id": receipt["object_id"],
-                        "revision_id": receipt["revision_id"],
+                        **receipt,
                         "categories": embedded_attempts,
                         "executed_actions": 0,
                     },

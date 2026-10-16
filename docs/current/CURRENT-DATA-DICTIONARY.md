@@ -7332,3 +7332,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0114_ai_extraction_review_lock.sql | 69a86e11a54d3beda203a33dda357acf0452fce8dc04b3900bc703a62b2faeb2 |
+
+## Migration0115 — minimized untrusted-instruction observations
+
+`0115_ai_untrusted_instruction_observations.sql` adds an insert-only, tenant-fenced register for coarse unsafe-instruction categories observed in an AI advisory request. Each row pins the exact immutable request revision and observing principal and constrains `executed_actions` to zero. The register has no source text, prompt, credential or provider-response field and grants no worker access. All0001–0114 remain byte-exact.
+
+| Migration | SHA256 |
+|---|---|
+| 0115_ai_untrusted_instruction_observations.sql | 1ce0b26a2b56101d02821d28dfe5f8f27cc2cbe52d2dc14e22c90839eddb23ed |

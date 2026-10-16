@@ -4,7 +4,7 @@ import re
 from uuid import UUID
 
 from .domain import DomainError
-from .store import context, load
+from .store import authorize, context, load
 
 KINDS = {"Dashboard", "Search", "Analysis", "AIArtifact", "ApprovedAggregate"}
 
@@ -37,7 +37,8 @@ class PermissionSafeDerivatives:
             raise DomainError("VALIDATION_FAILED", 400, reason="PUBLIC_DERIVATIVE_NOT_APPROVED_AGGREGATE")
         normalized = []
         with self.service.db.transaction(tenant) as c:
-            ctx = context(c, identity, tenant)
+            ctx = context(c, identity, tenant, write=True)
+            authorize(c, ctx, "create_derivative_manifest")
             for source in sources:
                 if (
                     not isinstance(source, dict)
@@ -55,7 +56,7 @@ class PermissionSafeDerivatives:
                 normalized.append(item)
             c.execute(
                 "INSERT INTO impact.derivative_manifest(tenant_id,derivative_id,derivative_revision_id,derivative_kind,disclosure_mode,created_by,created_at) VALUES(%s,%s,%s,%s,%s,%s,now())",
-                (tenant, derivative_id, revision, body["kind"], mode, ctx.principal),
+                (tenant, derivative_id, revision, body["kind"], mode, ctx.principal_id),
             )
             for ordinal, source in enumerate(normalized, 1):
                 c.execute(
@@ -82,6 +83,7 @@ class PermissionSafeDerivatives:
     def read(self, identity, tenant, derivative_id, revision_id):
         with self.service.db.transaction(tenant) as c:
             ctx = context(c, identity, tenant)
+            authorize(c, ctx, "read_derivative_manifest", derivative_id, hidden=True)
             manifest = c.execute(
                 "SELECT derivative_kind,disclosure_mode FROM impact.derivative_manifest WHERE tenant_id=%s AND derivative_id=%s AND derivative_revision_id=%s",
                 (tenant, derivative_id, revision_id),

@@ -7348,3 +7348,11 @@ These already-present coding candidates were missing from the checksum table. Re
 | Migration | SHA256 |
 |---|---|
 | 0116_current_access_profile.sql | 8dbf62b9c870defb4d7e3f120cbd789c7ff0f3f88dc0b718b2e997b70c3d616f |
+
+## Migration0117 — independently reviewed dashboard disclosure artifacts
+
+`0117_dashboard_disclosure_artifact_kind.sql` registers `DashboardDisclosureArtifact` as an immutable revisioned registry kind. The authenticated application prepares a frozen content snapshot and a different natural person must approve it before an exact artifact revision can back a public dashboard publication. Restrictive worker policies keep both registry and revision rows outside worker duties. No source grant, live private query, or cross-workspace authority is inherited.
+
+| Migration | SHA256 |
+|---|---|
+| 0117_dashboard_disclosure_artifact_kind.sql | 06c1a1bd201afdc0eac3f14e0486dabbe6a4aaad1c682963f6b1e1b53304946e |

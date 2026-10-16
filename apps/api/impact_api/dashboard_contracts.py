@@ -40,9 +40,16 @@ ROLES = ["MEL_ADMIN", "PROGRAMME_MANAGER", "AUTHOR", "REVIEWER", "ANALYST", "DAT
 IMPLEMENTED = {
     ("get", "dashboards/{object_id}/preview"),
     ("post", "dashboards/{object_id}/actions/copy"),
+    ("post", "dashboards/{object_id}/actions/copy-to-workspace"),
     ("get", "dashboards/{object_id}/sharing-preview"),
     ("post", "dashboards/{object_id}/actions/publish"),
+    ("post", "dashboards/{object_id}/disclosure-artifacts"),
+    ("post", "dashboards/{object_id}/disclosure-artifacts/{artifact_id}/actions/review"),
     ("get", "dashboards/{object_id}/publications/{publication_id}"),
+    ("get", "dashboards/{object_id}/publications/{publication_id}/content"),
+    ("post", "dashboards/{object_id}/publications/{publication_id}/actions/transfer-owner"),
+    ("post", "dashboards/{object_id}/publications/{publication_id}/actions/revalidate"),
+    ("post", "dashboards/{object_id}/publications/{publication_id}/actions/resume"),
     ("post", "dashboard-alert-rules"),
     ("get", "dashboard-alert-rules"),
     ("get", "dashboard-alert-rules/{object_id}"),
@@ -227,10 +234,62 @@ def augment(spec, policy):
         {"operation_id": UUID, "data": {"$ref": "#/components/schemas/DashboardCopyData"}},
         ["operation_id", "data"],
     )
+    schemas["DashboardWorkspaceCopy"] = closed(
+        {
+            "operation_id": UUID,
+            "expected_revision": UUID,
+            "data": closed(
+                {"target_tenant_id": UUID, "title": {"type": "string", "minLength": 1, "maxLength": 200}},
+                ["target_tenant_id"],
+            ),
+        },
+        ["operation_id", "expected_revision", "data"],
+    )
+    disclosure_widget = closed(
+        {
+            "widget_id": UUID,
+            "title": {"type": "string", "minLength": 1, "maxLength": 200},
+            "content": {"type": "string", "maxLength": 10000},
+            "quality_context": {"type": "string", "minLength": 1, "maxLength": 2000},
+        },
+        ["widget_id", "title", "content", "quality_context"],
+    )
+    schemas["DashboardDisclosurePrepare"] = closed(
+        {
+            "operation_id": UUID,
+            "expected_revision": UUID,
+            "data": closed(
+                {"widgets": {"type": "array", "minItems": 1, "maxItems": 10, "items": disclosure_widget}},
+                ["widgets"],
+            ),
+        },
+        ["operation_id", "expected_revision", "data"],
+    )
+    schemas["DashboardDisclosureReview"] = closed(
+        {
+            "operation_id": UUID,
+            "expected_revision": UUID,
+            "data": closed({"decision": {"const": "APPROVE"}}, ["decision"]),
+        },
+        ["operation_id", "expected_revision", "data"],
+    )
+    schemas["DashboardPublicationChange"] = closed(
+        {"operation_id": UUID, "expected_revision": UUID, "data": closed({}, [])},
+        ["operation_id", "expected_revision", "data"],
+    )
+    schemas["DashboardPublicationOwnerTransfer"] = closed(
+        {
+            "operation_id": UUID,
+            "expected_revision": UUID,
+            "data": closed({"owner_id": UUID}, ["owner_id"]),
+        },
+        ["operation_id", "expected_revision", "data"],
+    )
     schemas["DashboardPublishData"] = closed(
         {
             "audience": {"enum": ["INTERNAL", "PUBLIC"]},
             "expires_at": {"type": "string", "format": "date-time"},
+            "disclosure_artifact_id": NULLABLE_UUID,
         },
         ["audience", "expires_at"],
     )
@@ -287,6 +346,24 @@ def augment(spec, policy):
             "expires_at",
             "status",
             "reason_code",
+        ],
+    )
+    schemas["DashboardPublicationContent"] = closed(
+        {
+            "publication_id": UUID,
+            "dashboard_id": UUID,
+            "dashboard_revision": UUID,
+            "disclosure_artifact_id": UUID,
+            "disclosure_artifact_revision": UUID,
+            "widgets": {"type": "array", "maxItems": 10, "items": disclosure_widget},
+        },
+        [
+            "publication_id",
+            "dashboard_id",
+            "dashboard_revision",
+            "disclosure_artifact_id",
+            "disclosure_artifact_revision",
+            "widgets",
         ],
     )
     alert_rule_data = closed(
@@ -2500,6 +2577,19 @@ def augment(spec, policy):
         "parameters": deepcopy(dashboard_item["parameters"]),
         "post": copy_entry,
     }
+    workspace_copy = deepcopy(copy_entry)
+    workspace_copy.update(
+        operationId="action_dashboards_copy_to_workspace",
+        summary="Copy a dashboard configuration to another workspace without grants",
+        **{"x-capability": "dashboards.draft.create", "x-contract-version": VERSION},
+    )
+    workspace_copy["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardWorkspaceCopy"
+    }
+    paths[prefix + "dashboards/{object_id}/actions/copy-to-workspace"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": workspace_copy,
+    }
     sharing_preview = deepcopy(preview)
     sharing_preview.update(
         operationId="preview_dashboard_sharing",
@@ -2538,6 +2628,33 @@ def augment(spec, policy):
         "parameters": deepcopy(dashboard_item["parameters"]),
         "post": publish_entry,
     }
+    disclosure_prepare = deepcopy(publish_entry)
+    disclosure_prepare.update(
+        operationId="action_dashboard_disclosures_prepare",
+        summary="Prepare a frozen dashboard disclosure artifact for independent review",
+    )
+    disclosure_prepare["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardDisclosurePrepare"
+    }
+    paths[prefix + "dashboards/{object_id}/disclosure-artifacts"] = {
+        "parameters": deepcopy(dashboard_item["parameters"]),
+        "post": disclosure_prepare,
+    }
+    artifact_parameters = deepcopy(dashboard_item["parameters"]) + [
+        {"name": "artifact_id", "in": "path", "required": True, "schema": deepcopy(UUID)}
+    ]
+    disclosure_review = deepcopy(publish_entry)
+    disclosure_review.update(
+        operationId="action_dashboard_disclosures_review",
+        summary="Independently approve a frozen dashboard disclosure artifact",
+    )
+    disclosure_review["requestBody"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardDisclosureReview"
+    }
+    paths[prefix + "dashboards/{object_id}/disclosure-artifacts/{artifact_id}/actions/review"] = {
+        "parameters": artifact_parameters,
+        "post": disclosure_review,
+    }
     publication_parameters = deepcopy(dashboard_item["parameters"]) + [
         {"name": "publication_id", "in": "path", "required": True, "schema": deepcopy(UUID)}
     ]
@@ -2555,6 +2672,47 @@ def augment(spec, policy):
         "parameters": publication_parameters,
         "get": publication_status,
     }
+    publication_content = deepcopy(publication_status)
+    publication_content.update(
+        operationId="read_dashboard_publication_content",
+        summary="Read only the frozen independently approved public dashboard content",
+    )
+    publication_content["responses"]["200"]["content"]["application/json"]["schema"] = {
+        "$ref": "#/components/schemas/DashboardPublicationContent"
+    }
+    paths[prefix + "dashboards/{object_id}/publications/{publication_id}/content"] = {
+        "parameters": publication_parameters,
+        "get": publication_content,
+    }
+    for action, operation, schema, summary in [
+        (
+            "transfer-owner",
+            "action_dashboard_publications_transfer_owner",
+            "DashboardPublicationOwnerTransfer",
+            "Transfer publication ownership under current authority",
+        ),
+        (
+            "revalidate",
+            "action_dashboard_publications_revalidate",
+            "DashboardPublicationChange",
+            "Revalidate a suspended publication against current authority",
+        ),
+        (
+            "resume",
+            "action_dashboard_publications_resume",
+            "DashboardPublicationChange",
+            "Resume a revalidated publication",
+        ),
+    ]:
+        command = deepcopy(publish_entry)
+        command.update(operationId=operation, summary=summary)
+        command["requestBody"]["content"]["application/json"]["schema"] = {
+            "$ref": "#/components/schemas/" + schema
+        }
+        paths[prefix + "dashboards/{object_id}/publications/{publication_id}/actions/" + action] = {
+            "parameters": publication_parameters,
+            "post": command,
+        }
     alert_create = deepcopy(paths[prefix + "dashboards"]["post"])
     alert_create.update(
         operationId="create_dashboard_alert_rule",
@@ -3216,6 +3374,27 @@ def augment(spec, policy):
             True,
         ),
         (
+            "action_dashboards_copy_to_workspace",
+            "POST",
+            prefix + "dashboards/{object_id}/actions/copy-to-workspace",
+            "dashboards.draft.create",
+            True,
+        ),
+        (
+            "action_dashboard_disclosures_prepare",
+            "POST",
+            prefix + "dashboards/{object_id}/disclosure-artifacts",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "action_dashboard_disclosures_review",
+            "POST",
+            prefix + "dashboards/{object_id}/disclosure-artifacts/{artifact_id}/actions/review",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
             "preview_dashboard_sharing",
             "GET",
             prefix + "dashboards/{object_id}/sharing-preview",
@@ -3235,6 +3414,34 @@ def augment(spec, policy):
             prefix + "dashboards/{object_id}/publications/{publication_id}",
             "dashboards.read",
             False,
+        ),
+        (
+            "read_dashboard_publication_content",
+            "GET",
+            prefix + "dashboards/{object_id}/publications/{publication_id}/content",
+            "dashboards.read",
+            False,
+        ),
+        (
+            "action_dashboard_publications_transfer_owner",
+            "POST",
+            prefix + "dashboards/{object_id}/publications/{publication_id}/actions/transfer-owner",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "action_dashboard_publications_revalidate",
+            "POST",
+            prefix + "dashboards/{object_id}/publications/{publication_id}/actions/revalidate",
+            "dashboards.draft.edit",
+            True,
+        ),
+        (
+            "action_dashboard_publications_resume",
+            "POST",
+            prefix + "dashboards/{object_id}/publications/{publication_id}/actions/resume",
+            "dashboards.draft.edit",
+            True,
         ),
         (
             "preview_dashboard_pivot",

@@ -750,6 +750,37 @@
       "prepared_by": "Codex integration, for Nakul Jain (owner)",
       "prepared_on": "2026-10-16",
       "confirmed_by": null
+    },
+    {
+      "id": "IR-1.42-21",
+      "change_id": "APL-614-DASHBOARD-GOVERNANCE-COMPLETION",
+      "change": "Complete governed cross-workspace and public dashboard publication lifecycle",
+      "paths": [
+        "infrastructure/migrations/0117_dashboard_disclosure_artifact_kind.sql",
+        "apps/api/impact_api/dashboard_authoring.py",
+        "apps/api/impact_api/dashboard_publication.py",
+        "apps/api/impact_api/dashboard_contracts.py",
+        "packages/contracts/access-policy.json",
+        "packages/contracts/openapi-implemented.json"
+      ],
+      "areas": [
+        "migration",
+        "contracts",
+        "access-policy"
+      ],
+      "threats": [
+        "TH06",
+        "TH09",
+        "TH20",
+        "TH21",
+        "TH28",
+        "TH30",
+        "TH32"
+      ],
+      "summary": "Copies configuration into an independently authorised destination without grants or source selectors; requires independent natural-person approval of an immutable disclosure snapshot; serves only its pinned content; and restricts owner transfer, durable suspension, locked revalidation and explicit resume to current authority as immutable exact-retry revisions.",
+      "prepared_by": "Codex integration, for Nakul Jain (owner)",
+      "prepared_on": "2026-10-16",
+      "confirmed_by": null
     }
   ],
   "evidence": [
@@ -769,7 +800,8 @@
     "qualification/test_finance_variance_live.py",
     "qualification/test_ai_extraction_drafts_live.py",
     "qualification/test_ai_input_tool_isolation_live.py",
-    "qualification/test_ai_budget_jobs_live.py"
+    "qualification/test_ai_budget_jobs_live.py",
+    "qualification/test_dashboard_governance_live.py"
   ],
   "notes": [
     "APL-625 is a local coding candidate; test, CI, merge, staging deployment and owner acceptance remain separate gates."

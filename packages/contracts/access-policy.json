@@ -6578,6 +6578,60 @@
       "audit": true
     },
     {
+      "operation_id": "action_dashboards_copy_to_workspace",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/actions/copy-to-workspace",
+      "capability": "dashboards.draft.create",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "action_dashboard_disclosures_prepare",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/disclosure-artifacts",
+      "capability": "dashboards.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "action_dashboard_disclosures_review",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/disclosure-artifacts/{artifact_id}/actions/review",
+      "capability": "dashboards.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
       "operation_id": "preview_dashboard_sharing",
       "method": "GET",
       "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/sharing-preview",
@@ -6630,6 +6684,78 @@
       "purpose_required": false,
       "fresh_assurance_seconds": null,
       "audit": false
+    },
+    {
+      "operation_id": "read_dashboard_publication_content",
+      "method": "GET",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/publications/{publication_id}/content",
+      "capability": "dashboards.read",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": false
+    },
+    {
+      "operation_id": "action_dashboard_publications_transfer_owner",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/publications/{publication_id}/actions/transfer-owner",
+      "capability": "dashboards.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "action_dashboard_publications_revalidate",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/publications/{publication_id}/actions/revalidate",
+      "capability": "dashboards.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
+    },
+    {
+      "operation_id": "action_dashboard_publications_resume",
+      "method": "POST",
+      "path": "/v1/tenants/{tenant_id}/dashboards/{object_id}/publications/{publication_id}/actions/resume",
+      "capability": "dashboards.draft.edit",
+      "role_templates": [
+        "MEL_ADMIN",
+        "PROGRAMME_MANAGER",
+        "AUTHOR",
+        "REVIEWER",
+        "ANALYST",
+        "DATA_STEWARD",
+        "EXTERNAL"
+      ],
+      "purpose_required": false,
+      "fresh_assurance_seconds": null,
+      "audit": true
     },
     {
       "operation_id": "preview_dashboard_pivot",

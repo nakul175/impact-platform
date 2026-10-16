@@ -2410,6 +2410,19 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/actions/copy-to-workspace", status_code=201)
+    async def dashboard_copy_to_workspace(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardWorkspaceCopy", body)
+        return await run_in_threadpool(
+            dashboard_authoring.copy_to_workspace,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
     @app.get("/v1/tenants/{tenant}/dashboards/{obj}/sharing-preview")
     def dashboard_sharing_preview(request: Request, tenant: str, obj: str, recipient_id: str):
         return dashboard_publication.sharing_preview(
@@ -2429,10 +2442,98 @@ def create_app():
             request.state.correlation,
         )
 
+    @app.post("/v1/tenants/{tenant}/dashboards/{obj}/disclosure-artifacts", status_code=201)
+    async def dashboard_disclosure_prepare(request: Request, tenant: str, obj: str):
+        body = await strict_body(request)
+        validate("DashboardDisclosurePrepare", body)
+        return await run_in_threadpool(
+            dashboard_publication.prepare_disclosure,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/dashboards/{obj}/disclosure-artifacts/{artifact_id}/actions/review",
+        status_code=201,
+    )
+    async def dashboard_disclosure_review(request: Request, tenant: str, obj: str, artifact_id: str):
+        body = await strict_body(request)
+        validate("DashboardDisclosureReview", body)
+        return await run_in_threadpool(
+            dashboard_publication.review_disclosure,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(artifact_id),
+            body,
+            request.state.correlation,
+        )
+
     @app.get("/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}")
     def dashboard_publication_status(request: Request, tenant: str, obj: str, publication_id: str):
         return dashboard_publication.status(
+            auth.resolve(request), uuid(tenant), uuid(obj), uuid(publication_id), request.state.correlation
+        )
+
+    @app.get("/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}/content")
+    def dashboard_publication_content(request: Request, tenant: str, obj: str, publication_id: str):
+        return dashboard_publication.content(
             auth.resolve(request), uuid(tenant), uuid(obj), uuid(publication_id)
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}/actions/transfer-owner",
+        status_code=201,
+    )
+    async def dashboard_publication_transfer_owner(
+        request: Request, tenant: str, obj: str, publication_id: str
+    ):
+        body = await strict_body(request)
+        validate("DashboardPublicationOwnerTransfer", body)
+        return await run_in_threadpool(
+            dashboard_publication.transfer_owner,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(publication_id),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}/actions/revalidate",
+        status_code=201,
+    )
+    async def dashboard_publication_revalidate(request: Request, tenant: str, obj: str, publication_id: str):
+        body = await strict_body(request)
+        validate("DashboardPublicationChange", body)
+        return await run_in_threadpool(
+            dashboard_publication.revalidate,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(publication_id),
+            body,
+            request.state.correlation,
+        )
+
+    @app.post(
+        "/v1/tenants/{tenant}/dashboards/{obj}/publications/{publication_id}/actions/resume", status_code=201
+    )
+    async def dashboard_publication_resume(request: Request, tenant: str, obj: str, publication_id: str):
+        body = await strict_body(request)
+        validate("DashboardPublicationChange", body)
+        return await run_in_threadpool(
+            dashboard_publication.resume,
+            auth.resolve(request),
+            uuid(tenant),
+            uuid(obj),
+            uuid(publication_id),
+            body,
+            request.state.correlation,
         )
 
     @app.post("/v1/tenants/{tenant}/dashboards/{obj}/pivot-preview")

@@ -1,0 +1,3487 @@
+{
+  "schema_version": 1,
+  "release": "1.42",
+  "candidate_head": "9bd546f964d9eebb60298e4dbac4f25f665cf214",
+  "cohort_definition": "Unique first occurrence in sequential release notes 0.86 through 1.42",
+  "cohort_count": 56,
+  "source_files": {
+    "backlog": "docs/backlog/backlog.csv",
+    "backlog_sha256": "6cd4d418dbaf3ec09675947bce0f7840ccc97c3ede9ab3d882202dd6b6ceacbd",
+    "refinement": "docs/product/refinement/backlog-refinement-000-123.json through backlog-refinement-248-367.json"
+  },
+  "accepted_story_count": 0,
+  "acceptance_state": "PENDING_EXACT_CRITERION_EVIDENCE_AND_PRODUCT_OWNER_ACCEPTANCE",
+  "human_gates": [
+    "Independent human PR approval",
+    "Applicable security/accessibility/manual review",
+    "Product owner acceptance for every story at sprint review"
+  ],
+  "stories": [
+    {
+      "ordinal": 1,
+      "linear_issue": "APL-351",
+      "story_id": "FR-ACC-004",
+      "source_gherkin_sha256": "8b6523856be9e18c345cf70947c3ec8b1f0395d10740a61ed1e392cb280428db",
+      "scenario_count": 4,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_natural_person_independence_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.86-natural-person-independence.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Accept an independent approval",
+          "level": "integration",
+          "assertions": [
+            "the approval is accepted"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Invalidate decisions when the candidate is edited",
+          "level": "integration",
+          "assertions": [
+            "it returns to draft",
+            "the old candidate decisions are invalidated"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject self approval through a second group",
+          "level": "integration",
+          "assertions": [
+            "the approval is rejected",
+            "a different eligible person is still required"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject other routes to false independence",
+          "level": "integration",
+          "assertions": [
+            "it is not counted as independent",
+            "an emergency exception requires a separately approved policy and cannot silently count self approval as independent"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 2,
+      "linear_issue": "APL-352",
+      "story_id": "FR-ACC-005",
+      "source_gherkin_sha256": "6b34c594a6c8724efc7be35856cf0a66b854b075c8ce82769533e5cbe625c0f3",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_permission_safe_derivatives_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.87-permission-safe-derivatives.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Recheck source restrictions on read",
+          "level": "integration",
+          "assertions": [
+            "those dependencies are rechecked for the reader"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Serve an approved public aggregate",
+          "level": "integration",
+          "assertions": [
+            "it is served from a separate disclosure artifact with fixed approved content",
+            "no private drill down is available"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject leaking a restricted metric through a copy",
+          "level": "integration",
+          "assertions": [
+            "a new governed object is created that preserves the restrictions",
+            "the restricted metric remains unavailable until a valid substitute or disclosure is approved"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject treating mixed sources as public",
+          "level": "integration",
+          "assertions": [
+            "the result is not treated as public"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 3,
+      "linear_issue": "APL-353",
+      "story_id": "FR-ACC-006",
+      "source_gherkin_sha256": "b6b9b19ad972ba40754422a836c351feda86f67472836933a2548cdc33f21c10",
+      "scenario_count": 5,
+      "assertion_count": 8,
+      "candidate_test_files": [
+        "qualification/test_external_share_lifecycle_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.88-external-share-lifecycle.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Create a share",
+          "level": "integration",
+          "assertions": [
+            "they must specify the artifact version, audience, permitted actions, owner, reason and expiry",
+            "the preview uses the intended recipient's effective view",
+            "authenticated external access is the default"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Limit public links",
+          "level": "integration",
+          "assertions": [
+            "it is allowed only for approved public artifacts"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Revalidate on classification change",
+          "level": "integration",
+          "assertions": [
+            "existing disclosures are revoked or revalidated"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject access after revocation",
+          "level": "integration",
+          "assertions": [
+            "old URLs and generated download references cease serving the artifact"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject link possession as authorisation",
+          "level": "integration",
+          "assertions": [
+            "link possession alone does not authorise the sensitive data",
+            "an expired link shows unavailable without an artifact preview"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 4,
+      "linear_issue": "APL-354",
+      "story_id": "FR-ACC-011",
+      "source_gherkin_sha256": "662730aab4df09641ba869fc42284dd429343c24f38f94824a1971270b1749c8",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_access_change_propagation_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.89-access-change-propagation.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Propagate a grant change",
+          "level": "integration",
+          "assertions": [
+            "a revocation event covers active sessions, cached reads, queued jobs, generated artifacts and AI dependencies",
+            "new sensitive actions evaluate current policy immediately",
+            "online presentation converges within 60 seconds"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Report previously downloaded copies",
+          "level": "integration",
+          "assertions": [
+            "those copies are reported as external disclosures rather than remotely erased"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject revoked source text in saved AI answers",
+          "level": "integration",
+          "assertions": [
+            "the revoked source text is not revealed, including through its summary"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject stale presentation beyond the bound",
+          "level": "integration",
+          "assertions": [
+            "no online presentation under platform control still shows the revoked content"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 5,
+      "linear_issue": "APL-338",
+      "story_id": "FR-AI-001",
+      "source_gherkin_sha256": "c12401aeb6ff71da0d2d5e7daf3fb332a227b3ced0c74545f5c2c37e7c507fee",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_access_bootstrap.py",
+        "qualification/test_access_upgrade.py",
+        "qualification/test_access_upgrade_unit.py",
+        "qualification/test_ai_adoption_plans_live.py",
+        "qualification/test_ai_content_archives.py",
+        "qualification/test_ai_content_archives_live.py",
+        "qualification/test_ai_enablement.py",
+        "qualification/test_ai_enablement_catalog.py",
+        "qualification/test_ai_enablement_live.py",
+        "qualification/test_ai_plan_exports_live.py",
+        "qualification/test_ai_plan_exports_unit.py",
+        "qualification/test_ai_plan_exports_upgrade.py",
+        "qualification/test_ai_policy.py",
+        "qualification/test_ai_policy_live.py",
+        "qualification/test_ai_policy_unit.py",
+        "qualification/test_ai_ranking.py",
+        "qualification/test_ai_ranking_live.py",
+        "qualification/test_ai_ranking_unit.py",
+        "qualification/test_ai_solutions_catalog.py",
+        "qualification/test_native_roles.py",
+        "qualification/test_release_review_unit.py",
+        "qualification/test_threat_chains_unit.py",
+        "qualification/test_version_unit.py",
+        "tools/browser/ai-disclosure-check.mjs",
+        "tools/browser/ai-policy-check.mjs",
+        "tools/browser/ai-ranking-check.mjs",
+        "tools/browser/prepare.mjs"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.37-ai-policy.md",
+        "docs/RELEASE-0.37-threat-register.md",
+        "docs/RELEASE-0.38-ai-ranking.md",
+        "docs/RELEASE-0.39-ai-disclosure.md",
+        "docs/RELEASE-0.90-explicit-ai-use-case-policy.md",
+        "docs/qa/current-20261011/RELEASE-TEST-PLAN.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Enable a named use case with its policy",
+          "level": "integration",
+          "assertions": [
+            "only that use case is enabled",
+            "users see the active policy before making a request"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Core workflows work with AI disabled",
+          "level": "integration",
+          "assertions": [
+            "each completes using deterministic and manual workflows",
+            "no provider call is made"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject transmission that fails policy",
+          "level": "integration",
+          "assertions": [
+            "it is blocked before content leaves the authorised boundary"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject implicit enablement of tools",
+          "level": "integration",
+          "assertions": [
+            "the tool is not available"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 6,
+      "linear_issue": "APL-340",
+      "story_id": "FR-AI-011",
+      "source_gherkin_sha256": "6e1040c7e2e5fc8e11554131a71c74283fd659de8ecb987aa2b1df35d7489221",
+      "scenario_count": 3,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_ai_input_tool_isolation_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.91-ai-input-tool-isolation.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Tool catalogue is set independently of model output",
+          "level": "integration",
+          "assertions": [
+            "the allowed tool catalogue and scoped arguments are established independently of model generated instructions",
+            "external destinations are used only with explicit policy permission"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Embedded instruction is treated as untrusted content",
+          "level": "integration",
+          "assertions": [
+            "the instruction is treated as untrusted content",
+            "no export is performed"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject unsafe actions requested by documents",
+          "level": "integration",
+          "assertions": [
+            "the unsafe action attempt is blocked without being executed",
+            "the attempt is recorded"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 7,
+      "linear_issue": "APL-341",
+      "story_id": "FR-AI-012",
+      "source_gherkin_sha256": "d2dcb2eea2d88d3c4b5cf4034f97308c0ed2f5fd5e44f9b9f97373598e33108b",
+      "scenario_count": 4,
+      "assertion_count": 9,
+      "candidate_test_files": [
+        "qualification/test_ai_data_handling_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.92-ai-data-handling.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Policy is evaluated before transmission",
+          "level": "integration",
+          "assertions": [
+            "tenant, use case, purpose, classification, region, provider retention and minimisation policy are evaluated",
+            "prohibited fields are redacted or excluded",
+            "the approved destination version is recorded"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Primary provider offline for restricted data",
+          "level": "integration",
+          "assertions": [
+            "no unapproved fallback provider receives the content",
+            "the manual workflow remains usable"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject training reuse without opt in",
+          "level": "browser",
+          "assertions": [
+            "it is not reused for training",
+            "no implicit opt in is applied"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject retention and reuse outside schedule",
+          "level": "integration",
+          "assertions": [
+            "they are not kept beyond their schedule",
+            "private content is not automatically copied into broad model evaluation datasets"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 8,
+      "linear_issue": "APL-342",
+      "story_id": "FR-AI-013",
+      "source_gherkin_sha256": "1b62e15944b7e628f9807dda1603a3ebec8fdf8acd100765d15faf57188e33a3",
+      "scenario_count": 3,
+      "assertion_count": 5,
+      "candidate_test_files": [
+        "qualification/test_ai_answer_provenance_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.93-ai-answer-provenance.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Answers record dependencies and audience",
+          "level": "integration",
+          "assertions": [
+            "its source dependencies and permitted audience are recorded"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Access is rechecked on reuse",
+          "level": "integration",
+          "assertions": [
+            "current access to its source dependencies is rechecked",
+            "inaccessible segments are withheld, or the artifact is withdrawn when redaction cannot be safe"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject reintroduction of revoked text",
+          "level": "integration",
+          "assertions": [
+            "the now restricted passages are not revealed",
+            "copying the chat does not create new source rights"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 9,
+      "linear_issue": "APL-343",
+      "story_id": "FR-AI-014",
+      "source_gherkin_sha256": "714f2a8ea440193cb1b317138833d6277821a02c5aa261853dbf90c66e6cca59",
+      "scenario_count": 3,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_ai_task_trace_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.94-ai-task-trace.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Task record captures traceability",
+          "level": "native",
+          "assertions": [
+            "the task record stores requester, scope, source versions, use case configuration, model identifier, tool receipts, proposed changes, review decisions and applied domain receipts within retention policy",
+            "the generated output version is preserved where lawful"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Audit an applied mapping suggestion",
+          "level": "integration",
+          "assertions": [
+            "they can identify the evidence, model configuration, reviewer and deterministic command",
+            "concise evidence and decision explanations are shown without requiring private chain of thought"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject storage or exposure of hidden reasoning",
+          "level": "integration",
+          "assertions": [
+            "hidden model reasoning is not stored",
+            "hidden model reasoning is not shown"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 10,
+      "linear_issue": "APL-344",
+      "story_id": "FR-AI-015",
+      "source_gherkin_sha256": "ef8971ca3604a022e6fb084770417297fcfbbc08b115cbe058e8d0c0d49d7352",
+      "scenario_count": 4,
+      "assertion_count": 5,
+      "candidate_test_files": [
+        "qualification/test_ai_evaluation_gate_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.95-ai-evaluation-gate.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Use case has evaluation assets",
+          "level": "integration",
+          "assertions": [
+            "it has an owner, held out dataset, expected judgements, supported language and sector matrix and release report"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Changes run regression before exposure",
+          "level": "integration",
+          "assertions": [
+            "regression runs before controlled exposure"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject candidate with a critical failure",
+          "level": "integration",
+          "assertions": [
+            "it cannot replace the approved configuration",
+            "any critical unsupported claim, leakage or unauthorised action blocks the affected capability"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject unjustified evaluation exceptions",
+          "level": "integration",
+          "assertions": [
+            "it is not granted"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 11,
+      "linear_issue": "APL-345",
+      "story_id": "FR-AI-016a",
+      "source_gherkin_sha256": "be1732b88a4e8b00c96a6f987d865452a768586980c90201f089dfb07ad88d97",
+      "scenario_count": 3,
+      "assertion_count": 5,
+      "candidate_test_files": [
+        "qualification/test_ai_budget_jobs_live.py",
+        "qualification/test_ai_enablement.py",
+        "qualification/test_ai_enablement_live.py",
+        "qualification/test_ai_plan_exports_live.py",
+        "qualification/test_ai_plan_exports_upgrade.py",
+        "qualification/test_ai_policy.py",
+        "qualification/test_ai_policy_live.py",
+        "qualification/test_ai_policy_unit.py",
+        "tools/browser/ai-policy-check.mjs",
+        "tools/browser/prepare.mjs"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.37-ai-policy.md",
+        "docs/RELEASE-0.96-ai-budget-jobs.md",
+        "docs/qa/current-20261011/RELEASE-TEST-PLAN.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Request reserves budget and runs as a job",
+          "level": "integration",
+          "assertions": [
+            "the response is 202 with a job ID",
+            "the estimated units are reserved in the budget ledger",
+            "progress and a Cancel action are shown"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Budget exhausted during close",
+          "level": "integration",
+          "assertions": [
+            "each completes without AI"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject a request beyond the budget",
+          "level": "integration",
+          "assertions": [
+            "the response is 429 \"AI_BUDGET_EXHAUSTED\" and the user's input is kept"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 12,
+      "linear_issue": "APL-346",
+      "story_id": "FR-AI-016b",
+      "source_gherkin_sha256": "118a26cdbf31e54bf9383afea5ffd7b627866518749d11480d2aa86db16a0d21",
+      "scenario_count": 2,
+      "assertion_count": 3,
+      "candidate_test_files": [
+        "qualification/test_ai_budget_jobs_live.py",
+        "qualification/test_ai_job_execution_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.96-ai-budget-jobs.md",
+        "docs/RELEASE-0.97-ai-job-execution.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Long job times out with a labelled partial draft",
+          "level": "integration",
+          "assertions": [
+            "it stops with outcome TIMED_OUT",
+            "any partial draft is kept and labelled \"Incomplete draft\""
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject an incomplete draft shown as complete",
+          "level": "integration",
+          "assertions": [
+            "it is labelled incomplete and cannot be published as a final draft"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 13,
+      "linear_issue": "APL-718",
+      "story_id": "FR-AI-017",
+      "source_gherkin_sha256": "7a142f1db79204a3b3d3f600fd516e770bb998b883e40b07fd585f413a0bb664",
+      "scenario_count": 4,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_ai_forecast_scenarios_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.98-ai-forecast-scenarios.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Forecast records its basis",
+          "level": "integration",
+          "assertions": [
+            "it records forecast horizon, method, assumptions and validation history",
+            "outputs include uncertainty and a scenario label"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Actuals and projections exported together stay distinct",
+          "level": "integration",
+          "assertions": [
+            "they appear as distinct series with horizon and uncertainty",
+            "approved targets are not overwritten automatically"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Adoption is reviewed and changes are versioned",
+          "level": "integration",
+          "assertions": [
+            "adoption goes through review",
+            "a change of model or assumptions creates a new scenario version"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject forecasts on insufficient evidence",
+          "level": "integration",
+          "assertions": [
+            "the forecast is withheld or returned only as explicitly bounded exploratory output"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 14,
+      "linear_issue": "APL-347",
+      "story_id": "FR-AI-018",
+      "source_gherkin_sha256": "a9491a0501222c5fad0f2a8232df8ddaf15ce33c9e55608e5acc132b5b3dbc4f",
+      "scenario_count": 4,
+      "assertion_count": 8,
+      "candidate_test_files": [
+        "qualification/test_ai_safety_shutdown_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.99-ai-safety-shutdown.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Capture safety feedback",
+          "level": "integration",
+          "assertions": [
+            "it captures the affected output, category, safe supporting detail and reviewer"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Shut down an affected use case",
+          "level": "integration",
+          "assertions": [
+            "new affected jobs stop immediately",
+            "queued work is identified",
+            "every affected saved answer and generated artifact is listed for review",
+            "manual report workflows continue"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject reenable without fix evidence",
+          "level": "integration",
+          "assertions": [
+            "reenable is refused"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject retained payloads and lost core workflows",
+          "level": "integration",
+          "assertions": [
+            "prohibited source payloads are not retained",
+            "independent core workflows are not disabled"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 15,
+      "linear_issue": "APL-531",
+      "story_id": "FR-AI-002",
+      "source_gherkin_sha256": "ee3b9f3f0a4cbb333ab3dcf7deb955759dd5e1fc258e53c9a219e6d84f00de30",
+      "scenario_count": 4,
+      "assertion_count": 9,
+      "candidate_test_files": [
+        "qualification/test_ai_extraction_drafts_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.00-ai-extraction-drafts.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Extraction returns traceable proposals",
+          "level": "integration",
+          "assertions": [
+            "each proposed entity and field shows source version, page or section and evidence span",
+            "each is classified as extracted, inferred or suggested"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Selective acceptance in the review panel",
+          "level": "integration",
+          "assertions": [
+            "only the accepted proposals are applied",
+            "unresolved ambiguities are retained"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Conflicting and missing values are flagged",
+          "level": "integration",
+          "assertions": [
+            "both end dates are presented separately and flagged",
+            "the population field remains missing and flagged",
+            "activation remains blocked until they are reviewed"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject unsupported commitments",
+          "level": "integration",
+          "assertions": [
+            "the value stays missing unless a human adds it explicitly",
+            "contradictory sources are not merged into a single value"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 16,
+      "linear_issue": "APL-533",
+      "story_id": "FR-AI-003",
+      "source_gherkin_sha256": "c5d528457c68890d793bc6a106356bf3edff22a7b7911e1253ef8a6fdc8d656a",
+      "scenario_count": 3,
+      "assertion_count": 5,
+      "candidate_test_files": [],
+      "release_records": [
+        "docs/RELEASE-1.01-ai-indicator-design.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Assistant proposes a complete draft measurement contract",
+          "level": "integration",
+          "assertions": [
+            "it proposes a complete draft measurement contract",
+            "it highlights missing denominator, unsuitable proxy, population ambiguity and evidence requirements"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Completion percentage requires essential fields",
+          "level": "integration",
+          "assertions": [
+            "the draft requires an eligible denominator, reporting period and evidence method before review submission"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject approval by model confidence",
+          "level": "integration",
+          "assertions": [
+            "it cannot be submitted or approved",
+            "no unsupported standard mapping is created"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 17,
+      "linear_issue": "APL-535",
+      "story_id": "FR-AI-004",
+      "source_gherkin_sha256": "c8cab1cd8ba1747382773a23aff43f92e172f076186f9002705d55e38edc14a7",
+      "scenario_count": 4,
+      "assertion_count": 5,
+      "candidate_test_files": [],
+      "release_records": [
+        "docs/RELEASE-1.02-ai-import-assistance.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Review mapping proposals with a diff",
+          "level": "integration",
+          "assertions": [
+            "each shows the proposed link or deterministic transformation with affected sample rows",
+            "the Data Steward sees the exact mapping diff before accepting"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Apply only approved deterministic changes",
+          "level": "integration",
+          "assertions": [
+            "only the date conversion is applied, as a mapping draft or reviewed transformation version"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject destructive AI actions",
+          "level": "integration",
+          "assertions": [
+            "the action is refused"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject auto-selection of ambiguous mappings",
+          "level": "integration",
+          "assertions": [
+            "it remains unselected until explicitly resolved"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 18,
+      "linear_issue": "APL-537",
+      "story_id": "FR-AI-005",
+      "source_gherkin_sha256": "90dbcec1e58f9ac75590ddd2f2aa2b96f8a6b6f2de63ab38bbbe0093cf23d665",
+      "scenario_count": 3,
+      "assertion_count": 8,
+      "candidate_test_files": [],
+      "release_records": [
+        "docs/RELEASE-1.03-ai-evidence-questions.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Supported question returns a cited answer",
+          "level": "integration",
+          "assertions": [
+            "it uses only permitted evidence and results",
+            "material claims cite their source locations",
+            "missing or contradictory evidence is shown"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Ambiguous scope asks for clarification",
+          "level": "integration",
+          "assertions": [
+            "a clarification state is returned",
+            "no official number is guessed"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject inaccessible question without leakage",
+          "level": "integration",
+          "assertions": [
+            "a bounded abstention is returned",
+            "no hidden record detail is revealed and the protected resource's existence is not confirmed",
+            "no quotations, citations or document titles are fabricated"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 19,
+      "linear_issue": "APL-538",
+      "story_id": "FR-AI-006",
+      "source_gherkin_sha256": "1ae0ab933f573833b80f53f8a59cd6c99a32c07dc84753376344e44453647673",
+      "scenario_count": 4,
+      "assertion_count": 7,
+      "candidate_test_files": [],
+      "release_records": [
+        "docs/RELEASE-1.04-ai-numeric-analysis.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Numeric question runs as a typed analysis plan",
+          "level": "integration",
+          "assertions": [
+            "it is translated into a plan with measure, compatible sources, filters, period, dimensions and permitted operation",
+            "an authorised deterministic tool executes the plan",
+            "the answer embeds the returned values and result references without model recomputation"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Pooled percentage uses the approved calculation",
+          "level": "integration",
+          "assertions": [
+            "the answer presents 46.36 percent with 51/110",
+            "it includes the approved calculation receipt"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject arbitrary queries",
+          "level": "integration",
+          "assertions": [
+            "the request is refused"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject mismatched figures",
+          "level": "integration",
+          "assertions": [
+            "delivery of the official claim is blocked"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 20,
+      "linear_issue": "APL-339",
+      "story_id": "FR-AI-007",
+      "source_gherkin_sha256": "e482035751435e4a1aab5d20694984e77e53c004f6fac1f6b9a4333d8751325a",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_ai_report_drafting_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.05-ai-report-drafting.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Draft binds snapshot and template",
+          "level": "integration",
+          "assertions": [
+            "proposed sections include evidence references and metric bindings",
+            "every official number matches its bound result"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Missing evidence stays visible",
+          "level": "integration",
+          "assertions": [
+            "missing sections appear as evidence gaps"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Review tracks AI origin",
+          "level": "browser",
+          "assertions": [
+            "AI origin, corrections and final human wording are tracked"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject invented results and overwritten edits",
+          "level": "integration",
+          "assertions": [
+            "the snapshot, result and caveat changes are refused",
+            "accepted human edits are not overwritten without an explicit reviewed diff"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 21,
+      "linear_issue": "APL-597",
+      "story_id": "FR-AI-008",
+      "source_gherkin_sha256": "30debc1a17820713c09aa5a7d7a8c6218034d95476e1002975bb3e3848001a73",
+      "scenario_count": 3,
+      "assertion_count": 7,
+      "candidate_test_files": [],
+      "release_records": [
+        "docs/RELEASE-1.06-ai-qualitative-assistance.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Suggestions from permitted sources and an approved codebook",
+          "level": "integration",
+          "assertions": [
+            "it returns suggested codes, themes, excerpts and translations",
+            "the Analyst reviews each suggestion individually",
+            "accepted edits create normal coded evidence records"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Opposing views remain traceable",
+          "level": "native",
+          "assertions": [
+            "both perspectives are retained",
+            "each remains traceable to its original excerpts"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject fabricated quotations and unlabelled translations",
+          "level": "integration",
+          "assertions": [
+            "the output is rejected",
+            "machine translation stays labelled until reviewed and does not broaden source permission"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 22,
+      "linear_issue": "APL-601",
+      "story_id": "FR-AI-009",
+      "source_gherkin_sha256": "b85dd914c4d6ca04a85d2838bdc58fb2ee6584816981da479d62f982b7833af9",
+      "scenario_count": 3,
+      "assertion_count": 7,
+      "candidate_test_files": [],
+      "release_records": [
+        "docs/RELEASE-1.07-ai-proactive-findings.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Suggested finding includes context",
+          "level": "integration",
+          "assertions": [
+            "one suggested finding is created",
+            "it states affected result versions, evidence, limitation and proposed follow up"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Dismiss a suggestion",
+          "level": "integration",
+          "assertions": [
+            "the feedback is recorded",
+            "no source value changes"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject unreviewed suggestions as confirmed findings",
+          "level": "integration",
+          "assertions": [
+            "it is not presented as a confirmed fraud, impact or programme risk finding",
+            "noise controls, cooldown and owner accountability apply",
+            "no suggestion is generated for a scope or detection task that is not enabled"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 23,
+      "linear_issue": "APL-541",
+      "story_id": "FR-AI-010",
+      "source_gherkin_sha256": "04f81432bdc5554889cb798dd741aed8f9aaae4d4f8f406de9e9224df2c45463",
+      "scenario_count": 4,
+      "assertion_count": 8,
+      "candidate_test_files": [],
+      "release_records": [
+        "docs/RELEASE-1.08-ai-action-proposals.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Proposal shows the exact change",
+          "level": "native",
+          "assertions": [
+            "it shows the exact domain command, object scope, before and after values, affected versions, policy context and consequences",
+            "confirmation is a separate step from generation"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Confirmed proposal executes through the ordinary command",
+          "level": "native",
+          "assertions": [
+            "current authority and revisions are rechecked",
+            "the ordinary domain command is called"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject stale proposal after permission is revoked",
+          "level": "native",
+          "assertions": [
+            "execution fails",
+            "no stale changes are applied"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject protected direct writes",
+          "level": "native",
+          "assertions": [
+            "the write is refused",
+            "a source or policy change marks the proposal stale so that regeneration requires review"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 24,
+      "linear_issue": "APL-402",
+      "story_id": "FR-CAL-003",
+      "source_gherkin_sha256": "70ff0c2b74d1b1504ab60bb3b6636b634141fc09b8d5595ca0ff3e7aa6d6fcf0",
+      "scenario_count": 4,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_pooled_ratios_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.09-pooled-ratios.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Pool two ratios",
+          "level": "unit",
+          "assertions": [
+            "the result is 51 of 110",
+            "it displays 46.36 percent under two decimal rounding",
+            "the weighting basis is disclosed"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Unweighted mean is a separate statistic",
+          "level": "unit",
+          "assertions": [
+            "it is labelled as a different statistic from the pooled percentage"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject averaging percentages",
+          "level": "unit",
+          "assertions": [
+            "it is never 30 percent",
+            "a component lacking the necessary quantities does not contribute as if its percentage were sufficient"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject a number for a zero denominator",
+          "level": "unit",
+          "assertions": [
+            "the result is UNDEFINED"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 25,
+      "linear_issue": "APL-405",
+      "story_id": "FR-CAL-005",
+      "source_gherkin_sha256": "d08b40bfb55c02609b84fe4bcc11184e87da23a1218c8fbb547303ffb82691ca",
+      "scenario_count": 5,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_cumulative_difference_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.10-cumulative-difference.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Aggregate by time semantic",
+          "level": "unit",
+          "assertions": [
+            "aggregation follows that semantic",
+            "snapshots specify maximum permissible age and tie resolution"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Cumulative positions",
+          "level": "unit",
+          "assertions": [
+            "the end value reported is 20",
+            "increments of 10, 5 and 5 are reported only when a zero starting baseline is established"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Cumulative decline needs a correction or reset",
+          "level": "unit",
+          "assertions": [
+            "a correction or reset event with defined treatment is required"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject summing cumulative totals",
+          "level": "unit",
+          "assertions": [
+            "they are not summed"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject exact increments without a starting value",
+          "level": "unit",
+          "assertions": [
+            "it is not produced unless the approved method supplies a justified baseline"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 26,
+      "linear_issue": "APL-408",
+      "story_id": "FR-CAL-008",
+      "source_gherkin_sha256": "f8928446dd4386881add6e9472f017865ebfbaed475ea363362623e39ee1b779",
+      "scenario_count": 3,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_coverage_status_live.py",
+        "qualification/test_email_readiness.py",
+        "qualification/test_email_readiness_unit.py",
+        "qualification/test_forms_rounds.py",
+        "qualification/test_import.py",
+        "qualification/test_measurement.py",
+        "qualification/test_native_concurrency.py",
+        "qualification/test_native_nonfunctional.py",
+        "qualification/test_period_governance.py",
+        "qualification/test_pooler_unit.py",
+        "qualification/test_retention.py",
+        "qualification/test_security_privacy.py",
+        "qualification/test_status_alerts_unit.py",
+        "qualification/test_unit.py",
+        "qualification/test_usable_staging_unit.py",
+        "qualification/test_version_unit.py",
+        "qualification/test_worker.py",
+        "tools/browser/narrate.py",
+        "tools/browser/training-video.mjs"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.27-imports.md",
+        "docs/RELEASE-0.27.md",
+        "docs/RELEASE-0.3.md",
+        "docs/RELEASE-1.11-coverage-status.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Coverage distinguishes approved, pending and missing contributors",
+          "level": "integration",
+          "assertions": [
+            "approval coverage is 60 percent",
+            "the pending count and the missing count are shown separately"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Official sum is partial when a mandatory contributor is absent",
+          "level": "integration",
+          "assertions": [
+            "it uses only approved eligible values",
+            "the result carries partial status"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject removing an expected contributor without approved eligibility evidence",
+          "level": "integration",
+          "assertions": [
+            "the partner remains in the expected contributor set for that period",
+            "an attempt to mark its obligation not applicable without approved eligibility evidence is refused"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 27,
+      "linear_issue": "APL-411",
+      "story_id": "FR-CAL-009",
+      "source_gherkin_sha256": "b8c5f1ca50a6d61e57777fb7e55936fd22eaa37391e5ca41a277897518146bfa",
+      "scenario_count": 3,
+      "assertion_count": 8,
+      "candidate_test_files": [
+        "qualification/test_precision_rounding_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.12-precision-rounding.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Round only at the output boundary",
+          "level": "unit",
+          "assertions": [
+            "the unrounded total is 1.005",
+            "the displayed result is 1.01",
+            "the rule documentation explains why summing the rounded components would give a different total"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Export carries the raw decimal and display metadata",
+          "level": "unit",
+          "assertions": [
+            "the export contains the raw decimal string",
+            "display metadata where applicable"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject rounded inputs and unsafe numeric conversion",
+          "level": "unit",
+          "assertions": [
+            "the display-rounded value is refused as a new source input",
+            "the large identifier is kept as text and never converted to a number",
+            "the out-of-range count produces an explicit limit error"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 28,
+      "linear_issue": "APL-415",
+      "story_id": "FR-CAL-010",
+      "source_gherkin_sha256": "8bf89b081904451bbb65cb99031a032a5adeee0fe04c55d877f48bbe3ee809d3",
+      "scenario_count": 4,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_invalid_numeric_inputs_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.13-invalid-numeric-inputs.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Zero denominator returns undefined with a reason",
+          "level": "unit",
+          "assertions": [
+            "the result is UNDEFINED with a stated reason",
+            "it is not displayed as a successful zero"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Negative adjustment through an approved measure",
+          "level": "unit",
+          "assertions": [
+            "the adjustment is accepted for calculation"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject invalid inputs before calculation",
+          "level": "unit",
+          "assertions": [
+            "the value is rejected as invalid and not displayed as a successful zero",
+            "nonfinite inputs, impossible dates and incompatible sign conventions are also rejected"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject negative counts and automatic clipping",
+          "level": "unit",
+          "assertions": [
+            "the eligible count does not become negative",
+            "a percentage outside its bounds is not automatically clipped without explicit valid semantics"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 29,
+      "linear_issue": "APL-421",
+      "story_id": "FR-CAL-011",
+      "source_gherkin_sha256": "7f1f359c07602ebda06472968d064d6a625dbb09139ddedb53dce24c40db8b2b",
+      "scenario_count": 3,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_recalculation_dependencies_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.14-recalculation-dependencies.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Correction updates live results but not published snapshots",
+          "level": "integration",
+          "assertions": [
+            "the affected definitions, result periods, dashboards and unpublished reports are identified",
+            "recalculation creates a new result version and the current ratio updates",
+            "the published quarterly PDF remains the original version until restated"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Retry creates one new result per input version",
+          "level": "integration",
+          "assertions": [
+            "exactly one intended new result exists per input version"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject a mixed official snapshot after a failed run",
+          "level": "integration",
+          "assertions": [
+            "they show stale status",
+            "no partially recalculated mixed official snapshot is presented",
+            "the published report is not restated without a separate approved restatement"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 30,
+      "linear_issue": "APL-607",
+      "story_id": "FR-CAL-013",
+      "source_gherkin_sha256": "8b2415d9daf92d3716d8b349f3e949f65598a39224f336900ab178188e165f8e",
+      "scenario_count": 3,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_calculation_methods.py",
+        "qualification/test_golden.py",
+        "qualification/test_weighted_composites_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.19.md",
+        "docs/RELEASE-1.15-weighted-composites.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Weighted composite score is calculated",
+          "level": "integration",
+          "assertions": [
+            "the score is 72",
+            "the preview shows each component's contribution and sensitivity to proposed weights"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Changing weights creates a new version",
+          "level": "integration",
+          "assertions": [
+            "a new version is created",
+            "the old score remains reproducible"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject invalid weights or missing required components",
+          "level": "integration",
+          "assertions": [
+            "it is rejected",
+            "a missing required component blocks the score or returns an explicitly incomplete score",
+            "renormalisation is applied only when the approved rule declares it"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 31,
+      "linear_issue": "APL-424",
+      "story_id": "FR-CAL-015",
+      "source_gherkin_sha256": "6eb5d8ffab2bd7605fb42b6872a46ce340309a2bc7e29359d444d373287239a2",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_calculation_reconciliation_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.16-calculation-reconciliation.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Explanation view shows how a result was produced",
+          "level": "browser",
+          "assertions": [
+            "it shows the rule version, source set, included and excluded counts, adjustments, coverage and approval"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Run comparison separates the effect of each change",
+          "level": "integration",
+          "assertions": [
+            "the effect of the source change and the effect of the filter change are identified and classified separately",
+            "no single unexplained total difference is reported"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject inspection of restricted excluded records",
+          "level": "integration",
+          "assertions": [
+            "only permitted aggregates or withheld references are shown",
+            "the restricted excluded records cannot be inspected"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject report approval with unreconciled differences",
+          "level": "integration",
+          "assertions": [
+            "approval is blocked"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 32,
+      "linear_issue": "APL-611",
+      "story_id": "FR-CAL-016",
+      "source_gherkin_sha256": "4388eb06e65d18c75ef37ba65155fdc61adf9a1d655007fc2d019708ca47480e",
+      "scenario_count": 3,
+      "assertion_count": 5,
+      "candidate_test_files": [
+        "qualification/test_statistical_interpretation_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.17-statistical-interpretation.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Pooled median from raw values",
+          "level": "integration",
+          "assertions": [
+            "the result is 3",
+            "the result package contains calculation metadata and limitations"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject a pooled median from subgroup medians alone",
+          "level": "integration",
+          "assertions": [
+            "no pooled median claim is produced",
+            "any mean of medians is labelled as a mean of medians, never a pooled median"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject sample estimates as population counts",
+          "level": "integration",
+          "assertions": [
+            "it is not presented as a population count"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 33,
+      "linear_issue": "APL-610",
+      "story_id": "FR-ANA-001",
+      "source_gherkin_sha256": "36e0846a3d823cf416edb3258cb439ee5f9235d1a616aebf6c7469ad8ee26dac",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_dashboard_authoring_live.py",
+        "qualification/test_dashboards.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py",
+        "qualification/test_story_security_analytics_live.py",
+        "qualification/test_workspace_administration.py",
+        "tools/browser/dashboard-check.mjs"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.24.md",
+        "docs/RELEASE-1.18-dashboard-authoring.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Build and preview a ten-widget dashboard at mobile width",
+          "level": "browser",
+          "assertions": [
+            "each chart has a readable labelled tabular equivalent",
+            "the tabular values are identical to the chart values"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Dashboard copy starts as a private draft",
+          "level": "browser",
+          "assertions": [
+            "the copy begins as a private draft"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject layout changes that hide quality context",
+          "level": "browser",
+          "assertions": [
+            "the required quality context cannot be hidden"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject stale values for unavailable bindings",
+          "level": "browser",
+          "assertions": [
+            "the widget shows unavailable",
+            "no stale private value is displayed"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 34,
+      "linear_issue": "APL-434",
+      "story_id": "FR-ANA-002",
+      "source_gherkin_sha256": "41a88cdf708c8eba9486a48b384b3ff874125586781303fdf985792b0fef2f2b",
+      "scenario_count": 4,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_dashboards.py",
+        "qualification/test_email_readiness.py",
+        "qualification/test_email_readiness_unit.py",
+        "qualification/test_filtered_drilldown_live.py",
+        "qualification/test_forms_rounds.py",
+        "qualification/test_import.py",
+        "qualification/test_native_concurrency.py",
+        "qualification/test_native_nonfunctional.py",
+        "qualification/test_pooler_unit.py",
+        "qualification/test_report_charts.py",
+        "qualification/test_retention.py",
+        "qualification/test_security_privacy.py",
+        "qualification/test_status_alerts_unit.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py",
+        "qualification/test_story_security_analytics_live.py",
+        "qualification/test_version_unit.py",
+        "qualification/test_workspace_administration.py",
+        "tools/browser/dashboard-check.mjs",
+        "tools/browser/narrate.py",
+        "tools/browser/training-video.mjs"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.24.md",
+        "docs/RELEASE-0.27-reports-dashboards.md",
+        "docs/RELEASE-0.27.md",
+        "docs/RELEASE-1.19-filtered-drilldown.md",
+        "docs/current/RELEASE-1-ACCEPTANCE-GAPS.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Filter by partner and drill to programme data",
+          "level": "integration",
+          "assertions": [
+            "the filter shows its current value",
+            "drill down follows only permitted hierarchy levels and approved disclosure slices",
+            "the restricted participant level remains unavailable"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Non-applicable filter is visibly identified",
+          "level": "integration",
+          "assertions": [
+            "the widget is visibly identified as not affected by the filter"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Saved view handles a changed binding",
+          "level": "browser",
+          "assertions": [
+            "it uses its pinned definitions or displays a reviewed migration notice"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject leakage through filtering and totals",
+          "level": "integration",
+          "assertions": [
+            "they do not leak partner B data",
+            "no suppressed cells or hidden source counts are revealed"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 35,
+      "linear_issue": "APL-435",
+      "story_id": "FR-ANA-003",
+      "source_gherkin_sha256": "895fb07faed80643d1ebbd35cac6f7119e25513251b9938ca2192d1a8448b947",
+      "scenario_count": 4,
+      "assertion_count": 8,
+      "candidate_test_files": [
+        "qualification/test_dashboards.py",
+        "qualification/test_email_readiness.py",
+        "qualification/test_email_readiness_unit.py",
+        "qualification/test_forms_rounds.py",
+        "qualification/test_import.py",
+        "qualification/test_native_concurrency.py",
+        "qualification/test_native_nonfunctional.py",
+        "qualification/test_planning.py",
+        "qualification/test_planning_unit.py",
+        "qualification/test_pooler_unit.py",
+        "qualification/test_report_charts.py",
+        "qualification/test_retention.py",
+        "qualification/test_security_privacy.py",
+        "qualification/test_status_alerts_unit.py",
+        "qualification/test_version_unit.py",
+        "qualification/test_workspace_administration.py",
+        "tools/browser/dashboard-check.mjs",
+        "tools/browser/narrate.py",
+        "tools/browser/planning-check.mjs",
+        "tools/browser/training-video.mjs"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.18.md",
+        "docs/RELEASE-0.24.md",
+        "docs/RELEASE-0.27-planning.md",
+        "docs/RELEASE-0.27-reports-dashboards.md",
+        "docs/RELEASE-0.27.md",
+        "docs/RELEASE-1.20-actual-target-baseline.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Lower-is-better target shown correctly",
+          "level": "integration",
+          "assertions": [
+            "it shows the correct status and declared deviation",
+            "it does not give an inverted success interpretation"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Labels, scales and overachievement are explicit",
+          "level": "integration",
+          "assertions": [
+            "labels identify whether the target is original or revised and its applicable period",
+            "axis scales and percentage calculations are explicit",
+            "overachievement remains visible"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject comparing incompatible time semantics",
+          "level": "integration",
+          "assertions": [
+            "the comparison is blocked"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject an infinite trend from a zero baseline",
+          "level": "integration",
+          "assertions": [
+            "the result is undefined",
+            "no infinite trend is shown"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 36,
+      "linear_issue": "APL-437",
+      "story_id": "FR-ANA-004",
+      "source_gherkin_sha256": "710dacc9d262b7cea6a893a7c5efc7ce31a863e67d8fa76c174fbd771ccc81ae",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_dashboards.py",
+        "qualification/test_email_readiness.py",
+        "qualification/test_email_readiness_unit.py",
+        "qualification/test_forms_rounds.py",
+        "qualification/test_import.py",
+        "qualification/test_native_concurrency.py",
+        "qualification/test_native_nonfunctional.py",
+        "qualification/test_pooler_unit.py",
+        "qualification/test_report_charts.py",
+        "qualification/test_retention.py",
+        "qualification/test_security_privacy.py",
+        "qualification/test_status_alerts_unit.py",
+        "qualification/test_version_unit.py",
+        "qualification/test_workspace_administration.py",
+        "tools/browser/dashboard-check.mjs",
+        "tools/browser/narrate.py",
+        "tools/browser/training-video.mjs"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.24.md",
+        "docs/RELEASE-0.27-reports-dashboards.md",
+        "docs/RELEASE-0.27.md",
+        "docs/RELEASE-1.21-freshness-context.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Widget shows approval state and freshness context",
+          "level": "integration",
+          "assertions": [
+            "each widget is labelled live approved, provisional or snapshot",
+            "its context shows last source success, approval cutoff, calculation time and coverage"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Failed refresh remains stale in an export",
+          "level": "integration",
+          "assertions": [
+            "the exported result is marked stale with the last valid data time",
+            "the export embeds a concise version of the material context"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject treating a successful fetch as fresh data",
+          "level": "integration",
+          "assertions": [
+            "the source is not shown as fresh"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject unlabelled provisional content",
+          "level": "integration",
+          "assertions": [
+            "the provisional widget remains labelled provisional"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 37,
+      "linear_issue": "APL-613",
+      "story_id": "FR-ANA-005",
+      "source_gherkin_sha256": "710aafc6e3c44a8f1b4e4231f44779ba6a66dd2170986fa24ebbb4610094fa50",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_dashboard_pivots_live.py",
+        "qualification/test_dashboards.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py",
+        "qualification/test_workspace_administration.py",
+        "tools/browser/dashboard-check.mjs"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.24.md",
+        "docs/RELEASE-1.22-dashboard-pivots.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Pivot participants by a multiselect service type",
+          "level": "integration",
+          "assertions": [
+            "category totals may exceed the distinct grand total",
+            "that difference is explained",
+            "the grand total is recalculated from eligible source semantics rather than summed from displayed cells"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Large pivot runs as a cancellable job",
+          "level": "integration",
+          "assertions": [
+            "the request is routed to a cancellable job"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject breaching disclosure policy in a pivot",
+          "level": "integration",
+          "assertions": [
+            "the suppressed cells and nonadditive dimensions retain their disclosure policy"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject unsupported statistics",
+          "level": "integration",
+          "assertions": [
+            "the pivot is blocked or a distinctly labelled alternative is required"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 38,
+      "linear_issue": "APL-616",
+      "story_id": "FR-ANA-006",
+      "source_gherkin_sha256": "b0f71d057e21928ed6154205e91a6618820e9740f0b5669a1d4efa752577982b",
+      "scenario_count": 4,
+      "assertion_count": 4,
+      "candidate_test_files": [
+        "qualification/test_dashboard_geography_live.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py",
+        "qualification/test_story_security_analytics_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.23-geographic-analysis.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Configure a map with an equivalent table",
+          "level": "integration",
+          "assertions": [
+            "an equivalent sortable table is available"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: District view discloses no household coordinates",
+          "level": "integration",
+          "assertions": [
+            "no household coordinate is disclosed"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject precise coordinates hidden in map outputs",
+          "level": "integration",
+          "assertions": [
+            "no precise coordinates are present"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject a hidden boundary mismatch",
+          "level": "integration",
+          "assertions": [
+            "the boundary mismatch is visible"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 39,
+      "linear_issue": "APL-612",
+      "story_id": "FR-ANA-007",
+      "source_gherkin_sha256": "31564cc35e64d0b13298ca85c277fdf785d325e58eb958a552a886b5de31d537",
+      "scenario_count": 4,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_dashboards.py",
+        "qualification/test_email_readiness.py",
+        "qualification/test_email_readiness_unit.py",
+        "qualification/test_forms_rounds.py",
+        "qualification/test_import.py",
+        "qualification/test_native_concurrency.py",
+        "qualification/test_native_nonfunctional.py",
+        "qualification/test_pooler_unit.py",
+        "qualification/test_report_charts.py",
+        "qualification/test_retention.py",
+        "qualification/test_security_privacy.py",
+        "qualification/test_status_alerts_unit.py",
+        "qualification/test_version_unit.py",
+        "tools/browser/dashboard-check.mjs",
+        "tools/browser/narrate.py",
+        "tools/browser/training-video.mjs"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.27-reports-dashboards.md",
+        "docs/RELEASE-0.27.md",
+        "docs/RELEASE-1.24-portfolio-comparison.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Compatible measures grouped and mismatches flagged",
+          "level": "integration",
+          "assertions": [
+            "compatible measures are grouped",
+            "mismatches are flagged"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reviewed comparability required before a league table",
+          "level": "integration",
+          "assertions": [
+            "an unqualified league table is presented only after comparability has been reviewed",
+            "otherwise the ranking carries a clear qualified comparison method"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject a raw ranking of non-equivalent measures",
+          "level": "integration",
+          "assertions": [
+            "no raw ranking treating them as equivalent is produced"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject exposing hidden portfolio members",
+          "level": "integration",
+          "assertions": [
+            "the visible scope is stated",
+            "hidden members are not exposed"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 40,
+      "linear_issue": "APL-614",
+      "story_id": "FR-ANA-008",
+      "source_gherkin_sha256": "0958f18c157c70c3a379d6e2f0f3bd8ca15d6ffb8ad3831c3a5de15cfbe8b7b6",
+      "scenario_count": 4,
+      "assertion_count": 8,
+      "candidate_test_files": [
+        "qualification/test_dashboard_governance_live.py",
+        "qualification/test_dashboards.py",
+        "qualification/test_effective_access_live.py",
+        "qualification/test_effective_access_unit.py",
+        "qualification/test_import.py",
+        "qualification/test_workspace_administration.py",
+        "tools/browser/dashboard-check.mjs"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.24.md",
+        "docs/RELEASE-1.25-dashboard-governance.md",
+        "docs/RELEASE-1.42-apl-614-dashboard-governance.md",
+        "docs/RELEASE-1.42-dashboard-publication-safety.md",
+        "docs/RELEASE-1.42-effective-access-completion.md",
+        "docs/current/RELEASE-1-ACCEPTANCE-GAPS.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Publication pins dashboard configuration",
+          "level": "integration",
+          "assertions": [
+            "its layout, bindings, audience and expiry are pinned",
+            "any change of owner requires current authority"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Copy to a funder workspace keeps restricted widgets unavailable",
+          "level": "integration",
+          "assertions": [
+            "the copy is a draft with no new data grants",
+            "the sharing preview calculates the recipient's view and identifies unavailable bindings",
+            "restricted widgets remain unavailable until explicitly bound to approved disclosed metrics"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject public dashboards on live private queries",
+          "level": "integration",
+          "assertions": [
+            "they reference only disclosure-approved artifacts",
+            "not unrestricted live private queries"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject continued publication after a sensitivity change",
+          "level": "integration",
+          "assertions": [
+            "the affected publication is suspended until revalidated"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 41,
+      "linear_issue": "APL-618",
+      "story_id": "FR-ANA-009",
+      "source_gherkin_sha256": "3441973c00ed014d96539f69df301880f66ac50cc55fdfa2df5343f95c98cd5a",
+      "scenario_count": 4,
+      "assertion_count": 5,
+      "candidate_test_files": [
+        "qualification/test_dashboard_alerts_live.py",
+        "qualification/test_dashboard_alerts_unit.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py",
+        "qualification/test_story_security_analytics_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.26-alerts-thresholds.md",
+        "docs/RELEASE-1.42-dashboard-alerts-completion.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Missed monthly submission raises a missingness alert",
+          "level": "integration",
+          "assertions": [
+            "a missingness alert is generated"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Approved performance decline raises a separate threshold alert",
+          "level": "integration",
+          "assertions": [
+            "a threshold alert is generated separately from any missingness alert",
+            "the triggered alert records the exact evaluated result version"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject treating an absent value as zero",
+          "level": "integration",
+          "assertions": [
+            "no deterioration alert is raised by treating the absent value as zero"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject separate alerts during cooldown",
+          "level": "integration",
+          "assertions": [
+            "one incident or digest is updated according to policy"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 42,
+      "linear_issue": "APL-620",
+      "story_id": "FR-ANA-010",
+      "source_gherkin_sha256": "d841bb3b16170c48d713d1f244db97fe1c23e5eedd37724b60cd92ea39d763a5",
+      "scenario_count": 4,
+      "assertion_count": 9,
+      "candidate_test_files": [
+        "qualification/test_external_analytics_live.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py",
+        "qualification/test_story_security_analytics_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.27-external-analytics.md",
+        "docs/RELEASE-1.42-external-analytics-completion.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Create a governed BI connection",
+          "level": "integration",
+          "assertions": [
+            "a service identity is issued",
+            "the external destination and reuse terms are recorded",
+            "the data package includes definitions, units, value states and freshness"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Revoked service identity cannot refresh",
+          "level": "integration",
+          "assertions": [
+            "subsequent refresh fails",
+            "the register identifies the last successful external extract"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject refresh without current authority",
+          "level": "integration",
+          "assertions": [
+            "no data is retrieved"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject claims of remote erasure or unrestricted access",
+          "level": "integration",
+          "assertions": [
+            "the external copies remain tracked as disclosures",
+            "they are not represented as remotely erased",
+            "no unrestricted database connection is implied"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 43,
+      "linear_issue": "APL-623",
+      "story_id": "FR-DQ-007",
+      "source_gherkin_sha256": "279dfd38820c00990bd3064c46e789852e7a8b9b2027f3e1be1a06d8e7c6f4ce",
+      "scenario_count": 3,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_anomaly_assistance_live.py",
+        "qualification/test_anomaly_assistance_unit.py",
+        "qualification/test_forms.py",
+        "qualification/test_import.py",
+        "qualification/test_live_application.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.21.md",
+        "docs/RELEASE-1.28-anomaly-assistance.md",
+        "docs/RELEASE-1.42-anomaly-assistance-completion.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Anomaly run records its context and suggests findings",
+          "level": "integration",
+          "assertions": [
+            "it records the method version, eligible data, comparison window and explanation",
+            "its findings enter a suggested state with severity and owner"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Seasonal spike reviewed as expected",
+          "level": "integration",
+          "assertions": [
+            "the underlying data is retained unchanged",
+            "the dismissed suggestion remains distinct from a confirmed quality defect",
+            "the false positive evidence is retained under the minimised policy to inform later evaluated model changes"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject a flag that changes data or labels a person",
+          "level": "integration",
+          "assertions": [
+            "it never modifies the underlying data",
+            "it never labels a person as fraudulent"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 44,
+      "linear_issue": "APL-625",
+      "story_id": "FR-EVA-001",
+      "source_gherkin_sha256": "3bb8551bceb4a5e30a613351a8c52387569c7232297875f20bd18b54d840098c",
+      "scenario_count": 4,
+      "assertion_count": 5,
+      "candidate_test_files": [
+        "qualification/test_evaluation_registry_live.py",
+        "qualification/test_evaluation_registry_unit.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py",
+        "qualification/test_story_security_analytics_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.29-evaluation-registry.md",
+        "docs/RELEASE-1.42-evaluation-registry-completion.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Register several studies for one programme",
+          "level": "integration",
+          "assertions": [
+            "each study keeps its own method and observation period"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Stage gates check required documents",
+          "level": "integration",
+          "assertions": [
+            "the stage gate checks the required methodological and policy documents"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject an unsupported independence claim",
+          "level": "integration",
+          "assertions": [
+            "the independence claim is not accepted",
+            "a self declaration is not shown as verified"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject treating registration as approval of sensitive processing",
+          "level": "integration",
+          "assertions": [
+            "the processing is not approved"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 45,
+      "linear_issue": "APL-630",
+      "story_id": "FR-EVA-002",
+      "source_gherkin_sha256": "797f77fb65b1daf10a6182cfb197e56030c59d32b98cb879266e4ae554515168",
+      "scenario_count": 4,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_evaluation_methodology_live.py",
+        "qualification/test_evaluation_methodology_unit.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py",
+        "qualification/test_story_security_analytics_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.30-evaluation-methodology.md",
+        "docs/RELEASE-1.42-evaluation-methodology-completion.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Export a stratified sample with methodology metadata",
+          "level": "integration",
+          "assertions": [
+            "the declared eligible denominator can be reproduced"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Amendments are reviewed and dated relative to data inspection",
+          "level": "integration",
+          "assertions": [
+            "the amendment identifies when it occurred relative to data inspection",
+            "it requires review"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject relabelling a sample count as a population",
+          "level": "integration",
+          "assertions": [
+            "the population estimate is refused",
+            "the sample count cannot be relabelled as all beneficiaries"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject weighted output with missing weights",
+          "level": "integration",
+          "assertions": [
+            "the weighted output is blocked",
+            "the weights are not silently defaulted to one"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 46,
+      "linear_issue": "APL-632",
+      "story_id": "FR-EVA-003",
+      "source_gherkin_sha256": "562382dffb522ec9b4063c038ae056020137af7021fc5a4c4a8481cf8193bb2d",
+      "scenario_count": 4,
+      "assertion_count": 8,
+      "candidate_test_files": [
+        "qualification/test_analysis_packages_live.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py",
+        "qualification/test_story_security_analytics_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.31-analysis-packages.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Create a frozen extract",
+          "level": "integration",
+          "assertions": [
+            "the extract is frozen",
+            "reviewed scripts and notebooks can be attached as evidence",
+            "results reference the extract and method versions"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reproduce a result after live records change",
+          "level": "integration",
+          "assertions": [
+            "the extract is not altered",
+            "the result can be reproduced from the pinned extract",
+            "the original analysis remains reconcilable"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject executing uploaded code",
+          "level": "integration",
+          "assertions": [
+            "it is not executed in the product"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject export without the export capability",
+          "level": "integration",
+          "assertions": [
+            "the export is refused"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 47,
+      "linear_issue": "APL-634",
+      "story_id": "FR-EVA-006",
+      "source_gherkin_sha256": "e7d7ddf674f5e43c95893f11b473a4fa8dc3d8b5c138de58b10a9579e9c149cf",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_learning_agenda_live.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py",
+        "qualification/test_story_security_analytics_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.32-learning-agenda.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Link a decision to a learning question",
+          "level": "integration",
+          "assertions": [
+            "the learning question shows the decision, the three sources and the unresolved assumption",
+            "the assumption is marked as requiring a follow up study"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Close and reopen a learning question",
+          "level": "integration",
+          "assertions": [
+            "what was learned and the remaining uncertainty are recorded",
+            "reopening it later preserves the prior reasoning"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject automatic transfer of an answer to another context",
+          "level": "integration",
+          "assertions": [
+            "the answer is not automatically treated as applicable"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject restricted evidence in a broad summary without review",
+          "level": "integration",
+          "assertions": [
+            "the restricted evidence is not copied into it without disclosure review"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 48,
+      "linear_issue": "APL-639",
+      "story_id": "FR-EVA-007",
+      "source_gherkin_sha256": "0ce66861d298f6303a64a4405600a4076ccd6db0b9249a6ec93b3ddaa65e39aa",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_management_responses_live.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py",
+        "qualification/test_story_security_analytics_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.33-management-responses.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Accept a recommendation and create an action",
+          "level": "integration",
+          "assertions": [
+            "an action is created with an owner, due date and required completion evidence"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Separate action completion from outcome evidence",
+          "level": "integration",
+          "assertions": [
+            "the action is recorded as complete",
+            "outcome improvement remains pending until follow up measurements support it"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject automatic closure of overdue actions",
+          "level": "integration",
+          "assertions": [
+            "it escalates",
+            "it is not automatically closed"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject hiding a rejected recommendation",
+          "level": "integration",
+          "assertions": [
+            "it remains visible with its accountable response"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 49,
+      "linear_issue": "APL-641",
+      "story_id": "FR-EVD-005",
+      "source_gherkin_sha256": "61994ec5a6a09b85835e2b7ab8675bc5c67cad4702b5416ebc5177a2ad297079",
+      "scenario_count": 4,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_qualitative_coding_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.34-qualitative-coding.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Maintain a versioned codebook",
+          "level": "integration",
+          "assertions": [
+            "each code has a stable identity, meaning, and inclusion and exclusion examples",
+            "the codebook has a version"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Adjudicate a coding disagreement",
+          "level": "integration",
+          "assertions": [
+            "both coders' assignments remain",
+            "the adjudication records its rationale and codebook version"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject invalid agreement or consensus",
+          "level": "integration",
+          "assertions": [
+            "unmatched units are not used to calculate agreement",
+            "consensus cannot be claimed by overwriting a coder's work"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject excerpts losing source restrictions",
+          "level": "integration",
+          "assertions": [
+            "they inherit the source restrictions"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 50,
+      "linear_issue": "APL-644",
+      "story_id": "FR-EVD-006",
+      "source_gherkin_sha256": "6d8c2b08fa75ee8011e78d8682ab49a05fc6f1dff5d0d8b3cbb2fcc8360a8094",
+      "scenario_count": 4,
+      "assertion_count": 8,
+      "candidate_test_files": [
+        "qualification/test_transcription_translation_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.35-transcription-translation.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Request a transcript or translation",
+          "level": "integration",
+          "assertions": [
+            "the generated transcript or translation is a new labelled artifact",
+            "it is linked to offsets in the original recording"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Correct a translated segment used in a quotation",
+          "level": "integration",
+          "assertions": [
+            "the quotation resolves to the corrected segment and the original recording",
+            "the original automated output is retained according to policy",
+            "quotation use requires review of the original meaning"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject inventing speakers or timings",
+          "level": "integration",
+          "assertions": [
+            "the speaker or timing is marked unknown",
+            "it is not invented"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject fallback to an unapproved provider",
+          "level": "integration",
+          "assertions": [
+            "processing does not fall back to an unapproved provider"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 51,
+      "linear_issue": "APL-646",
+      "story_id": "FR-EVD-008",
+      "source_gherkin_sha256": "ad8c7094da2094829fb648a7c63d1b348650b6136f4aaea30cd07b6e5fc1d4f9",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py",
+        "qualification/test_triangulated_findings_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.36-triangulated-findings.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Record a triangulated finding",
+          "level": "integration",
+          "assertions": [
+            "the finding retains both sources",
+            "it distinguishes observation from interpretation"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Version an interpretation change",
+          "level": "integration",
+          "assertions": [
+            "a new version is created",
+            "the changed evidence set is shown"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject AI confidence in place of evidential judgement",
+          "level": "integration",
+          "assertions": [
+            "the AI confidence is not accepted as a substitute for the confidence rationale"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject publication that drops contradictory evidence",
+          "level": "integration",
+          "assertions": [
+            "publication is refused unless the contradictory evidence is preserved or its limitation is disclosed"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 52,
+      "linear_issue": "APL-648",
+      "story_id": "FR-FIN-002",
+      "source_gherkin_sha256": "d90c9898dcf6ce57a503584a1c0f06dab91dd029d7410b13ffafaeeebda0de65",
+      "scenario_count": 3,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_budget_versions_live.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.37-budget-versions.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Raise an approved budget",
+          "level": "integration",
+          "assertions": [
+            "the original comparison remains available",
+            "imported actual spending stays unchanged"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Draft revisions compare against baselines",
+          "level": "integration",
+          "assertions": [
+            "it is compared against the original and current baseline",
+            "approval pins the budget and its rate assumptions"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject budget changes that alter actuals or history",
+          "level": "integration",
+          "assertions": [
+            "transaction amounts are not altered",
+            "historically reported variance is not altered"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 53,
+      "linear_issue": "APL-650",
+      "story_id": "FR-FIN-003",
+      "source_gherkin_sha256": "21a0817f5ba92f53cd6127e62c8c1ac927a0127334d0399e600a555da2858903",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_expenditure_ingestion_live.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.38-expenditure-ingestion.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Import an amended transaction file twice",
+          "level": "integration",
+          "assertions": [
+            "only the intended corrected expenditure balance contributes to analysis",
+            "unchanged records are reconciled rather than duplicated"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Mapping validates control totals and adjustments",
+          "level": "integration",
+          "assertions": [
+            "control totals and adjustment semantics are validated",
+            "reversals and replacements are treated as separate transaction semantics"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject counting the same expense again",
+          "level": "integration",
+          "assertions": [
+            "the same expense is not counted again"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject approval of unbalanced source totals",
+          "level": "integration",
+          "assertions": [
+            "approval is blocked unless an explicit permitted exception is recorded"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 54,
+      "linear_issue": "APL-652",
+      "story_id": "FR-FIN-005",
+      "source_gherkin_sha256": "ff6eb1e59d0a8d3dcc314fbf1d4cd4da01740a246d7e7177f559567e8b5d5975",
+      "scenario_count": 4,
+      "assertion_count": 7,
+      "candidate_test_files": [
+        "qualification/test_finance_variance_live.py",
+        "qualification/test_story_authorization_analytics_live.py",
+        "qualification/test_story_error_recovery_analytics_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-1.39-finance-variance.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Scenario: Show unspent budget and forecast overrun as separate facts",
+          "level": "integration",
+          "assertions": [
+            "it shows 40 currently unspent",
+            "it shows a forecast overrun of ten as a separate fact",
+            "the sign convention is labelled"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Forecast assumptions recorded separately",
+          "level": "integration",
+          "assertions": [
+            "its assumptions and author or method version are recorded separately from actuals"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject treating missing spending as underspend",
+          "level": "integration",
+          "assertions": [
+            "the missing data is not shown as underspend"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Scenario: Reject forecasts entering actual expenditure",
+          "level": "integration",
+          "assertions": [
+            "the forecast does not enter the actual expenditure series",
+            "it does not imply programme impact success"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 55,
+      "linear_issue": "APL-364",
+      "story_id": "US-DX-03",
+      "source_gherkin_sha256": "7b0a0a8b146e927e36c8aaf3f637ba8d37f4d3e8cf9010f176ac65a3a3c298dc",
+      "scenario_count": 4,
+      "assertion_count": 4,
+      "candidate_test_files": [
+        "qualification/test_ai_policy_live.py",
+        "qualification/test_ai_problem_baselines_live.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.41-ai-problem-baselines.md",
+        "docs/RELEASE-0.42-digital-readiness-framework.md",
+        "docs/RELEASE-1.41-problem-baseline-kind-fix.md",
+        "docs/qa/current-20261011/RELEASE-TEST-PLAN.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Capture baseline metrics per priority problem",
+          "level": "integration",
+          "assertions": [
+            "time, cost, quality and reach are captured for that problem"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Lock the baseline with a date",
+          "level": "integration",
+          "assertions": [
+            "the baseline is locked and the lock date is recorded"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject changes to a locked baseline",
+          "level": "integration",
+          "assertions": [
+            "the edit is refused"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject locking an incomplete baseline",
+          "level": "integration",
+          "assertions": [
+            "the lock is refused"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    },
+    {
+      "ordinal": 56,
+      "linear_issue": "APL-350",
+      "story_id": "FR-ACC-003",
+      "source_gherkin_sha256": "7ca546fa552cf243a7eb6ad31532cf9bb63c124386b38f92c4335b8d0c1fc9a8",
+      "scenario_count": 4,
+      "assertion_count": 6,
+      "candidate_test_files": [
+        "qualification/test_effective_access_live.py",
+        "qualification/test_effective_access_unit.py"
+      ],
+      "release_records": [
+        "docs/RELEASE-0.85-effective-access-explanations.md",
+        "docs/RELEASE-1.42-effective-access-completion.md"
+      ],
+      "scenarios": [
+        {
+          "source_scenario": "Inspect effective access",
+          "level": "integration",
+          "assertions": [
+            "each permitted grant path, restriction and missing assurance is shown"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Explain a normal user's own access",
+          "level": "browser",
+          "assertions": [
+            "they see explanations only about their own permitted context"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Resolve conflicting roles",
+          "level": "integration",
+          "assertions": [
+            "the restriction remains effective",
+            "the explanation identifies the scope rule safely"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        },
+        {
+          "source_scenario": "Reject leaking hidden information",
+          "level": "integration",
+          "assertions": [
+            "names of hidden projects and sensitive field values are not exposed",
+            "the out of scope simulation is refused"
+          ],
+          "acceptance_status": "PENDING_EXACT_EVIDENCE_REVIEW",
+          "accepted_by": null,
+          "accepted_at": null
+        }
+      ],
+      "all_acceptance_criteria_accepted": false,
+      "product_owner_acceptance": "PENDING"
+    }
+  ]
+}
